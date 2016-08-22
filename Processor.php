@@ -68,6 +68,125 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: index.php");
             break;
 
+        case "editCourseName":
+            $reference_course_code = $_POST["course_code"];
+            $edit_course_name = $_POST["course_name"];
+
+            $noteBooks = new DOMDocument();
+            $noteBooks->load("NoteBooks.xml");
+
+            $subjects = $noteBooks->getElementsByTagName("subject");
+
+            foreach ($subjects as $subject) {
+                if ($subject->getAttribute("course_code") == $reference_course_code) {
+                    $subject->setAttribute("course_name" , $edit_course_name);
+                    break;
+                }
+            }
+
+            $noteBooks->save("NoteBooks.xml");
+            header("Location: index.php");
+            break;
+
+        case "editLogistics":
+            $reference_course_code = $_POST["course_code"];
+            $edit_logistics = $_POST["logistics"];
+
+            $noteBooks = new DOMDocument();
+            $noteBooks->load("NoteBooks.xml");
+
+            $subjects = $noteBooks->getElementsByTagName("subject");
+
+            foreach ($subjects as $subject) {
+                if ($subject->getAttribute("course_code") == $reference_course_code) {
+                    $subject->getElementsByTagName("logistics")->item(0)->nodeValue = $edit_logistics;
+                    break;
+                }
+            }
+
+            $noteBooks->save("NoteBooks.xml");
+            header("Location: index.php");
+            break;
+
+        case "createTopic":
+
+            $reference_course_code = $_POST["course_code"];
+            $new_topic_name = $_POST["topic_name"];
+
+            $noteBooks = new DOMDocument();
+            $noteBooks->load("NoteBooks.xml");
+
+            $subjects = $noteBooks->getElementsByTagName("subject");
+
+            foreach ($subjects as $subject) {
+                if ($subject->getAttribute("course_code") == $reference_course_code) {
+                    $newTopicNode = $noteBooks->createElement("topic" , $initialFillUpForTopicContent);
+                    $newTopicNode->setAttribute("topic_name" , $new_topic_name);
+                    $subject->appendChild($newTopicNode);
+                    break;
+                }
+            }
+
+            $noteBooks->save("NoteBooks.xml");
+            header("Location: index.php");
+            break;
+
+        case "editTopic":
+
+            $reference_course_code = $_POST["course_code"];
+            $reference_topic_name = $_POST["ref_topic_name"];
+            $edit_topic_name = $_POST["topic_name"];
+            $edit_topic_content = $_POST["topic_content"];
+
+            $noteBooks = new DOMDocument();
+            $noteBooks->load("NoteBooks.xml");
+
+            $subjects = $noteBooks->getElementsByTagName("subject");
+
+            foreach ($subjects as $subject) {
+                if ($subject->getAttribute("course_code") == $reference_course_code) {
+                    $topics = $subject->getElementsByTagName("topic");
+                    foreach ($topics as $topic){
+                        if($topic->getAttribute("topic_name") == $reference_topic_name){
+                            $topic->setAttribute("topic_name" , $edit_topic_name);
+                            $topic->nodeValue = $edit_topic_content;
+                        }
+                        break;
+                    }
+                    break;
+                }
+            }
+
+            $noteBooks->save("NoteBooks.xml");
+            header("Location: index.php");
+            break;
+
+        case "deleteTopic":
+
+            $reference_course_code = $_POST["course_code"];
+            $old_topic_name = $_POST["topic_name"];
+
+            $noteBooks = new DOMDocument();
+            $noteBooks->load("NoteBooks.xml");
+
+            $subjects = $noteBooks->getElementsByTagName("subject");
+
+            foreach ($subjects as $subject) {
+                if ($subject->getAttribute("course_code") == $reference_course_code) {
+                    $topics = $subject->getElementsByTagName("topic");
+                    foreach ($topics as $topic){
+                        if($topic->getAttribute("topic_name") == $old_topic_name){
+                            $topic->parentNode->removeChild($topic);
+                        }
+                    }
+                    break;
+                }
+            }
+
+            $noteBooks->save("NoteBooks.xml");
+            header("Location: index.php");
+            break;
+
         default:
     }
 }

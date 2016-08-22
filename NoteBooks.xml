@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <subject course_name="SOMTHING" course_code="CS213">
-        <logistics>Nothing Yet</logistics>
-        <topic topic_name="Getting Started">Fill Your Thoughts</topic>
+    <subject course_name="NoteBook" course_code="EX101">
+        <logistics>Know the logistics of your adsjlfa</logistics>
+        <topic topic_name="Getting">Started in swag</topic>
+        <topic topic_name="Info">rmation</topic>
+        <topic topic_name="this that">here there</topic>
+        <topic topic_name="sample Topic 1">Some Stuff</topic>
+        <topic topic_name="sample Topic 2">Some Other Stuff</topic>
     </subject>
-</root>
+
+    <subject course_name="Data Structures And Logarithms" course_code="CS213">
+        <logistics>afdsjkladsf</logistics>
+        <topic topic_name="Getting Started">Fill Your Thoughts</topic>
+        <topic topic_name="Info">rmation</topic>
+        <topic topic_name="this that">here there</topic>
+    </subject>
+<subject course_name="Electrical And Electronic Circuits" course_code="EE101"><logistics>Nothing Yet</logistics><topic topic_name="Getting Started">Fill Your Thoughts</topic></subject></root>
