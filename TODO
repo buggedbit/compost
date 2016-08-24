@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <todo>
     <immediate>
-        <task>Implement Create and delete topic</task>
-        <task>Implement sessions to load the current page</task>
     </immediate>
     <long-term>
         <task>Implement the JS Objects to get a neater code</task>

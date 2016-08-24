@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +28,7 @@
                 var _this_topic_html_string_ = "<li><a class='topicName' >" + topicName + "</a></li>";
                 _html_topic_name_string_ += _this_topic_html_string_;
             }
-            // APPENDING THE TOPICSA AND SETTING A LISTENER TO IT
+            // APPENDING THE TOPICS AND SETTING A LISTENER TO IT
             $("#TOPICS").html(_html_topic_name_string_).find(".topicName").click(function () {
                 var selectedTopicName = $(this).text();
                 var selectedTopicContent;
@@ -36,13 +39,41 @@
                         PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item(i);
 
                         selectedTopicContent = MY_NOTEBOOK_TOPICS.item(i).textContent;
+
                         $("#TOPIC_NAME").val(selectedTopicName);
                         $("#TOPIC_CONTENT").val(selectedTopicContent);
                     }
                 }
             });
-            // INITITAIZING WITH THE THE FIRST TOPIC OF THE FIRST COURSE
-            PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item(0);
+            // INITIALIZING WITH THE THE FIRST TOPIC OF THE FIRST COURSE BY DEFAULT OR USING SESSION
+            <?php
+            if (isset($_SESSION["topic_name_SES"])) {
+                $noTopicWithThatName = true;
+                $noteBooks = new DOMDocument();
+                $noteBooks->load("NoteBooks.xml");
+                $subjects = $noteBooks->getElementsByTagName("subject");
+                $noSubjects = $subjects->length;
+
+                for ($i = 0; $i < $noSubjects; ++$i) {
+                    if ($subjects->item($i)->getAttribute("course_code") == $_SESSION["course_code_SES"]) {
+                        $topics = $subjects->item($i)->getElementsByTagName("topic");
+                        $noTopics = $topics->length;
+
+                        for ($j = 0; $j < $noTopics; ++$j) {
+                            if ($topics->item($j)->getAttribute("topic_name") == $_SESSION["topic_name_SES"]) {
+                                echo "PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item($j);";
+                                $noTopicWithThatName = false;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                if($noTopicWithThatName)echo "PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item(0);";
+            } else {
+                echo "PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item(0);";
+            }
+            ?>
             $("#TOPIC_NAME").val(PRESENT_TOPIC.getAttribute("topic_name"));
             $("#TOPIC_CONTENT").val(PRESENT_TOPIC.textContent);
 
@@ -68,7 +99,29 @@
                 // RESPONSE READY SITUATION
                 if (xmlHttpConnection.readyState == 4 && xmlHttpConnection.status == 200) {
                     NOTEBOOKS_FILE = xmlHttpConnection.responseXML;
-                    MY_NOTEBOOK = NOTEBOOKS_FILE.getElementsByTagName("subject").item(0);
+
+                    // INITIALIZING WITH FIRST NOTE BOOK OR USING SESSIONS
+                    <?php
+                    if (isset($_SESSION["course_code_SES"])) {
+                        $noCourseWithThatCode = true;
+                        $noteBooks = new DOMDocument();
+                        $noteBooks->load("NoteBooks.xml");
+                        $subjects = $noteBooks->getElementsByTagName("subject");
+                        $noSubjects = $subjects->length;
+
+                        for ($i = 0; $i < $noSubjects; ++$i) {
+                            if ($subjects->item($i)->getAttribute("course_code") == $_SESSION["course_code_SES"]) {
+                                echo "MY_NOTEBOOK = NOTEBOOKS_FILE.getElementsByTagName('subject').item($i);";
+                                $noCourseWithThatCode = false;
+                                break;
+                            }
+                        }
+                        if($noCourseWithThatCode)echo "MY_NOTEBOOK = NOTEBOOKS_FILE.getElementsByTagName('subject').item(0);";
+                    }
+                    else {
+                        echo "MY_NOTEBOOK = NOTEBOOKS_FILE.getElementsByTagName('subject').item(0);";
+                    }
+                    ?>
                     MY_NOTEBOOK_TOPICS = MY_NOTEBOOK.getElementsByTagName("topic");
                     loadThisNoteBook();
                 }
@@ -109,17 +162,21 @@
         .topicName:hover {
             cursor: pointer;
         }
-        textarea{
+
+        textarea {
             overflow: scroll;
             min-height: 200px;
         }
-        #TOPIC_CONTENT{
-            min-height:700px;
+
+        #TOPIC_CONTENT {
+            min-height: 700px;
         }
-        #allAboutTopics a{
+
+        #allAboutTopics a {
             font-size: larger;
         }
-        #allAboutTopics ul{
+
+        #allAboutTopics ul {
             list-style: upper-latin;
         }
     </style>
@@ -142,8 +199,10 @@
                 echo "</a></li>";
             }
             ?>
-            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#create-form-div"> +</button>
-            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-form-div"> -</button>
+            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#create-form-div"> +
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-form-div"> -
+            </button>
         </ul>
     </div>
 </nav>
@@ -153,6 +212,7 @@
     <div class="middle row">
         <div class="col-xs-2" id="allAboutTopics">
 
+            <!--ADD TOPIC FORM-->
             <form action="Processor.php" method="post" id="add_topic_form">
                 <h4 id="note" style="display: none;">another topic exists with same name</h4>
                 <input type="text" name="form_type" value="createTopic" style="display:none;">
@@ -173,16 +233,24 @@
                         var newTopicName = $("#newTopicName").val();
                         var noTopics = MY_NOTEBOOK_TOPICS.length;
 
-                        for (var j = 0 ; j < noTopics; ++j) {
+                        for (var j = 0; j < noTopics; ++j) {
                             if (newTopicName == MY_NOTEBOOK_TOPICS.item(j).getAttribute("topic_name")) {
                                 addTopic = false;
                                 break;
                             }
                         }
-                        if(addTopic){
+                        if (addTopic) {
                             var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
                             var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-                            $("#add_topic_form").append(course_code_input).submit();
+
+                            // FOR SESSION VARS
+                            var course_code_SES = course_code_t;
+                            var topic_name_SES = newTopicName;
+                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
+                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
+                            // FOR SESSION VARS
+
+                            $("#add_topic_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
                         }
                         else {
                             $("#add_topic_form").find("#note").fadeIn().delay(2000).fadeOut();
@@ -190,14 +258,17 @@
                     });
                 </script>
             </form>
+            <!--ADD TOPIC FORM-->
 
             <ul id="TOPICS">
                 <!--TOPICS-->
                 T O P I C S
             </ul>
 
+            <!--REMOVE TOPIC FORM-->
             <form action="Processor.php" method="post" id="remove_topic_form">
                 <h4 id="note" style="display: none;">No such topic</h4>
+                <h4 id="note2" style="display: none;">Atleast one topic would be nice</h4>
                 <input type="text" name="form_type" value="deleteTopic" style="display:none;">
                 <input type="button" value="-" class="btn btn-default" id="remove_topic_button">
 
@@ -208,31 +279,44 @@
 
                 <script>
                     $("#remove_topic_button").click(function () {
-                        $("#removeTopicToggle").fadeToggle();
+                        if (MY_NOTEBOOK_TOPICS.length > 1) {
+                            $("#removeTopicToggle").fadeToggle();
+                        } else {
+                            $("#remove_topic_form").find("#note2").fadeIn().delay(2000).fadeOut();
+                        }
                     });
 
                     $("#remove_topic_submit").click(function () {
                         var removeTopic = false;
                         var oldTopicName = $("#oldTopicName").val();
                         var noTopics = MY_NOTEBOOK_TOPICS.length;
+                        var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
 
-                        for (var j = 0 ; j < noTopics; ++j) {
+                        for (var j = 0; j < noTopics; ++j) {
                             if (oldTopicName == MY_NOTEBOOK_TOPICS.item(j).getAttribute("topic_name")) {
                                 removeTopic = true;
                                 break;
                             }
                         }
-                        if(removeTopic){
-                            var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
+
+                        if (removeTopic) {
                             var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-                            $("#remove_topic_form").append(course_code_input).submit();
-                        }else {
+
+                            // FOR SESSION VARS
+                            var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
+                            var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
+                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
+                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
+                            // FOR SESSION VARS
+
+                            $("#remove_topic_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
+                        } else {
                             $("#remove_topic_form").find("#note").fadeIn().delay(2000).fadeOut();
                         }
                     });
                 </script>
             </form>
-
+            <!--REMOVE TOPIC FORM-->
 
         </div>
 
@@ -280,7 +364,16 @@
                                 $("#edit_course_name_submit").click(function () {
                                     var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
                                     var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-                                    $("#edit_course_name_form").append(course_code_input).submit();
+
+                                    // FOR SESSION VARS
+                                    var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
+                                    var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
+                                    var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
+                                    var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
+                                    // FOR SESSION VARS
+
+
+                                    $("#edit_course_name_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
                                 });
                             });
                         </script>
@@ -372,7 +465,15 @@
                             var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
                             var topic_name_t = PRESENT_TOPIC.getAttribute("topic_name");
                             var topic_name_input = "<input type='text' name='ref_topic_name' value='" + topic_name_t + "' style='display: none;'>";
-                            $("#edit_topic_form").append(course_code_input).append(topic_name_input).submit();
+
+                            // FOR SESSION VARS
+                            var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
+                            var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
+                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
+                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
+                            // FOR SESSION VARS
+
+                            $("#edit_topic_form").append(course_code_input).append(topic_name_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
                         });
 
                     </script>
@@ -417,7 +518,15 @@
                         $("#edit_logistics_submit").click(function () {
                             var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
                             var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-                            $("#edit_logistics_form").append(course_code_input).submit();
+
+                            // FOR SESSION VARS
+                            var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
+                            var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
+                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
+                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
+                            // FOR SESSION VARS
+
+                            $("#edit_logistics_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
                         });
                     </script>
                 </form>
@@ -441,7 +550,7 @@
                 <form action="Processor.php" method="post" id="create_subject_form">
                     <input type="text" autofocus placeholder="COURSE NAME" name="course_name">
                     <input type="text" placeholder="COURSE CODE" id="create_subject_course_code" name="course_code">
-                    <span id="create_subject_warning" class="glyphicon glyphicon-alert" style="display: none"></span>
+                    <span id="create_subject_warning" class="glyphicon glyphicon-alert" style="display: none">you have a course with same code</span>
                     <input type="text" name="form_type" value="createSubject" style="display: none;">
                     <input type="button" id="create_subject_submit" value="Get Started" class="btn btn-default">
                     <script>
@@ -453,18 +562,26 @@
                                 var noSubjects = subjects.length;
                                 for (var i = 0; i < noSubjects; ++i) {
                                     if (subjects.item(i).getAttribute("course_code") == givenCourseCodeInput) {
-                                        $("#create_subject_warning").fadeIn().text("Duplicate");
-
+                                        $("#create_subject_warning").fadeIn();
                                         createConfirm = false;
+                                        break;
                                     }
                                     else {
-                                        $("#create_subject_warning").fadeOut().text("");
+                                        $("#create_subject_warning").fadeOut();
                                         createConfirm = true;
                                     }
                                 }
                             });
                             $("#create_subject_submit").click(function () {
-                                if (createConfirm)$("#create_subject_form").submit();
+
+                                // FOR SESSION VARS
+                                var course_code_SES = $("#create_subject_course_code").val();
+                                var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
+                                var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
+                                var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
+                                // FOR SESSION VARS
+
+                                if (createConfirm)$("#create_subject_form").append(course_code_SES_input).append(topic_name_SES_input).submit();
                             });
                         });
                     </script>
@@ -504,7 +621,6 @@
                                 if ($(this).val() == "EX101") {
                                     $("#delete-form-div").find("#note").fadeIn();
                                     delConfirm = false;
-                                    return;
                                 }
                                 else if ($(this).val() == MY_NOTEBOOK.getAttribute("course_code")) {
                                     $("#del_subject_warning").fadeIn();
@@ -515,9 +631,11 @@
                                     $("#delete-form-div").find("#note").fadeOut();
                                     delConfirm = false;
                                 }
+
                             });
 
                             $("#del_subject_submit").click(function () {
+
                                 if (delConfirm)$("#del_subject_form").submit();
                             });
                         });

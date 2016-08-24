@@ -13,6 +13,15 @@ $initialFillUpForTopicContent = "Fill Your Thoughts";
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // SESSION PART
+    session_start();
+
+    $_SESSION["course_code_SES"] = $_POST["course_code_SES"];
+    $_SESSION["topic_name_SES"] = $_POST["topic_name_SES"];
+
+    //
+
     switch ($_POST["form_type"]) {
         case "createSubject":
             $create_course_name = $_POST['course_name'];
@@ -133,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         case "editTopic":
 
-            $reference_course_code = $_POST["course_code"];
+            $reference_course_code = $_POST["course_code"] ;
             $reference_topic_name = $_POST["ref_topic_name"];
             $edit_topic_name = $_POST["topic_name"];
             $edit_topic_content = $_POST["topic_content"];
@@ -144,14 +153,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $subjects = $noteBooks->getElementsByTagName("subject");
 
             foreach ($subjects as $subject) {
+
                 if ($subject->getAttribute("course_code") == $reference_course_code) {
                     $topics = $subject->getElementsByTagName("topic");
                     foreach ($topics as $topic){
                         if($topic->getAttribute("topic_name") == $reference_topic_name){
                             $topic->setAttribute("topic_name" , $edit_topic_name);
                             $topic->nodeValue = $edit_topic_content;
+                            break;
                         }
-                        break;
                     }
                     break;
                 }
