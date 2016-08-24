@@ -168,16 +168,49 @@
             min-height: 200px;
         }
 
-        #TOPIC_CONTENT {
-            min-height: 700px;
+        #navigation button{
+            margin-top: 7px;
+        }
+
+        #NAME{
+            border: none;
+            text-align: center;
+            font-size: 40px;
+
+        }
+
+        #edit_course_name_button ,#edit_course_name_submit {
+            margin-bottom: 20px;
         }
 
         #allAboutTopics a {
-            font-size: larger;
+            font-size: 20px;
+            text-decoration: none;
+        }
+
+
+        #allAboutTopics a:hover{
+
         }
 
         #allAboutTopics ul {
             list-style: upper-latin;
+        }
+
+        #TOPIC_NAME{
+            border: none;
+            color: steelblue;
+            font-size: 30px;
+        }
+
+        #TOPIC_CONTENT {
+            min-height: 700px;
+            border: none;
+            color: black;
+            font-size: 20px;
+        }
+
+        #LOGISTICS{
         }
     </style>
 
@@ -185,9 +218,10 @@
 
 <body>
 
-<nav class="navbar">
+<nav class="">
     <div id="navigation" class="container-fluid">
         <ul class="nav nav-tabs">
+            <li class="navbar-brand" style="background-color: steelblue;color: white">Note Books</li>
             <?php
             $noteBooks = new DOMDocument();
             $noteBooks->load("NoteBooks.xml");
@@ -201,7 +235,7 @@
             ?>
             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#create-form-div"> +
             </button>
-            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-form-div"> -
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-form-div">-
             </button>
         </ul>
     </div>
@@ -209,14 +243,77 @@
 
 <div class="container-fluid">
 
-    <div class="middle row">
+    <div class="row">
+        <!--SUBJECT NAME-->
+            <div class="col-xs-12">
+                <!--edit-course-name-form-->
+                <form action="Processor.php" method="post" id="edit_course_name_form">
+                    <input id="NAME" name="course_name" value="NOTE BOOK" style="min-width: 90%" type="text"
+                           class="editable" readonly>
+                    <input type="text" name="form_type" value="editCourseName" style="display: none;">
+                    <button type="button" id="edit_course_name_button"
+                            class="btn btn-warning btn-sm glyphicon glyphicon-pencil"></button>
+                    <button type="button" id="edit_course_name_submit"
+                            class="btn btn-success btn-sm glyphicon glyphicon-refresh"
+                            style="display: none"></button>
+
+                    <script>
+                        $(document).ready(function () {
+                            var editing = false;
+                            $("#edit_course_name_button").click(function () {
+                                if (!editing) {
+                                    // CHANGING THE ICONS
+                                    $(this).toggleClass("glyphicon-pencil");
+                                    $(this).toggleClass("glyphicon-eye-open");
+                                    editing = true;
+                                    $("#NAME").attr("readonly", false).keyup(function () {
+                                        if ($(this).val() != MY_NOTEBOOK.getAttribute("course_name")) {
+                                            $("#edit_course_name_submit").fadeIn();
+                                        } else {
+                                            $("#edit_course_name_submit").fadeOut();
+                                        }
+                                    });
+                                } else {
+                                    // CHANGING THE ICONS
+                                    $(this).toggleClass("glyphicon-pencil");
+                                    $(this).toggleClass("glyphicon-eye-open");
+                                    editing = false;
+                                    $("#NAME").attr("readonly", true).val(MY_NOTEBOOK.getAttribute("course_name"));
+                                    $("#edit_course_name_submit").fadeOut();
+                                }
+                            });
+
+                            $("#edit_course_name_submit").click(function () {
+                                var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
+                                var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
+
+                                // FOR SESSION VARS
+                                var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
+                                var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
+                                var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
+                                var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
+                                // FOR SESSION VARS
+
+
+                                $("#edit_course_name_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
+                            });
+                        });
+                    </script>
+                </form>
+                <!--edit-course-name-form-->
+            </div>
+    </div>
+    <hr style="margin:0;">
+
+    <div style="margin-top: 10px" class="middle row">
+
         <div class="col-xs-2" id="allAboutTopics">
 
             <!--ADD TOPIC FORM-->
             <form action="Processor.php" method="post" id="add_topic_form">
                 <h4 id="note" style="display: none;">another topic exists with same name</h4>
                 <input type="text" name="form_type" value="createTopic" style="display:none;">
-                <input type="button" value="+" class="btn btn-primary" id="add_topic_button">
+                <input type="button" value="+" class="btn btn-success" id="add_topic_button">
 
                 <div id="addTopicToggle" style="display: none">
                     <input id="newTopicName" type="text" name="topic_name" placeholder="Topics' name">
@@ -270,7 +367,7 @@
                 <h4 id="note" style="display: none;">No such topic</h4>
                 <h4 id="note2" style="display: none;">Atleast one topic would be nice</h4>
                 <input type="text" name="form_type" value="deleteTopic" style="display:none;">
-                <input type="button" value="-" class="btn btn-default" id="remove_topic_button">
+                <input type="button" value="-" class="btn btn-danger" id="remove_topic_button">
 
                 <div id="removeTopicToggle" style="display: none">
                     <input id="oldTopicName" type="text" name="topic_name" placeholder="Topics' name">
@@ -321,76 +418,17 @@
         </div>
 
         <div class="col-xs-8">
-            <!--SUBJECT NAME-->
-            <div class="row">
-                <h2 class="col-xs-12">
-                    <!--edit-course-name-form-->
-                    <form action="Processor.php" method="post" id="edit_course_name_form">
-                        <input id="NAME" name="course_name" value="NOTE BOOK" style="min-width: 90%" type="text"
-                               class="editable" readonly>
-                        <input type="text" name="form_type" value="editCourseName" style="display: none;">
-                        <button type="button" id="edit_course_name_button"
-                                class="btn btn-warning btn-sm glyphicon glyphicon-pencil"></button>
-                        <button type="button" id="edit_course_name_submit"
-                                class="btn btn-success btn-sm glyphicon glyphicon-refresh"
-                                style="display: none"></button>
 
-                        <script>
-                            $(document).ready(function () {
-                                var editing = false;
-                                $("#edit_course_name_button").click(function () {
-                                    if (!editing) {
-                                        // CHANGING THE ICONS
-                                        $(this).toggleClass("glyphicon-pencil");
-                                        $(this).toggleClass("glyphicon-eye-open");
-                                        editing = true;
-                                        $("#NAME").attr("readonly", false).keyup(function () {
-                                            if ($(this).val() != MY_NOTEBOOK.getAttribute("course_name")) {
-                                                $("#edit_course_name_submit").fadeIn();
-                                            } else {
-                                                $("#edit_course_name_submit").fadeOut();
-                                            }
-                                        });
-                                    } else {
-                                        // CHANGING THE ICONS
-                                        $(this).toggleClass("glyphicon-pencil");
-                                        $(this).toggleClass("glyphicon-eye-open");
-                                        editing = false;
-                                        $("#NAME").attr("readonly", true).val(MY_NOTEBOOK.getAttribute("course_name"));
-                                        $("#edit_course_name_submit").fadeOut();
-                                    }
-                                });
-
-                                $("#edit_course_name_submit").click(function () {
-                                    var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
-                                    var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-
-                                    // FOR SESSION VARS
-                                    var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
-                                    var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
-                                    var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
-                                    var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
-                                    // FOR SESSION VARS
-
-
-                                    $("#edit_course_name_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
-                                });
-                            });
-                        </script>
-                    </form>
-                    <!--edit-course-name-form-->
-                </h2>
-            </div>
-
-            <hr>
             <div>
                 <!--edit-topic-form-->
                 <form action="Processor.php" method="post" id="edit_topic_form">
                     <h4 id="note" style="display: none;">this topic already exists</h4>
                     <button id="edit_topic_submit" type="button" class="btn btn-success glyphicon glyphicon-floppy-open"
                             style="display: none"></button>
-                    <input id="TOPIC_NAME" name="topic_name" value="Fill your" style="min-width: 90%" type="text"
-                           class="form-control editable" readonly>
+                    <blockquote>
+                        <input id="TOPIC_NAME" name="topic_name" value="Fill your" style="min-width: 90%" type="text"
+                               class="editable" readonly>
+                    </blockquote>
                     <textarea id="TOPIC_CONTENT" name="topic_content" class="form-control editable" readonly>T h o u g h t s</textarea>
                     <input type="text" name="form_type" value="editTopic" style="display: none;">
 
@@ -481,10 +519,10 @@
                 <!--edit-topic-form-->
             </div>
 
-
         </div>
+
         <div class="col-xs-2">
-            Some Logistical Points
+            <span style="font-size: 15px;margin-top: 10px">KNOW MORE ABOUT YOUR COURSE</span>
             <hr>
             <div>
                 <!--edit-logistics-form-->
