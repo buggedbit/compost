@@ -1,0 +1,136 @@
+TO DO -
+using status column
+    {
+    when created , deleted , edited or outdated (mainly deleted) it shoul NOT be deleted from table but a flag should be put in the state of event column 
+    }
+task implementation 
+js object implementation 
+thorough testing
+
+**** outdated event or task marking
+**** checking duplicate events 
+
+homePage{
+	Completed{
+        basic-layout,
+        links,
+    }
+    Required{
+        css completion,
+        embedding js,
+        completely making it responsive,
+    }
+}
+
+LogInPage{
+    Completed{
+        Basic Layout,
+    }
+    Required{
+        css,js work,
+        forgot password ,
+        new user??,
+    }
+}
+
+SignUp{
+    Completed{
+        Basic Layout,
+        Checks that password and confirm password are same,
+        And all entries are filled,
+        Creates an 'accounts' database(if database already exists it uses it),
+        Creates a row in the 'accounts' database,
+        Should verify if userName (only) exists,
+    }
+    Required{
+
+        Using OTP's,
+        creating users and adding previlages,
+        possibility to change otp,
+        check session variables such that two logins dont occur in same session
+    }
+}
+
+clubPortal{
+    Required{
+        single starting time
+        making the new event forms and new event creation and view table also dyanmic   using 'clubColumnData.php'and the mastercontrols for now are  clubPortalNewEventForm.php , clubColumnData.php , insertNewEventSecured.php , groupFamilyTree.php , typesOfEventsTable.php;
+        
+        validation of path input
+        in mozilla firefox the datetime doesnot work properly - improving widgets  
+    
+    }
+/////////////////////////////////////////////////////////////////////////////////////
+    for adding new groups into the create New event form you can just add children to any parent and their children and so.. on the table creation and insertion will be automatically taken care of 
+        ONLY that you have to remember to name every new member you add properly
+        
+    for removing groups remember to remove the array() in the parent if you remove its child , then the create new event form is changed and insertion is made accordingly , the table is not removed but insertion is stopped. Therefore another table with the previously removed table's name is made then the table would already contain some events 
+/////////////////////////////////////////////////////////////////////////////////////
+} 
+
+Security{
+        problem with MySQL DataBase
+        encryption of path
+		sql injection
+		htmlspecial chars
+		session variables may insert into another club table
+        improve recovery model - if rcovery is on another system a idle setup should be made on it which in case the main system gets damaged then using recovery main database the ALL THE EVENTS PRESENT SHOULD BE PUSHED INTO BOTH CLUB DATABASES AND GROUP TABLES    
+        same instant diffent posts paradox
+        in login screen when the session variables are not null it directly redirects them to clubPortal ,so place a check in b/w
+        what if the session variable names are tracked
+}  
+
+clubDataBase{
+    Structure TO BE IMPLEMENTED{
+    a running clock to tell time and to be used by the page
+    cloumns{
+        state of the event 
+            created
+            edited
+            deleted
+            outdated
+    }
+
+    }
+    
+}
+
+Main DataBase {
+    Structure TO BE IMPLEMENTED{
+    columns{
+        state of the event 
+            created
+            edited
+            deleted
+            outdated
+        }
+    }
+    
+    
+    required{
+    
+    }
+}
+
+groupTables{
+    cloumns{
+        state of the event 
+            created
+            edited
+            deleted
+            outdated  
+    }
+}
+
+insertNewEvent{
+   validating repetition 
+
+}
+
+deleteOldEvent{
+
+}
+
+editNewEvent{
+    complete for change of path
+}

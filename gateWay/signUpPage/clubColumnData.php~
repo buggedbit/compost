@@ -1,0 +1,98 @@
+<?php
+//all table designs are ther in this file
+//If you change this in between then new sign up's will have a club database which has a table with the design below
+//But the previously defined tables will not be changed
+
+
+#Events displayed in the clubPortal page have eventName and eventPlace occupying most space
+#The first four columns should not be disturbed
+
+$col[0] = "clubId";
+$col[1] = "eeVeeID";
+$col[2] = "Name";
+$col[3] = "Place";
+$col[4] = "stTime";
+$col[5] = "stDate";
+$col[6] = "Duration";
+$col[7] = "Frequency";
+$col[8] = "regDTime";
+$col[9] = "regDDate";
+$col[10] = "regPlace";
+$col[11] = "regWebsite";
+$col[12] = "Comment";
+$col[13] = "Type";
+$col[14] = "groupPath";
+$col[15] = "Status";
+$col[16] = "LastTimeStamp";
+$col[17] = "clubName";
+
+$col[18] = "groupId";
+
+//Add in both the array and the '$createTable' 
+
+
+$createTableClub = "(
+    $col[0] INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    $col[1] INT(10) UNSIGNED,
+    $col[2] VARCHAR(100) NOT NULL,
+    $col[3] VARCHAR(100) NOT NULL,
+    $col[4] TIME NOT NULL,
+    $col[5] DATE NOT NULL,
+    $col[6] INT(100) UNSIGNED,
+    $col[7] INT(7) NOT NULL,
+    $col[8] TIME NOT NULL,
+    $col[9] DATE NOT NULL,
+    $col[10] VARCHAR(100) NOT NULL,
+    $col[11] VARCHAR(100) NOT NULL,
+    $col[12] TEXT NOT NULL,
+    $col[13] VARCHAR(100) NOT NULL,
+    $col[14] VARCHAR(100) NOT NULL,
+    $col[15] VARCHAR(100) NOT NULL,
+    $col[16] TIMESTAMP,
+    $col[17] VARCHAR(100) NOT NULL
+    )
+
+    ";
+
+$createTableMain = "(
+    $col[1] INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    $col[2] VARCHAR(100) NOT NULL,
+    $col[3] VARCHAR(100) NOT NULL,
+    $col[4] TIME NOT NULL,
+    $col[5] DATE NOT NULL,
+    $col[6] INT(100) UNSIGNED,
+    $col[7] INT(7) NOT NULL,
+    $col[8] TIME NOT NULL,
+    $col[9] DATE NOT NULL,
+    $col[10] VARCHAR(100) NOT NULL,
+    $col[11] VARCHAR(100) NOT NULL,
+    $col[12] TEXT NOT NULL,
+    $col[13] VARCHAR(100) NOT NULL,
+    $col[14] VARCHAR(100) NOT NULL,
+    $col[15] VARCHAR(100) NOT NULL,
+    $col[16] TIMESTAMP,
+    $col[17] VARCHAR(100) NOT NULL
+    )";
+
+$createTableGroup = "(
+    $col[18] INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    $col[1] INT(6) UNSIGNED,
+    $col[2] VARCHAR(100) NOT NULL,
+    $col[3] VARCHAR(100) NOT NULL,
+    $col[4] TIME NOT NULL,
+    $col[5] DATE NOT NULL,
+    $col[6] INT(100) UNSIGNED,
+    $col[7] INT(7) NOT NULL,
+    $col[8] TIME NOT NULL,
+    $col[9] DATE NOT NULL,
+    $col[10] VARCHAR(100) NOT NULL,
+    $col[11] VARCHAR(100) NOT NULL,
+    $col[12] TEXT NOT NULL,
+    $col[13] VARCHAR(100) NOT NULL,
+    $col[14] VARCHAR(100) NOT NULL,
+    $col[15] VARCHAR(100) NOT NULL,
+    $col[16] TIMESTAMP,
+    $col[17] VARCHAR(100) NOT NULL
+    )";
+
+?>
