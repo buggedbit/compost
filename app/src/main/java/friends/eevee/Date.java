@@ -93,14 +93,15 @@ public class Date {
     }
 
     public Date(Date reference){
-        String error = "Date: not a proper Date Object Initialization with reference object YYYY_MM_DD" + String.valueOf(reference.$YEAR) + " " + String.valueOf(reference.$MONTH) + " " + String.valueOf(reference.$DAY);
-        if(!reference.isValid()) {
-            UnsetDate();
-            Log.i(ZeroLog.TAG, error);
-        }
         this.$YEAR = reference.$YEAR;
         this.$MONTH = reference.$MONTH;
         this.$DAY = reference.$DAY;
+
+        String error = "Date: not a proper Date Object Initialization with reference object YYYY_MM_DD" + String.valueOf(reference.$YEAR) + " " + String.valueOf(reference.$MONTH) + " " + String.valueOf(reference.$DAY);
+        if(!this.isValid()) {
+            UnsetDate();
+            Log.i(ZeroLog.TAG, error);
+        }
     }
 
     // DEFAULT INITIALIZATION
