@@ -3,17 +3,37 @@ package friends.eevee;
 import android.util.Log;
 import java.util.Calendar;
 
-public class Date {
+public class Date extends java.util.Date{
 
     public int $YEAR = -1;  // 1 - +inf
     public int $MONTH = -1; // 1 - 12
     public int $DAY = -1;   // 1 - 31
 
+    /**
+     * std form is such that if
+     * std_year * 365 + std_month * 30 + std_day + leap_extras + month_extras
+     * will give (no of days passed from 01 year 01 month 01 day) + 1
+     * OR
+     * (no of days passed from 01 year 01 month 01 day) including the given day
+     * */
+    // from 0001 . 01 . 01
+    public int $LEAP_EXTRA_DAYS = -1;    // due to leap years
+    public int $MONTH_EXTRA_DAYS = -1;   // due to varying no days in months , equals
+    public int $STD_YEAR = -1;
+    public int $STD_MONTH = -1;
+    public int $STD_DAY = -1;
+
+    public static final int DAYS_IN_STD_MONTH = 30;
+    public static final int DAYS_IN_STD_YEAR = 365;
+    public static final int[] STD_MONTH_EXTRAS_ARRAY = {1 , -1 , 0 , 0 , 1 , 1 , 2 , 3 , 3 , 4 , 4 , 5};
+
     public final String[] MONTH_NAMES = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     public final String[] SUFFIXES = {"st", "nd", "rd", "th"};
+    public static final int[] DAYS_IN_MONTH_NLY = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    public static final int[] DAYS_IN_MONTH_LY = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     public Date() {
-        UnsetDate();
+        unsetDate();
     }
 
     public Date(boolean setToPresent) {
@@ -39,22 +59,22 @@ public class Date {
                     this.$MONTH = Integer.parseInt(dateComponents[1]);
                     this.$DAY = Integer.parseInt(dateComponents[2]);
                     if(!this.isValid()){
-                        this.UnsetDate();
+                        this.unsetDate();
                  Log.i(ZeroLog.TAG, error);
                     }
                 }catch (Exception e){
                  Log.i(ZeroLog.TAG, error);
-                    UnsetDate();
+                    unsetDate();
                 }
             }
             else {
              Log.i(ZeroLog.TAG, error);
-                UnsetDate();
+                unsetDate();
             }
         }
         else {
          Log.i(ZeroLog.TAG, error);
-            UnsetDate();
+            unsetDate();
         }
     }
 
@@ -74,21 +94,21 @@ public class Date {
                     this.$DAY = Integer.parseInt(dateComponents[2]);
                     if(!this.isValid()){
                      Log.i(ZeroLog.TAG, error);
-                        this.UnsetDate();
+                        this.unsetDate();
                     }
                 }catch (Exception e){
                  Log.i(ZeroLog.TAG, error);
-                    UnsetDate();
+                    unsetDate();
                 }
             }
             else {
              Log.i(ZeroLog.TAG, error);
-                UnsetDate();
+                unsetDate();
             }
         }
         else {
          Log.i(ZeroLog.TAG, error);
-            UnsetDate();
+            unsetDate();
         }
     }
 
@@ -99,13 +119,13 @@ public class Date {
 
         String error = "Date: not a proper Date Object Initialization with reference object YYYY_MM_DD" + String.valueOf(reference.$YEAR) + " " + String.valueOf(reference.$MONTH) + " " + String.valueOf(reference.$DAY);
         if(!this.isValid()) {
-            UnsetDate();
+            unsetDate();
             Log.i(ZeroLog.TAG, error);
         }
     }
 
     // DEFAULT INITIALIZATION
-    public void UnsetDate() {
+    public void unsetDate() {
         this.$YEAR= -1;
         this.$MONTH = -1;
         this.$DAY = -1;
@@ -139,6 +159,23 @@ public class Date {
         return true;
     }
 
+    private boolean isLeapYear() {
+        int P = this.$YEAR % 400;
+        int Q = P % 100;
+        int R = Q % 4;
+
+        if (P == 0) {
+            return true;
+        }
+        if (Q == 0) {
+            return false;
+        }
+        if (R == 0) {
+            return true;
+        }
+        return false;
+    }
+
     public String formalRepresentation(){
         if(isSet()){
             String suffix;
@@ -164,9 +201,50 @@ public class Date {
         return false;
     }
 
+    public boolean makeStdForm(){
+        if(!this.isValid())return false;
+
+        // valid Date
+        this.$STD_DAY = this.$DAY;
+        // month related issues
+        this.$STD_MONTH = this.$MONTH - 1;
+        if(this.$MONTH > 1) this.$MONTH_EXTRA_DAYS = Date.STD_MONTH_EXTRAS_ARRAY[this.$MONTH - 2];//-2 bcz   // 1 for array start
+        else this.$MONTH_EXTRA_DAYS = 0;                                                                     // 1 for previous month
+        // year related issues
+        this.$STD_YEAR = this.$YEAR - 1;
+        this.$LEAP_EXTRA_DAYS = this.$YEAR / 4 - this.$YEAR / 100 + this.$YEAR / 400;
+        if(this.$MONTH < 3 && this.$LEAP_EXTRA_DAYS > 0)this.$LEAP_EXTRA_DAYS--;
+
+        return true;
+    }
+
+    public void addDays(int noDays){
+
+        boolean toTheFuture = true;
+        if(noDays == 0)return;
+        else if(noDays < 0)toTheFuture = false;
+
+        if(toTheFuture){
+
+        }
+        else {
+
+        }
+    }
+
+    // returns A - B in days with sign
+    public static long daysFromSecondToFirst(Date A , Date B){
+        if(!A.isValid() || !B.isValid())return 0;
+        A.makeStdForm();
+        B.makeStdForm();
+        return (A.$STD_YEAR - B.$STD_YEAR) * Date.DAYS_IN_STD_YEAR + (A.$STD_MONTH - B.$STD_MONTH) * Date.DAYS_IN_STD_MONTH + (A.$STD_DAY - B.$STD_DAY) + (A.$LEAP_EXTRA_DAYS - B.$LEAP_EXTRA_DAYS) + (A.$MONTH_EXTRA_DAYS - B.$MONTH_EXTRA_DAYS);
+    }
+
 //    public static void main(String[] args){
 //        Date d1 = new Date(true);
-//        String a = "400 2 29-";
+//        Date d2 = new Date("2017 09 14-" , " " ,"-");
+//        System.out.print(Date.daysFromSecondToFirst(d1,d2));
+
 //        String b = "100 2 29-";
 //        String c = "4 2 29-";
 //        String d = "1 2 29-";
@@ -185,6 +263,10 @@ public class Date {
 //        System.out.print("hello world\n");
 //        System.out.print(Date.isGreater(d1,d2));
 //    }
+
+
+
+
 }
 
 
