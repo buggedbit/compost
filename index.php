@@ -8,7 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <title>SchoolBag</title>
+    <title>School bag</title>
+    <link rel="shortcut icon" href="logo.png">
     <script src="index.js"></script>
 
     <script>
@@ -424,16 +425,80 @@
                 <form action="Processor.php" method="post" id="edit_topic_form">
                     <h4 id="note" style="display: none;">this topic already exists</h4>
                     <button id="edit_topic_submit" type="button" class="btn btn-success glyphicon glyphicon-floppy-open"
-                            style="display: none"></button>
+                    style="display: none"></button>
                     <blockquote>
                         <input id="TOPIC_NAME" name="topic_name" value="Fill your" style="min-width: 90%" type="text"
                                class="editable" readonly>
+                        <button type="button" class="btn btn-default glyphicon glyphicon-user" id="edit_view_topic_toggle" ></button>
                     </blockquote>
                     <textarea id="TOPIC_CONTENT" name="topic_content" class="form-control editable" readonly>T h o u g h t s</textarea>
                     <input type="text" name="form_type" value="editTopic" style="display: none;">
-
                     <script>
                         var topicActive = false;
+
+                        // clicking the button or double clicking the area will toggle activeness
+                        $("#edit_view_topic_toggle").click(function () {
+                            // TOPIC IS INACTIVE
+                            if (topicActive) {
+                                $("#TOPIC_NAME").attr("readonly", true);
+                                $("#TOPIC_CONTENT").attr("readonly", true);
+
+                                topicActive = false;
+                            }
+                            // TOPIC IS ACTIVE
+                            else {
+                                var TOPIC_NAME_INPUT = $("#TOPIC_NAME");
+                                var TOPIC_CONTENT_INPUT = $("#TOPIC_CONTENT");
+
+                                $(TOPIC_NAME_INPUT).attr("readonly", false);
+                                $(TOPIC_CONTENT_INPUT).attr("readonly", false);
+
+                                var prevTopicName = PRESENT_TOPIC.getAttribute("topic_name");
+                                var prevTopicContent = PRESENT_TOPIC.textContent;
+                                // GETTING ALL REQUIRED DATA
+                                var duplicateTopic;
+                                // SETTING LISTENER FOR TOPIC_NAME_INPUT
+                                $(TOPIC_NAME_INPUT).keyup(function () {
+                                    if ($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) {
+
+                                        // TOPIC_NAME_INPUT cannot be the 'prevTopicName'
+                                        duplicateTopic = false;
+                                        var noTopic = MY_NOTEBOOK_TOPICS.length;
+                                        for (var i = 0; i < noTopic; ++i) {
+                                            if (MY_NOTEBOOK_TOPICS.item(i).getAttribute("topic_name") == $(TOPIC_NAME_INPUT).val()) {
+                                                duplicateTopic = true;
+                                                break;
+                                            }
+                                        }
+
+                                        // 'duplicateTopic' value is determined
+                                        if (duplicateTopic) {
+                                            $("#edit_topic_form").find("#note").fadeIn();
+                                            $("#edit_topic_submit").fadeOut();
+                                        }
+                                        else {
+                                            $("#edit_topic_form").find("#note").fadeOut();
+                                            $("#edit_topic_submit").fadeIn();
+                                        }
+                                    }
+                                    else {
+                                        // NO CHANGE SO WASTE TO SUBMIT
+                                        $("#edit_topic_submit").fadeOut();
+                                    }
+                                });
+
+                                // SETTING LISTENER FOR TOPIC_CONTENT_INPUT
+                                $(TOPIC_CONTENT_INPUT).keyup(function () {
+                                    if (($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) && !duplicateTopic) {
+                                        $("#edit_topic_submit").fadeIn();
+                                    } else {
+                                        $("#edit_topic_submit").fadeOut();
+                                    }
+                                });
+
+                                topicActive = true;
+                            }
+                        });
 
                         $("#TOPIC_NAME , #TOPIC_CONTENT").dblclick(function () {
                             // TOPIC IS INACTIVE
