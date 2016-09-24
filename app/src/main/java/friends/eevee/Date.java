@@ -1,7 +1,5 @@
 package friends.eevee;
 
-import android.util.Log;
-
 import java.util.Calendar;
 
 // 01/01/0001 A.D. is the least date supported
@@ -47,7 +45,8 @@ public class Date {
         }
     }
 
-    //String Format = DD<separator>MonMon<separator>YYYY<separator>
+    //String Format = "DD<separator>MonMon<separator>YYYY<separator>...
+    //String Format = "DD<separator>MonMon<separator>YYYY"
     //if not in any of these then the default initialization
     public Date(String dateString , String separator) {
 
@@ -62,20 +61,20 @@ public class Date {
                     this.$DAY = Integer.parseInt(dateComponents[0]);
                     if(!this.isValid()){
                         this.unsetDate();
-                 Log.i(ZeroLog.TAG, error);
+                 //og.i(ZeroLog.TAG, error);
                     }
                 }catch (Exception e){
-                 Log.i(ZeroLog.TAG, error);
+                 //og.i(ZeroLog.TAG, error);
                     unsetDate();
                 }
             }
             else {
-             Log.i(ZeroLog.TAG, error);
+             //og.i(ZeroLog.TAG, error);
                 unsetDate();
             }
         }
         else {
-         Log.i(ZeroLog.TAG, error);
+         //og.i(ZeroLog.TAG, error);
             unsetDate();
         }
     }
@@ -87,29 +86,29 @@ public class Date {
         String error = "Date: not a proper Date object initialization with string " + dateString + " and with inline-separator " + inlineSeparator + " and with outline-separator " + outlineSeparator;
 
         if (dateString != null && !dateString.matches("")  && inlineSeparator != null && !inlineSeparator.matches("") && outlineSeparator != null && !outlineSeparator.matches("")) {
-            String[] datePart = dateString.split(outlineSeparator);
-            String[] dateComponents = datePart[0].split(inlineSeparator);
+            String[] outlineFilter = dateString.split(outlineSeparator);
+            String[] dateComponents = outlineFilter[0].split(inlineSeparator);
             if (dateComponents.length >= 3) {
                 try {
                     this.$YEAR = Integer.parseInt(dateComponents[2]);
                     this.$MONTH = Integer.parseInt(dateComponents[1]);
                     this.$DAY = Integer.parseInt(dateComponents[0]);
                     if(!this.isValid()){
-                     Log.i(ZeroLog.TAG, error);
+                     //og.i(ZeroLog.TAG, error);
                         this.unsetDate();
                     }
                 }catch (Exception e){
-                 Log.i(ZeroLog.TAG, error);
+                 //og.i(ZeroLog.TAG, error);
                     unsetDate();
                 }
             }
             else {
-             Log.i(ZeroLog.TAG, error);
+             //og.i(ZeroLog.TAG, error);
                 unsetDate();
             }
         }
         else {
-         Log.i(ZeroLog.TAG, error);
+         //og.i(ZeroLog.TAG, error);
             unsetDate();
         }
     }
@@ -125,10 +124,10 @@ public class Date {
         this.$STD_MONTH = reference.$STD_MONTH;
         this.$STD_DAY = reference.$STD_DAY;
 
-        String error = "Date: not a proper Date Object Initialization with reference object YYYY_MM_DD" + String.valueOf(reference.$YEAR) + " " + String.valueOf(reference.$MONTH) + " " + String.valueOf(reference.$DAY);
         if(!this.isValid()) {
+            String error = "Date: not a proper Date Object Initialization with reference object DD/MM/YYYY " + reference.getDate();
             unsetDate();
-            Log.i(ZeroLog.TAG, error);
+            //og.i(ZeroLog.TAG, error);
         }
     }
 
@@ -201,9 +200,20 @@ public class Date {
             else suffix = Date.SUFFIXES[3];
             if (this.$DAY == 11 || this.$DAY == 12 || this.$DAY == 13)
                 suffix = "th";
-            return (this.$DAY + suffix + " " + MonthName + " " + this.$YEAR);
+            return (this.$DAY + suffix + " " + MonthName + " " + this.$YEAR + "\n");
         }
         return "The date is not properly set \n";
+    }
+
+    public String simpleRepresentation(){
+        if(this.isValid()){
+            return this.$DAY + "//" + this.$MONTH + "//" + this.$YEAR + "\n" ;
+        }
+        return "The date is not properly set \n";
+    }
+
+    public String getDate(){
+        return this.$DAY + "//" + this.$MONTH + "//" + this.$YEAR ;
     }
 
     public static boolean isGreater(Date A , Date B) {
@@ -248,7 +258,6 @@ public class Date {
         System.out.print("\n");
     }
 
-
     private boolean prepareStdForm(){
         if(!this.isValid())return false;
         // valid Date
@@ -284,7 +293,7 @@ public class Date {
     }
 
     // returns A - B in days with sign
-    public static long daysDifferenceSecondToFirst(Date A , Date B){
+    public static long dayDifferenceSecondToFirst(Date A , Date B){
         if(!A.isValid() || !B.isValid())return 0;
         A.prepareStdForm();
         B.prepareStdForm();
@@ -397,7 +406,7 @@ public class Date {
     }
 
     // adds no days to this date
-    // do not access dates before 01/01/0003
+    // do not access dates before 01/01/0001
     // time complexity is LINEAR in no days to be added
     private boolean add(int noDays){
         if(noDays < 0)return false;
@@ -409,7 +418,7 @@ public class Date {
     }
 
     // subtracts algebraic no days to this date
-    // do not access dates before 01/01/0003
+    // do not access dates before 01/01/0001
     // time complexity is LINEAR in no days to be subtracted
     private boolean subtract(int noDays){
         if(noDays < 0)return false;
@@ -421,7 +430,7 @@ public class Date {
     }
 
     // adds algebraic no days to this date
-    // do not access dates before 01/01/0003
+    // do not access dates before 01/01/0001
     // time complexity is LINEAR in no days to be added
     public boolean addDays(int noDays){
         if(noDays == 0)return true;
