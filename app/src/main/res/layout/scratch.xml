@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:padding="10dp">
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:id="@+id/to_date"
+                    android:hint="To"
+                    android:layout_below="@+id/from_date"
+                    android:layout_alignStart="@+id/from_date" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:id="@+id/from_date"
+                    android:hint="From"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
+
+                <Button
+                    android:text="SOLVE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:elevation="14dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
+
+                <TextView
+                    android:text="Answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView1"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:layout_alignBottom="@+id/to_date"
+                    android:layout_below="@+id/button1"
+                    android:layout_alignStart="@+id/button1"
+                    android:layout_alignParentEnd="true" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:layout_below="@+id/to_date"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="42dp"
+                    android:id="@+id/init_date"
+                    android:hint="Initial Date" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:layout_below="@+id/init_date"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/add_date"
+                    android:hint="add" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/from_time"
+                    android:hint="From" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:layout_below="@+id/from_time"
+                    android:layout_alignEnd="@+id/from_time"
+                    android:id="@+id/to_time"
+                    android:hint="To" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:layout_below="@+id/to_time"
+                    android:layout_alignEnd="@+id/to_time"
+                    android:layout_marginTop="34dp"
+                    android:id="@+id/init_time"
+                    android:hint="Initial Time" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:ems="10"
+                    android:id="@+id/add_time"
+                    android:layout_below="@+id/init_time"
+                    android:layout_alignParentStart="true"
+                    android:hint="add" />
+
+                <Button
+                    android:text="Solve"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button2"
+                    android:layout_alignTop="@+id/init_date"
+                    android:layout_alignStart="@+id/textView1"
+                    android:elevation="14dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+                <Button
+                    android:text="SOLVE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/from_time"
+                    android:layout_alignStart="@+id/button2"
+                    android:id="@+id/button3"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+                <Button
+                    android:text="SOLVE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/init_time"
+                    android:layout_alignStart="@+id/button3"
+                    android:id="@+id/button4"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+                <TextView
+                    android:text="Answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/add_date"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/textView2"
+                    android:layout_alignStart="@+id/button2"
+                    android:layout_below="@+id/button2" />
+
+                <TextView
+                    android:text="Answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/init_time"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/textView3"
+                    android:layout_alignStart="@+id/button3"
+                    android:layout_below="@+id/button3" />
+
+                <TextView
+                    android:text="Answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button4"
+                    android:layout_alignStart="@+id/button4"
+                    android:id="@+id/textView4"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBottom="@+id/add_time" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
