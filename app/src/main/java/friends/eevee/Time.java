@@ -225,12 +225,12 @@ public class Time {
     }
 
     // adds seconds to this time circularly and returns no days that have passed in bw
-    public long addTime(int additional_seconds){
+    private long add(long additional_seconds){
         if(additional_seconds < 0)return 0;
 
         //
-        int days = additional_seconds/Time.SECONDS_IN_DAY;
-        int _day = additional_seconds%Time.SECONDS_IN_DAY;
+        long days = (additional_seconds/Time.SECONDS_IN_DAY);
+        int _day = (int) (additional_seconds%Time.SECONDS_IN_DAY);
         // _day [0,86399] therefore no extra days will come
         int hours = _day/Time.SECONDS_IN_HOUR;
         int _hour = _day%Time.SECONDS_IN_HOUR;
@@ -250,6 +250,25 @@ public class Time {
         this.$HOUR =  (prev_hour + hours + extra_hour)%Time.HOURS_IN_DAY;
 
         return (days);
+    }
+
+    private long subtract(long negative_seconds){
+        if(negative_seconds < 0)return 0;
+        //
+        long days = negative_seconds/Time.SECONDS_IN_DAY;
+        int remaining_seconds = (int) (negative_seconds%Time.SECONDS_IN_DAY);
+        // remaining_seconds [0,86399] therefore no extra days will come
+        days++;
+        remaining_seconds = Time.SECONDS_IN_DAY - remaining_seconds;
+        this.add(remaining_seconds);
+
+        return (-days);
+    }
+
+    public long addTime(long seconds ){
+        if(seconds == 0)return 0;
+        else if(seconds > 0)return this.add(seconds);
+        else return this.subtract(-seconds);
     }
 
 //    public static void main(String[] args){
