@@ -1,8 +1,10 @@
-package friends.eevee;
+package friends.eevee.Calender;
 
 import android.util.Log;
 
 import java.util.Calendar;
+
+import friends.eevee.ZeroLog;
 
 // by default it stores 24hr time
 // starts from 00:00:00 ends at 23:59:59
@@ -18,6 +20,7 @@ public class Time {
     public static final int SECONDS_IN_DAY = 86400;
     public static final int HOURS_IN_DAY = 24;
 
+    // constructors
     public Time() {
         unsetTime();
     }
@@ -101,19 +104,21 @@ public class Time {
         this.$SECOND = reference.$SECOND;
 
         if (!this.isValid()) {
-            String error = "Time: not a proper Time Object Initialization with reference object " + reference.simpleRepresentation();
+            String error = "Time: not a proper Time Object Initialization with reference object " + reference.getTimeString();
             unsetTime();
             Log.i(ZeroLog.TAG, error);
         }
     }
 
-    // DEFAULT CONSTRUCTOR
+    // DEFAULT INITIALIZATION
     private void unsetTime() {
         this.$HOUR = -1;
         this.$MINUTE = -1;
         this.$SECOND = -1;
     }
+    //
 
+    // identifiers
     // 00:00:00 - 23:59:59 are supported
     public boolean isValid() {
         if (this.$HOUR < 0 || this.$HOUR > 23) return false;
@@ -129,63 +134,67 @@ public class Time {
 
         return true;
     }
+    //
 
-    public String get12HrFormat(){
-        if(this.isValid()){
+    // formatter
+    public String get12HrFormat() {
+        if (this.isValid()) {
 
             int hour = this.$HOUR;
-            if(hour>12) hour -= 12;
-            else if(hour==0) hour = 12;
+            if (hour > 12) hour -= 12;
+            else if (hour == 0) hour = 12;
 
             String _hour = String.valueOf(hour);
-            if(hour < 10) _hour = "0" + _hour;
+            if (hour < 10) _hour = "0" + _hour;
 
             String _min = String.valueOf(this.$MINUTE);
-            if(this.$MINUTE < 10) _min = "0" + _min;
+            if (this.$MINUTE < 10) _min = "0" + _min;
 
             String _sec = String.valueOf(this.$SECOND);
-            if(this.$SECOND < 10) _sec = "0" + _sec;
+            if (this.$SECOND < 10) _sec = "0" + _sec;
 
             String AM_PM = "AM";
-            if(this.$HOUR >= 12) AM_PM = "PM";
+            if (this.$HOUR >= 12) AM_PM = "PM";
 
-            return (_hour + ":" + _min + ":" + _sec + " " + AM_PM + "\n");
+            return (_hour + ":" + _min + ":" + _sec + " " + AM_PM);
         }
-        return "The time is not properly set \n";
+        return "The time is not properly set ";
     }
 
-    public String get24HrFormat(){
-        if(this.isValid()) {
+    public String get24HrFormat() {
+        if (this.isValid()) {
 
-            String hrPart , minPart , secPart;
+            String hrPart, minPart, secPart;
 
-            if (this.$HOUR < 10)hrPart = "0" + String.valueOf(this.$HOUR);
+            if (this.$HOUR < 10) hrPart = "0" + String.valueOf(this.$HOUR);
             else hrPart = String.valueOf(this.$HOUR);
 
-            if (this.$MINUTE < 10)minPart = "0" + String.valueOf(this.$MINUTE);
+            if (this.$MINUTE < 10) minPart = "0" + String.valueOf(this.$MINUTE);
             else minPart = String.valueOf(this.$MINUTE);
 
-            if (this.$SECOND < 10)secPart = "0" + String.valueOf(this.$SECOND);
+            if (this.$SECOND < 10) secPart = "0" + String.valueOf(this.$SECOND);
             else secPart = String.valueOf(this.$SECOND);
 
-            return hrPart + ":" + minPart + ":" + secPart + "\n";
+            return hrPart + ":" + minPart + ":" + secPart;
         }
-        return "The time is not properly set \n";
+        return "The time is not properly set ";
     }
 
     public String simpleRepresentation() {
         if (this.isValid()) {
-            return this.$HOUR + ":" + this.$MINUTE + ":" + this.$SECOND + "\n";
+            return this.$HOUR + ":" + this.$MINUTE + ":" + this.$SECOND;
         }
-        return "The time is not properly set \n";
+        return "The time is not properly set ";
     }
 
-    public String getTime() {
+    public String getTimeString() {
         return this.$HOUR + ":" + this.$MINUTE + ":" + this.$SECOND;
     }
+    //
 
+    // comparisons
     // These functions compare without validity check
-    public static boolean isGreater(Time A, Time B) {
+    public static boolean isFuture(Time A, Time B) {
         // returns A>B
         if (A.$HOUR > B.$HOUR) return true;
         else if (A.$HOUR < B.$HOUR) return false;
@@ -196,67 +205,81 @@ public class Time {
         return false;
     }
 
+    public static boolean isSame(Time A, Time B) {
+        return A.$SECOND == B.$SECOND && A.$MINUTE == B.$MINUTE && A.$HOUR == B.$HOUR;
+    }
+
+    public static boolean isPast(Time A, Time B) {
+        return Time.isFuture(B, A);
+    }
+
     public boolean isFutureTo(Time B) {
         // returns this>B
-        return Time.isGreater(this,B);
+        return Time.isFuture(this, B);
     }
 
     public boolean isPastTo(Time B) {
-        // returns this>B
-        return Time.isGreater(B,this);
+        // returns this<B
+        return Time.isPast(this, B);
     }
 
-    public boolean isEqualTo(Time B){
-        return this.$HOUR == B.$HOUR && this.$MINUTE == B.$MINUTE && this.$SECOND == B.$SECOND;
+    public boolean isEqualTo(Time B) {
+        return Time.isSame(this, B);
     }
     //
 
+    // difference
     // return A - B in seconds with sign
-    public static int timeDifferenceSecondToFirst(Time A, Time B){
+    public static int timeDifferenceSecondToFirst(Time A, Time B) {
         return (A.$HOUR - B.$HOUR) * Time.SECONDS_IN_HOUR + (A.$MINUTE - B.$MINUTE) * Time.SECONDS_IN_MINUTE + (A.$SECOND - B.$SECOND);
     }
 
-    public int timeDifferenceFrom(Time B){
+    public int timeDifferenceFrom(Time B) {
         return (this.$HOUR - B.$HOUR) * Time.SECONDS_IN_HOUR + (this.$MINUTE - B.$MINUTE) * Time.SECONDS_IN_MINUTE + (this.$SECOND - B.$SECOND);
     }
 
-    public int timeDifferenceTo(Time A){
+    public int timeDifferenceTo(Time A) {
         return (A.$HOUR - this.$HOUR) * Time.SECONDS_IN_HOUR + (A.$MINUTE - this.$MINUTE) * Time.SECONDS_IN_MINUTE + (A.$SECOND - this.$SECOND);
     }
+    //
 
+    //modifiers
     // adds seconds to this time circularly and returns no days that have passed in bw
-    private long add(long additional_seconds){
-        if(additional_seconds < 0)return 0;
-
+    private long add(long additional_seconds) {
+        if (additional_seconds < 0) return 0;
         //
-        long days = (additional_seconds/Time.SECONDS_IN_DAY);
-        int _day = (int) (additional_seconds%Time.SECONDS_IN_DAY);
+        long days = (additional_seconds / Time.SECONDS_IN_DAY);
+        int _day = (int) (additional_seconds % Time.SECONDS_IN_DAY);
         // _day [0,86399] therefore no extra days will come
-        int hours = _day/Time.SECONDS_IN_HOUR;
-        int _hour = _day%Time.SECONDS_IN_HOUR;
-        int minutes = _hour/Time.SECONDS_IN_MINUTE;
-        int seconds = _hour%Time.SECONDS_IN_MINUTE;
+        int hours = _day / Time.SECONDS_IN_HOUR;
+        int _hour = _day % Time.SECONDS_IN_HOUR;
+        int minutes = _hour / Time.SECONDS_IN_MINUTE;
+        int seconds = _hour % Time.SECONDS_IN_MINUTE;
 
         int prev_sec = this.$SECOND;
         int prev_min = this.$MINUTE;
-        int prev_hour= this.$HOUR;
+        int prev_hour = this.$HOUR;
 
-        this.$SECOND =  (prev_sec + seconds)%Time.SECONDS_IN_MINUTE;
-        int extra_minute = (prev_sec + seconds)/Time.SECONDS_IN_MINUTE;
+        this.$SECOND = (prev_sec + seconds) % Time.SECONDS_IN_MINUTE;
+        int extra_minute = (prev_sec + seconds) / Time.SECONDS_IN_MINUTE;
 
-        this.$MINUTE =  (prev_min + minutes + extra_minute)%Time.MINUTES_IN_HOUR;
-        int extra_hour = (prev_min + minutes + extra_minute)/Time.MINUTES_IN_HOUR;
+        this.$MINUTE = (prev_min + minutes + extra_minute) % Time.MINUTES_IN_HOUR;
+        int extra_hour = (prev_min + minutes + extra_minute) / Time.MINUTES_IN_HOUR;
 
-        this.$HOUR =  (prev_hour + hours + extra_hour)%Time.HOURS_IN_DAY;
+        this.$HOUR = (prev_hour + hours + extra_hour) % Time.HOURS_IN_DAY;
+
+        if (prev_hour > this.$HOUR) {
+            days++;// due to day change
+        }
 
         return (days);
     }
 
-    private long subtract(long negative_seconds){
-        if(negative_seconds < 0)return 0;
+    private long subtract(long negative_seconds) {
+        if (negative_seconds < 0) return 0;
         //
-        long days = negative_seconds/Time.SECONDS_IN_DAY;
-        int remaining_seconds = (int) (negative_seconds%Time.SECONDS_IN_DAY);
+        long days = negative_seconds / Time.SECONDS_IN_DAY;
+        int remaining_seconds = (int) (negative_seconds % Time.SECONDS_IN_DAY);
         // remaining_seconds [0,86399] therefore no extra days will come
         days++;
         remaining_seconds = Time.SECONDS_IN_DAY - remaining_seconds;
@@ -265,19 +288,27 @@ public class Time {
         return (-days);
     }
 
-    public long addTime(long seconds ){
-        if(seconds == 0)return 0;
-        else if(seconds > 0)return this.add(seconds);
+    /**
+     * does its operation only if
+     * the present object is valid &&
+     * the object after algebraic addition is valid
+     * otherwise
+     * they do nothing to the object
+     */
+    public long addTime(long seconds) {
+        if (!this.isValid()) return 0;
+        if (seconds == 0) return 0;
+        else if (seconds > 0) return this.add(seconds);
         else return this.subtract(-seconds);
     }
+    //
+
 
 //    public static void main(String[] args){
 //    }
 
 
-
 }
-
 
 
 //    public Time(DateTime dateTime){

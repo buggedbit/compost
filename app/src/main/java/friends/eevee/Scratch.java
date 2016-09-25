@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import friends.eevee.Calender.Date;
+import friends.eevee.Calender.Time;
+
 
 public class Scratch extends AppCompatActivity {
 
