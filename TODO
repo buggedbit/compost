@@ -4,9 +4,11 @@
     </immediate>
     <long-term>
         <task>Implement the JS Objects to get a neater code</task>
+        <task>Instead of setTimeout use function call chains</task>
+        <task>Increase the flexibility of js-ajax-php-js structure</task>
         <task>Take care of multiple ajax operations </task>
         <task>Take care of high data transfer problems</task>
-        <task>Increase the flexibility of js-ajax-php-js structure</task>
         <task>Introduce bools to protect corruptions due to quickly clicking on a fading submit button(as some condition is incorrect)</task>
+        <task>Server Not found management</task>
     </long-term>
 </todo>

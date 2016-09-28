@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <subject course_name="NoteBooksdsafasd" course_code="EX101">
-        <logistics>Cool things go here ...adsjfadsladfadsf</logistics>
-        <topic topic_name="sample Topic 2adfsa">Some Other Stuffafdsfa</topic>
+    <subject course_name="This is a NoteBook" course_code="EX101">
+        <logistics>Some logistics </logistics>
 
+        <topic topic_name="You can make and share notes here ">Web notes make it easy to write , read and share notes.</topic>
     </subject>
 
-
-    <subject course_name="djfasl" course_code="adhs">
-        <logistics>Nothing Yet</logistics>
-        <topic topic_name="Getting Started">Fill Your Thoughts</topic>
-    </subject>
-    <subject course_name="djfasladsf" course_code="adhsads">
-        <logistics>Nothing Yet</logistics>
-        <topic topic_name="Getting Started">Fill Your Thoughts</topic>
-    </subject>
+    <subject course_name="SSL" course_code="CS251">
+        <logistics>Some logistics </logistics>
+        
+        
+        
+    <topic topic_name="gprof">Fill Your Thoughts</topic><topic topic_name="pyplot">Fill Your Thoughts</topic><topic topic_name="Doxygen">Fill Your Thoughts</topic></subject>
 </root>
