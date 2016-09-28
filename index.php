@@ -1,156 +1,160 @@
 <?php
-    session_start();
-?>
+//session_start();
+//?>
 <!DOCTYPE html>
 <html>
 <head>
+    <!--LIB HEADERS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!--TITLE INFO-->
     <title>School bag</title>
     <link rel="shortcut icon" href="logo.png">
-    <script src="index.js"></script>
+
+    <!--JS INCLUDES-->
+    <script src="AJAX.js"></script>
 
     <script>
-        var MY_NOTEBOOK;
-        var MY_NOTEBOOK_TOPICS;
-        var NOTEBOOKS_FILE;
+        var SCHOOL_BAG;
+
+        var PRESENT_NOTEBOOK;
+        var PRESENT_NOTEBOOK_TOPICS;
         var PRESENT_TOPIC;
 
-        function loadThisNoteBook() {
-            $("#NAME").val(MY_NOTEBOOK.getAttribute("course_name"));
+        // loading a note book means
+        // filling
+        /*
+         * KEEPING TRACK USING THE ABOVE GLOBALS
+         * COURSE NAME
+         * COURSE TOPICS
+         * CLICK LISTENERS TO TOPICS
+         * SELECTING A PRESENT TOPIC
+         * LOGISTICS
+         * */
+        function loadThisNoteBook(notebook) {
+            PRESENT_NOTEBOOK = notebook;
+            PRESENT_NOTEBOOK_TOPICS = PRESENT_NOTEBOOK.getElementsByTagName('topic');
+            loadCourseName();
+            loadCourseTopics();
+            selectPresentTopic();
+            loadLogistics();
+        }
+
+        function loadCourseName() {
+            $("#NAME").val(PRESENT_NOTEBOOK.getAttribute("course_name"));
+        }
+
+        function loadCourseTopics() {
             // PREPARING THE TOPICS
             var _html_topic_name_string_ = "";
-            var allTopics = MY_NOTEBOOK_TOPICS;
+            var allTopics = PRESENT_NOTEBOOK_TOPICS;
             var noTopics = allTopics.length;
             for (var i = 0; i < noTopics; ++i) {
                 var topicName = allTopics.item(i).getAttribute("topic_name");
-                var _this_topic_html_string_ = "<li><a class='topicName' >" + topicName + "</a></li>";
-                _html_topic_name_string_ += _this_topic_html_string_;
+                _html_topic_name_string_ += "<li><a class='topicName' >" + topicName + "</a></li>";
             }
-            // APPENDING THE TOPICS AND SETTING A LISTENER TO IT
-            $("#TOPICS").html(_html_topic_name_string_).find(".topicName").click(function () {
+            // APPENDING THE TOPICS
+            $("#TOPICS").html(_html_topic_name_string_);
+
+            assignClickListenersToTopics();
+        }
+
+        function assignClickListenersToTopics() {
+            // SETTING A LISTENER TO THEM
+            $("#TOPICS").find(".topicName").click(function () {
                 var selectedTopicName = $(this).text();
                 var selectedTopicContent;
-                var noTopics = MY_NOTEBOOK_TOPICS.length;
+                var noTopics = PRESENT_NOTEBOOK_TOPICS.length;
                 for (var i = 0; i < noTopics; ++i) {
-                    if (selectedTopicName == MY_NOTEBOOK_TOPICS.item(i).getAttribute("topic_name")) {
+                    if (selectedTopicName == PRESENT_NOTEBOOK_TOPICS.item(i).getAttribute("topic_name")) {
                         // FOR FUTURE REFERENCE
-                        PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item(i);
+                        PRESENT_TOPIC = PRESENT_NOTEBOOK_TOPICS.item(i);
 
-                        selectedTopicContent = MY_NOTEBOOK_TOPICS.item(i).textContent;
+                        selectedTopicContent = PRESENT_NOTEBOOK_TOPICS.item(i).textContent;
 
                         $("#TOPIC_NAME").val(selectedTopicName);
                         $("#TOPIC_CONTENT").val(selectedTopicContent);
                     }
                 }
             });
-            // INITIALIZING WITH THE THE FIRST TOPIC OF THE FIRST COURSE BY DEFAULT OR USING SESSION
-            <?php
-            if (isset($_SESSION["topic_name_SES"])) {
-                $noTopicWithThatName = true;
-                $noteBooks = new DOMDocument();
-                $noteBooks->load("NoteBooks.xml");
-                $subjects = $noteBooks->getElementsByTagName("subject");
-                $noSubjects = $subjects->length;
-
-                for ($i = 0; $i < $noSubjects; ++$i) {
-                    if ($subjects->item($i)->getAttribute("course_code") == $_SESSION["course_code_SES"]) {
-                        $topics = $subjects->item($i)->getElementsByTagName("topic");
-                        $noTopics = $topics->length;
-
-                        for ($j = 0; $j < $noTopics; ++$j) {
-                            if ($topics->item($j)->getAttribute("topic_name") == $_SESSION["topic_name_SES"]) {
-                                echo "PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item($j);";
-                                $noTopicWithThatName = false;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                if($noTopicWithThatName)echo "PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item(0);";
-            } else {
-                echo "PRESENT_TOPIC = MY_NOTEBOOK_TOPICS.item(0);";
-            }
-            ?>
-            $("#TOPIC_NAME").val(PRESENT_TOPIC.getAttribute("topic_name"));
-            $("#TOPIC_CONTENT").val(PRESENT_TOPIC.textContent);
-
-
-            //TOPICS ARE ATTACHED TO THE PAGE AND CLICK LISTENERS ARE SET
-            // PREPARING LOGISTICS
-            var logistics = MY_NOTEBOOK.getElementsByTagName("logistics").item(0).textContent;
-            $("#LOGISTICS").html(logistics);
-            // LOGISTICS IS ATTACHED TO PAGE
-
-
-            /*
-             * ..................FORMS..................
-             * */
-
         }
 
-        $(document).ready(function () {
+        function selectPresentTopic() {
+            PRESENT_TOPIC = PRESENT_NOTEBOOK_TOPICS.item(0);
+            $("#TOPIC_NAME").val(PRESENT_TOPIC.getAttribute("topic_name"));
+            $("#TOPIC_CONTENT").val(PRESENT_TOPIC.textContent);
+        }
 
+        function loadLogistics() {
+            $("#LOGISTICS").html(PRESENT_NOTEBOOK.getElementsByTagName("logistics").item(0).textContent);
+        }
+
+        function loadNavBar() {
+            // CREATING LINKS TO ALL NOTEBOOKS
+            var _nav_links_html_string_ = "";
+            var subjects = SCHOOL_BAG.getElementsByTagName('subject');
+            for(var i=0;i<subjects.length;++i) {
+                var subjectCode = subjects.item(i).getAttribute('course_code');
+                _nav_links_html_string_ += "<li><a class='subjectLink'  id='"+subjectCode+"'>";
+                _nav_links_html_string_ += subjectCode;
+                _nav_links_html_string_ += "</a></li>";
+            }
+            $("#navigation").find(".subjectLink").remove();
+            $("#navigation").append(_nav_links_html_string_);
+            assignClickListenersToCourses();
+        }
+
+        function assignClickListenersToCourses() {
+            // LISTENERS FOR NOTEBOOKS
+            $("#navigation").find("a").click(function () {
+                var selectedSubject = $(this).attr("id");
+                var allSubjects = SCHOOL_BAG.getElementsByTagName("subject");
+                var noSubjects = allSubjects.length;
+
+                for (var i = 0; i < noSubjects; ++i) {
+                    if (selectedSubject == allSubjects.item(i).getAttribute("course_code")) {
+                        loadThisNoteBook(allSubjects.item(i));
+                    }
+                }
+            });
+        }
+
+        function syncFromServer(initial,present_notebook) {
             // GETTING AN XML RESPONSE
             var xmlHttpConnection = new XMLHttpRequest();
             xmlHttpConnection.onreadystatechange = function () {
                 // RESPONSE READY SITUATION
                 if (xmlHttpConnection.readyState == 4 && xmlHttpConnection.status == 200) {
-                    NOTEBOOKS_FILE = xmlHttpConnection.responseXML;
+                    // INITIALIZING GLOBAL SCHOOL_BAG
+                    SCHOOL_BAG = xmlHttpConnection.responseXML;
 
-                    // INITIALIZING WITH FIRST NOTE BOOK OR USING SESSIONS
-                    <?php
-                    if (isset($_SESSION["course_code_SES"])) {
-                        $noCourseWithThatCode = true;
-                        $noteBooks = new DOMDocument();
-                        $noteBooks->load("NoteBooks.xml");
-                        $subjects = $noteBooks->getElementsByTagName("subject");
-                        $noSubjects = $subjects->length;
+                    loadNavBar();
 
-                        for ($i = 0; $i < $noSubjects; ++$i) {
-                            if ($subjects->item($i)->getAttribute("course_code") == $_SESSION["course_code_SES"]) {
-                                echo "MY_NOTEBOOK = NOTEBOOKS_FILE.getElementsByTagName('subject').item($i);";
-                                $noCourseWithThatCode = false;
-                                break;
+                    // LOADING A DEFAULT NOTEBOOK INITIALLY
+                    if(initial){
+                        loadThisNoteBook(SCHOOL_BAG.getElementsByTagName('subject').item(0));
+                    }else {
+                        for (var j = 0; j < SCHOOL_BAG.getElementsByTagName('subject').length; ++j) {
+                            if (SCHOOL_BAG.getElementsByTagName('subject').item(j).getAttribute('course_name') == PRESENT_NOTEBOOK.getAttribute('course_name')) {
+                                loadThisNoteBook(SCHOOL_BAG.getElementsByTagName('subject').item(j));
                             }
                         }
-                        if($noCourseWithThatCode)echo "MY_NOTEBOOK = NOTEBOOKS_FILE.getElementsByTagName('subject').item(0);";
                     }
-                    else {
-                        echo "MY_NOTEBOOK = NOTEBOOKS_FILE.getElementsByTagName('subject').item(0);";
-                    }
-                    ?>
-                    MY_NOTEBOOK_TOPICS = MY_NOTEBOOK.getElementsByTagName("topic");
-                    loadThisNoteBook();
                 }
             };
             xmlHttpConnection.open("POST", "NoteBooks.xml", true);
             xmlHttpConnection.send();
-            // GETTING AN XML RESPONSE
+        }
 
-            // LISTENERS FOR NOTEBOOKS
-            $("#navigation").find("a").click(function () {
-                var selectedSubject = $(this).attr("id");
-                var allSubjects = NOTEBOOKS_FILE.getElementsByTagName("subject");
-                var noSubjects = allSubjects.length;
-
-                for (var i = 0; i < noSubjects; ++i) {
-                    if (selectedSubject == allSubjects.item(i).getAttribute("course_code")) {
-                        MY_NOTEBOOK = allSubjects.item(i);
-                        MY_NOTEBOOK_TOPICS = MY_NOTEBOOK.getElementsByTagName("topic");
-                        loadThisNoteBook();
-                    }
-                }
-            });
-            // LISTENERS FOR NOTEBOOKS
-
+        $(document).ready(function () {
+            syncFromServer(true);
         });
 
     </script>
 
+    <!--CSS INCLUDES-->
     <style>
         button:focus {
             outline: none;
@@ -169,18 +173,18 @@
             min-height: 200px;
         }
 
-        #navigation button{
+        #navigation button {
             margin-top: 7px;
         }
 
-        #NAME{
+        #NAME {
             border: none;
             text-align: center;
             font-size: 40px;
 
         }
 
-        #edit_course_name_button ,#edit_course_name_submit {
+        #edit_course_name_button, #edit_course_name_submit {
             margin-bottom: 20px;
         }
 
@@ -189,8 +193,7 @@
             text-decoration: none;
         }
 
-
-        #allAboutTopics a:hover{
+        #allAboutTopics a:hover {
 
         }
 
@@ -198,7 +201,7 @@
             list-style: upper-latin;
         }
 
-        #TOPIC_NAME{
+        #TOPIC_NAME {
             border: none;
             color: steelblue;
             font-size: 30px;
@@ -211,7 +214,7 @@
             font-size: 20px;
         }
 
-        #LOGISTICS{
+        #LOGISTICS {
         }
     </style>
 
@@ -219,21 +222,11 @@
 
 <body>
 
-<nav class="">
-    <div id="navigation" class="container-fluid">
-        <ul class="nav nav-tabs">
+<nav>
+    <div class="container-fluid">
+        <ul class="nav nav-tabs " id="navigation" >
             <li class="navbar-brand" style="background-color: steelblue;color: white">Note Books</li>
-            <?php
-            $noteBooks = new DOMDocument();
-            $noteBooks->load("NoteBooks.xml");
-            $subjects = $noteBooks->getElementsByTagName("subject");
-            foreach ($subjects as $subject) {
-                $subjectCode = $subject->getAttribute("course_code");
-                echo "<li><a class='subjectLink'  id='$subjectCode'>";
-                echo $subjectCode;
-                echo "</a></li>";
-            }
-            ?>
+            <!--NOTEBOOK LINKS-->
             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#create-form-div"> +
             </button>
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-form-div">-
@@ -244,76 +237,63 @@
 
 <div class="container-fluid">
 
-    <div class="row">
-        <!--SUBJECT NAME-->
-            <div class="col-xs-12">
-                <!--edit-course-name-form-->
-                <form action="Processor.php" method="post" id="edit_course_name_form">
-                    <input id="NAME" name="course_name" value="NOTE BOOK" style="min-width: 90%" type="text"
-                           class="editable" readonly>
-                    <input type="text" name="form_type" value="editCourseName" style="display: none;">
-                    <button type="button" id="edit_course_name_button"
-                            class="btn btn-warning btn-sm glyphicon glyphicon-pencil"></button>
-                    <button type="button" id="edit_course_name_submit"
-                            class="btn btn-success btn-sm glyphicon glyphicon-refresh"
-                            style="display: none"></button>
+    <!--NOTEBOOK NAME-->
+    <div class="heading row">
+        <input id="NAME" style="min-width: 90%" type="text"
+               class="editable" readonly>
+        <button type="button" id="edit_course_name_button"
+                class="btn btn-warning btn-sm glyphicon glyphicon-pencil"></button>
+        <button type="button" id="edit_course_name_submit"
+                class="btn btn-success btn-sm glyphicon glyphicon-refresh"
+                style="display: none"></button>
 
-                    <script>
-                        $(document).ready(function () {
-                            var editing = false;
-                            $("#edit_course_name_button").click(function () {
-                                if (!editing) {
-                                    // CHANGING THE ICONS
-                                    $(this).toggleClass("glyphicon-pencil");
-                                    $(this).toggleClass("glyphicon-eye-open");
-                                    editing = true;
-                                    $("#NAME").attr("readonly", false).keyup(function () {
-                                        if ($(this).val() != MY_NOTEBOOK.getAttribute("course_name")) {
-                                            $("#edit_course_name_submit").fadeIn();
-                                        } else {
-                                            $("#edit_course_name_submit").fadeOut();
-                                        }
-                                    });
-                                } else {
-                                    // CHANGING THE ICONS
-                                    $(this).toggleClass("glyphicon-pencil");
-                                    $(this).toggleClass("glyphicon-eye-open");
-                                    editing = false;
-                                    $("#NAME").attr("readonly", true).val(MY_NOTEBOOK.getAttribute("course_name"));
-                                    $("#edit_course_name_submit").fadeOut();
-                                }
-                            });
+        <script>
+            $(document).ready(function () {
 
-                            $("#edit_course_name_submit").click(function () {
-                                var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
-                                var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-
-                                // FOR SESSION VARS
-                                var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
-                                var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
-                                var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
-                                var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
-                                // FOR SESSION VARS
-
-
-                                $("#edit_course_name_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
-                            });
+                var editing = false;
+                $("#edit_course_name_button").click(function () {
+                    if (!editing) {
+                        // CHANGING THE ICONS
+                        $(this).toggleClass("glyphicon-pencil");
+                        $(this).toggleClass("glyphicon-eye-open");
+                        editing = true;
+                        $("#NAME").attr("readonly", false).keyup(function () {
+                            if ($(this).val() != PRESENT_NOTEBOOK.getAttribute("course_name")) {
+                                $("#edit_course_name_submit").fadeIn();
+                            } else {
+                                $("#edit_course_name_submit").fadeOut();
+                            }
                         });
-                    </script>
-                </form>
-                <!--edit-course-name-form-->
-            </div>
+                    } else {
+                        // CHANGING THE ICONS
+                        $(this).toggleClass("glyphicon-pencil");
+                        $(this).toggleClass("glyphicon-eye-open");
+                        editing = false;
+                        $("#NAME").attr("readonly", true).val(PRESENT_NOTEBOOK.getAttribute("course_name"));
+                        $("#edit_course_name_submit").fadeOut();
+                    }
+                });
+
+                $("#edit_course_name_submit").click(function () {
+                    var course_code = PRESENT_NOTEBOOK.getAttribute("course_code");
+                    var new_course_name = $("#NAME").val();
+                    ajax_request("editCourseName", ["course_code", course_code, "course_name", new_course_name]);
+                });
+            });
+        </script>
     </div>
+    <!--NOTEBOOK NAME-->
+
     <hr style="margin:0;">
 
+    <!--MIDDLE REGION-->
     <div style="margin-top: 10px" class="middle row">
 
         <div class="col-xs-2" id="allAboutTopics">
 
-            <!--ADD TOPIC FORM-->
-            <form action="Processor.php" method="post" id="add_topic_form">
+            <!--ADD TOPIC-->
+            <div>
                 <h4 id="note" style="display: none;">another topic exists with same name</h4>
-                <input type="text" name="form_type" value="createTopic" style="display:none;">
                 <input type="button" value="+" class="btn btn-success" id="add_topic_button">
 
                 <div id="addTopicToggle" style="display: none">
@@ -329,45 +309,37 @@
                     $("#add_topic_submit").click(function () {
                         var addTopic = true;
                         var newTopicName = $("#newTopicName").val();
-                        var noTopics = MY_NOTEBOOK_TOPICS.length;
+                        var noTopics = PRESENT_NOTEBOOK_TOPICS.length;
 
                         for (var j = 0; j < noTopics; ++j) {
-                            if (newTopicName == MY_NOTEBOOK_TOPICS.item(j).getAttribute("topic_name")) {
+                            if (newTopicName == PRESENT_NOTEBOOK_TOPICS.item(j).getAttribute("topic_name")) {
                                 addTopic = false;
                                 break;
                             }
                         }
                         if (addTopic) {
-                            var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
-                            var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-
-                            // FOR SESSION VARS
-                            var course_code_SES = course_code_t;
-                            var topic_name_SES = newTopicName;
-                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
-                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
-                            // FOR SESSION VARS
-
-                            $("#add_topic_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
+                            var course_code = PRESENT_NOTEBOOK.getAttribute("course_code");
+                            var new_topic_name = $("#newTopicName").val();
+                            ajax_request("createTopic", ["course_code", course_code, "topic_name", new_topic_name]);
+                            syncFromServer(false);
                         }
                         else {
                             $("#add_topic_form").find("#note").fadeIn().delay(2000).fadeOut();
                         }
                     });
                 </script>
-            </form>
-            <!--ADD TOPIC FORM-->
+            </div>
+            <!--ADD TOPIC-->
 
             <ul id="TOPICS">
                 <!--TOPICS-->
                 T O P I C S
             </ul>
 
-            <!--REMOVE TOPIC FORM-->
-            <form action="Processor.php" method="post" id="remove_topic_form">
+            <!--REMOVE TOPIC-->
+            <div>
                 <h4 id="note" style="display: none;">No such topic</h4>
-                <h4 id="note2" style="display: none;">Atleast one topic would be nice</h4>
-                <input type="text" name="form_type" value="deleteTopic" style="display:none;">
+                <h4 id="note2" style="display: none;">At least one topic would be nice</h4>
                 <input type="button" value="-" class="btn btn-danger" id="remove_topic_button">
 
                 <div id="removeTopicToggle" style="display: none">
@@ -377,7 +349,7 @@
 
                 <script>
                     $("#remove_topic_button").click(function () {
-                        if (MY_NOTEBOOK_TOPICS.length > 1) {
+                        if (PRESENT_NOTEBOOK_TOPICS.length > 1) {
                             $("#removeTopicToggle").fadeToggle();
                         } else {
                             $("#remove_topic_form").find("#note2").fadeIn().delay(2000).fadeOut();
@@ -387,260 +359,239 @@
                     $("#remove_topic_submit").click(function () {
                         var removeTopic = false;
                         var oldTopicName = $("#oldTopicName").val();
-                        var noTopics = MY_NOTEBOOK_TOPICS.length;
-                        var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
+                        var noTopics = PRESENT_NOTEBOOK_TOPICS.length;
+                        var course_code_t = PRESENT_NOTEBOOK.getAttribute("course_code");
 
                         for (var j = 0; j < noTopics; ++j) {
-                            if (oldTopicName == MY_NOTEBOOK_TOPICS.item(j).getAttribute("topic_name")) {
+                            if (oldTopicName == PRESENT_NOTEBOOK_TOPICS.item(j).getAttribute("topic_name")) {
                                 removeTopic = true;
                                 break;
                             }
                         }
 
                         if (removeTopic) {
-                            var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-
-                            // FOR SESSION VARS
-                            var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
-                            var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
-                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
-                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
-                            // FOR SESSION VARS
-
-                            $("#remove_topic_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
+                            var course_code = PRESENT_NOTEBOOK.getAttribute("course_code");
+                            var old_topic_name = $("#oldTopicName").val();
+                            ajax_request("deleteTopic", ["course_code", course_code, "topic_name", old_topic_name]);
+                            
                         } else {
                             $("#remove_topic_form").find("#note").fadeIn().delay(2000).fadeOut();
                         }
                     });
                 </script>
-            </form>
-            <!--REMOVE TOPIC FORM-->
+            </div>
+            <!--REMOVE TOPIC-->
 
         </div>
 
         <div class="col-xs-8">
 
+            <!--TOPIC INSIGHTS-->
             <div>
-                <!--edit-topic-form-->
-                <form action="Processor.php" method="post" id="edit_topic_form">
-                    <h4 id="note" style="display: none;">this topic already exists</h4>
-                    <button id="edit_topic_submit" type="button" class="btn btn-success glyphicon glyphicon-floppy-open"
-                    style="display: none"></button>
-                    <blockquote>
-                        <input id="TOPIC_NAME" name="topic_name" value="Fill your" style="min-width: 90%" type="text"
-                               class="editable" readonly>
-                        <button type="button" class="btn btn-default glyphicon glyphicon-user" id="edit_view_topic_toggle" ></button>
-                    </blockquote>
-                    <textarea id="TOPIC_CONTENT" name="topic_content" class="form-control editable" readonly>T h o u g h t s</textarea>
-                    <input type="text" name="form_type" value="editTopic" style="display: none;">
-                    <script>
-                        var topicActive = false;
+                <h4 id="note" style="display: none;">This topic already exists</h4>
+                <button id="edit_topic_submit" type="button" class="btn btn-success glyphicon glyphicon-floppy-open"
+                        style="display: none"></button>
+                <blockquote>
+                    <input id="TOPIC_NAME" name="topic_name" value="Fill your" style="min-width: 90%" type="text"
+                           class="editable" readonly>
+                    <button type="button" class="btn btn-default glyphicon glyphicon-user"
+                            id="edit_view_topic_toggle"></button>
+                </blockquote>
+                <textarea id="TOPIC_CONTENT" name="topic_content" class="form-control editable"
+                          readonly>T h o u g h t s</textarea>
+                <script>
+                    var topicActive = false;
 
-                        // clicking the button or double clicking the area will toggle activeness
-                        $("#edit_view_topic_toggle").click(function () {
-                            // TOPIC IS INACTIVE
-                            if (topicActive) {
-                                $("#TOPIC_NAME").attr("readonly", true);
-                                $("#TOPIC_CONTENT").attr("readonly", true);
+                    // clicking the button or double clicking the area will toggle activeness
+                    $("#edit_view_topic_toggle").click(function () {
+                        // TOPIC IS INACTIVE
+                        if (topicActive) {
+                            $("#TOPIC_NAME").attr("readonly", true);
+                            $("#TOPIC_CONTENT").attr("readonly", true);
 
-                                topicActive = false;
-                            }
-                            // TOPIC IS ACTIVE
-                            else {
-                                var TOPIC_NAME_INPUT = $("#TOPIC_NAME");
-                                var TOPIC_CONTENT_INPUT = $("#TOPIC_CONTENT");
+                            topicActive = false;
+                        }
+                        // TOPIC IS ACTIVE
+                        else {
+                            var TOPIC_NAME_INPUT = $("#TOPIC_NAME");
+                            var TOPIC_CONTENT_INPUT = $("#TOPIC_CONTENT");
 
-                                $(TOPIC_NAME_INPUT).attr("readonly", false);
-                                $(TOPIC_CONTENT_INPUT).attr("readonly", false);
+                            $(TOPIC_NAME_INPUT).attr("readonly", false);
+                            $(TOPIC_CONTENT_INPUT).attr("readonly", false);
 
-                                var prevTopicName = PRESENT_TOPIC.getAttribute("topic_name");
-                                var prevTopicContent = PRESENT_TOPIC.textContent;
-                                // GETTING ALL REQUIRED DATA
-                                var duplicateTopic;
-                                // SETTING LISTENER FOR TOPIC_NAME_INPUT
-                                $(TOPIC_NAME_INPUT).keyup(function () {
-                                    if ($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) {
+                            var prevTopicName = PRESENT_TOPIC.getAttribute("topic_name");
+                            var prevTopicContent = PRESENT_TOPIC.textContent;
+                            // GETTING ALL REQUIRED DATA
+                            var duplicateTopic;
+                            // SETTING LISTENER FOR TOPIC_NAME_INPUT
+                            $(TOPIC_NAME_INPUT).keyup(function () {
+                                if ($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) {
 
-                                        // TOPIC_NAME_INPUT cannot be the 'prevTopicName'
-                                        duplicateTopic = false;
-                                        var noTopic = MY_NOTEBOOK_TOPICS.length;
-                                        for (var i = 0; i < noTopic; ++i) {
-                                            if (MY_NOTEBOOK_TOPICS.item(i).getAttribute("topic_name") == $(TOPIC_NAME_INPUT).val()) {
-                                                duplicateTopic = true;
-                                                break;
-                                            }
+                                    // TOPIC_NAME_INPUT cannot be the 'prevTopicName'
+                                    duplicateTopic = false;
+                                    var noTopic = PRESENT_NOTEBOOK_TOPICS.length;
+                                    for (var i = 0; i < noTopic; ++i) {
+                                        if (PRESENT_NOTEBOOK_TOPICS.item(i).getAttribute("topic_name") == $(TOPIC_NAME_INPUT).val()) {
+                                            duplicateTopic = true;
+                                            break;
                                         }
+                                    }
 
-                                        // 'duplicateTopic' value is determined
-                                        if (duplicateTopic) {
-                                            $("#edit_topic_form").find("#note").fadeIn();
-                                            $("#edit_topic_submit").fadeOut();
-                                        }
-                                        else {
-                                            $("#edit_topic_form").find("#note").fadeOut();
-                                            $("#edit_topic_submit").fadeIn();
-                                        }
+                                    // 'duplicateTopic' value is determined
+                                    if (duplicateTopic) {
+                                        $("#edit_topic_form").find("#note").fadeIn();
+                                        $("#edit_topic_submit").fadeOut();
                                     }
                                     else {
-                                        // NO CHANGE SO WASTE TO SUBMIT
-                                        $("#edit_topic_submit").fadeOut();
-                                    }
-                                });
-
-                                // SETTING LISTENER FOR TOPIC_CONTENT_INPUT
-                                $(TOPIC_CONTENT_INPUT).keyup(function () {
-                                    if (($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) && !duplicateTopic) {
+                                        $("#edit_topic_form").find("#note").fadeOut();
                                         $("#edit_topic_submit").fadeIn();
-                                    } else {
-                                        $("#edit_topic_submit").fadeOut();
                                     }
-                                });
+                                }
+                                else {
+                                    // NO CHANGE SO WASTE TO SUBMIT
+                                    $("#edit_topic_submit").fadeOut();
+                                }
+                            });
 
-                                topicActive = true;
-                            }
-                        });
+                            // SETTING LISTENER FOR TOPIC_CONTENT_INPUT
+                            $(TOPIC_CONTENT_INPUT).keyup(function () {
+                                if (($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) && !duplicateTopic) {
+                                    $("#edit_topic_submit").fadeIn();
+                                } else {
+                                    $("#edit_topic_submit").fadeOut();
+                                }
+                            });
 
-                        $("#TOPIC_NAME , #TOPIC_CONTENT").dblclick(function () {
-                            // TOPIC IS INACTIVE
-                            if (topicActive) {
-                                $("#TOPIC_NAME").attr("readonly", true);
-                                $("#TOPIC_CONTENT").attr("readonly", true);
+                            topicActive = true;
+                        }
+                    });
 
-                                topicActive = false;
-                            }
-                            // TOPIC IS ACTIVE
-                            else {
-                                var TOPIC_NAME_INPUT = $("#TOPIC_NAME");
-                                var TOPIC_CONTENT_INPUT = $("#TOPIC_CONTENT");
+                    $("#TOPIC_NAME , #TOPIC_CONTENT").dblclick(function () {
+                        // TOPIC IS INACTIVE
+                        if (topicActive) {
+                            $("#TOPIC_NAME").attr("readonly", true);
+                            $("#TOPIC_CONTENT").attr("readonly", true);
 
-                                $(TOPIC_NAME_INPUT).attr("readonly", false);
-                                $(TOPIC_CONTENT_INPUT).attr("readonly", false);
+                            topicActive = false;
+                        }
+                        // TOPIC IS ACTIVE
+                        else {
+                            var TOPIC_NAME_INPUT = $("#TOPIC_NAME");
+                            var TOPIC_CONTENT_INPUT = $("#TOPIC_CONTENT");
 
-                                var prevTopicName = PRESENT_TOPIC.getAttribute("topic_name");
-                                var prevTopicContent = PRESENT_TOPIC.textContent;
-                                // GETTING ALL REQUIRED DATA
-                                var duplicateTopic;
-                                // SETTING LISTENER FOR TOPIC_NAME_INPUT
-                                $(TOPIC_NAME_INPUT).keyup(function () {
-                                    if ($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) {
+                            $(TOPIC_NAME_INPUT).attr("readonly", false);
+                            $(TOPIC_CONTENT_INPUT).attr("readonly", false);
 
-                                        // TOPIC_NAME_INPUT cannot be the 'prevTopicName'
-                                        duplicateTopic = false;
-                                        var noTopic = MY_NOTEBOOK_TOPICS.length;
-                                        for (var i = 0; i < noTopic; ++i) {
-                                            if (MY_NOTEBOOK_TOPICS.item(i).getAttribute("topic_name") == $(TOPIC_NAME_INPUT).val()) {
-                                                duplicateTopic = true;
-                                                break;
-                                            }
+                            var prevTopicName = PRESENT_TOPIC.getAttribute("topic_name");
+                            var prevTopicContent = PRESENT_TOPIC.textContent;
+                            // GETTING ALL REQUIRED DATA
+                            var duplicateTopic;
+                            // SETTING LISTENER FOR TOPIC_NAME_INPUT
+                            $(TOPIC_NAME_INPUT).keyup(function () {
+                                if ($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) {
+
+                                    // TOPIC_NAME_INPUT cannot be the 'prevTopicName'
+                                    duplicateTopic = false;
+                                    var noTopic = PRESENT_NOTEBOOK_TOPICS.length;
+                                    for (var i = 0; i < noTopic; ++i) {
+                                        if (PRESENT_NOTEBOOK_TOPICS.item(i).getAttribute("topic_name") == $(TOPIC_NAME_INPUT).val()) {
+                                            duplicateTopic = true;
+                                            break;
                                         }
+                                    }
 
-                                        // 'duplicateTopic' value is determined
-                                        if (duplicateTopic) {
-                                            $("#edit_topic_form").find("#note").fadeIn();
-                                            $("#edit_topic_submit").fadeOut();
-                                        }
-                                        else {
-                                            $("#edit_topic_form").find("#note").fadeOut();
-                                            $("#edit_topic_submit").fadeIn();
-                                        }
+                                    // 'duplicateTopic' value is determined
+                                    if (duplicateTopic) {
+                                        $("#edit_topic_form").find("#note").fadeIn();
+                                        $("#edit_topic_submit").fadeOut();
                                     }
                                     else {
-                                        // NO CHANGE SO WASTE TO SUBMIT
-                                        $("#edit_topic_submit").fadeOut();
-                                    }
-                                });
-
-                                // SETTING LISTENER FOR TOPIC_CONTENT_INPUT
-                                $(TOPIC_CONTENT_INPUT).keyup(function () {
-                                    if (($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) && !duplicateTopic) {
+                                        $("#edit_topic_form").find("#note").fadeOut();
                                         $("#edit_topic_submit").fadeIn();
-                                    } else {
-                                        $("#edit_topic_submit").fadeOut();
                                     }
-                                });
+                                }
+                                else {
+                                    // NO CHANGE SO WASTE TO SUBMIT
+                                    $("#edit_topic_submit").fadeOut();
+                                }
+                            });
 
-                                topicActive = true;
-                            }
-                        });
+                            // SETTING LISTENER FOR TOPIC_CONTENT_INPUT
+                            $(TOPIC_CONTENT_INPUT).keyup(function () {
+                                if (($(TOPIC_NAME_INPUT).val() != prevTopicName || $(TOPIC_CONTENT_INPUT).val() != prevTopicContent) && !duplicateTopic) {
+                                    $("#edit_topic_submit").fadeIn();
+                                } else {
+                                    $("#edit_topic_submit").fadeOut();
+                                }
+                            });
 
-                        $("#edit_topic_submit").click(function () {
-                            var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
-                            var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-                            var topic_name_t = PRESENT_TOPIC.getAttribute("topic_name");
-                            var topic_name_input = "<input type='text' name='ref_topic_name' value='" + topic_name_t + "' style='display: none;'>";
+                            topicActive = true;
+                        }
+                    });
 
-                            // FOR SESSION VARS
-                            var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
-                            var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
-                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
-                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
-                            // FOR SESSION VARS
+                    $("#edit_topic_submit").click(function () {
+                        var course_code = PRESENT_NOTEBOOK.getAttribute("course_code");
+                        var ref_topic_name = PRESENT_TOPIC.getAttribute("topic_name");
+                        var topic_name = $("#TOPIC_NAME").val();
+                        var topic_content = $("#TOPIC_CONTENT").val();
+                        ajax_request("editTopic", ["course_code", course_code, "ref_topic_name", ref_topic_name, "topic_name", topic_name, "topic_content", topic_content])
+                    });
 
-                            $("#edit_topic_form").append(course_code_input).append(topic_name_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
-                        });
-
-                    </script>
-                </form>
-                <!--edit-topic-form-->
+                </script>
             </div>
+            <!--TOPIC INSIGHTS-->
 
         </div>
 
         <div class="col-xs-2">
-            <span style="font-size: 15px;margin-top: 10px">KNOW MORE ABOUT YOUR COURSE</span>
+
+            <!--LOGISTICS-->
+            <span style="font-size: 15px;margin-top: 10px">Interesting Stuff ....</span>
             <hr>
             <div>
-                <!--edit-logistics-form-->
-                <form action="Processor.php" method="post" id="edit_logistics_form">
-                    <textarea name="logistics" id="LOGISTICS" class="form-control" readonly></textarea>
-                    <input type="text" name="form_type" value="editLogistics" style="display: none;">
-                    <button id="edit_logistics_submit" type="button"
-                            class="btn btn-success glyphicon glyphicon-floppy-open" style="display: none"></button>
-                    <script>
-                        var logisticsActive = false;
+                <textarea id="LOGISTICS" class="form-control" readonly></textarea>
+                <button id="edit_logistics_submit" type="button"
+                        class="btn btn-success glyphicon glyphicon-floppy-open" style="display: none"></button>
+                <script>
+                    var logisticsActive = false;
 
-                        $("#LOGISTICS").dblclick(function () {
-                            if (logisticsActive) {
-                                $(this).attr("readonly", true);
-                                logisticsActive = false;
-                            }
-                            else {
-                                $(this).attr("readonly", false).keyup(function () {
-                                    var prevLogistics = MY_NOTEBOOK.getElementsByTagName("logistics").item(0).textContent;
-                                    if ($(this).val() != prevLogistics) {
-                                        $("#edit_logistics_submit").fadeIn();
-                                    } else {
-                                        $("#edit_logistics_submit").fadeOut();
-                                    }
-                                });
-                                logisticsActive = true;
-                            }
-                        });
+                    $("#LOGISTICS").dblclick(function () {
+                        if (logisticsActive) {
+                            $(this).attr("readonly", true);
+                            logisticsActive = false;
+                        }
+                        else {
+                            $(this).attr("readonly", false).keyup(function () {
+                                var prevLogistics = PRESENT_NOTEBOOK.getElementsByTagName("logistics").item(0).textContent;
+                                if ($(this).val() != prevLogistics) {
+                                    $("#edit_logistics_submit").fadeIn();
+                                } else {
+                                    $("#edit_logistics_submit").fadeOut();
+                                }
+                            });
+                            logisticsActive = true;
+                        }
+                    });
 
 
-                        $("#edit_logistics_submit").click(function () {
-                            var course_code_t = MY_NOTEBOOK.getAttribute("course_code");
-                            var course_code_input = "<input type='text' name='course_code' value='" + course_code_t + "' style='display: none;'>";
-
-                            // FOR SESSION VARS
-                            var course_code_SES = MY_NOTEBOOK.getAttribute("course_code");
-                            var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
-                            var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
-                            var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
-                            // FOR SESSION VARS
-
-                            $("#edit_logistics_form").append(course_code_input).append(course_code_SES_input).append(topic_name_SES_input).submit();
-                        });
-                    </script>
-                </form>
-                <!--edit-logistics-form-->
+                    $("#edit_logistics_submit").click(function () {
+                        var course_code = PRESENT_NOTEBOOK.getAttribute("course_code");
+                        var new_logistics = $("#LOGISTICS").val();
+                        ajax_request("editLogistics", ["course_code", course_code, "logistics", new_logistics]);
+                    });
+                </script>
             </div>
+            <!--LOGISTICS-->
+
         </div>
     </div>
+    <!--MIDDLE REGION-->
 
+
+    <!--MODAL DEFINITIONS-->
 </div>
 
-<!--create-form-div-->
+<!--NEW-NOTEBOOK-->
 <div id="create-form-div" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
@@ -650,55 +601,56 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="Processor.php" method="post" id="create_subject_form">
-                    <input type="text" autofocus placeholder="COURSE NAME" name="course_name">
-                    <input type="text" placeholder="COURSE CODE" id="create_subject_course_code" name="course_code">
-                    <span id="create_subject_warning" class="glyphicon glyphicon-alert" style="display: none">you have a course with same code</span>
-                    <input type="text" name="form_type" value="createSubject" style="display: none;">
+                <div>
+                    <input type="text" autofocus id="create_subject_course_name" placeholder="COURSE NAME">
+                    <input type="text" placeholder="COURSE CODE" id="create_subject_course_code">
                     <input type="button" id="create_subject_submit" value="Get Started" class="btn btn-default">
                     <script>
                         $(document).ready(function () {
                             var createConfirm = false;
                             $("#create_subject_course_code").keyup(function () {
                                 var givenCourseCodeInput = $(this).val();
-                                var subjects = NOTEBOOKS_FILE.getElementsByTagName("subject");
+                                var subjects = SCHOOL_BAG.getElementsByTagName("subject");
                                 var noSubjects = subjects.length;
                                 for (var i = 0; i < noSubjects; ++i) {
                                     if (subjects.item(i).getAttribute("course_code") == givenCourseCodeInput) {
                                         $("#create_subject_warning").fadeIn();
+                                        $("#create_subject_submit").fadeOut();
                                         createConfirm = false;
                                         break;
                                     }
                                     else {
                                         $("#create_subject_warning").fadeOut();
+                                        $("#create_subject_submit").fadeIn();
                                         createConfirm = true;
                                     }
                                 }
                             });
                             $("#create_subject_submit").click(function () {
+                                if (createConfirm) {
+                                    var course_code = $("#create_subject_course_code").val();
+                                    var course_name = $("#create_subject_course_name").val();
+                                    ajax_request("createSubject", ["course_code", course_code, "course_name", course_name]);
+                                    syncFromServer(false);
+                                }
 
-                                // FOR SESSION VARS
-                                var course_code_SES = $("#create_subject_course_code").val();
-                                var topic_name_SES = PRESENT_TOPIC.getAttribute("topic_name");
-                                var course_code_SES_input = "<input type='text' name='course_code_SES' value='" + course_code_SES + "' style='display: none;'>";
-                                var topic_name_SES_input = "<input type='text' name='topic_name_SES' value='" + topic_name_SES + "' style='display: none;'>";
-                                // FOR SESSION VARS
-
-                                if (createConfirm)$("#create_subject_form").append(course_code_SES_input).append(topic_name_SES_input).submit();
                             });
                         });
                     </script>
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
+                <span id="create_subject_warning"
+                      style="display: none">You already have a notebook with same code</span>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
 
     </div>
 </div>
+<!--NEW-NOTEBOOK-->
 
-<!--delete-form-div-->
+<!--REMOVE-NOTEBOOK-->
 <div id="delete-form-div" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -706,31 +658,33 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4>Are you sure ?</h4>
                 <h5>This removes all the notes you have prepared for this subject</h5>
-                <h4 style="display:none;" id="note">Donot remove this Notebook .Its better to have a template
-                    guide.</h4>
+                <h5 style="display:none;" id="note">Please do not remove this notebook
+                    <br>Old memories are always refreshing.</h5>
             </div>
             <div class="modal-body">
-                <form action="Processor.php" method="post" id="del_subject_form">
+                <div>
                     <input type="text" style="min-width: 50%" name="course_code" id="course_code_key"
                            placeholder="Type in this courses' code to Confirm" autofocus>
                     <span id="del_subject_warning" class="glyphicon glyphicon-alert" style="display: none"></span>
-                    <input type="text" name="form_type" value="deleteSubject" style="display: none;">
-                    <input type="button" id="del_subject_submit" value="Remove This Subject" class="btn btn-default">
+                    <input type="button" id="del_subject_submit" style="display: none;" value="Remove This Subject" class="btn btn-default">
                     <script>
                         $(document).ready(function () {
                             var delConfirm = false;
                             $("#course_code_key").keyup(function () {
 
-                                if ($(this).val() == "EX101") {
+                                if ($(this).val() == "EX101" && PRESENT_NOTEBOOK.getAttribute("course_code") == "EX101") {
                                     $("#delete-form-div").find("#note").fadeIn();
                                     delConfirm = false;
                                 }
-                                else if ($(this).val() == MY_NOTEBOOK.getAttribute("course_code")) {
+                                else if ($(this).val() == PRESENT_NOTEBOOK.getAttribute("course_code")) {
                                     $("#del_subject_warning").fadeIn();
+                                    $("#del_subject_submit").fadeIn();
+                                    $("#delete-form-div").find("#note").fadeOut();
                                     delConfirm = true;
                                 }
                                 else {
                                     $("#del_subject_warning").fadeOut();
+                                    $("#del_subject_submit").fadeOut();
                                     $("#delete-form-div").find("#note").fadeOut();
                                     delConfirm = false;
                                 }
@@ -738,12 +692,16 @@
                             });
 
                             $("#del_subject_submit").click(function () {
+                                if (delConfirm){
+                                    var course_code = PRESENT_NOTEBOOK.getAttribute("course_code");
+                                    ajax_request("deleteSubject", ["course_code", course_code]);
+                                    syncFromServer(false);
 
-                                if (delConfirm)$("#del_subject_form").submit();
+                                }
                             });
                         });
                     </script>
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -752,6 +710,7 @@
 
     </div>
 </div>
+<!--REMOVE-NOTEBOOK-->
 
 </body>
 
@@ -783,4 +742,71 @@
 //
 //        });
 
+?>
+
+
+<?php
+// INITIALIZING WITH FIRST NOTE BOOK OR USING SESSIONS
+//if (isset($_SESSION["course_code_SES"])) {
+//    $noCourseWithThatCode = true;
+//    $noteBooks = new DOMDocument();
+//    $noteBooks->load("NoteBooks.xml");
+//    $subjects = $noteBooks->getElementsByTagName("subject");
+//    $noSubjects = $subjects->length;
+//
+//    for ($i = 0; $i < $noSubjects; ++$i) {
+//        if ($subjects->item($i)->getAttribute("course_code") == $_SESSION["course_code_SES"]) {
+//            echo "PRESENT_NOTEBOOK = SCHOOL_BAG.getElementsByTagName('subject').item($i);";
+//            $noCourseWithThatCode = false;
+//            break;
+//        }
+//    }
+//    if ($noCourseWithThatCode) echo "PRESENT_NOTEBOOK = SCHOOL_BAG.getElementsByTagName('subject').item(0);";
+//} else {
+//    echo "PRESENT_NOTEBOOK = SCHOOL_BAG.getElementsByTagName('subject').item(0);";
+//}
+//?>
+
+
+<?php
+// INITIALIZING WITH THE THE FIRST TOPIC OF THE FIRST COURSE BY DEFAULT OR USING SESSION
+//if (isset($_SESSION["topic_name_SES"])) {
+//    $noTopicWithThatName = true;
+//    $noteBooks = new DOMDocument();
+//    $noteBooks->load("NoteBooks.xml");
+//    $subjects = $noteBooks->getElementsByTagName("subject");
+//    $noSubjects = $subjects->length;
+//
+//    for ($i = 0; $i < $noSubjects; ++$i) {
+//        if ($subjects->item($i)->getAttribute("course_code") == $_SESSION["course_code_SES"]) {
+//            $topics = $subjects->item($i)->getElementsByTagName('topic');
+//            $noTopics = $topics->length;
+//
+//            for ($j = 0; $j < $noTopics; ++$j) {
+//                if ($topics->item($j)->getAttribute("topic_name") == $_SESSION["topic_name_SES"]) {
+//                    echo "PRESENT_TOPIC = PRESENT_NOTEBOOK_TOPICS.item($j);";
+//                    $noTopicWithThatName = false;
+//                    break;
+//                }
+//            }
+//            break;
+//        }
+//    }
+//    if ($noTopicWithThatName) echo "";
+//} else {
+//    echo "PRESENT_TOPIC = PRESENT_NOTEBOOK_TOPICS.item(0);";
+//}
+//?>
+
+
+<?php
+//            $noteBooks = new DOMDocument();
+//            $noteBooks->load("NoteBooks.xml");
+//            $subjects = $noteBooks->getElementsByTagName("subject");
+//            foreach ($subjects as $subject) {
+//                $subjectCode = $subject->getAttribute("course_code");
+//                echo "<li><a class='subjectLink'  id='$subjectCode'>";
+//                echo $subjectCode;
+//                echo "</a></li>";
+//            }
 ?>

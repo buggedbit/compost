@@ -17,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // SESSION PART
     session_start();
 
-    $_SESSION["course_code_SES"] = $_POST["course_code_SES"];
-    $_SESSION["topic_name_SES"] = $_POST["topic_name_SES"];
+//    $_SESSION["course_code_SES"] = $_POST["course_code_SES"];
+//    $_SESSION["topic_name_SES"] = $_POST["topic_name_SES"];
 
     //
 
@@ -56,8 +56,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $rootNode->appendChild($subjectNode);
 
             $noteBooks->save("NoteBooks.xml");
-            header("Location: index.php");
+            echo " Created at " . date("H:i:s");
             break;
+
         case "deleteSubject":
             $del_course_code = $_POST["course_code"];
 
@@ -74,7 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $noteBooks->save("NoteBooks.xml");
-            header("Location: index.php");
+            echo " Removed at " . date("H:i:s");
+
             break;
 
         case "editCourseName":
@@ -94,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $noteBooks->save("NoteBooks.xml");
-            header("Location: index.php");
+            echo " Updated at " . date("H:i:s");
             break;
 
         case "editLogistics":
@@ -114,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $noteBooks->save("NoteBooks.xml");
-            header("Location: index.php");
+            echo " Updated at " . date("H:i:s");
             break;
 
         case "createTopic":
@@ -137,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $noteBooks->save("NoteBooks.xml");
-            header("Location: index.php");
+            echo " Created at " . date("H:i:s");
             break;
 
         case "editTopic":
@@ -168,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $noteBooks->save("NoteBooks.xml");
-            header("Location: index.php");
+            echo " Updated at " . date("H:i:s");
             break;
 
         case "deleteTopic":
@@ -194,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             $noteBooks->save("NoteBooks.xml");
-            header("Location: index.php");
+            echo " Removed at " . date("H:i:s");
             break;
 
         default:
@@ -202,3 +204,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
+

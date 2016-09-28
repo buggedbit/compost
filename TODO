@@ -4,5 +4,9 @@
     </immediate>
     <long-term>
         <task>Implement the JS Objects to get a neater code</task>
+        <task>Take care of multiple ajax operations </task>
+        <task>Take care of high data transfer problems</task>
+        <task>Increase the flexibility of js-ajax-php-js structure</task>
+        <task>Introduce bools to protect corruptions due to quickly clicking on a fading submit button(as some condition is incorrect)</task>
     </long-term>
 </todo>

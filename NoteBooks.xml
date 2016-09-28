@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <subject course_name="NoteBook" course_code="EX101">
-        <logistics>Know the logistics of your adsjlfa</logistics>
-        <topic topic_name="Getting">Started in swag more</topic>
-        <topic topic_name="Information">rmation</topic>
-        <topic topic_name="this that">here there</topic>
-        <topic topic_name="sample Topic 1">Some Stuff</topic>
-        <topic topic_name="sample Topic 2">Some Other Stuff</topic>
-        <topic topic_name="tester">Fill Your Thoughts</topic>
+    <subject course_name="NoteBooksdsafasd" course_code="EX101">
+        <logistics>Cool things go here ...adsjfadsladfadsf</logistics>
+        <topic topic_name="sample Topic 2adfsa">Some Other Stuffafdsfa</topic>
+
     </subject>
 
-    <subject course_name="Data Structures And Algorithms" course_code="CS213">
-        <logistics>ill write properly</logistics>
-        <topic topic_name="Getting Started">Fill Your Thoughts in style with care</topic>
-        <topic topic_name="Info">rmation</topic>
 
-        <topic topic_name="this that">Fill Your Thoughts yeah that's right baby</topic>
+    <subject course_name="djfasl" course_code="adhs">
+        <logistics>Nothing Yet</logistics>
+        <topic topic_name="Getting Started">Fill Your Thoughts</topic>
     </subject>
-
+    <subject course_name="djfasladsf" course_code="adhsads">
+        <logistics>Nothing Yet</logistics>
+        <topic topic_name="Getting Started">Fill Your Thoughts</topic>
+    </subject>
 </root>
