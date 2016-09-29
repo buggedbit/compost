@@ -194,6 +194,9 @@
 
         <!--CSS INCLUDES-->
         <style>
+            body{
+                background-image: url("http://wptest.fxbenard.com/files/2012/12/space-rocket.png");
+            }
 
             #server_messages{
                 font-family: monospace;
@@ -201,6 +204,7 @@
                 position:fixed;
                 top: 7%;
                 display: none;
+                color: grey;
                 font-size: 20px;
             }
 
@@ -230,6 +234,10 @@
                 min-height: 200px;
             }
 
+            #navigation{
+                background-color: rgba(255, 255, 255, 0.6);
+            }
+
             #navigation button {
                 margin-top: 7px;
             }
@@ -238,10 +246,26 @@
                 border: none;
                 text-align: center;
                 font-size: 40px;
+                background-color: transparent;
+                color: white;
+            }
+
+            #heading{
+                margin-top:5px;
+            }
+
+            #logistics_heading{
+                font-size: 20px;
+                color: white;;
             }
 
             #edit_course_name_button, #edit_course_name_submit {
                 margin-bottom: 20px;
+            }
+
+            #allAboutTopics{
+                padding:10px;
+                background-color: rgba(255, 255, 255, 0.6);
             }
 
             #allAboutTopics ul {
@@ -252,15 +276,21 @@
                 border: none;
                 color: steelblue;
                 font-size: 30px;
+                background-color: transparent;
+                color: white;
             }
 
             #TOPIC_CONTENT {
                 min-height: 700px;
                 color: black;
                 font-size: 20px;
+                background-color: rgba(255, 255, 255, 0.49);
+                overflow: auto;
             }
 
             #LOGISTICS {
+                overflow: auto;
+                background-color: rgba(255, 255, 255, 0.49);
             }
 
             .highlightSubjectLink {
@@ -283,7 +313,7 @@
     <nav>
         <div class="container-fluid">
             <ul class="nav nav-tabs " id="navigation">
-                <li class="navbar-brand" style="background-color: steelblue;color: white;margin: 2px;">Note Books</li>
+                <li class="navbar-brand" style="background-color: steelblue;color: white;margin-right: 10px;">Your Books</li>
                 <!--NOTEBOOK LINKS-->
                 <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#create-form-div">
                     +
@@ -299,10 +329,10 @@
         <span id="server_messages"></span>
 
         <!--NOTEBOOK NAME-->
-        <div class="heading row" >
-            <span class="col-xs-3"></span>
+        <div class="row" >
+            <span class="col-xs-2"></span>
 
-            <span class="col-xs-6" style="text-align: center">
+            <span class="col-xs-8 " id="heading" style="text-align: center">
                 <input id="NAME" type="text"
                        class="editable" readonly>
                 <button type="button" id="edit_course_name_button"
@@ -347,7 +377,7 @@
                 </script>
             </span>
 
-            <span class="col-xs-3"></span>
+            <span class="col-xs-2"></span>
         </div>
         <!--NOTEBOOK NAME-->
 
@@ -612,7 +642,7 @@
             <div class="col-xs-2">
 
                 <!--LOGISTICS-->
-                <span style="font-size: 15px;margin-top: 10px">Interesting Stuff ....</span>
+                <span id="logistics_heading">More about this ...</span>
                 <hr>
                 <div>
                     <textarea id="LOGISTICS" class="form-control" readonly></textarea>

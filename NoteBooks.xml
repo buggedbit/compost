@@ -21,8 +21,8 @@
         <logistics>Nothing Yet</logistics>
         <topic topic_name="Getting Started">Fill Your Thoughts</topic>
     </subject>
-    <subject course_name="Data Structures And Algorithms" course_code="CS213">
+    <subject course_name="DSA" course_code="CS213">
         <logistics>Nothing Yet</logistics>
         <topic topic_name="Getting Started">Fill Your Thoughts</topic>
-    </subject>
+    <topic topic_name="Definitions">Fill Your Thoughts</topic></subject>
 </root>
