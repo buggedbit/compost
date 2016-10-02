@@ -14,12 +14,6 @@ public class Time {
     public int $MINUTE = -1;    // 0 - 59
     public int $SECOND = -1;    // 0 - 59
 
-    public static final int MINUTES_IN_HOUR = 60;
-    public static final int SECONDS_IN_MINUTE = 60;
-    public static final int SECONDS_IN_HOUR = 3600;
-    public static final int SECONDS_IN_DAY = 86400;
-    public static final int HOURS_IN_DAY = 24;
-
     // constructors
     public Time() {
         unsetTime();
@@ -38,6 +32,8 @@ public class Time {
     //String Format = "HH<separator>MM<separator>SS"
     //if not in any of these then the default initialization
     public Time(String timeString, String separator) {
+
+        Log.i(ZeroLog.TAG, timeString + "==>" + separator);
 
         String error = "Time: not a proper Time object initialization with string " + timeString + " and with separator " + separator;
 
@@ -194,6 +190,7 @@ public class Time {
 
     // comparisons
     // These functions compare without validity check
+    // the time is considered to be in one day only
     public static boolean isFuture(Time A, Time B) {
         // returns A>B
         if (A.$HOUR > B.$HOUR) return true;
@@ -230,43 +227,45 @@ public class Time {
 
     // difference
     // return A - B in seconds with sign
-    public static int timeDifferenceSecondToFirst(Time A, Time B) {
-        return (A.$HOUR - B.$HOUR) * Time.SECONDS_IN_HOUR + (A.$MINUTE - B.$MINUTE) * Time.SECONDS_IN_MINUTE + (A.$SECOND - B.$SECOND);
+    // the time is considered to be in one day only
+    public static long timeDifferenceSecondToFirst(Time A, Time B) {
+        return (A.$HOUR - B.$HOUR) * Constants.SECONDS_IN_HOUR + (A.$MINUTE - B.$MINUTE) * Constants.SECONDS_IN_MINUTE + (A.$SECOND - B.$SECOND);
     }
 
-    public int timeDifferenceFrom(Time B) {
-        return (this.$HOUR - B.$HOUR) * Time.SECONDS_IN_HOUR + (this.$MINUTE - B.$MINUTE) * Time.SECONDS_IN_MINUTE + (this.$SECOND - B.$SECOND);
+    public long timeDifferenceFrom(Time B) {
+        return Time.timeDifferenceSecondToFirst(this,B);
     }
 
-    public int timeDifferenceTo(Time A) {
-        return (A.$HOUR - this.$HOUR) * Time.SECONDS_IN_HOUR + (A.$MINUTE - this.$MINUTE) * Time.SECONDS_IN_MINUTE + (A.$SECOND - this.$SECOND);
+    public long timeDifferenceTo(Time A) {
+        return Time.timeDifferenceSecondToFirst(A,this);
     }
     //
 
     //modifiers
-    // adds seconds to this time circularly and returns no days that have passed in bw
+    //adds seconds to this time circularly
+    //returns a value(initially 0) which is incremented by 1 every time the time crosses (or reaches) 00:00:00
     private long add(long additional_seconds) {
         if (additional_seconds < 0) return 0;
         //
-        long days = (additional_seconds / Time.SECONDS_IN_DAY);
-        int _day = (int) (additional_seconds % Time.SECONDS_IN_DAY);
+        long days = (additional_seconds / Constants.SECONDS_IN_DAY);
+        int _day = (int) (additional_seconds % Constants.SECONDS_IN_DAY);
         // _day [0,86399] therefore no extra days will come
-        int hours = _day / Time.SECONDS_IN_HOUR;
-        int _hour = _day % Time.SECONDS_IN_HOUR;
-        int minutes = _hour / Time.SECONDS_IN_MINUTE;
-        int seconds = _hour % Time.SECONDS_IN_MINUTE;
+        int hours = _day / Constants.SECONDS_IN_HOUR;
+        int _hour = _day % Constants.SECONDS_IN_HOUR;
+        int minutes = _hour / Constants.SECONDS_IN_MINUTE;
+        int seconds = _hour % Constants.SECONDS_IN_MINUTE;
 
         int prev_sec = this.$SECOND;
         int prev_min = this.$MINUTE;
         int prev_hour = this.$HOUR;
 
-        this.$SECOND = (prev_sec + seconds) % Time.SECONDS_IN_MINUTE;
-        int extra_minute = (prev_sec + seconds) / Time.SECONDS_IN_MINUTE;
+        this.$SECOND = (prev_sec + seconds) % Constants.SECONDS_IN_MINUTE;
+        int extra_minute = (prev_sec + seconds) / Constants.SECONDS_IN_MINUTE;
 
-        this.$MINUTE = (prev_min + minutes + extra_minute) % Time.MINUTES_IN_HOUR;
-        int extra_hour = (prev_min + minutes + extra_minute) / Time.MINUTES_IN_HOUR;
+        this.$MINUTE = (prev_min + minutes + extra_minute) % Constants.MINUTES_IN_HOUR;
+        int extra_hour = (prev_min + minutes + extra_minute) / Constants.MINUTES_IN_HOUR;
 
-        this.$HOUR = (prev_hour + hours + extra_hour) % Time.HOURS_IN_DAY;
+        this.$HOUR = (prev_hour + hours + extra_hour) % Constants.HOURS_IN_DAY;
 
         if (prev_hour > this.$HOUR) {
             days++;// due to day change
@@ -275,14 +274,16 @@ public class Time {
         return (days);
     }
 
+    //subtracts seconds to this time circularly
+    //returns a value(initially 0) which is decremented by 1 every time the time crosses 00:00:00
     private long subtract(long negative_seconds) {
         if (negative_seconds < 0) return 0;
         //
-        long days = negative_seconds / Time.SECONDS_IN_DAY;
-        int remaining_seconds = (int) (negative_seconds % Time.SECONDS_IN_DAY);
+        long days = negative_seconds / Constants.SECONDS_IN_DAY;
+        int remaining_seconds = (int) (negative_seconds % Constants.SECONDS_IN_DAY);
         // remaining_seconds [0,86399] therefore no extra days will come
         days++;
-        remaining_seconds = Time.SECONDS_IN_DAY - remaining_seconds;
+        remaining_seconds = Constants.SECONDS_IN_DAY - remaining_seconds;
         this.add(remaining_seconds);
 
         return (-days);
@@ -295,7 +296,9 @@ public class Time {
      * otherwise
      * they do nothing to the object
      */
-    public long addTime(long seconds) {
+    //adds algebraic seconds to this time circularly
+    //returns a value which is no of changes in the dates occurred (00:00:00 is considered the start of a day)
+    public long addSecondsReturnChangeInDates(long seconds) {
         if (!this.isValid()) return 0;
         if (seconds == 0) return 0;
         else if (seconds > 0) return this.add(seconds);
@@ -309,15 +312,4 @@ public class Time {
 
 
 }
-
-
-//    public Time(DateTime dateTime){
-//        if (dateTime.isSet()){
-//            HOUR = dateTime.HOUR;
-//            MINUTE = dateTime.MINUTE;
-//        }
-//        else {
-//            InitializeTimeVariables();
-//        }
-//    }
 

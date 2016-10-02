@@ -27,15 +27,6 @@ public class Date {
     public int $STD_MONTH = -1;
     public int $STD_DAY = -1;
 
-    public static final int DAYS_IN_STD_MONTH = 30;
-    public static final int DAYS_IN_STD_YEAR = 365;
-    public static final int[] STD_MONTH_EXTRAS_ARRAY = {1, -1, 0, 0, 1, 1, 2, 3, 3, 4, 4, 5};
-
-    public static final String[] MONTH_NAMES = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    public static final String[] SUFFIXES = {"st", "nd", "rd", "th"};
-    public static final int[] DAYS_IN_MONTH_NLY = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    public static final int[] DAYS_IN_MONTH_LY = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
     // constructors
     public Date() {
         unsetDate();
@@ -53,7 +44,10 @@ public class Date {
     //String Format = "DD<separator>MonMon<separator>YYYY<separator>...
     //String Format = "DD<separator>MonMon<separator>YYYY"
     //if not in any of these then the default initialization
+    //NOTE : preferably do not use unknown separators DEFINITELY NOT "."
     public Date(String dateString, String separator) {
+
+        Log.i(ZeroLog.TAG, dateString + "==>" + separator);
 
         String error = "Date: not a proper Date object initialization with string " + dateString + " and with separator " + separator;
 
@@ -199,9 +193,9 @@ public class Date {
         if (isValid()) {
             String suffix;
             String MonthName;
-            MonthName = Date.MONTH_NAMES[this.$MONTH - 1];
-            if ((this.$DAY - 1) % 10 < 3) suffix = Date.SUFFIXES[(this.$DAY - 1) % 10];
-            else suffix = Date.SUFFIXES[3];
+            MonthName = Constants.MONTH_NAMES[this.$MONTH - 1];
+            if ((this.$DAY - 1) % 10 < 3) suffix = Constants.SUFFIXES[(this.$DAY - 1) % 10];
+            else suffix = Constants.SUFFIXES[3];
             if (this.$DAY == 11 || this.$DAY == 12 || this.$DAY == 13)
                 suffix = "th";
             return (this.$DAY + suffix + " " + MonthName + " " + this.$YEAR);
@@ -298,7 +292,7 @@ public class Date {
         // month related issues
         this.$STD_MONTH = this.$MONTH - 1;
         if (this.$MONTH > 1)
-            this.$MONTH_EXTRA_DAYS = Date.STD_MONTH_EXTRAS_ARRAY[this.$MONTH - 2];//-2 bcz   // 1 for array start
+            this.$MONTH_EXTRA_DAYS = Constants.STD_MONTH_EXTRAS_ARRAY[this.$MONTH - 2];//-2 bcz   // 1 for array start
         else this.$MONTH_EXTRA_DAYS = 0;
         // year related issues
         this.$STD_YEAR = this.$YEAR - 1;
@@ -314,7 +308,7 @@ public class Date {
     // if the Date is 0001-01-01 the result is 0
     public long daysFromEpoch() {
         if (this.prepareStdForm())
-            return (this.$STD_YEAR) * Date.DAYS_IN_STD_YEAR + (this.$STD_MONTH) * Date.DAYS_IN_STD_MONTH + (this.$STD_DAY) + (this.$LEAP_EXTRA_DAYS) + (this.$MONTH_EXTRA_DAYS) - 1;// refer to std form definition
+            return (this.$STD_YEAR) * Constants.DAYS_IN_STD_YEAR + (this.$STD_MONTH) * Constants.DAYS_IN_STD_MONTH + (this.$STD_DAY) + (this.$LEAP_EXTRA_DAYS) + (this.$MONTH_EXTRA_DAYS) - 1;// refer to std form definition
         // else return -1 , means invalid Date
         return -1;
     }
@@ -334,38 +328,26 @@ public class Date {
         if (!A.isValid() || !B.isValid()) return 0;
         A.prepareStdForm();
         B.prepareStdForm();
-        return (A.$STD_YEAR - B.$STD_YEAR) * Date.DAYS_IN_STD_YEAR + (A.$STD_MONTH - B.$STD_MONTH) * Date.DAYS_IN_STD_MONTH + (A.$STD_DAY - B.$STD_DAY) + (A.$LEAP_EXTRA_DAYS - B.$LEAP_EXTRA_DAYS) + (A.$MONTH_EXTRA_DAYS - B.$MONTH_EXTRA_DAYS);
+        return (A.$STD_YEAR - B.$STD_YEAR) * Constants.DAYS_IN_STD_YEAR + (A.$STD_MONTH - B.$STD_MONTH) * Constants.DAYS_IN_STD_MONTH + (A.$STD_DAY - B.$STD_DAY) + (A.$LEAP_EXTRA_DAYS - B.$LEAP_EXTRA_DAYS) + (A.$MONTH_EXTRA_DAYS - B.$MONTH_EXTRA_DAYS);
     }
 
     // returns PARAM TO this in days with sign
     public long dayDifferenceFrom(Date param) {
-        Date A = this;
-        Date B = param;
-        if (!A.isValid() || !B.isValid()) {
-            System.out.print("hello");
-            return 0;
-        }
-        A.prepareStdForm();
-        B.prepareStdForm();
-        return (A.$STD_YEAR - B.$STD_YEAR) * Date.DAYS_IN_STD_YEAR + (A.$STD_MONTH - B.$STD_MONTH) * Date.DAYS_IN_STD_MONTH + (A.$STD_DAY - B.$STD_DAY) + (A.$LEAP_EXTRA_DAYS - B.$LEAP_EXTRA_DAYS) + (A.$MONTH_EXTRA_DAYS - B.$MONTH_EXTRA_DAYS);
+        return Date.dayDifferenceSecondToFirst(this,param);
     }
 
     // returns this TO PARAM in days with sign
     public long dayDifferenceTo(Date param) {
-        Date A = param;
-        Date B = this;
-        if (!A.isValid() || !B.isValid()) return 0;
-        A.prepareStdForm();
-        B.prepareStdForm();
-        return (A.$STD_YEAR - B.$STD_YEAR) * Date.DAYS_IN_STD_YEAR + (A.$STD_MONTH - B.$STD_MONTH) * Date.DAYS_IN_STD_MONTH + (A.$STD_DAY - B.$STD_DAY) + (A.$LEAP_EXTRA_DAYS - B.$LEAP_EXTRA_DAYS) + (A.$MONTH_EXTRA_DAYS - B.$MONTH_EXTRA_DAYS);
+        return Date.dayDifferenceSecondToFirst(param,this);
     }
     //
 
     // modifiers
+    // do not access dates before 01/01/0001
     public boolean toTomorrow() {
         if (!this.isValid()) return false;
         if (this.isLeapYear()) {
-            if (this.$DAY + 1 > Date.DAYS_IN_MONTH_LY[this.$MONTH - 1]) {
+            if (this.$DAY + 1 > Constants.DAYS_IN_MONTH_LY[this.$MONTH - 1]) {
                 if (this.$MONTH + 1 > 12) {
                     this.$YEAR += 1;
                     this.$MONTH = 1;
@@ -380,7 +362,7 @@ public class Date {
                 return true;
             }
         } else {
-            if (this.$DAY + 1 > Date.DAYS_IN_MONTH_NLY[this.$MONTH - 1]) {
+            if (this.$DAY + 1 > Constants.DAYS_IN_MONTH_NLY[this.$MONTH - 1]) {
                 if (this.$MONTH + 1 > 12) {
                     this.$YEAR += 1;
                     this.$MONTH = 1;
@@ -398,6 +380,7 @@ public class Date {
         return false;
     }
 
+    // do not access dates before 01/01/0001
     public boolean toYesterday() {
         if (!this.isValid()) return false;
         if (this.isLeapYear()) {
@@ -408,7 +391,7 @@ public class Date {
                     this.$DAY = 31;
                 } else {
                     this.$MONTH -= 1;
-                    this.$DAY = Date.DAYS_IN_MONTH_LY[this.$MONTH - 1];
+                    this.$DAY = Constants.DAYS_IN_MONTH_LY[this.$MONTH - 1];
                     return true;
                 }
             } else {
@@ -423,7 +406,7 @@ public class Date {
                     this.$DAY = 31;
                 } else {
                     this.$MONTH -= 1;
-                    this.$DAY = Date.DAYS_IN_MONTH_NLY[this.$MONTH - 1];
+                    this.$DAY = Constants.DAYS_IN_MONTH_NLY[this.$MONTH - 1];
                     return true;
                 }
             } else {

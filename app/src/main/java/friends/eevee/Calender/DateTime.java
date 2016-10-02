@@ -6,8 +6,8 @@ import friends.eevee.ZeroLog;
 
 //time is internally implemented in 24hr
 public class DateTime {
-    Date $DATE; // date object
-    Time $TIME; // time object
+    public Date $DATE; // date object
+    public Time $TIME; // time object
 
     // constructors
     public DateTime() {
@@ -25,7 +25,8 @@ public class DateTime {
 
     //String Format = DD<date-sep>MonMon<date-sep>YYYY<date-time-sep>HH<time-sep>MinMin<time-sep>SS
     //note that time is in 24hrs
-    //all three separators must be different
+    //all three separators better be different
+    //but strictly the dateSep and timeSep can be same and dateTimeSep should be different from these two ALWAYS
     public DateTime(String dateTimeString, String dateSep, String timeSep, String dateTimeSep) {
 
         String error = "DateTime: not a proper DateTime object initialization with "
@@ -42,6 +43,8 @@ public class DateTime {
             String[] date_time = dateTimeString.split(dateTimeSep);
             if (date_time.length == 2) {
                 try {
+                    Log.i(ZeroLog.TAG, date_time[0]);
+                    Log.i(ZeroLog.TAG, date_time[1]);
                     this.$DATE = new Date(date_time[0], dateSep);
                     this.$TIME = new Time(date_time[1], timeSep);
                     if (!this.isValid()) {
@@ -156,7 +159,18 @@ public class DateTime {
     //
 
     // difference
-    // TODO : FILL UP AFTERWARDS IF NEEDED
+    // return A - B in DateTimeDiff with sign
+    public static DateTimeDiff dateTimeDifferenceSecondToFirst(DateTime A,DateTime B) {
+        return new DateTimeDiff(Date.dayDifferenceSecondToFirst(A.$DATE,B.$DATE),Time.timeDifferenceSecondToFirst(A.$TIME,B.$TIME));
+    }
+
+    public DateTimeDiff dateTimeDifferenceFrom(DateTime B) {
+        return DateTime.dateTimeDifferenceSecondToFirst(this,B);
+    }
+
+    public DateTimeDiff dateTimeDifferenceTo(DateTime A) {
+        return DateTime.dateTimeDifferenceSecondToFirst(A,this);
+    }
     //
 
     // modifiers
@@ -171,14 +185,18 @@ public class DateTime {
     public boolean addDaysSeconds(long days, long seconds) {
         if (!this.isValid()) return false;
 
-        long days_due_to_seconds = this.$TIME.addTime(seconds);
+        long days_due_to_seconds = this.$TIME.addSecondsReturnChangeInDates(seconds);
         boolean returnValue = this.$DATE.addDays(days + days_due_to_seconds);
 
         if (!returnValue)
-            this.$TIME.addTime(-seconds);   // this is for the corner case where change in time reduces date below
+            this.$TIME.addSecondsReturnChangeInDates(-seconds);   // this is for the corner case where change in time reduces date below
         // 01 01 0001
         // this preserves the INVARIANT mentioned above in /***/ comment
         return returnValue;
+    }
+
+    public boolean addDateTimeDiff(DateTimeDiff dateTimeDiff){
+        return this.addDaysSeconds(dateTimeDiff.$24hr,dateTimeDiff.$sec);
     }
     //
 

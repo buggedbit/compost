@@ -13,8 +13,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:layout_height="800dp">
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,17 +47,6 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true" />
 
-                <TextView
-                    android:text="Answer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView1"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:layout_alignBottom="@+id/to_date"
-                    android:layout_below="@+id/button1"
-                    android:layout_alignStart="@+id/button1"
-                    android:layout_alignParentEnd="true" />
-
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,10 +73,12 @@
                     android:layout_height="wrap_content"
                     android:inputType="phone"
                     android:ems="10"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"
                     android:id="@+id/from_time"
-                    android:hint="From" />
+                    android:hint="From"
+                    android:layout_marginTop="39dp"
+                    android:layout_below="@+id/add_date"
+                    android:layout_alignParentStart="true" />
+
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -120,6 +111,48 @@
                     android:layout_alignParentStart="true"
                     android:hint="add" />
 
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:id="@+id/from_date_time"
+                    android:layout_below="@+id/add_time"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="19dp"
+                    android:hint="From"
+                    android:inputType="phone" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:id="@+id/to_date_time"
+                    android:hint="To"
+                    android:layout_below="@+id/from_date_time"
+                    android:layout_alignParentStart="true"
+                    android:inputType="phone" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:id="@+id/init_date_time"
+                    android:layout_below="@+id/to_date_time"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="19dp"
+                    android:hint="Initial DateTime"
+                    android:inputType="phone" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number|phone"
+                    android:ems="10"
+                    android:id="@+id/add_date_time"
+                    android:hint="add"
+                    android:layout_below="@+id/init_date_time"
+                    android:layout_alignParentStart="true" />
+
                 <Button
                     android:text="Solve"
                     android:layout_width="wrap_content"
@@ -135,7 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/from_time"
-                    android:layout_alignStart="@+id/button2"
+                    android:layout_alignStart="@+id/button1"
                     android:id="@+id/button3"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 
@@ -144,9 +177,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/init_time"
-                    android:layout_alignStart="@+id/button3"
+                    android:layout_alignStart="@+id/button1"
                     android:id="@+id/button4"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+                <Button
+                    android:text="SOLVE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/from_date_time"
+                    android:layout_alignStart="@+id/button1"
+                    android:id="@+id/button5"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+                <Button
+                    android:text="SOLVE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/init_date_time"
+                    android:layout_alignStart="@+id/button1"
+                    android:id="@+id/button6"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+
+                <TextView
+                    android:text="Answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView1"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:layout_alignBottom="@+id/to_date"
+                    android:layout_below="@+id/button1"
+                    android:layout_alignStart="@+id/button1"
+                    android:layout_alignParentEnd="true" />
+
 
                 <TextView
                     android:text="Answer"
@@ -177,6 +241,27 @@
                     android:id="@+id/textView4"
                     android:layout_alignParentEnd="true"
                     android:layout_alignBottom="@+id/add_time" />
+
+                <TextView
+                    android:text="Answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button5"
+                    android:layout_alignStart="@+id/button4"
+                    android:id="@+id/textView5"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBottom="@+id/to_date_time" />
+
+                <TextView
+                    android:text="Answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button6"
+                    android:layout_alignStart="@+id/button4"
+                    android:id="@+id/textView6"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBottom="@+id/add_date_time" />
+
 
             </RelativeLayout>
         </LinearLayout>
