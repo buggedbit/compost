@@ -5,6 +5,7 @@
     <html>
     <head>
         <!--LIB HEADERS-->
+        <link href="https://fonts.googleapis.com/css?family=Ruslan+Display|Lobster|Special+Elite" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -200,12 +201,20 @@
 
             #server_messages{
                 font-family: monospace;
+                background-color:rgba(255, 255, 255, 0.6); 
                 float: left;
                 position:fixed;
                 top: 7%;
                 display: none;
                 color: grey;
                 font-size: 20px;
+                padding: 10px;
+                border-radius: 4px;
+            }
+
+            button:focus,
+            input:focus {
+                outline: none;
             }
 
             button:focus {
@@ -245,6 +254,7 @@
             #NAME {
                 border: none;
                 text-align: center;
+                font-family: 'Ruslan Display', cursive;
                 font-size: 40px;
                 background-color: transparent;
                 color: white;
@@ -270,12 +280,14 @@
 
             #allAboutTopics ul {
                 list-style: lower-latin;
+                font-family: 'Special Elite', cursive;
             }
 
             #TOPIC_NAME {
                 border: none;
                 color: steelblue;
                 font-size: 30px;
+                font-family: 'Lobster', cursive;
                 background-color: transparent;
                 color: white;
             }
@@ -284,13 +296,15 @@
                 min-height: 700px;
                 color: black;
                 font-size: 20px;
+                font-family: 'Special Elite', cursive;
                 background-color: rgba(255, 255, 255, 0.49);
                 overflow: auto;
             }
 
             #LOGISTICS {
                 overflow: auto;
-                background-color: rgba(255, 255, 255, 0.49);
+                background-color: rgba(255, 255, 255, 0.70);
+                font-family: 'Special Elite', cursive;
             }
 
             .highlightSubjectLink {
@@ -313,7 +327,7 @@
     <nav>
         <div class="container-fluid">
             <ul class="nav nav-tabs " id="navigation">
-                <li class="navbar-brand" style="background-color: steelblue;color: white;margin-right: 10px;">Your Books</li>
+                <li class="navbar-brand" style="background-color: steelblue;color: white;margin-right: 10px;font-family:'Ruslan Display',cursive;">Your Books</li>
                 <!--NOTEBOOK LINKS-->
                 <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#create-form-div">
                     +
@@ -330,10 +344,8 @@
 
         <!--NOTEBOOK NAME-->
         <div class="row" >
-            <span class="col-xs-2"></span>
-
-            <span class="col-xs-8 " id="heading" style="text-align: center">
-                <input id="NAME" type="text"
+            <span class="col-xs-12" id="heading" style="text-align: center">
+                <input id="NAME" type="text" style="width: 60%;"
                        class="editable" readonly>
                 <button type="button" id="edit_course_name_button"
                         class="btn btn-warning btn-sm glyphicon glyphicon-pencil"></button>
@@ -376,8 +388,6 @@
                     });
                 </script>
             </span>
-
-            <span class="col-xs-2"></span>
         </div>
         <!--NOTEBOOK NAME-->
 
