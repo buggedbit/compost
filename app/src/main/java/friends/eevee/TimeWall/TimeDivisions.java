@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 import friends.eevee.Calender.Constants;
+import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
 
 /**
@@ -22,9 +23,13 @@ import friends.eevee.Calender.DateTime;
 public class TimeDivisions extends TextView {
 
     /**
-     * <used for color and size
+     * <used for drawing rectangle shaped division marks
      */
     protected Rect div_separator;
+    /**
+     * <used for drawing rectangles representing change in day
+     */
+    protected Rect day_bg_rect;
     /**
      * <used for color and size
      */
@@ -38,10 +43,14 @@ public class TimeDivisions extends TextView {
      */
     protected Paint pres_mark_paint;
     /**
+     * <used for color and size
+     */
+    protected Paint day_bg_paint;
+
+    /**
      * < used for iterating through times
      * and printing the time division marks
      */
-
     protected DateTime date_time_object;
     /**
      * <px
@@ -101,6 +110,7 @@ public class TimeDivisions extends TextView {
 
     protected void initializeFields(Context context) {
         div_separator = new Rect();
+        day_bg_rect = new Rect();
 
         div_paint = new Paint();
         div_paint.setAntiAlias(true);
@@ -116,6 +126,10 @@ public class TimeDivisions extends TextView {
         pres_mark_paint.setAntiAlias(true);
         pres_mark_paint.setColor(Color.MAGENTA);
 
+        day_bg_paint = new Paint();
+        day_bg_paint.setAntiAlias(true);
+        day_bg_paint.setColor(Color.parseColor("#33000000"));
+
         time_bw_div = UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS;
         px_bw_div = (int) (time_bw_div * UIPreferences.MINUTE_PX_SCALE);
 
@@ -129,6 +143,27 @@ public class TimeDivisions extends TextView {
     public void invalidateWithOffset(int offset) {
         this.offset = offset;
         this.invalidate();
+    }
+
+    public int get_bg_color(Date date){
+        switch (date.getDay("EE")){
+            case "Sun":
+                return Color.argb(50,255,0,0);
+            case "Mon":
+                return Color.argb(50,0,255,0);
+            case "Tue":
+                return Color.argb(50,0,0,255);
+            case "Wed":
+                return Color.argb(50,255,0,0);
+            case "Thu":
+                return Color.argb(50,0,255,0);
+            case "Fri":
+                return Color.argb(50,0,0,255);
+            case "Sat":
+                return Color.argb(50,255,255,0);
+            default:
+                return Color.argb(50,0,0,0);
+        }
     }
 
     /**
@@ -213,18 +248,31 @@ public class TimeDivisions extends TextView {
                 break;
         }
 
-        String day, time;
+        String day = null, time ;
         int no_div_local = noDivsBasedOnHeight();
+        String prev_day ;
+        int flag = px_from_start;
+
         for (int div_iterator = 0; div_iterator < no_div_local; div_iterator++) {
             // Preparing shapes and text
             div_separator.set(0, px_from_start, getWidth(), px_from_start + div_line_width);
             time = date_time_object.$TIME.get24HrFormatWithoutSeconds();
+            prev_day = day;
             day = date_time_object.getDay("EE");
-
+            
             // Drawing them on canvas
             canvas.drawRect(div_separator, div_paint);
             canvas.drawText(time, 0, px_from_start + text_height / 2, text_paint);
-            canvas.drawText(day, getWidth() - text_height * 2, px_from_start + text_height / 2, text_paint);
+            // drawing bg and day when day changes
+            if(div_iterator < no_div_local - 1){
+                if(prev_day != null && !prev_day.matches(day)){
+                    day_bg_rect.set(0, flag, getWidth(), px_from_start);
+                    flag = px_from_start;
+                    day_bg_paint.setColor(get_bg_color(date_time_object.$DATE));
+                    canvas.drawRect(day_bg_rect,day_bg_paint);
+                    canvas.drawText(day, getWidth() - text_height * 2, px_from_start + text_height / 2, text_paint);
+                }
+            }
 
             // Updating indices
             px_from_start = px_from_start + px_bw_div;

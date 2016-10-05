@@ -7,9 +7,9 @@ public class UIPreferences {
 
     public static class TIME_DIVISIONS{
 
-        public static int MINUTES_BW_DIVISIONS = 60;           /**< min multiples of 30*/
+        public static int MINUTES_BW_DIVISIONS = 30;           /**< min multiples of 30*/
         public static int MIN_MINUTES_BW_DIVISIONS = 30;       /**< min*/
-        public static int MAX_MINUTES_BW_DIVISIONS = 60;      /**< min*/
+        public static int MAX_MINUTES_BW_DIVISIONS = 60;       /**< min*/
 
         public static int TIME_TEXT_SIZE = 30;              /**< px*/
         public static int MIN_TEXT_SIZE = 20;               /**< px*/

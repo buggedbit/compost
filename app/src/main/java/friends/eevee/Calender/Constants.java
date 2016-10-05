@@ -9,6 +9,7 @@ public class Constants {
     public static final int SECONDS_IN_DAY = 86400;
     public static final int HOURS_IN_DAY = 24;
 
+    public static final int DAYS_IN_WEEK = 7;
     public static final int DAYS_IN_STD_MONTH = 30;
     public static final int DAYS_IN_STD_YEAR = 365;
     public static final int[] STD_MONTH_EXTRAS_ARRAY = {1, -1, 0, 0, 1, 1, 2, 3, 3, 4, 4, 5};
