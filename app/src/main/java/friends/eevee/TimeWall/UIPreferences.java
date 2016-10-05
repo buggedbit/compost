@@ -3,13 +3,13 @@ package friends.eevee.TimeWall;
 public class UIPreferences {
 
     public static int MINIMUM_PAST_TIME = 120;                  /**< min*/
-    public static float MINUTE_PX_SCALE = 4.0f;                 /**< 1 MINUTE = (this many) px */
+    public static float MINUTE_PX_SCALE = 5.0f;                 /**< 1 MINUTE = (this many) px */
 
     public static class TIME_DIVISIONS{
 
-        public static int TIME_BW_DIVISIONS = 30;           /**< min multiples of 30*/
-        public static int MIN_TIME_BW_DIVISIONS = 30;       /**< min*/
-        public static int MAX_TIME_BW_DIVISIONS = 180;      /**< min*/
+        public static int MINUTES_BW_DIVISIONS = 60;           /**< min multiples of 30*/
+        public static int MIN_MINUTES_BW_DIVISIONS = 30;       /**< min*/
+        public static int MAX_MINUTES_BW_DIVISIONS = 60;      /**< min*/
 
         public static int TIME_TEXT_SIZE = 30;              /**< px*/
         public static int MIN_TEXT_SIZE = 20;               /**< px*/
