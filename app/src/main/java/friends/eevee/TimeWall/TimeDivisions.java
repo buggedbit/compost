@@ -21,6 +21,9 @@ import friends.eevee.Calender.DateTime;
  */
 public class TimeDivisions extends TextView {
 
+    /**
+     * <used for color and size
+     */
     protected Rect div_separator;
     /**
      * <used for color and size
@@ -35,50 +38,50 @@ public class TimeDivisions extends TextView {
      */
     protected Paint pres_mark_paint;
     /**
-     * <used for color and size
+     * < used for iterating through times
+     * and printing the time division marks
      */
 
     protected DateTime date_time_object;
     /**
-     * < used for iterating through times
-     * and printing the time division marks
+     * <px
      */
 
     protected int text_height;
     /**
      * <px
      */
+
     protected int div_line_width = 1;
     /**
      * <px
      */
+
     protected int pres_mark_line_width = 5;
+
     /**
-     * <px
+     * <min
      */
 
     protected int time_bw_div;
     /**
-     * <min
-     */
-    protected int px_bw_div;
-    /**
      * <px
      */
 
-    protected int no_div;
+    protected int px_bw_div;
     /**
      * <number of division marks to be printed
      * equals number of divisions + 1
      */
 
-    protected int offset = 0;
-
+    protected int no_div;
     /**
      * < the amount of time_flow scroll view scrolled,
      * so as to correspondingly indicate time divisions
      * Initialized to zero
      */
+
+    protected int offset = 0;
 
 
     public TimeDivisions(Context context) {
