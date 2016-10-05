@@ -2,6 +2,7 @@ package friends.eevee.Calender;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import friends.eevee.ZeroLog;
@@ -47,7 +48,7 @@ public class Date {
     //NOTE : preferably do not use unknown separators DEFINITELY NOT "."
     public Date(String dateString, String separator) {
 
-        Log.i(ZeroLog.TAG, dateString + "==>" + separator);
+        //Log.i(ZeroLog.TAG, dateString + "==>" + separator);
 
         String error = "Date: not a proper Date object initialization with string " + dateString + " and with separator " + separator;
 
@@ -213,6 +214,15 @@ public class Date {
     public String getDateString() {
         return this.$DAY + "//" + this.$MONTH + "//" + this.$YEAR;
     }
+
+    // TODO: improve this function
+    public String getDay(String format){
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        java.util.Date d = new java.util.Date(this.$YEAR - 1900, this.$MONTH - 1, this.$DAY);
+        String dayOfTheWeek = sdf.format(d);
+
+        return dayOfTheWeek;
+    }
     //
 
     public void printState() {
@@ -343,6 +353,13 @@ public class Date {
     //
 
     // modifiers
+    public void toPresent(){
+        Calendar currentTime = Calendar.getInstance();
+        this.$DAY = currentTime.get(Calendar.DAY_OF_MONTH);
+        this.$MONTH = currentTime.get(Calendar.MONTH) + 1;
+        this.$YEAR = currentTime.get(Calendar.YEAR);
+    }
+
     // do not access dates before 01/01/0001
     public boolean toTomorrow() {
         if (!this.isValid()) return false;

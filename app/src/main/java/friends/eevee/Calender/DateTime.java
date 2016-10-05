@@ -43,8 +43,6 @@ public class DateTime {
             String[] date_time = dateTimeString.split(dateTimeSep);
             if (date_time.length == 2) {
                 try {
-                    Log.i(ZeroLog.TAG, date_time[0]);
-                    Log.i(ZeroLog.TAG, date_time[1]);
                     this.$DATE = new Date(date_time[0], dateSep);
                     this.$TIME = new Time(date_time[1], timeSep);
                     if (!this.isValid()) {
@@ -121,6 +119,10 @@ public class DateTime {
     public String getDateTimeString() {
         return this.$DATE.getDateString() + " " + this.$TIME.getTimeString();
     }
+
+    public String getDay(String format){
+        return this.$DATE.getDay(format);
+    }
     //
 
     // comparisons
@@ -160,20 +162,25 @@ public class DateTime {
 
     // difference
     // return A - B in DateTimeDiff with sign
-    public static DateTimeDiff dateTimeDifferenceSecondToFirst(DateTime A,DateTime B) {
-        return new DateTimeDiff(Date.dayDifferenceSecondToFirst(A.$DATE,B.$DATE),Time.timeDifferenceSecondToFirst(A.$TIME,B.$TIME));
+    public static DateTimeDiff dateTimeDifferenceSecondToFirst(DateTime A, DateTime B) {
+        return new DateTimeDiff(Date.dayDifferenceSecondToFirst(A.$DATE, B.$DATE), Time.timeDifferenceSecondToFirst(A.$TIME, B.$TIME));
     }
 
     public DateTimeDiff dateTimeDifferenceFrom(DateTime B) {
-        return DateTime.dateTimeDifferenceSecondToFirst(this,B);
+        return DateTime.dateTimeDifferenceSecondToFirst(this, B);
     }
 
     public DateTimeDiff dateTimeDifferenceTo(DateTime A) {
-        return DateTime.dateTimeDifferenceSecondToFirst(A,this);
+        return DateTime.dateTimeDifferenceSecondToFirst(A, this);
     }
     //
 
     // modifiers
+
+    public void toPresent() {
+        this.$DATE.toPresent();
+        this.$TIME.toPresent();
+    }
 
     /**
      * does its operation only if
@@ -195,8 +202,8 @@ public class DateTime {
         return returnValue;
     }
 
-    public boolean addDateTimeDiff(DateTimeDiff dateTimeDiff){
-        return this.addDaysSeconds(dateTimeDiff.$24hr,dateTimeDiff.$sec);
+    public boolean addDateTimeDiff(DateTimeDiff dateTimeDiff) {
+        return this.addDaysSeconds(dateTimeDiff.$24hr, dateTimeDiff.$sec);
     }
     //
 

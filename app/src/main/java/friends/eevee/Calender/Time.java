@@ -33,7 +33,7 @@ public class Time {
     //if not in any of these then the default initialization
     public Time(String timeString, String separator) {
 
-        Log.i(ZeroLog.TAG, timeString + "==>" + separator);
+        //Log.i(ZeroLog.TAG, timeString + "==>" + separator);
 
         String error = "Time: not a proper Time object initialization with string " + timeString + " and with separator " + separator;
 
@@ -176,6 +176,25 @@ public class Time {
         return "The time is not properly set ";
     }
 
+    public String get24HrFormatWithoutSeconds() {
+        if (this.isValid()) {
+
+            String hrPart, minPart, secPart;
+
+            if (this.$HOUR < 10) hrPart = "0" + String.valueOf(this.$HOUR);
+            else hrPart = String.valueOf(this.$HOUR);
+
+            if (this.$MINUTE < 10) minPart = "0" + String.valueOf(this.$MINUTE);
+            else minPart = String.valueOf(this.$MINUTE);
+
+            if (this.$SECOND < 10) secPart = "0" + String.valueOf(this.$SECOND);
+            else secPart = String.valueOf(this.$SECOND);
+
+            return hrPart + ":" + minPart ;
+        }
+        return "The time is not properly set ";
+    }
+
     public String simpleRepresentation() {
         if (this.isValid()) {
             return this.$HOUR + ":" + this.$MINUTE + ":" + this.$SECOND;
@@ -242,10 +261,20 @@ public class Time {
     //
 
     //modifiers
+    public void toPresent(){
+        Calendar currentTime = Calendar.getInstance();
+        this.$HOUR = currentTime.get(Calendar.HOUR_OF_DAY);  // 24hr format
+        this.$MINUTE = currentTime.get(Calendar.MINUTE);
+        this.$SECOND = currentTime.get(Calendar.SECOND);
+    }
+
     //adds seconds to this time circularly
     //returns a value(initially 0) which is incremented by 1 every time the time crosses (or reaches) 00:00:00
     private long add(long additional_seconds) {
         if (additional_seconds < 0) return 0;
+
+//        Log.i(ZeroLog.TAG, String.valueOf(additional_seconds));
+
         //
         long days = (additional_seconds / Constants.SECONDS_IN_DAY);
         int _day = (int) (additional_seconds % Constants.SECONDS_IN_DAY);
@@ -267,10 +296,15 @@ public class Time {
 
         this.$HOUR = (prev_hour + hours + extra_hour) % Constants.HOURS_IN_DAY;
 
-        if (prev_hour > this.$HOUR) {
+        if (this.$HOUR < prev_hour) {
             days++;// due to day change
         }
-
+        else if(prev_hour == this.$HOUR && this.$MINUTE < prev_min){
+            days++;// due to day change
+        }
+        else if(prev_hour == this.$HOUR && prev_min == this.$MINUTE && this.$SECOND < prev_sec) {
+            days++;// due to day change
+        }
         return (days);
     }
 
@@ -281,10 +315,13 @@ public class Time {
         //
         long days = negative_seconds / Constants.SECONDS_IN_DAY;
         int remaining_seconds = (int) (negative_seconds % Constants.SECONDS_IN_DAY);
-        // remaining_seconds [0,86399] therefore no extra days will come
-        days++;
+
+        // instead of subtracting add the 1 day - remaining_seconds
+        // remaining_seconds [0,86399]
         remaining_seconds = Constants.SECONDS_IN_DAY - remaining_seconds;
-        this.add(remaining_seconds);
+        days++;
+
+        days -= this.add(remaining_seconds); // as we are returning -days
 
         return (-days);
     }
