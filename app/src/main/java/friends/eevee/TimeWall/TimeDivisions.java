@@ -119,8 +119,6 @@ public class TimeDivisions extends TextView {
         text_paint = new Paint();
         text_paint.setAntiAlias(true);
         text_paint.setColor(Color.BLACK);
-        text_height = UIPreferences.TIME_DIVISIONS.TIME_TEXT_SIZE;
-        text_paint.setTextSize(text_height);
 
         pres_mark_paint = new Paint();
         pres_mark_paint.setAntiAlias(true);
@@ -130,17 +128,26 @@ public class TimeDivisions extends TextView {
         day_bg_paint.setAntiAlias(true);
         day_bg_paint.setColor(Color.parseColor("#33000000"));
 
+        date_time_object = new DateTime(true);
+
+        offset = 0;
+
+        this.reloadUIPreferences();
+    }
+
+    public void reloadUIPreferences(){
         time_bw_div = UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS;
         px_bw_div = (int) (time_bw_div * UIPreferences.MINUTE_PX_SCALE);
 
-        div_line_width = 1;
-        offset = 0;
-        pres_mark_line_width = 5;
+        text_height = UIPreferences.TIME_DIVISIONS.TIME_TEXT_SIZE;
+        text_paint.setTextSize(text_height);
 
-        date_time_object = new DateTime(true);
+        div_line_width = 1;
+        pres_mark_line_width = 5;
     }
 
     public void invalidateWithOffset(int offset) {
+        this.reloadUIPreferences();
         this.offset = offset;
         this.invalidate();
     }
@@ -194,7 +201,7 @@ public class TimeDivisions extends TextView {
          * bw 0 and (UIPreferences.MINUTE_PX_SCALE/2) minutes
          * So for small values of (UIPreferences.MINUTE_PX_SCALE/2) its okay to use this
          * */
-        long min_top_to_pres_mark = (long) (curr_minute + UIPreferences.MINIMUM_PAST_TIME - offset / UIPreferences.MINUTE_PX_SCALE);
+        long min_top_to_pres_mark = (long) (curr_minute + UIPreferences.PAST_TIME - offset / UIPreferences.MINUTE_PX_SCALE);
         // so that the printed time is always of form xy:00:pq
         long px_top_to_pres_mark = (long) (min_top_to_pres_mark * UIPreferences.MINUTE_PX_SCALE);
         // set the present marker only if it is in scope

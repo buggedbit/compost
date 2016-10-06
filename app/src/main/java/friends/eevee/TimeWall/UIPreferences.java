@@ -2,18 +2,28 @@ package friends.eevee.TimeWall;
 
 public class UIPreferences {
 
-    public static int MINIMUM_PAST_TIME = 120;                  /**< min*/
-    public static float MINUTE_PX_SCALE = 5.0f;                 /**< 1 MINUTE = (this many) px */
+    public static int PAST_TIME = 120;                         /**< minutes*/
+    public final static int MINIMUM_PAST_TIME = 60;                  /**< minutes step size 60 minutes*/
+    public final static int MAXIMUM_PAST_TIME = 1440;               /**< minutes */ // one week
+    public final static int PAST_TIME_STEP = 60;                     /**< minutes */ // one week
+
+
+    public static float MINUTE_PX_SCALE = 4.0f;                 /**< 1 MINUTE = (this many) px */
+    public final static float MIN_MINUTE_PX_SCALE = 1.0f;             /**< 1 MINUTE = (this many) px */
+    public final static float MAX_MINUTE_PX_SCALE = 6.0f;             /**< 1 MINUTE = (this many) px */
+    public final static float MINUTE_PX_SCALE_STEP = 0.5f;             /**< 1 MINUTE = (this many) px */
 
     public static class TIME_DIVISIONS{
 
-        public static int MINUTES_BW_DIVISIONS = 30;           /**< min multiples of 30*/
-        public static int MIN_MINUTES_BW_DIVISIONS = 30;       /**< min*/
-        public static int MAX_MINUTES_BW_DIVISIONS = 60;       /**< min*/
+        public static int MINUTES_BW_DIVISIONS = 30;           /**< minutes*/
+        public final static int MIN_MINUTES_BW_DIVISIONS = 30;       /**< minutes*/
+        public final static int MAX_MINUTES_BW_DIVISIONS = 60;       /**< minutes*/
+        public final static int MINUTES_BW_DIVISIONS_STEP = 30;       /**< minutes*/
 
         public static int TIME_TEXT_SIZE = 30;              /**< px*/
-        public static int MIN_TEXT_SIZE = 20;               /**< px*/
-        public static int MAX_TEXT_SIZE = 150;              /**< px*/
+        public final static int MIN_TEXT_SIZE = 0;               /**< px*/
+        public final static int MAX_TEXT_SIZE = 100;              /**< px*/
+        public final static int TEXT_SIZE_STEP = 10;              /**< px*/
     }
 
     public static void setDeviceDependentValues(int WIDTH , int HEIGHT){

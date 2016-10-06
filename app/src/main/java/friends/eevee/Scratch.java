@@ -2,180 +2,191 @@ package friends.eevee;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.SeekBar;
 
-import friends.eevee.Calender.Date;
-import friends.eevee.Calender.DateTime;
-import friends.eevee.Calender.DateTimeDiff;
-import friends.eevee.Calender.Time;
 import friends.eevee.TimeWall.TimeDivisions;
-
+import friends.eevee.TimeWall.UIPreferences;
 
 public class Scratch extends AppCompatActivity {
 
-    EditText from_date;
-    EditText to_date;
-    EditText init_date;
-    EditText add_date;
-    EditText from_time;
-    EditText to_time;
-    EditText init_time;
-    EditText add_time;
-    EditText from_date_time;
-    EditText to_date_time;
-    EditText init_date_time;
-    EditText add_date_time;
-
-    TextView textView1;
-    TextView textView2;
-    TextView textView3;
-    TextView textView4;
-    TextView textView5;
-    TextView textView6;
-
-    Button button1;
-    Button button2;
-    Button button3;
-    Button button4;
-    Button button5;
-    Button button6;
-
+    LinearLayout time_wall_control_center;
     ScrollView time_flow;
     TimeDivisions time_divisions;
+    SeekBar time_divisions_time_text_size;
+    SeekBar time_divisions_time_bw_marks;
+    SeekBar time_wall_minute_px_scale;
+    SeekBar time_divisions_past_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scratch);
 
-        time_divisions= (TimeDivisions) findViewById(R.id.time_divisions);
+        //////////// initializes time wall control center
+
+        time_wall_control_center = (LinearLayout) findViewById(R.id.time_wall_control_center);
+        int max, progress;
+
+        // initializing tweak for time_text_size
+        time_divisions_time_text_size = (SeekBar) time_wall_control_center.findViewById(R.id.time_divisions_time_text_size);
+        max = (UIPreferences.TIME_DIVISIONS.MAX_TEXT_SIZE - UIPreferences.TIME_DIVISIONS.MIN_TEXT_SIZE) / UIPreferences.TIME_DIVISIONS.TEXT_SIZE_STEP;
+        time_divisions_time_text_size.setMax(max);
+        progress = (UIPreferences.TIME_DIVISIONS.TIME_TEXT_SIZE - UIPreferences.TIME_DIVISIONS.MIN_TEXT_SIZE) / UIPreferences.TIME_DIVISIONS.TEXT_SIZE_STEP;
+        time_divisions_time_text_size.setProgress(progress);
+        time_divisions_time_text_size.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    UIPreferences.TIME_DIVISIONS.TIME_TEXT_SIZE = UIPreferences.TIME_DIVISIONS.MIN_TEXT_SIZE + UIPreferences.TIME_DIVISIONS.TEXT_SIZE_STEP * seekBar.getProgress();
+                    reDrawTimeDivsWithTimeFlowOffset();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //
+
+        // initializing tweak for time_bw_divs
+        time_divisions_time_bw_marks = (SeekBar) time_wall_control_center.findViewById(R.id.time_divisions_time_bw_marks);
+        max = (UIPreferences.TIME_DIVISIONS.MAX_MINUTES_BW_DIVISIONS - UIPreferences.TIME_DIVISIONS.MIN_MINUTES_BW_DIVISIONS) / UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS_STEP;
+        time_divisions_time_bw_marks.setMax(max);
+        progress = (UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS - UIPreferences.TIME_DIVISIONS.MIN_MINUTES_BW_DIVISIONS) / UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS_STEP;
+        time_divisions_time_bw_marks.setProgress(progress);
+        time_divisions_time_bw_marks.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS = UIPreferences.TIME_DIVISIONS.MIN_MINUTES_BW_DIVISIONS + UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS_STEP * seekBar.getProgress();
+                    reDrawTimeDivsWithTimeFlowOffset();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //
+
+        // initializing tweak for past_time shown
+        time_divisions_past_time = (SeekBar) time_wall_control_center.findViewById(R.id.time_divisions_past_time);
+        max = (UIPreferences.MAXIMUM_PAST_TIME - UIPreferences.MINIMUM_PAST_TIME) / UIPreferences.PAST_TIME_STEP;
+        time_divisions_past_time.setMax(max);
+        progress = (UIPreferences.PAST_TIME - UIPreferences.MINIMUM_PAST_TIME) / UIPreferences.PAST_TIME_STEP;
+        time_divisions_past_time.setProgress(progress);
+        time_divisions_past_time.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    UIPreferences.PAST_TIME = UIPreferences.MINIMUM_PAST_TIME + UIPreferences.PAST_TIME_STEP * seekBar.getProgress();
+                    reDrawTimeDivsWithTimeFlowOffset();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //
+
+        // initializing tweak for minute_px_scale
+        time_wall_minute_px_scale = (SeekBar) time_wall_control_center.findViewById(R.id.time_wall_minute_px_scale);
+        max = (int) ((UIPreferences.MAX_MINUTE_PX_SCALE - UIPreferences.MIN_MINUTE_PX_SCALE) / UIPreferences.MINUTE_PX_SCALE_STEP);
+        time_wall_minute_px_scale.setMax(max);
+        progress = (int) ((UIPreferences.MINUTE_PX_SCALE - UIPreferences.MIN_MINUTE_PX_SCALE) / UIPreferences.MINUTE_PX_SCALE_STEP);
+        time_wall_minute_px_scale.setProgress(progress);
+        time_wall_minute_px_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    float final_val = UIPreferences.MIN_MINUTE_PX_SCALE + UIPreferences.MINUTE_PX_SCALE_STEP * seekBar.getProgress();
+                    final_val = final_val - final_val % UIPreferences.MINUTE_PX_SCALE_STEP;
+                    UIPreferences.MINUTE_PX_SCALE = final_val;
+                    reDrawTimeDivsWithTimeFlowOffset();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //
+
+        /////////////
+
+        time_divisions = (TimeDivisions) findViewById(R.id.time_divisions);
         time_flow = (ScrollView) findViewById(R.id.time_flow);
         time_flow.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                int y = time_flow.getScrollY();
-                time_divisions.invalidateWithOffset(y);
+                reDrawTimeDivsWithTimeFlowOffset();
             }
         });
 
-//        from_date = (EditText) findViewById(R.id.from_date);
-//        to_date = (EditText) findViewById(R.id.to_date);
-//        from_time = (EditText) findViewById(R.id.from_time);
-//        to_time = (EditText) findViewById(R.id.to_time);
-//        from_date_time = (EditText) findViewById(R.id.from_date_time);
-//        to_date_time = (EditText) findViewById(R.id.to_date_time);
-//
-//        init_date = (EditText) findViewById(R.id.init_date);
-//        add_date = (EditText) findViewById(R.id.add_date);
-//        init_time = (EditText) findViewById(R.id.init_time);
-//        add_time = (EditText) findViewById(R.id.add_time);
-//        init_date_time = (EditText) findViewById(R.id.init_date_time);
-//        add_date_time = (EditText) findViewById(R.id.add_date_time);
-//
-//        textView1 = (TextView) findViewById(R.id.textView1);
-//        textView2 = (TextView) findViewById(R.id.textView2);
-//        textView3 = (TextView) findViewById(R.id.textView3);
-//        textView4 = (TextView) findViewById(R.id.textView4);
-//        textView5 = (TextView) findViewById(R.id.textView5);
-//        textView6 = (TextView) findViewById(R.id.textView6);
-//
-//        button1 = (Button) findViewById(R.id.button1);
-//        button2 = (Button) findViewById(R.id.button2);
-//        button3 = (Button) findViewById(R.id.button3);
-//        button4 = (Button) findViewById(R.id.button4);
-//        button5 = (Button) findViewById(R.id.button5);
-//        button6 = (Button) findViewById(R.id.button6);
-//
-//        button1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                solve1(v);
-//            }
-//        });
-//        button2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                solve2(v);
-//            }
-//        });
-//        button3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                solve3(v);
-//            }
-//        });
-//        button4.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                solve4(v);
-//            }
-//        });
-//        button5.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                solve5(v);
-//            }
-//        });
-//        button6.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                solve6(v);
-//            }
-//        });
     }
 
-    private void solve1(View v){
-        String from_s = from_date.getText().toString();
-        String to_s = to_date.getText().toString();
-        Date from = new Date(from_s," ");
-        Date to = new Date(to_s," ");
-        textView1.setText(String.valueOf(to.dayDifferenceFrom(from)));
+    private void reDrawTimeDivsWithTimeFlowOffset() {
+        int y = time_flow.getScrollY();
+        time_divisions.invalidateWithOffset(y);
     }
 
-    private void solve2(View v){
-        String init_s = init_date.getText().toString();
-        String add_s = add_date.getText().toString();
-        Date init = new Date(init_s," ");
-        init.addDays(Integer.valueOf(add_s));
-        textView2.setText(String.valueOf(init.formalRepresentation()));
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.time_wall_menu, menu);
+        return true;
     }
 
-    private void solve3(View v){
-        String from_s = from_time.getText().toString();
-        String to_s = to_time.getText().toString();
-        Time from = new Time(from_s," ");
-        Time to = new Time(to_s," ");
-        textView3.setText(String.valueOf(to.timeDifferenceFrom(from)));
-    }
-
-    private void solve4(View v){
-        String init_s = init_time.getText().toString();
-        String add_s = add_time.getText().toString();
-        Time init = new Time(init_s," ");
-        init.addSecondsReturnChangeInDates(Integer.valueOf(add_s));
-        textView4.setText(String.valueOf(init.get12HrFormat()));
-    }
-
-    private void solve5(View v){
-        String from_s = from_date_time.getText().toString();
-        String to_s = to_date_time.getText().toString();
-        DateTime from = new DateTime(from_s," "," ","-");
-        DateTime to = new DateTime(to_s," "," ","-");
-        String diff = to.dateTimeDifferenceFrom(from).daySecRepresentation();
-        textView5.setText(String.valueOf(diff));
-    }
-
-    private void solve6(View v){
-        String init_s = init_date_time.getText().toString();
-        String add_s = add_date_time.getText().toString();
-        DateTime init = new DateTime(init_s," "," ","-");
-        DateTimeDiff dateTimeDiff = new DateTimeDiff(add_s," ");
-        init.addDateTimeDiff(dateTimeDiff);
-        textView6.setText(String.valueOf(init.formal12Representation()));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.time_wall_control_center_action_button:
+                switch (time_wall_control_center.getVisibility()){
+                    case View.GONE:
+                        time_wall_control_center.setVisibility(View.VISIBLE);
+                        break;
+                    case View.VISIBLE:
+                        time_wall_control_center.setVisibility(View.GONE);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }
