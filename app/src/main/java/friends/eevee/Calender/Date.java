@@ -7,45 +7,120 @@ import java.util.Calendar;
 
 import friends.eevee.ZeroLog;
 
-// 01/01/0001 A.D. is the least date supported
+/**
+ * Date consists of three fields <br>
+ * {@link #$YEAR}<br>
+ * {@link #$MONTH}<br>
+ * {@link #$DAY}<br>
+ * <br>
+ * <br>
+ * Class used to handle dates.<br>
+ * Supports handling, comparison, output-formatting, manipulation of dates<br>
+ * supports dates from 01/01/0001 A.D. in Gregorian Calender.<br>
+ * When ever I use Epoch, that means date is 01/01/0001.<br>
+ * Do not access dates before the Epoch.<br>
+ * <br>
+ * <br>
+ * <p>
+ * The StdForm is set of the fields<br>
+ * {@link #$STD_YEAR}<br> {@link #$STD_MONTH}<br> {@link #$STD_DAY}<br> {@link #$MONTH_EXTRA_DAYS}<br> {@link #$LEAP_EXTRA_DAYS}<br>
+ * <br>
+ * StdForm of a date is such that<br>
+ * std_year * 365 + std_month * 30 + std_day + leap_extras + month_extras<br>
+ * will give (no of days passed from Epoch) + 1<br>
+ * <pre>
+ * Ex : for
+ *      01/01/0001 => 1
+ *      02/01/0001 => 2
+ * </pre>
+ * This is seeing Gregorian Calender (which has so many irregularities)<br>
+ * as a uniform calender model<br>
+ * with NOISE of extra days in leap years<br>
+ * and extra days due to different number of days in months<br>
+ *
+ * @author pandu
+ * @version 1.0
+ *
+ */
+
 public class Date {
 
-    public int $YEAR = -1;  // 1 - +inf
-    public int $MONTH = -1; // 1 - 12
-    public int $DAY = -1;   // 1 - 31
-
-    // Epoch is 01-01-0001
-    // Do not access dates before the Epoch
     /**
-     * std form is such that if
-     * std_year * 365 + std_month * 30 + std_day + leap_extras + month_extras
-     * will give (no of days passed from 01 year 01 month 01 day) + 1
+     * 1 - +inf.
+     * Initially set to -1
      */
-    // from 01 . 01 . 0001
-    public int $LEAP_EXTRA_DAYS = -1;    // due to leap years
+    public int $YEAR = -1;
+    /**
+     * 1 - 12
+     * Initially set to -1
+     */
+    public int $MONTH = -1;
+    /**
+     * 1 - 31
+     * Initially set to -1
+     */
+    public int $DAY = -1;
+
+    /**
+     * To maintain NOISE due to leap years
+     */
+    public int $LEAP_EXTRA_DAYS = -1;
+    /**
+     * To maintain NOISE due to months
+     */
     public int $MONTH_EXTRA_DAYS = -1;   // due to varying no days in months , equals
+    /**
+     * Number of standard years
+     */
     public int $STD_YEAR = -1;
+    /**
+     * Number of standard months
+     */
     public int $STD_MONTH = -1;
+    /**
+     * Number of standard days
+     */
     public int $STD_DAY = -1;
 
-    // constructors
+    /**
+     * Default Constructor sets the date to a non-realistic value
+     *
+     * @see #unsetDate()
+     */
     public Date() {
         unsetDate();
     }
 
+    /**
+     * @param setToPresent if true the date object is set to the present date<br>
+     *                     if false sets the date to a non-realistic value
+     * @see #unsetDate()
+     */
     public Date(boolean setToPresent) {
         if (setToPresent) {
             Calendar currentTime = Calendar.getInstance();
             this.$DAY = currentTime.get(Calendar.DAY_OF_MONTH);
             this.$MONTH = currentTime.get(Calendar.MONTH) + 1;
             this.$YEAR = currentTime.get(Calendar.YEAR);
-        }
+        } else this.unsetDate();
     }
 
-    //String Format = "DD<separator>MonMon<separator>YYYY<separator>...
-    //String Format = "DD<separator>MonMon<separator>YYYY"
-    //if not in any of these then the default initialization
-    //NOTE : preferably do not use unknown separators DEFINITELY NOT "."
+    /**
+     * Extracts Date Information from a string<br>
+     * Formats allowed are :<br>
+     * "DD<separator>MonMon<separator>YYYY<separator>...<br>
+     * "DD<separator>MonMon<separator>YYYY"<br>
+     *
+     * @param dateString String in any of the above specified formats
+     * @param separator  String that separates different parts of the date as specified in above formats
+     *                   <p>
+     *                   If the date is is NOT Valid or the String is NOT in the format then sets the date to a non-realistic value<br>
+     *                   and logs the problem.<br>
+     *                   NOTE : preferably do not use unknown separators, DEFINITELY NOT "."<br>
+     * @see #unsetDate()
+     * @see #isValid()
+     */
+
     public Date(String dateString, String separator) {
 
         //Log.i(ZeroLog.TAG, dateString + "==>" + separator);
@@ -77,8 +152,21 @@ public class Date {
         }
     }
 
-    //String Format = DD<IN-separator>MonMon<IN-separator>YYYY<OUT-separator>
-    //if not in any of these then the default initialization
+    /**
+     * Extracts Date Information from a string<br>
+     * Formats allowed are :<br>
+     * DD<IN-separator>MonMon<IN-separator>YYYY<OUT-separator><br>
+     *
+     * @param dateString       String in any of the above specified formats
+     * @param inlineSeparator  String that separates inner parts of the date as specified in above formats
+     * @param outlineSeparator String that separates the date from other string as specified in above formats
+     *                         <p>
+     *                         If the date is is NOT Valid or the String is NOT in the format then sets the date to a non-realistic value<br>
+     *                         and logs the problem.
+     *                         NOTE : preferably do not use unknown separators, DEFINITELY NOT "."<br>
+     * @see #unsetDate()
+     * @see #isValid()
+     */
     public Date(String dateString, String inlineSeparator, String outlineSeparator) {
 
         String error = "Date: not a proper Date object initialization with string " + dateString + " and with inline-separator " + inlineSeparator + " and with outline-separator " + outlineSeparator;
@@ -109,6 +197,13 @@ public class Date {
         }
     }
 
+    /**
+     * Copies the date and its StdForm<br>
+     * If the date is is NOT Valid then sets the date to a non-realistic value and logs the problem.<br>
+     *
+     * @see #unsetDate()
+     * @see #isValid()
+     */
     public Date(Date reference) {
         this.$YEAR = reference.$YEAR;
         this.$MONTH = reference.$MONTH;
@@ -127,7 +222,9 @@ public class Date {
         }
     }
 
-    // DEFAULT INITIALIZATION
+    /**
+     * Sets the Date and it's StdForm to a non-realistic value
+     */
     public void unsetDate() {
         this.$YEAR = -1;
         this.$MONTH = -1;
@@ -142,7 +239,11 @@ public class Date {
     //
 
     // identifiers
-    // 01/01/0001 A.D. is the least date supported
+
+    /**
+     * returns whether this date object is valid or not<br>
+     * 01/01/0001 in Gregorian Calender is the least date supported<br>
+     */
     public boolean isValid() {
         if (this.$YEAR < 1) return false;
         if (this.$MONTH < 1 || this.$MONTH > 12) return false;
@@ -163,14 +264,9 @@ public class Date {
         }
     }
 
-    public boolean isSet() {
-        if (this.$YEAR == -1) return false;
-        if (this.$MONTH == -1) return false;
-        if (this.$DAY == -1) return false;
-
-        return true;
-    }
-
+    /**
+     * returns whether the date object is a leap year or not<br>
+     */
     private boolean isLeapYear() {
         int P = this.$YEAR % 400;
         int Q = P % 100;
@@ -190,6 +286,11 @@ public class Date {
     //
 
     // formatter
+
+    /**
+     * returns String with the date in the format xth Mon YYYY<br>
+     * If NOT valid returns The date is not properly set
+     */
     public String formalRepresentation() {
         if (isValid()) {
             String suffix;
@@ -204,6 +305,12 @@ public class Date {
         return "The date is not properly set ";
     }
 
+    /**
+     * returns String with the date in the format dd/mm/yyyy<br>
+     * If NOT valid returns The date is not properly set<br>
+     * <p>
+     * Difference between this method and {@link #getDateString()} is that this method validates the date while the latter does not
+     */
     public String simpleRepresentation() {
         if (this.isValid()) {
             return this.$DAY + "//" + this.$MONTH + "//" + this.$YEAR;
@@ -211,20 +318,34 @@ public class Date {
         return "The date is not properly set ";
     }
 
+    /**
+     * returns String with the date in the format xth Mon YYYY<br>
+     * <p>
+     * Difference between this method and {@link #simpleRepresentation()} is that this method DOES NOT validate the date while the latter does
+     */
     public String getDateString() {
         return this.$DAY + "//" + this.$MONTH + "//" + this.$YEAR;
     }
 
-    // TODO: improve this function
-    public String getDay(String format){
+    /**
+     * returns the day of the date in the given format<br>
+     * Ex : format == "EE" => ret == "Mon" or "Tue" ("Xxx")<br>
+     *
+     * @param format the format of the SimpleDateFormat class in java.text package<br>
+     *               TODO: improve this function
+     */
+    public String getDay(String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         java.util.Date d = new java.util.Date(this.$YEAR - 1900, this.$MONTH - 1, this.$DAY);
         String dayOfTheWeek = sdf.format(d);
-
         return dayOfTheWeek;
     }
     //
 
+    /**
+     * Prints the date and StdForm in the System console <b>without Validation</b><br>
+     * For <b> Developing purpose </b><br>
+     */
     public void printState() {
         System.out.print("\n year : ");
         System.out.print(this.$YEAR);
@@ -246,6 +367,10 @@ public class Date {
 
     }
 
+    /**
+     * Prints the date in the System console <b>without Validation</b><br>
+     * For <b> Developing purpose </b><br>
+     */
     public void printDate() {
         System.out.print("\n");
         System.out.print(this.$DAY);
@@ -257,7 +382,12 @@ public class Date {
     }
 
     // comparisons
-    // These functions compare without validity check
+    /**
+     * returns whether first date param is in future to second date param<br>
+     * <b>DOES NOT CHECK VALIDITY</b>
+     * @param A Date Instance
+     * @param B Date Instance
+     * */
     public static boolean isFuture(Date A, Date B) {
         // returns A>B
         if (A.$YEAR > B.$YEAR) return true;
@@ -269,24 +399,51 @@ public class Date {
         return false;
     }
 
+    /**
+     * returns whether first date param is same as second date param<br>
+     * <b>DOES NOT CHECK VALIDITY</b>
+     * @param A Date Instance
+     * @param B Date Instance
+     * */
     public static boolean isSame(Date A, Date B) {
         return A.$DAY == B.$DAY && A.$MONTH == B.$MONTH && A.$YEAR == B.$YEAR;
     }
 
+    /**
+     * returns whether first date param is in past to second date param<br>
+     * <b>DOES NOT CHECK VALIDITY</b>
+     * @param A Date Instance
+     * @param B Date Instance
+     * */
     public static boolean isPast(Date A, Date B) {
         return Date.isFuture(B, A);
     }
 
+    /**
+     * returns whether this date instance is in future to date param<br>
+     * <b>DOES NOT CHECK VALIDITY</b>
+     * @param B Date Instance
+     * */
     public boolean isFutureTo(Date B) {
         // returns this>B
         return Date.isFuture(this, B);
     }
 
+    /**
+     * returns whether this date instance is in past to date param<br>
+     * <b>DOES NOT CHECK VALIDITY</b>
+     * @param B Date Instance
+     * */
     public boolean isPastTo(Date B) {
         // returns this<B
         return Date.isPast(this, B);
     }
 
+    /**
+     * returns whether this date instance is same as date param<br>
+     * <b>DOES NOT CHECK VALIDITY</b>
+     * @param B Date Instance
+     * */
     public boolean isEqualTo(Date B) {
         // returns this==B
         return Date.isSame(this, B);
@@ -294,6 +451,10 @@ public class Date {
     //
 
     // Helpers
+    /**
+     * Prepares StdForm from the date and returns true<br>
+     * if date is NOT VALID then DOES NOTHING and returns false<br>
+     * */
     private boolean prepareStdForm() {
         if (!this.isValid()) return false;
         // valid Date
@@ -313,27 +474,26 @@ public class Date {
         return true;
     }
 
-    // Epoch is 0001-01-01
-    // Do not access dates before the Epoch
-    // if the Date is 0001-01-01 the result is 0
+    /**
+     * returns day from epoch<br>
+     * Epoch is 01/01/0001<br>
+     * Do not access dates before the Epoch<br>
+     * If the Date is 01/01/0001 the result is 0<br>
+     * */
     public long daysFromEpoch() {
         if (this.prepareStdForm())
             return (this.$STD_YEAR) * Constants.DAYS_IN_STD_YEAR + (this.$STD_MONTH) * Constants.DAYS_IN_STD_MONTH + (this.$STD_DAY) + (this.$LEAP_EXTRA_DAYS) + (this.$MONTH_EXTRA_DAYS) - 1;// refer to std form definition
         // else return -1 , means invalid Date
         return -1;
     }
-
-    private void cloneFromStdForm() {
-        this.$YEAR = this.$STD_YEAR + 1;
-        this.$MONTH = this.$STD_MONTH + 1;
-        this.$DAY = this.$STD_DAY;
-
-        if (!this.isValid()) this.unsetDate();
-    }
     //
 
     // difference
-    // returns A - B in days with sign
+    /**
+     * returns (first param - second param) in days with sign<br>
+     * @param A Date Instance
+     * @param B Date Instance
+     * */
     public static long dayDifferenceSecondToFirst(Date A, Date B) {
         if (!A.isValid() || !B.isValid()) return 0;
         A.prepareStdForm();
@@ -342,25 +502,41 @@ public class Date {
     }
 
     // returns PARAM TO this in days with sign
+    /**
+     * returns (this date - second param) in days with sign<br>
+     * @param param Date Instance
+     * */
     public long dayDifferenceFrom(Date param) {
-        return Date.dayDifferenceSecondToFirst(this,param);
+        return Date.dayDifferenceSecondToFirst(this, param);
     }
 
     // returns this TO PARAM in days with sign
+    /**
+     * returns (second param - this date) in days with sign<br>
+     * @param param Date Instance
+     * */
     public long dayDifferenceTo(Date param) {
-        return Date.dayDifferenceSecondToFirst(param,this);
+        return Date.dayDifferenceSecondToFirst(param, this);
     }
     //
 
     // modifiers
-    public void toPresent(){
+    /**
+     * Sets this date object to present date
+     * */
+    public void toPresent() {
         Calendar currentTime = Calendar.getInstance();
         this.$DAY = currentTime.get(Calendar.DAY_OF_MONTH);
         this.$MONTH = currentTime.get(Calendar.MONTH) + 1;
         this.$YEAR = currentTime.get(Calendar.YEAR);
     }
 
-    // do not access dates before 01/01/0001
+    /**
+     * If the date is valid then converts date to next date and returns true<br>
+     * If NOT VALID then returns false
+     * do not access dates before 01/01/0001<br>
+     * if object is not valid return false and DOES NOTHING
+     * */
     public boolean toTomorrow() {
         if (!this.isValid()) return false;
         if (this.isLeapYear()) {
@@ -397,7 +573,12 @@ public class Date {
         return false;
     }
 
-    // do not access dates before 01/01/0001
+    /**
+     * If the date is valid then converts date to previous date and returns true<br>
+     * If NOT VALID then returns false<br>
+     * do not access dates before 01/01/0001<br>
+     * if object is not valid return false and DOES NOTHING
+     * */
     public boolean toYesterday() {
         if (!this.isValid()) return false;
         if (this.isLeapYear()) {
@@ -434,9 +615,12 @@ public class Date {
         return false;
     }
 
-    // adds no days to this date
-    // do not access dates before 01/01/0001
-    // time complexity is LINEAR in no days to be added
+    /**
+     * adds param number of days to this date<br>
+     * do not access dates before 01/01/0001<br>
+     * time complexity is LINEAR in no days to be added<br>
+     * if object is not valid or param is negative return false and DOES NOTHING
+     * */
     private boolean add(long noDays) {
         if (noDays < 0) return false;
         if (!this.isValid()) return false;
@@ -446,9 +630,12 @@ public class Date {
         return true;
     }
 
-    // subtracts algebraic no days to this date
-    // do not access dates before 01/01/0001
-    // time complexity is LINEAR in no days to be subtracted
+    /**
+     * subtracts param number of days to this date<br>
+     * do not access dates before 01/01/0001<br>
+     * time complexity is LINEAR in no days to be added<br>
+     * if object is not valid or param is negative return false and DOES NOTHING
+     * */
     private boolean subtract(long noDays) {
         if (noDays < 0) return false;
         if (!this.isValid()) return false;
@@ -459,15 +646,12 @@ public class Date {
     }
 
     /**
-     * does its operation only if
-     * the present object is valid &&
-     * the object after algebraic addition is valid
-     * otherwise
-     * they do nothing to the object
-     */
-    // adds algebraic no days to this date
-    // do not access dates before 01/01/0001
-    // time complexity is LINEAR in no days to be added
+     * adds param number of days(algebraic) to this date<br>
+     * do not access dates before 01/01/0001<br>
+     * time complexity is LINEAR in no days to be added<br>
+     * if object is not valid or param is negative return false and DOES NOTHING<br>
+     * if the object after algebraic addition is NOT valid return false and DOES NOTHING<br>
+     * */
     public boolean addDays(long noDays) {
         if (!this.isValid()) return false;
         if (this.daysFromEpoch() + noDays < 0) return false;

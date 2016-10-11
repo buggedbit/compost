@@ -1,5 +1,14 @@
 package friends.eevee.Calender;
 
+/**
+ * Contains constants related to<br>
+ * Time conversions,<br>
+ * Date, Time, DateTime Classes<br>
+ * Gregorian Calender<br>
+ *
+ * @author pandu
+ * @version 1.0
+ * */
 public class Constants {
 
     public static final int MINUTES_IN_HOUR = 60;

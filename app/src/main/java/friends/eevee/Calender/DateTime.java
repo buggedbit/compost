@@ -92,9 +92,6 @@ public class DateTime {
         return this.$DATE.isValid() && this.$TIME.isValid();
     }
 
-    public boolean isSet() {
-        return this.$DATE.isSet() && this.$TIME.isSet();
-    }
     //
 
     // formatter

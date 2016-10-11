@@ -122,14 +122,6 @@ public class Time {
         if (this.$SECOND < 0 || this.$SECOND > 59) return false;
         return true;
     }
-
-    public boolean isSet() {
-        if (this.$HOUR == -1) return false;
-        if (this.$MINUTE == -1) return false;
-        if (this.$SECOND == -1) return false;
-
-        return true;
-    }
     //
 
     // formatter
