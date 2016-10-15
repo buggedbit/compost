@@ -1,4 +1,4 @@
-package friends.eevee.DBHelpers;
+package friends.eevee.DB.Helpers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,34 +6,25 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DBHelper extends SQLiteOpenHelper {
+public class Helper extends SQLiteOpenHelper {
 
-    public final String PRIMARY_KEY = "_id";
+    public static final String PRIMARY_KEY = "_id";
 
-
-    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public Helper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        // create tables
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO : implement migration code
+        // implement migration code
     }
 
-    public void dropTable(String TABLE_NAME) {
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
-        db.execSQL(query);
-        onCreate(db);
-    }
-
-
-    public void pointUpdate(String NAME_OF_COLUMN_PLACE, String VALUE_PLACE, String NAME_OF_COLUMN_SEARCH, String VALUE_SEARCH, String TABLE_NAME) {
+    public void pointsUpdate(String NAME_OF_COLUMN_PLACE, String VALUE_PLACE, String NAME_OF_COLUMN_SEARCH, String VALUE_SEARCH, String TABLE_NAME) {
         ContentValues values = new ContentValues();
         values.put(NAME_OF_COLUMN_PLACE, VALUE_PLACE);
 

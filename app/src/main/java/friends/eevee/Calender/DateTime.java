@@ -2,7 +2,7 @@ package friends.eevee.Calender;
 
 import android.util.Log;
 
-import friends.eevee.ZeroLog;
+import friends.eevee.Log.ZeroLog;
 
 //time is internally implemented in 24hr
 public class DateTime {

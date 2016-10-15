@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-import friends.eevee.ZeroLog;
+import friends.eevee.Log.ZeroLog;
 
 // by default it stores 24hr time
 // starts from 00:00:00 ends at 23:59:59

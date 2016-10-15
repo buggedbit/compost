@@ -1,4 +1,4 @@
-package friends.eevee;
+package friends.eevee.Log;
 
 public class ZeroLog {
 

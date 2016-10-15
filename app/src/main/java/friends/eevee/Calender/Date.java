@@ -5,7 +5,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import friends.eevee.ZeroLog;
+import friends.eevee.Log.ZeroLog;
 
 /**
  * Date consists of three fields <br>

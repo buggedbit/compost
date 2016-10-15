@@ -1,4 +1,4 @@
-package friends.eevee;
+package friends.eevee.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,17 +11,18 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 
-import friends.eevee.TimeWall.TimeDivisions;
-import friends.eevee.TimeWall.UIPreferences;
+import friends.eevee.R;
+import friends.eevee.TimeWallUtil.TimeDivisions;
+import friends.eevee.TimeWallUtil.UIPreferences;
 
-public class Scratch extends AppCompatActivity {
+public class TimeWall extends AppCompatActivity {
 
     TimeDivisionsManager timeDivisionsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scratch);
+        setContentView(R.layout.time_wall);
 
         timeDivisionsManager = new TimeDivisionsManager();
         timeDivisionsManager.initTimeDivisions();

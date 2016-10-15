@@ -1,4 +1,4 @@
-package friends.eevee.TimeWall;
+package friends.eevee.TimeWallUtil;
 
 import android.content.Context;
 import android.graphics.Canvas;

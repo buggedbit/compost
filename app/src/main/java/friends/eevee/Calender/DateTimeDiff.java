@@ -2,7 +2,7 @@ package friends.eevee.Calender;
 
 import android.util.Log;
 
-import friends.eevee.ZeroLog;
+import friends.eevee.Log.ZeroLog;
 
 // DateTimeDiff class is explicitly defined for maintaining difference in dateTime
 // So use develop it accordingly
