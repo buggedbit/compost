@@ -5,8 +5,10 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -14,22 +16,94 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Vector;
 
 import friends.eevee.Calender.Constants;
 import friends.eevee.Calender.Date;
+import friends.eevee.Calender.DateTime;
 import friends.eevee.Calender.Time;
+import friends.eevee.DB.Def.EventDef;
+import friends.eevee.DB.Def.PersonalEventDef;
+import friends.eevee.DB.Helpers.Events;
+import friends.eevee.Log.ZeroLog;
 import friends.eevee.NewEventUtil.UIPreferences;
 import friends.eevee.R;
 
 public class NewEvent extends AppCompatActivity {
+
+    InputUIManager inputUIManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_event);
 
-        InputUIManager inputUIManager = new InputUIManager();
-        inputUIManager.initInputUI();
+        this.inputUIManager = new InputUIManager();
+        this.inputUIManager.initInputUI();
+    }
+
+    private void flagInappropriateInput(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    private void verifyInput(){
+        // TODO : improve this to suite your needs
+        PersonalEventDef personalEventDef = new PersonalEventDef();
+
+        /* name */
+        String name = inputUIManager.name.getText().toString();
+        if(name.matches("")) {
+            flagInappropriateInput("What's it called?");
+            return;
+        }
+        else personalEventDef.$NAME = name;
+
+        /* start_date_time */
+        String start_date, start_time;
+        start_time = inputUIManager.start_time.getText().toString();
+        start_date = inputUIManager.start_date.getText().toString();
+
+        Date date = new Date(start_date,Date.SIMPLE_REPR_SEPARATOR);
+        Time time = new Time(start_time,Time.SIMPLE_REPR_SEPARATOR);
+        if(!date.isValid() || !time.isValid()){
+            flagInappropriateInput("When is it?");
+            return;
+        }
+        else {
+            DateTime dateTime = new DateTime(date,time);
+            personalEventDef.$START = dateTime.simpleRepresentation();
+        }
+
+        /* duration */
+        String duration = inputUIManager.duration_hint.getText().toString();
+        personalEventDef.$DURATION = duration;
+
+        /* comment */
+        personalEventDef.$COMMENT = inputUIManager.comment.getText().toString();
+
+        Log.i(ZeroLog.TAG, personalEventDef.get());
+        Log.i(ZeroLog.TAG, "\n Now the data base");
+
+        Events eventsDB = new Events(this , Events.DB_NAME, null , Events.DB_VERSION);
+        eventsDB.insert(personalEventDef,Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
+        Log.i(ZeroLog.TAG, String.valueOf(eventsDB.numberOfEntries(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME)));
+
+        Vector<EventDef> personalEventDefs =
+                eventsDB.getAllEntryWithKeyValue(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME,Events.TABLES.PERSONAL_EVENTS_TABLE.NAME,"Hello");
+
+        Log.i(ZeroLog.TAG, String.valueOf(personalEventDefs.size()));
+
+        for (int i = 0; i < personalEventDefs.size(); i++) {
+            Log.i(ZeroLog.TAG, personalEventDefs.get(i).get());
+        }
+
+//        Log.i(ZeroLog.TAG, inputUIManager.start_time.getText().toString());
+//        Log.i(ZeroLog.TAG, inputUIManager.start_date.getText().toString());
+//        Log.i(ZeroLog.TAG, inputUIManager.duration_hint.getText().toString());
+//        Log.i(ZeroLog.TAG, inputUIManager.comment.getText().toString());
+
     }
 
     class InputUIManager {
@@ -42,6 +116,8 @@ public class NewEvent extends AppCompatActivity {
         TextView start_time, start_date;
         TextView duration_hint;
         SeekBar duration_select;
+        EditText comment;
+        Button submit;
 
         public InputUIManager() {
 
@@ -149,8 +225,21 @@ public class NewEvent extends AppCompatActivity {
                 }
             });
             /*--*/
-        }
 
+            /* comment */
+            this.comment = (EditText) new_event.findViewById(R.id.comment);
+            /*--*/
+
+            /* submit button */
+            this.submit = (Button) new_event.findViewById(R.id.submit);
+            this.submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NewEvent.this.verifyInput();
+                }
+            });
+            /*--*/
+        }
 
     }
 

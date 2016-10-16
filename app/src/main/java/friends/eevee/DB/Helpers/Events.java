@@ -21,7 +21,8 @@ import friends.eevee.Log.ZeroLog;
  * 4. add/remove getter setter to them and change the constructors and methods which use them
  * 5. do the same as #4 in the parent EventDef class also but with no implementation in them <b>for polymorphism purpose</b>
  * 6. add/remove the fields in ALL the corresponding methods of this class like <b>insert, update etc... </b>
- * 7. re-install the app or more preferably TODO: upgrade the db
+ * 7. similarly make changes where ever the def objects are used in whole project
+ * 8. re-install the app or more preferably TODO: upgrade the db
  * </p>
  */
 public class Events extends Helper {
@@ -67,7 +68,7 @@ public class Events extends Helper {
             //PRIMARY KEY
             public static final String NAME = "name";
             public static final String START = "start";
-            public static final String END = "end";
+            public static final String DURATION = "duration";
             public static final String COMMENT = "comment";
 
             /* create table query*/
@@ -77,7 +78,7 @@ public class Events extends Helper {
                             + "("
                             + PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                             + START + " VARCHAR(255) NOT NULL,"
-                            + END + " VARCHAR(255) NOT NULL,"
+                            + DURATION + " VARCHAR(255) NOT NULL,"
                             + NAME + " VARCHAR(255) NOT NULL,"
                             + COMMENT + " VARCHAR(255) NOT NULL"
                             + ")";
@@ -114,7 +115,7 @@ public class Events extends Helper {
 
                 values.put(TABLES.PERSONAL_EVENTS_TABLE.NAME, eventDef.get$NAME());
                 values.put(TABLES.PERSONAL_EVENTS_TABLE.START, eventDef.get$START());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.END, eventDef.get$END());
+                values.put(TABLES.PERSONAL_EVENTS_TABLE.DURATION, eventDef.get$DURATION());
                 values.put(TABLES.PERSONAL_EVENTS_TABLE.COMMENT, eventDef.get$COMMENT());
 
                 SQLiteDatabase db = getWritableDatabase();
@@ -135,7 +136,7 @@ public class Events extends Helper {
 
                 values.put(TABLES.PERSONAL_EVENTS_TABLE.NAME, entry.get$NAME());
                 values.put(TABLES.PERSONAL_EVENTS_TABLE.START, entry.get$START());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.END, entry.get$END());
+                values.put(TABLES.PERSONAL_EVENTS_TABLE.DURATION, entry.get$DURATION());
                 values.put(TABLES.PERSONAL_EVENTS_TABLE.COMMENT, entry.get$COMMENT());
 
                 SQLiteDatabase db = getWritableDatabase();

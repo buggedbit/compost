@@ -19,7 +19,7 @@ public class PersonalEventDef extends EventDef{
             this.$PK  = cursor.getString(cursor.getColumnIndex(Events.PRIMARY_KEY));
             this.$NAME  = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.NAME));
             this.$START = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.START));
-            this.$END   = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.END));
+            this.$DURATION = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.DURATION));
             this.$COMMENT = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.COMMENT));
         }
         else {
@@ -32,7 +32,7 @@ public class PersonalEventDef extends EventDef{
                 this.$PK + "  " +
                 this.$NAME  + "  " +
                 this.$START + "  " +
-                this.$END   + "  " +
+                this.$DURATION + "  " +
                 this.$COMMENT + "  " ;
     }
 

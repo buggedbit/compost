@@ -46,6 +46,11 @@ import friends.eevee.Log.ZeroLog;
 public class Date {
 
     /**
+     * Separator for fields in simple representation
+     * */
+    public static final String SIMPLE_REPR_SEPARATOR = "/";
+
+    /**
      * 1 - +inf.
      * Initially set to -1
      */
@@ -321,7 +326,15 @@ public class Date {
      */
     public String simpleRepresentation() {
         if (this.isValid()) {
-            return this.$DAY + "/" + this.$MONTH + "/" + this.$YEAR;
+            String year_part, month_part, day_part;
+            if(this.$YEAR < 10)year_part = "0" + this.$YEAR;
+            else year_part = String.valueOf(this.$YEAR);
+            if(this.$MONTH < 10)month_part = "0" + this.$MONTH;
+            else month_part = String.valueOf(this.$MONTH);
+            if(this.$DAY < 10)day_part = "0" + this.$DAY;
+            else day_part = String.valueOf(this.$DAY);
+
+            return day_part + Date.SIMPLE_REPR_SEPARATOR + month_part + Date.SIMPLE_REPR_SEPARATOR + year_part ;
         }
         return "The date is not properly set ";
     }

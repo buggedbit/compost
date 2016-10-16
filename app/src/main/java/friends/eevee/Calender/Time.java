@@ -14,6 +14,8 @@ public class Time {
     public int $MINUTE = -1;    // 0 - 59
     public int $SECOND = -1;    // 0 - 59
 
+    public static final String SIMPLE_REPR_SEPARATOR = ":";
+
     // constructors
     public Time() {
         unsetTime();
@@ -195,7 +197,15 @@ public class Time {
 
     public String simpleRepresentation() {
         if (this.isValid()) {
-            return this.$HOUR + ":" + this.$MINUTE + ":" + this.$SECOND;
+            String hour_part, min_part, sec_part;
+            if(this.$HOUR < 10)hour_part = "0" + this.$HOUR;
+            else hour_part = String.valueOf(this.$HOUR);
+            if(this.$MINUTE < 10)min_part = "0" + this.$MINUTE;
+            else min_part = String.valueOf(this.$MINUTE);
+            if(this.$SECOND < 10)sec_part = "0" + this.$SECOND;
+            else sec_part = String.valueOf(this.$SECOND);
+
+            return hour_part + Time.SIMPLE_REPR_SEPARATOR + min_part + Time.SIMPLE_REPR_SEPARATOR + sec_part;
         }
         return "The time is not properly set ";
     }

@@ -17,6 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="casual"
             android:text="Got another ?"
             android:gravity="center_horizontal"
             android:textSize="@dimen/heading"
@@ -30,7 +31,9 @@
             android:hint="What's it called?"
             android:gravity="center"
             android:fontFamily="monospace"
-            android:layout_marginBottom="@dimen/margin_bw_rows"/>
+            android:layout_marginBottom="@dimen/margin_bw_rows">
+            <requestFocus/>
+        </EditText>
 
         <TextView
             android:layout_width="match_parent"
@@ -52,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="Time"
                 android:layout_alignParentStart="true"
+                android:textColor="#000000"
                 android:fontFamily="monospace"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:padding="@dimen/activity_vertical_margin"
@@ -63,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="Date"
                 android:layout_alignParentEnd="true"
+                android:textColor="#000000"
                 android:fontFamily="monospace"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:padding="@dimen/activity_vertical_margin"
@@ -74,6 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="How many hrs?"
+            android:textColor="#000000"
             android:fontFamily="monospace"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:gravity="center"
@@ -89,7 +95,23 @@
             android:max="288"
             android:progress="0"/>
 
+        <EditText
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="Some thing about it"
+            android:gravity="center"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="@dimen/margin_bw_rows"/>
 
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GO"
+            android:fontFamily="monospace"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
     </LinearLayout>
 
 </ScrollView>

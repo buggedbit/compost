@@ -7,7 +7,7 @@ public class EventDef {
     public String $PK;
     public String $NAME;
     public String $START;
-    public String $END;
+    public String $DURATION;
 
     public String get(){
         return null;
@@ -32,12 +32,12 @@ public class EventDef {
         this.$START = $START;
     }
 
-    public String get$END() {
-        return $END;
+    public String get$DURATION() {
+        return $DURATION;
     }
 
-    public void set$END(String $END) {
-        this.$END = $END;
+    public void set$DURATION(String $DURATION) {
+        this.$DURATION = $DURATION;
     }
 
     public String get$COMMENT() {

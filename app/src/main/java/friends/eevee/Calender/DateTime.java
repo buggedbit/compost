@@ -6,6 +6,11 @@ import friends.eevee.Log.ZeroLog;
 
 //time is internally implemented in 24hr
 public class DateTime {
+    /**
+     * Separator for fields in simple representation
+     * */
+    public static final String SIMPLE_REPR_SEPARATOR = " ";
+
     public Date $DATE; // date object
     public Time $TIME; // time object
 
@@ -109,7 +114,7 @@ public class DateTime {
 
     public String simpleRepresentation() {
         if (this.isValid())
-            return this.$DATE.simpleRepresentation() + " " + this.$TIME.simpleRepresentation();
+            return this.$DATE.simpleRepresentation() + DateTime.SIMPLE_REPR_SEPARATOR + this.$TIME.simpleRepresentation();
         else return "This date time is not properly set ";
     }
 

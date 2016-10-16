@@ -14,12 +14,12 @@ public class Scratch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scratch);
 
-//        Events events_db_helper = new Events(this, Events.DB_NAME, null, Events.DB_VERSION);
+//        Events events_db_helper = new Exvents(this, Events.DB_NAME, null, Events.DB_VERSION);
 //        PersonalEventDef eventDef = new PersonalEventDef();
 //
 //        eventDef.$NAME = "yash";
 //        eventDef.$START = "now";
-//        eventDef.$END = "later";
+//        eventDef.$DURATION = "later";
 //        eventDef.$COMMENT = "comment";
 //
 //        events_db_helper.insert(eventDef,Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
