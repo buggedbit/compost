@@ -13,6 +13,14 @@
         android:id="@+id/button"
         android:onClick="timeWall" />
 
+    <Button
+        android:text="New"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:layout_alignParentEnd="true"
+        android:onClick="got_new" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

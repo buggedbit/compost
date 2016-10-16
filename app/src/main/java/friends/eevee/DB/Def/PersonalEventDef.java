@@ -16,6 +16,7 @@ public class PersonalEventDef extends EventDef{
 
     public PersonalEventDef(Cursor cursor){
         if(cursor != null){
+            this.$PK  = cursor.getString(cursor.getColumnIndex(Events.PRIMARY_KEY));
             this.$NAME  = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.NAME));
             this.$START = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.START));
             this.$END   = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.END));
@@ -28,10 +29,11 @@ public class PersonalEventDef extends EventDef{
 
     public String get(){
         return
-                this.$NAME  + "\n" +
-                this.$START + "\n" +
-                this.$END   + "\n" +
-                this.$COMMENT + "\n" ;
+                this.$PK + "  " +
+                this.$NAME  + "  " +
+                this.$START + "  " +
+                this.$END   + "  " +
+                this.$COMMENT + "  " ;
     }
 
     /* GETTER AND SETTER */

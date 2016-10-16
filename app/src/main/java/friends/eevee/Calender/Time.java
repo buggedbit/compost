@@ -28,6 +28,12 @@ public class Time {
         }
     }
 
+    public Time(int HOUR,int MINUTE,int SECOND){
+        this.$HOUR = HOUR;
+        this.$MINUTE = MINUTE;
+        this.$SECOND = SECOND;
+    }
+
     //String Format = "HH<separator>MM<separator>SS<separator>...
     //String Format = "HH<separator>MM<separator>SS"
     //if not in any of these then the default initialization

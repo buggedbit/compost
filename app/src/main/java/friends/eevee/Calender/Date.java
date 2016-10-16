@@ -105,6 +105,14 @@ public class Date {
         } else this.unsetDate();
     }
 
+    public Date(int YEAR, int MONTH, int DAY){
+        this.$YEAR = YEAR;
+        this.$MONTH = MONTH;
+        this.$DAY = DAY;
+
+        if(!this.isValid()) this.unsetDate();
+    }
+
     /**
      * Extracts Date Information from a string<br>
      * Formats allowed are :<br>
@@ -313,7 +321,7 @@ public class Date {
      */
     public String simpleRepresentation() {
         if (this.isValid()) {
-            return this.$DAY + "//" + this.$MONTH + "//" + this.$YEAR;
+            return this.$DAY + "/" + this.$MONTH + "/" + this.$YEAR;
         }
         return "The date is not properly set ";
     }
@@ -324,7 +332,7 @@ public class Date {
      * Difference between this method and {@link #simpleRepresentation()} is that this method DOES NOT validate the date while the latter does
      */
     public String getDateString() {
-        return this.$DAY + "//" + this.$MONTH + "//" + this.$YEAR;
+        return this.$DAY + "/" + this.$MONTH + "/" + this.$YEAR;
     }
 
     /**

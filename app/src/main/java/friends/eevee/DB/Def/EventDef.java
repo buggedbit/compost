@@ -4,6 +4,7 @@ package friends.eevee.DB.Def;
  * Encapsulates the rows in tables of the events db
  * */
 public class EventDef {
+    public String $PK;
     public String $NAME;
     public String $START;
     public String $END;
@@ -45,5 +46,13 @@ public class EventDef {
 
     public void set$COMMENT(String $COMMENT) {
 
+    }
+
+    public String get$PK() {
+        return $PK;
+    }
+
+    public void set$PK(String $PK) {
+        this.$PK = $PK;
     }
 }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_event"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context="friends.eevee.Activities.NewEvent">
+
+    <LinearLayout
+        android:id="@+id/new_event_ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/text_padding">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Got another ?"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/heading"
+            android:layout_marginBottom="30dp"/>
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoCorrect|textAutoComplete"
+            android:hint="What's it called?"
+            android:gravity="center"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="@dimen/margin_bw_rows"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="When is it?"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:padding="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/margin_bw_rows"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:layout_alignParentStart="true"
+                android:fontFamily="monospace"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:padding="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/margin_bw_rows" />
+
+            <TextView
+                android:id="@+id/start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="monospace"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:padding="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/margin_bw_rows" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/duration_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="How many hrs?"
+            android:fontFamily="monospace"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:gravity="center"
+            android:padding="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/margin_bw_rows"/>
+
+        <SeekBar
+            android:id="@+id/duration_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/margin_bw_rows"
+            android:max="288"
+            android:progress="0"/>
+
+
+    </LinearLayout>
+
+</ScrollView>
