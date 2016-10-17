@@ -17,6 +17,7 @@ import friends.eevee.TimeWallUtil.UIPreferences;
 
 public class TimeWall extends AppCompatActivity {
 
+    TimeWallControlCenter timeWallControlCenter;
     TimeDivisionsManager timeDivisionsManager;
 
     @Override
@@ -26,6 +27,9 @@ public class TimeWall extends AppCompatActivity {
 
         timeDivisionsManager = new TimeDivisionsManager();
         timeDivisionsManager.initTimeDivisions();
+
+        timeWallControlCenter = new TimeWallControlCenter();
+        timeWallControlCenter.initTimeWallControlCenter();
     }
 
     @Override
@@ -39,7 +43,7 @@ public class TimeWall extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.time_wall_control_center_action_button:
-                timeDivisionsManager.onOptionsItemSelected(item);
+                timeWallControlCenter.onOptionsItemSelected(item);
                 break;
             default:
                 break;
@@ -47,20 +51,51 @@ public class TimeWall extends AppCompatActivity {
         return true;
     }
 
+
     class TimeDivisionsManager{
 
-        LinearLayout time_wall_control_center;
         ScrollView time_flow;
         TimeDivisions time_divisions;
-        SeekBar time_divisions_time_text_size;
-        SeekBar time_divisions_time_bw_marks;
-        SeekBar time_wall_minute_px_scale;
-        SeekBar time_divisions_past_time;
 
         public TimeDivisionsManager() {
         }
 
         private void initTimeDivisions(){
+
+            time_divisions = (TimeDivisions) findViewById(R.id.time_divisions);
+            time_flow = (ScrollView) findViewById(R.id.time_flow);
+            time_flow.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    reDrawTimeDivsWithTimeFlowOffset();
+                }
+            });
+
+        }
+
+        private void reDrawTimeDivsWithTimeFlowOffset() {
+            int y = time_flow.getScrollY();
+            time_divisions.invalidateWithOffset(y);
+        }
+
+    }
+
+    /**
+     * UI tweak manager of TimeWall Activity
+     * */
+    class TimeWallControlCenter{
+
+        LinearLayout time_wall_control_center;
+        SeekBar time_divisions_time_text_size;
+        SeekBar time_divisions_time_bw_marks;
+        SeekBar time_wall_minute_px_scale;
+        SeekBar time_divisions_past_time;
+
+        public TimeWallControlCenter(){
+
+        }
+
+        public void initTimeWallControlCenter(){
             //////////// initializes time wall control center
 
             time_wall_control_center = (LinearLayout) findViewById(R.id.time_wall_control_center);
@@ -77,7 +112,7 @@ public class TimeWall extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
                         UIPreferences.TIME_DIVISIONS.TIME_TEXT_SIZE = UIPreferences.TIME_DIVISIONS.MIN_TEXT_SIZE + UIPreferences.TIME_DIVISIONS.TEXT_SIZE_STEP * seekBar.getProgress();
-                        reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
                     }
                 }
 
@@ -104,7 +139,7 @@ public class TimeWall extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
                         UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS = UIPreferences.TIME_DIVISIONS.MIN_MINUTES_BW_DIVISIONS + UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS_STEP * seekBar.getProgress();
-                        reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
                     }
                 }
 
@@ -131,7 +166,7 @@ public class TimeWall extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
                         UIPreferences.PAST_TIME = UIPreferences.MINIMUM_PAST_TIME + UIPreferences.PAST_TIME_STEP * seekBar.getProgress();
-                        reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
                     }
                 }
 
@@ -160,7 +195,7 @@ public class TimeWall extends AppCompatActivity {
                         float final_val = UIPreferences.MIN_MINUTE_PX_SCALE + UIPreferences.MINUTE_PX_SCALE_STEP * seekBar.getProgress();
                         final_val = final_val - final_val % UIPreferences.MINUTE_PX_SCALE_STEP;
                         UIPreferences.MINUTE_PX_SCALE = final_val;
-                        reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
                     }
                 }
 
@@ -177,21 +212,6 @@ public class TimeWall extends AppCompatActivity {
             //
 
             /////////////
-
-            time_divisions = (TimeDivisions) findViewById(R.id.time_divisions);
-            time_flow = (ScrollView) findViewById(R.id.time_flow);
-            time_flow.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                @Override
-                public void onScrollChanged() {
-                    reDrawTimeDivsWithTimeFlowOffset();
-                }
-            });
-
-        }
-
-        private void reDrawTimeDivsWithTimeFlowOffset() {
-            int y = time_flow.getScrollY();
-            time_divisions.invalidateWithOffset(y);
         }
 
         private void onOptionsItemSelected(MenuItem item){

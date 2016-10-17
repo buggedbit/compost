@@ -18,13 +18,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.util.Vector;
-
 import friends.eevee.Calender.Constants;
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
 import friends.eevee.Calender.Time;
-import friends.eevee.DB.Def.EventDef;
 import friends.eevee.DB.Def.PersonalEventDef;
 import friends.eevee.DB.Helpers.Events;
 import friends.eevee.Log.ZeroLog;
@@ -44,66 +41,57 @@ public class NewEvent extends AppCompatActivity {
         this.inputUIManager.initInputUI();
     }
 
-    private void flagInappropriateInput(String message){
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    private void flagInappropriateInput(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void verifyInput(){
-        // TODO : improve this to suite your needs
-        PersonalEventDef personalEventDef = new PersonalEventDef();
+    // TODO : improve this to suite your needs
+    private void verifyInput() {
+        PersonalEventDef newEntry = new PersonalEventDef();
 
         /* name */
         String name = inputUIManager.name.getText().toString();
-        if(name.matches("")) {
+        if (name.matches("")) {
             flagInappropriateInput("What's it called?");
             return;
-        }
-        else personalEventDef.$NAME = name;
+        } else newEntry.$NAME = name;
+        /*--*/
 
         /* start_date_time */
         String start_date, start_time;
         start_time = inputUIManager.start_time.getText().toString();
         start_date = inputUIManager.start_date.getText().toString();
 
-        Date date = new Date(start_date,Date.SIMPLE_REPR_SEPARATOR);
-        Time time = new Time(start_time,Time.SIMPLE_REPR_SEPARATOR);
-        if(!date.isValid() || !time.isValid()){
+        Date date = new Date(start_date, Date.SIMPLE_REPR_SEPARATOR);
+        Time time = new Time(start_time, Time.SIMPLE_REPR_SEPARATOR);
+        if (!date.isValid() || !time.isValid()) {
             flagInappropriateInput("When is it?");
             return;
+        } else {
+            DateTime dateTime = new DateTime(date, time);
+            newEntry.$START = dateTime.simpleRepresentation();
         }
-        else {
-            DateTime dateTime = new DateTime(date,time);
-            personalEventDef.$START = dateTime.simpleRepresentation();
-        }
+        /*--*/
 
         /* duration */
         String duration = inputUIManager.duration_hint.getText().toString();
-        personalEventDef.$DURATION = duration;
+        // TODO : verify duration
+        newEntry.$DURATION = duration;
+        /*--*/
 
         /* comment */
-        personalEventDef.$COMMENT = inputUIManager.comment.getText().toString();
+        newEntry.$COMMENT = inputUIManager.comment.getText().toString();
+        /*--*/
 
-        Log.i(ZeroLog.TAG, personalEventDef.get());
-        Log.i(ZeroLog.TAG, "\n Now the data base");
+        /* If all the verifications are OK then insert into DB */
+        insertIntoDB(newEntry);
+    }
 
-        Events eventsDB = new Events(this , Events.DB_NAME, null , Events.DB_VERSION);
-        eventsDB.insert(personalEventDef,Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
-        Log.i(ZeroLog.TAG, String.valueOf(eventsDB.numberOfEntries(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME)));
-
-        Vector<EventDef> personalEventDefs =
-                eventsDB.getAllEntryWithKeyValue(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME,Events.TABLES.PERSONAL_EVENTS_TABLE.NAME,"Hello");
-
-        Log.i(ZeroLog.TAG, String.valueOf(personalEventDefs.size()));
-
-        for (int i = 0; i < personalEventDefs.size(); i++) {
-            Log.i(ZeroLog.TAG, personalEventDefs.get(i).get());
-        }
-
-//        Log.i(ZeroLog.TAG, inputUIManager.start_time.getText().toString());
-//        Log.i(ZeroLog.TAG, inputUIManager.start_date.getText().toString());
-//        Log.i(ZeroLog.TAG, inputUIManager.duration_hint.getText().toString());
-//        Log.i(ZeroLog.TAG, inputUIManager.comment.getText().toString());
-
+    private void insertIntoDB(PersonalEventDef newEntry) {
+        Events eventsDB = new Events(this, Events.DB_NAME, null, Events.DB_VERSION);
+        eventsDB.insert(newEntry, Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
+        Log.i(ZeroLog.TAG, " new personal event added " + newEntry.get());
+        Toast.makeText(this," Good to go! ", Toast.LENGTH_SHORT).show();
     }
 
     class InputUIManager {
@@ -205,13 +193,11 @@ public class NewEvent extends AppCompatActivity {
             this.duration_select.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (fromUser) {
-                        UIPreferences.DURATION = UIPreferences.MINIMUM_DURATION + UIPreferences.DURATION_STEP * progress;
-                        int hrs = UIPreferences.DURATION / Constants.MINUTES_IN_HOUR;
-                        int min = UIPreferences.DURATION % Constants.MINUTES_IN_HOUR;
+                    UIPreferences.DURATION = UIPreferences.MINIMUM_DURATION + UIPreferences.DURATION_STEP * progress;
+                    int hrs = UIPreferences.DURATION / Constants.MINUTES_IN_HOUR;
+                    int min = UIPreferences.DURATION % Constants.MINUTES_IN_HOUR;
 
-                        duration_hint.setText(String.valueOf(hrs) + " hrs " + String.valueOf(min) + " min ");
-                    }
+                    duration_hint.setText(String.valueOf(hrs) + " hrs " + String.valueOf(min) + " min ");
                 }
 
                 @Override
@@ -242,8 +228,6 @@ public class NewEvent extends AppCompatActivity {
         }
 
     }
-
-
 
 
 }

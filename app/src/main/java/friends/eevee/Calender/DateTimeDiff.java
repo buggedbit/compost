@@ -4,6 +4,8 @@ import android.util.Log;
 
 import friends.eevee.Log.ZeroLog;
 
+import static java.lang.Integer.parseInt;
+
 // DateTimeDiff class is explicitly defined for maintaining difference in dateTime
 // So use develop it accordingly
 public class DateTimeDiff {
@@ -13,8 +15,8 @@ public class DateTimeDiff {
     // i.e as there is no default constructor,
     // the DateTimeDiff is always VALID and SET whenever it is initialized
 
-    public long $24hr;
-    public long $sec;
+    public long $24hr = 0L;
+    public long $sec = 0L;
 
     public DateTimeDiff(long $24hr,int $sec){
         this.$24hr = $24hr;
@@ -24,6 +26,21 @@ public class DateTimeDiff {
     public DateTimeDiff(long $24hr,long $sec){
         this.$24hr = $24hr;
         this.$sec = $sec;
+    }
+
+    //String format = x<space>hrs<space>y<space>min
+    // TODO : improve this function
+    public DateTimeDiff(String dateTimeDiffString){
+        String[] comp = dateTimeDiffString.split(Constants.SPACE_SEP);
+        try{
+            int hr = parseInt(comp[0]);
+            int min = Integer.parseInt(comp[2]);
+
+            this.$24hr = 0;
+            this.$sec = hr * Constants.SECONDS_IN_HOUR + min * Constants.SECONDS_IN_MINUTE;
+        }catch (Exception e){
+            Log.i(ZeroLog.TAG, "DateTimeDiff: not a proper DateTimeDiff object initialization with " + dateTimeDiffString);
+        }
     }
 
     //String Format = Days<sep>Seconds<sep>

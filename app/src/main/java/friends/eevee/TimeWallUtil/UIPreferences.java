@@ -28,12 +28,13 @@ public class UIPreferences {
 
     public static class EVENT_STUB{
         public static int ANGLE_OF_TEXT = 90;       /** degrees clockwise */
+        public static int EVENT_WIDTH = 50;         /** px */
     }
 
     public static void setDeviceDependentValues(int WIDTH , int HEIGHT){
         GESTURES.GESTURE_AREA_MIN = HEIGHT / 20;
         GESTURES.GESTURE_AREA_MAX = HEIGHT / 4;
-        EVENT.EVENT_WIDTH = WIDTH/4;
+        EVENT_STUB.EVENT_WIDTH = WIDTH/4;
     }
 
     public static class GESTURES{
@@ -44,13 +45,4 @@ public class UIPreferences {
         public static int GESTURE_AREA_MAX ;                 // px
     }
 
-    public static class EVENT{
-        public static int EVENT_WIDTH = 200;                // px
-
-        public static int PADDING_LEFT = 0;
-        public static int PADDING_TOP = 0;
-        public static int PADDING_RIGHT = 0;
-        public static int PADDING_BOTTOM = 0;
-
-    }
 }
