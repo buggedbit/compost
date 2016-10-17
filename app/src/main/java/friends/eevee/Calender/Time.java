@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.Calendar;
 
 import friends.eevee.Log.ZeroLog;
+import friends.eevee.TimeWallUtil.UIPreferences;
 
 // by default it stores 24hr time
 // starts from 00:00:00 ends at 23:59:59
@@ -278,9 +279,7 @@ public class Time {
     }
 
     public void toStartOfDay(){
-        this.$HOUR = 0;
-        this.$MINUTE = 0;
-        this.$SECOND = 0;
+        this.toThis(UIPreferences.START_OF_THE_DAY);
     }
 
     public void toThis(Time time){

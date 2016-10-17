@@ -315,6 +315,7 @@ public class TimeDivisions extends TextView {
         String prev_day;
         int flag = px_from_start;
 
+        int day_change_count = 0;
         for (int div_iterator = 0; div_iterator < no_div_local; div_iterator++) {
             // Preparing shapes and text
             div_separator.set(0, px_from_start, getWidth(), px_from_start + div_line_width);
@@ -326,11 +327,15 @@ public class TimeDivisions extends TextView {
             // drawing bg and day when day changes
             if(div_iterator < no_div_local - 1){
                 if(!prev_day.matches(day)){
+                    day_change_count++;
+
                     day_bg_rect.set(0, flag, getWidth(), px_from_start);
                     flag = px_from_start;
                     day_bg_paint.setColor(get_bg_color(date_time_type_set.$DATE));
                     canvas.drawRect(day_bg_rect,day_bg_paint);
-                    canvas.drawText(day, getWidth() - text_height * 2, px_from_start + text_height / 2, text_paint);
+
+                    if(day_change_count == 1) canvas.drawText(day, getWidth() - text_height * 2, text_height, text_paint);
+                    else canvas.drawText(day, getWidth() - text_height * 2, px_from_start + text_height, text_paint);
                 }
             }
             canvas.drawRect(div_separator, div_paint);

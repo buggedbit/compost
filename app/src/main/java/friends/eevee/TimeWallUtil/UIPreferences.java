@@ -1,5 +1,7 @@
 package friends.eevee.TimeWallUtil;
 
+import friends.eevee.Calender.Time;
+
 public class UIPreferences {
 
     public static int PAST_TIME = 0;                         /** minutes*/
@@ -12,6 +14,8 @@ public class UIPreferences {
     public final static float MIN_MINUTE_PX_SCALE = 1.0f;             /** 1 MINUTE = (this many) px */
     public final static float MAX_MINUTE_PX_SCALE = 6.0f;             /** 1 MINUTE = (this many) px */
     public final static float MINUTE_PX_SCALE_STEP = 0.5f;             /** 1 MINUTE = (this many) px */
+
+    public static Time START_OF_THE_DAY = new Time("06 00 00"," ");
 
     public static class TIME_DIVISIONS{
 
