@@ -10,11 +10,12 @@ import friends.eevee.Log.ZeroLog;
 // starts from 00:00:00 ends at 23:59:59
 // xy:pq:rs to xy:pq:rs with seconds difference of 86400 is defined A DAY
 public class Time {
+
+    public static final String SIMPLE_REPR_SEPARATOR = ":";
+
     public int $HOUR = -1;     // 0 - 23
     public int $MINUTE = -1;    // 0 - 59
     public int $SECOND = -1;    // 0 - 59
-
-    public static final String SIMPLE_REPR_SEPARATOR = ":";
 
     // constructors
     public Time() {
@@ -274,6 +275,21 @@ public class Time {
         this.$HOUR = currentTime.get(Calendar.HOUR_OF_DAY);  // 24hr format
         this.$MINUTE = currentTime.get(Calendar.MINUTE);
         this.$SECOND = currentTime.get(Calendar.SECOND);
+    }
+
+    public void toStartOfDay(){
+        this.$HOUR = 0;
+        this.$MINUTE = 0;
+        this.$SECOND = 0;
+    }
+
+    public void toThis(Time time){
+        if(!time.isValid())unsetTime();
+        else {
+            this.$HOUR = time.$HOUR;
+            this.$MINUTE = time.$MINUTE;
+            this.$SECOND = time.$SECOND;
+        }
     }
 
     //adds seconds to this time circularly

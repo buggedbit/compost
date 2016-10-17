@@ -553,6 +553,19 @@ public class Date {
     }
 
     /**
+     * @param date sets this object to match the param if valid
+     *             else sets to unrealistic value {@link Date#unsetDate()}
+     * */
+    public void toThis(Date date){
+        if(!date.isValid())unsetDate();
+        else {
+            this.$YEAR = date.$YEAR;
+            this.$MONTH = date.$MONTH;
+            this.$DAY = date.$DAY;
+        }
+    }
+
+    /**
      * If the date is valid then converts date to next date and returns true<br>
      * If NOT VALID then returns false
      * do not access dates before 01/01/0001<br>

@@ -2,8 +2,8 @@ package friends.eevee.TimeWallUtil;
 
 public class UIPreferences {
 
-    public static int PAST_TIME = 120;                         /** minutes*/
-    public final static int MINIMUM_PAST_TIME = 60;                  /** minutes step size 60 minutes*/
+    public static int PAST_TIME = 0;                         /** minutes*/
+    public final static int MINIMUM_PAST_TIME = 0;                  /** minutes step size 60 minutes*/
     public final static int MAXIMUM_PAST_TIME = 1440;               /** minutes */ // one week
     public final static int PAST_TIME_STEP = 60;                     /** minutes */ // one week
 
@@ -24,6 +24,9 @@ public class UIPreferences {
         public final static int MIN_TEXT_SIZE = 0;               /** px*/
         public final static int MAX_TEXT_SIZE = 100;              /** px*/
         public final static int TEXT_SIZE_STEP = 10;              /** px*/
+
+        public final static int DIV_MARK_WIDTH = 1;     /** px */
+        public final static int PRESENT_MARK_WIDTH = 5; /** px */
     }
 
     public static class EVENT_STUB{

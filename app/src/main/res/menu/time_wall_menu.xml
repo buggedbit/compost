@@ -3,7 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Interface Control"
-        android:id="@+id/time_wall_control_center_action_button"
+        android:id="@+id/time_wall_control_center_UI_Tweak_menu_button"
         android:icon="@mipmap/ic_launcher" />
 
+    <item android:title="Go to"
+        android:id="@+id/time_wall_control_center_day_select_menu_button"
+        android:icon="@mipmap/ic_launcher" />
 </menu>

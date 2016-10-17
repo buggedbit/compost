@@ -1,5 +1,6 @@
 package friends.eevee.Activities;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -7,10 +8,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 
+import friends.eevee.Calender.Date;
+import friends.eevee.DB.Helpers.Events;
 import friends.eevee.R;
 import friends.eevee.TimeWallUtil.TimeDivisions;
 import friends.eevee.TimeWallUtil.UIPreferences;
@@ -42,7 +47,10 @@ public class TimeWall extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.time_wall_control_center_action_button:
+            case R.id.time_wall_control_center_UI_Tweak_menu_button:
+                timeWallControlCenter.onOptionsItemSelected(item);
+                break;
+            case R.id.time_wall_control_center_day_select_menu_button:
                 timeWallControlCenter.onOptionsItemSelected(item);
                 break;
             default:
@@ -52,7 +60,7 @@ public class TimeWall extends AppCompatActivity {
     }
 
 
-    class TimeDivisionsManager{
+    class TimeDivisionsManager {
 
         ScrollView time_flow;
         TimeDivisions time_divisions;
@@ -60,30 +68,54 @@ public class TimeWall extends AppCompatActivity {
         public TimeDivisionsManager() {
         }
 
-        private void initTimeDivisions(){
+        private void initTimeDivisions() {
 
             time_divisions = (TimeDivisions) findViewById(R.id.time_divisions);
             time_flow = (ScrollView) findViewById(R.id.time_flow);
             time_flow.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                 @Override
                 public void onScrollChanged() {
-                    reDrawTimeDivsWithTimeFlowOffset();
+                    scrollWithOffset();
                 }
             });
 
         }
 
-        private void reDrawTimeDivsWithTimeFlowOffset() {
+        private void UITweaked() {
             int y = time_flow.getScrollY();
-            time_divisions.invalidateWithOffset(y);
+            time_divisions.UITweaked(y);
         }
 
+        private void scrollWithOffset() {
+            int y = time_flow.getScrollY();
+            time_divisions.scrollWithOffSet(y);
+        }
+
+        public void showThisDay(Date date) {
+            time_divisions.showThisDay(date);
+        }
+    }
+
+    class StubsStackManager {
+
+        friends.eevee.DB.Helpers.Events eventsDB;
+        ScrollView time_flow;
+        RelativeLayout stubs_stack;
+
+        public StubsStackManager(Date selected) {
+
+        }
+
+        public void initStubsStack() {
+            eventsDB = new Events(TimeWall.this, Events.DB_NAME, null, Events.DB_VERSION);
+
+        }
     }
 
     /**
      * UI tweak manager of TimeWall Activity
-     * */
-    class TimeWallControlCenter{
+     */
+    class TimeWallControlCenter {
 
         LinearLayout time_wall_control_center;
         SeekBar time_divisions_time_text_size;
@@ -91,11 +123,11 @@ public class TimeWall extends AppCompatActivity {
         SeekBar time_wall_minute_px_scale;
         SeekBar time_divisions_past_time;
 
-        public TimeWallControlCenter(){
+        public TimeWallControlCenter() {
 
         }
 
-        public void initTimeWallControlCenter(){
+        public void initTimeWallControlCenter() {
             //////////// initializes time wall control center
 
             time_wall_control_center = (LinearLayout) findViewById(R.id.time_wall_control_center);
@@ -112,7 +144,7 @@ public class TimeWall extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
                         UIPreferences.TIME_DIVISIONS.TIME_TEXT_SIZE = UIPreferences.TIME_DIVISIONS.MIN_TEXT_SIZE + UIPreferences.TIME_DIVISIONS.TEXT_SIZE_STEP * seekBar.getProgress();
-                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.UITweaked();
                     }
                 }
 
@@ -139,7 +171,7 @@ public class TimeWall extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
                         UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS = UIPreferences.TIME_DIVISIONS.MIN_MINUTES_BW_DIVISIONS + UIPreferences.TIME_DIVISIONS.MINUTES_BW_DIVISIONS_STEP * seekBar.getProgress();
-                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.UITweaked();
                     }
                 }
 
@@ -166,7 +198,7 @@ public class TimeWall extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
                         UIPreferences.PAST_TIME = UIPreferences.MINIMUM_PAST_TIME + UIPreferences.PAST_TIME_STEP * seekBar.getProgress();
-                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.UITweaked();
                     }
                 }
 
@@ -195,7 +227,7 @@ public class TimeWall extends AppCompatActivity {
                         float final_val = UIPreferences.MIN_MINUTE_PX_SCALE + UIPreferences.MINUTE_PX_SCALE_STEP * seekBar.getProgress();
                         final_val = final_val - final_val % UIPreferences.MINUTE_PX_SCALE_STEP;
                         UIPreferences.MINUTE_PX_SCALE = final_val;
-                        timeDivisionsManager.reDrawTimeDivsWithTimeFlowOffset();
+                        timeDivisionsManager.UITweaked();
                     }
                 }
 
@@ -214,10 +246,11 @@ public class TimeWall extends AppCompatActivity {
             /////////////
         }
 
-        private void onOptionsItemSelected(MenuItem item){
+        private void onOptionsItemSelected(MenuItem item) {
 
             switch (item.getItemId()) {
-                case R.id.time_wall_control_center_action_button:
+                case R.id.time_wall_control_center_UI_Tweak_menu_button:
+
                     switch (time_wall_control_center.getVisibility()) {
                         case View.GONE:
                             time_wall_control_center.setVisibility(View.VISIBLE);
@@ -230,6 +263,21 @@ public class TimeWall extends AppCompatActivity {
                         default:
                             break;
                     }
+                    break;
+                case R.id.time_wall_control_center_day_select_menu_button:
+
+                    Date present_date = new Date(true);
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(TimeWall.this,
+                            new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                    Date selected = new Date(year,monthOfYear + 1, dayOfMonth);
+                                    timeDivisionsManager.showThisDay(selected);
+                                }
+                            },
+                            present_date.$YEAR, present_date.$MONTH - 1, present_date.$DAY);
+                    datePickerDialog.show();
+
                     break;
                 default:
                     break;

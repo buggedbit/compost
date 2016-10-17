@@ -68,6 +68,16 @@ public class DateTime {
         }
     }
 
+    public DateTime(Date date){
+        if (date.isValid()) {
+            this.$DATE = date;
+            this.$TIME = new Time();
+            this.$TIME.toStartOfDay();
+        } else {
+            unsetDateTime();
+        }
+    }
+
     public DateTime(Date date, Time time) {
         if (date.isValid() && time.isValid()) {
             this.$DATE = date;
@@ -79,8 +89,8 @@ public class DateTime {
 
     public DateTime(DateTime reference) {
         if (reference.isValid()) {
-            this.$DATE = reference.$DATE;
-            this.$TIME = reference.$TIME;
+            this.$DATE = new Date(reference.$DATE);
+            this.$TIME = new Time(reference.$TIME);
         } else {
             unsetDateTime();
         }
@@ -182,6 +192,14 @@ public class DateTime {
     public void toPresent() {
         this.$DATE.toPresent();
         this.$TIME.toPresent();
+    }
+
+    public void toThis(DateTime dateTime){
+        if(!dateTime.isValid())unsetDateTime();
+        else {
+            this.$DATE.toThis(dateTime.$DATE);
+            this.$TIME.toThis(dateTime.$TIME);
+        }
     }
 
     /**

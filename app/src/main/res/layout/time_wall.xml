@@ -27,7 +27,7 @@
                 android:fillViewport="true">
 
                 <RelativeLayout
-                    android:id="@+id/stub_stack"
+                    android:id="@+id/stubs_stack"
                     android:layout_width="wrap_content"
                     android:layout_height="3000dp">
 
