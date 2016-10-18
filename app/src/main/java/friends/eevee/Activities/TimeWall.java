@@ -3,6 +3,7 @@ package friends.eevee.Activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,16 +15,26 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 
+import java.util.Vector;
+
 import friends.eevee.Calender.Date;
+import friends.eevee.Calender.DateTime;
+import friends.eevee.Calender.DateTimeDiff;
+import friends.eevee.Calender.Time;
+import friends.eevee.DB.Def.EventDef;
 import friends.eevee.DB.Helpers.Events;
+import friends.eevee.Log.ZeroLog;
 import friends.eevee.R;
+import friends.eevee.TimeWallUtil.EventStub;
 import friends.eevee.TimeWallUtil.TimeDivisions;
 import friends.eevee.TimeWallUtil.UIPreferences;
 
+
 public class TimeWall extends AppCompatActivity {
 
-    TimeWallControlCenter timeWallControlCenter;
     TimeDivisionsManager timeDivisionsManager;
+    StubsStackManager stubsStackManager;
+    TimeWallControlCenter timeWallControlCenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +42,8 @@ public class TimeWall extends AppCompatActivity {
         setContentView(R.layout.time_wall);
 
         timeDivisionsManager = new TimeDivisionsManager();
-        timeDivisionsManager.initTimeDivisions();
-
+        stubsStackManager = new StubsStackManager();
         timeWallControlCenter = new TimeWallControlCenter();
-        timeWallControlCenter.initTimeWallControlCenter();
     }
 
     @Override
@@ -59,13 +68,13 @@ public class TimeWall extends AppCompatActivity {
         return true;
     }
 
-
     class TimeDivisionsManager {
 
         ScrollView time_flow;
         TimeDivisions time_divisions;
 
         public TimeDivisionsManager() {
+            this.initTimeDivisions();
         }
 
         private void initTimeDivisions() {
@@ -102,18 +111,40 @@ public class TimeWall extends AppCompatActivity {
         ScrollView time_flow;
         RelativeLayout stubs_stack;
 
-        public StubsStackManager(Date selected) {
-
+        public StubsStackManager() {
+            this.initStubsStack();
         }
 
         public void initStubsStack() {
             eventsDB = new Events(TimeWall.this, Events.DB_NAME, null, Events.DB_VERSION);
+            /* getting stubs_stack and time_flow references */
+            time_flow = (ScrollView) findViewById(R.id.time_flow);
+            stubs_stack = (RelativeLayout) time_flow.findViewById(R.id.stubs_stack);
+        }
 
+        public void showThisDay(Date day){
+            stubs_stack.removeAllViews();
+
+            Vector<EventDef> personalEventDefs = eventsDB.getRelatedEvents(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME, day);
+            for (int i = 0; i < personalEventDefs.size(); i++) {
+                Log.i(ZeroLog.TAG, personalEventDefs.get(i).get());
+
+                DateTime start = new DateTime(personalEventDefs.get(i).$START,Date.SIMPLE_REPR_SEPARATOR, Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
+                int duration = (int) new DateTimeDiff(personalEventDefs.get(i).$DURATION).minutesDiff();
+                // TODO : limit field of view to one day
+                EventStub eventStub = new EventStub(TimeWall.this, start, duration, personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
+                stubs_stack.addView(eventStub);
+                eventStub.reloadStub();
+            }
+        }
+
+        public void UITweak(){
+            this.showThisDay(UIPreferences.SHOWING_DATE);
         }
     }
 
     /**
-     * UI tweak manager of TimeWall Activity
+     * Manager of TimeWall Activity
      */
     class TimeWallControlCenter {
 
@@ -124,10 +155,17 @@ public class TimeWall extends AppCompatActivity {
         SeekBar time_divisions_past_time;
 
         public TimeWallControlCenter() {
-
+            this.initTimeWallControlCenter();
         }
 
         public void initTimeWallControlCenter() {
+            this.initInterfaceControl();
+            UIPreferences.SHOWING_DATE = new Date(true);
+            timeDivisionsManager.showThisDay(UIPreferences.SHOWING_DATE);
+            stubsStackManager.showThisDay(UIPreferences.SHOWING_DATE);
+        }
+
+        private void initInterfaceControl(){
             //////////// initializes time wall control center
 
             time_wall_control_center = (LinearLayout) findViewById(R.id.time_wall_control_center);
@@ -197,8 +235,8 @@ public class TimeWall extends AppCompatActivity {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
-                        UIPreferences.PAST_TIME = UIPreferences.MINIMUM_PAST_TIME + UIPreferences.PAST_TIME_STEP * seekBar.getProgress();
-                        timeDivisionsManager.UITweaked();
+//                        UIPreferences.PAST_TIME = UIPreferences.MINIMUM_PAST_TIME + UIPreferences.PAST_TIME_STEP * seekBar.getProgress();
+//                        timeDivisionsManager.UITweaked();
                     }
                 }
 
@@ -227,7 +265,9 @@ public class TimeWall extends AppCompatActivity {
                         float final_val = UIPreferences.MIN_MINUTE_PX_SCALE + UIPreferences.MINUTE_PX_SCALE_STEP * seekBar.getProgress();
                         final_val = final_val - final_val % UIPreferences.MINUTE_PX_SCALE_STEP;
                         UIPreferences.MINUTE_PX_SCALE = final_val;
+
                         timeDivisionsManager.UITweaked();
+                        stubsStackManager.UITweak();
                     }
                 }
 
@@ -272,7 +312,9 @@ public class TimeWall extends AppCompatActivity {
                                 @Override
                                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                     Date selected = new Date(year,monthOfYear + 1, dayOfMonth);
-                                    timeDivisionsManager.showThisDay(selected);
+                                    UIPreferences.SHOWING_DATE = selected;
+                                    timeDivisionsManager.showThisDay(UIPreferences.SHOWING_DATE);
+                                    stubsStackManager.showThisDay(UIPreferences.SHOWING_DATE);
                                 }
                             },
                             present_date.$YEAR, present_date.$MONTH - 1, present_date.$DAY);

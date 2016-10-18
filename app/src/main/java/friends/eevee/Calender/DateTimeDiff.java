@@ -79,6 +79,8 @@ public class DateTimeDiff {
         return this.$24hr * Constants.SECONDS_IN_DAY + this.$sec;
     }
 
+    public long minutesDiff(){return this.$24hr * Constants.MINUTES_IN_DAY + this.$sec / Constants.SECONDS_IN_MINUTE;}
+
     public String daySecRepresentation(){
         return this.$24hr + " day(s) " + this.$sec + " second(s) ";
     }

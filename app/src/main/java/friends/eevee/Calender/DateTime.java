@@ -170,6 +170,14 @@ public class DateTime {
         // returns this==B
         return DateTime.isSame(this, B);
     }
+
+    public boolean isFutureOrEqualTo(DateTime B){
+        return DateTime.isSame(this,B) || DateTime.isFuture(this,B);
+    }
+
+    public boolean isPastOrEqualTo(DateTime B){
+        return DateTime.isSame(this,B) || DateTime.isPast(this,B);
+    }
     //
 
     // difference

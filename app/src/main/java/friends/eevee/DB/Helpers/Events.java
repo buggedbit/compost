@@ -8,9 +8,14 @@ import android.util.Log;
 
 import java.util.Vector;
 
+import friends.eevee.Calender.Date;
+import friends.eevee.Calender.DateTime;
+import friends.eevee.Calender.DateTimeDiff;
+import friends.eevee.Calender.Time;
 import friends.eevee.DB.Def.EventDef;
 import friends.eevee.DB.Def.PersonalEventDef;
 import friends.eevee.Log.ZeroLog;
+import friends.eevee.TimeWallUtil.UIPreferences;
 
 /**
  * <p>
@@ -206,6 +211,54 @@ public class Events extends Helper {
 
     }
 
+    public Vector<EventDef> getRelatedEvents(String table, Date date) {
+
+        Time ref_time = new Time(UIPreferences.START_OF_THE_DAY);
+
+        DateTime ref_date_time = new DateTime(date, ref_time);
+        DateTime plus_24hr = new DateTime(ref_date_time);
+        plus_24hr.addDaysSeconds(1,0);
+        DateTime minus_24hr = new DateTime(ref_date_time);
+        minus_24hr.addDaysSeconds(-1,0);
+
+        switch (table) {
+            case TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME:
+                /* Personal events table */
+                SQLiteDatabase db = getWritableDatabase();
+                String query = "SELECT * FROM " + table + ";";
+
+                Vector<EventDef> retVector = new Vector<>();
+
+                Cursor c = db.rawQuery(query, null);
+                c.moveToFirst();
+
+                while (!c.isAfterLast()) {
+                    EventDef row = new PersonalEventDef(c);
+
+                    DateTime start = new DateTime(row.$START,Date.SIMPLE_REPR_SEPARATOR,Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
+                    DateTimeDiff duration = new DateTimeDiff(row.$DURATION);
+                    DateTime end = new DateTime(start);
+                    end.addDateTimeDiff(duration);
+
+                    if(start.isFutureOrEqualTo(ref_date_time) && start.isPastOrEqualTo(plus_24hr)) {
+                        retVector.add(row);
+                    }
+                    else if(end.isFutureOrEqualTo(ref_date_time) && end.isPastOrEqualTo(plus_24hr)) {
+                        retVector.add(row);
+                    }
+
+                    c.moveToNext();
+                }
+
+                c.close();
+                db.close();
+                return retVector;
+
+            default:
+                return null;
+        }
+
+    }
 }
 
 

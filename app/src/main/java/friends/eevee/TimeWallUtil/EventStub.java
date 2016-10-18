@@ -2,17 +2,84 @@ package friends.eevee.TimeWallUtil;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.AttributeSet;
+import android.graphics.Color;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+
+import friends.eevee.Calender.Date;
+import friends.eevee.Calender.DateTime;
+import friends.eevee.Calender.DateTimeDiff;
+import friends.eevee.Calender.Time;
 
 public class EventStub extends Button {
 
-    public EventStub(Context context) {
+    /** px */
+    int HEIGHT = 0;
+    /** px */
+    int WIDTH = 0;
+    /** px */
+    int TOP_MARGIN = 0;
+    /** px */
+    int LEFT_MARGIN = 0;
+
+    DateTime START;
+    /** min */
+    int DURATION;
+
+    String NAME;
+    /** pk value in Personal Events Table */
+    int PK;
+
+    public EventStub(Context context, DateTime start, int duration, String name,int pk ) {
         super(context);
+        this.initFields(context, start, duration, name, pk);
     }
 
-    public EventStub(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    private void initFields(Context context, DateTime start, int duration, String name, int pk){
+        this.START = start;
+        this.DURATION = duration;
+        this.NAME = name;
+        this.PK = pk;
+    }
+
+    public void reloadStub(){
+        /* ref date time */
+        Date ref_date = UIPreferences.SHOWING_DATE;
+        Time ref_time = UIPreferences.START_OF_THE_DAY;
+        DateTime ref_date_time = new DateTime(ref_date, ref_time);
+
+        /* TOP_MARGIN */
+        DateTimeDiff start_to_ref = this.START.dateTimeDifferenceFrom(ref_date_time);
+        int start_to_ref_min = (int) start_to_ref.minutesDiff();
+        this.TOP_MARGIN = (int) (start_to_ref_min * UIPreferences.MINUTE_PX_SCALE);
+
+        /* HEIGHT */
+        this.HEIGHT = (int) (this.DURATION * UIPreferences.MINUTE_PX_SCALE);
+
+        /* WIDTH */
+        this.WIDTH = UIPreferences.EVENT_STUB.EVENT_WIDTH;
+
+        /* LEFT_MARGIN */
+        this.LEFT_MARGIN = 200;
+
+        /* Re - setting Layout params */
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) this.getLayoutParams();
+        params.setMargins(this.LEFT_MARGIN , this.TOP_MARGIN , 0 , 0);
+        params.width = this.WIDTH;
+        params.height = this.HEIGHT;
+        this.setLayoutParams(params);
+
+        /* Background color */
+        this.setBackgroundColor(Color.MAGENTA);
+
+        /* Text Size */
+        this.setTextSize(10f);
+
+        /* Text Color */
+        this.setTextColor(Color.BLACK);
+
+        /* Name */
+        this.setText(this.NAME);
     }
 
     @Override

@@ -90,7 +90,7 @@ public class NewEvent extends AppCompatActivity {
     private void insertIntoDB(PersonalEventDef newEntry) {
         Events eventsDB = new Events(this, Events.DB_NAME, null, Events.DB_VERSION);
         eventsDB.insert(newEntry, Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
-        Log.i(ZeroLog.TAG, " new personal event added " + newEntry.get());
+        Log.i(ZeroLog.TAG, " new personal event added [ " + newEntry.get() + "] ");
         Toast.makeText(this," Good to go! ", Toast.LENGTH_SHORT).show();
     }
 
