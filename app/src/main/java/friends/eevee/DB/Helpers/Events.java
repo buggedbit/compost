@@ -218,8 +218,6 @@ public class Events extends Helper {
         DateTime ref_date_time = new DateTime(date, ref_time);
         DateTime plus_24hr = new DateTime(ref_date_time);
         plus_24hr.addDaysSeconds(1,0);
-        DateTime minus_24hr = new DateTime(ref_date_time);
-        minus_24hr.addDaysSeconds(-1,0);
 
         switch (table) {
             case TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME:

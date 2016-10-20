@@ -3,7 +3,6 @@ package friends.eevee.Activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +22,6 @@ import friends.eevee.Calender.DateTimeDiff;
 import friends.eevee.Calender.Time;
 import friends.eevee.DB.Def.EventDef;
 import friends.eevee.DB.Helpers.Events;
-import friends.eevee.Log.ZeroLog;
 import friends.eevee.R;
 import friends.eevee.TimeWallUtil.EventStub;
 import friends.eevee.TimeWallUtil.TimeDivisions;
@@ -127,14 +125,54 @@ public class TimeWall extends AppCompatActivity {
 
             Vector<EventDef> personalEventDefs = eventsDB.getRelatedEvents(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME, day);
             for (int i = 0; i < personalEventDefs.size(); i++) {
-                Log.i(ZeroLog.TAG, personalEventDefs.get(i).get());
 
+                /* Getting Start and End of event */
                 DateTime start = new DateTime(personalEventDefs.get(i).$START,Date.SIMPLE_REPR_SEPARATOR, Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
-                int duration = (int) new DateTimeDiff(personalEventDefs.get(i).$DURATION).minutesDiff();
-                // TODO : limit field of view to one day
-                EventStub eventStub = new EventStub(TimeWall.this, start, duration, personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
-                stubs_stack.addView(eventStub);
-                eventStub.reloadStub();
+                int duration_min = (int) new DateTimeDiff(personalEventDefs.get(i).$DURATION).minutesDiff();
+                DateTimeDiff duration = new DateTimeDiff(duration_min);
+                DateTime end = new DateTime(start);
+                end.addDateTimeDiff(duration);
+
+                /* Getting Ref date time and +24 and -24 mark */
+                DateTime ref_date_time = new DateTime(day, UIPreferences.START_OF_THE_DAY);
+                DateTime plus_24hr = new DateTime(ref_date_time);
+                plus_24hr.addDaysSeconds(1,0);
+
+                /* Cases for events */
+
+                /*      ref                  +24            */
+                /*       |  <-------------->  |             */
+                if(start.isFutureOrEqualTo(ref_date_time)
+                        && start.isPastOrEqualTo(plus_24hr)
+                        && end.isFutureOrEqualTo(ref_date_time)
+                        && end.isPastOrEqualTo(plus_24hr)){
+
+                    EventStub eventStub = new EventStub(TimeWall.this, start, duration_min, personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
+                    stubs_stack.addView(eventStub);
+                    eventStub.reloadStub();
+                }
+
+                /*      ref                  +24            */
+                /*       |          <---------|----->       */
+                else if(start.isFutureOrEqualTo(ref_date_time)
+                        && start.isPastOrEqualTo(plus_24hr)
+                        && end.isFutureOrEqualTo(plus_24hr)){
+
+                    EventStub eventStub = new EventStub(TimeWall.this, start, (int) plus_24hr.dateTimeDifferenceFrom(start).minutesDiff(), personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
+                    stubs_stack.addView(eventStub);
+                    eventStub.reloadStub();
+                }
+
+                /*        ref                  +24            */
+                /*  <------|-------->           |             */
+                else if(start.isPastOrEqualTo(ref_date_time)
+                        && end.isFutureOrEqualTo(ref_date_time)
+                        && end.isPastOrEqualTo(plus_24hr)){
+
+                    EventStub eventStub = new EventStub(TimeWall.this, ref_date_time, (int) end.dateTimeDifferenceFrom(ref_date_time).minutesDiff(), personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
+                    stubs_stack.addView(eventStub);
+                    eventStub.reloadStub();
+                }
             }
         }
 

@@ -3,16 +3,24 @@ package friends.eevee.TimeWallUtil;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+
+import java.util.Random;
 
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
 import friends.eevee.Calender.DateTimeDiff;
 import friends.eevee.Calender.Time;
+import friends.eevee.Log.ZeroLog;
 
 public class EventStub extends Button {
 
+    /** from the activity in which renders this view */
+    Context CONTEXT;
     /** px */
     int HEIGHT = 0;
     /** px */
@@ -36,6 +44,7 @@ public class EventStub extends Button {
     }
 
     private void initFields(Context context, DateTime start, int duration, String name, int pk){
+        this.CONTEXT = context;
         this.START = start;
         this.DURATION = duration;
         this.NAME = name;
@@ -43,6 +52,7 @@ public class EventStub extends Button {
     }
 
     public void reloadStub(){
+        Log.i(ZeroLog.TAG, this.__str__());
         /* ref date time */
         Date ref_date = UIPreferences.SHOWING_DATE;
         Time ref_time = UIPreferences.START_OF_THE_DAY;
@@ -70,16 +80,32 @@ public class EventStub extends Button {
         this.setLayoutParams(params);
 
         /* Background color */
-        this.setBackgroundColor(Color.MAGENTA);
+        this.setBackgroundColor(getBgColor());
 
         /* Text Size */
-        this.setTextSize(10f);
+        this.setTextSize(12f);
 
         /* Text Color */
         this.setTextColor(Color.BLACK);
 
-        /* Name */
-        this.setText(this.NAME);
+        /* Display Text */
+        String display_text = "";
+        String[] parts = this.NAME.split(" ");
+        if(parts.length == 1){
+            display_text = String.valueOf(parts[0].charAt(0)) + String.valueOf(parts[0].charAt(1));
+        }
+        else if(parts.length >=2){
+            display_text = String.valueOf(parts[0].charAt(0)) + String.valueOf(parts[1].charAt(0));
+        }
+        this.setText(display_text);
+
+        /* onClick listener */
+        this.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(EventStub.this, NAME, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -93,4 +119,14 @@ public class EventStub extends Button {
         //Restore to the previous matrix
         canvas.restore();
     }
+
+    public String __str__(){
+        return " Name = " + this.NAME + " Start = " + this.START.formal12Representation() + " Duration = " + String.valueOf(this.DURATION);
+    }
+
+    public int getBgColor(){
+        Random random = new Random();
+        return Color.argb(180,random.nextInt(256),random.nextInt(256),random.nextInt(256));
+    }
+
 }

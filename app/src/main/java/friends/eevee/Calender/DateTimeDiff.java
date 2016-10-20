@@ -70,6 +70,10 @@ public class DateTimeDiff {
         }
     }
 
+    public DateTimeDiff(long minutes){
+        this.$24hr = minutes/Constants.MINUTES_IN_DAY;
+        this.$sec = (minutes%Constants.MINUTES_IN_DAY)*Constants.SECONDS_IN_MINUTE;
+    }
 
     public long weeksDiff(){
         return this.$24hr / 7;
