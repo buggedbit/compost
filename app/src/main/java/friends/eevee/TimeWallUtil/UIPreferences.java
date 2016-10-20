@@ -22,12 +22,12 @@ public class UIPreferences {
 
     public static class TIME_DIVISIONS{
 
-        public static int MINUTES_BW_DIVISIONS = 30;           /** minutes*/
+        public static int MINUTES_BW_DIVISIONS = 60;           /** minutes*/
         public final static int MIN_MINUTES_BW_DIVISIONS = 30;       /** minutes*/
         public final static int MAX_MINUTES_BW_DIVISIONS = 60;       /** minutes*/
         public final static int MINUTES_BW_DIVISIONS_STEP = 30;       /** minutes*/
 
-        public static int TIME_TEXT_SIZE = 30;              /** px*/
+        public static int TIME_TEXT_SIZE = 40;              /** px*/
         public final static int MIN_TEXT_SIZE = 0;               /** px*/
         public final static int MAX_TEXT_SIZE = 100;              /** px*/
         public final static int TEXT_SIZE_STEP = 10;              /** px*/

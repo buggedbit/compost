@@ -83,7 +83,7 @@ public class EventStub extends Button {
         this.setBackgroundColor(getBgColor());
 
         /* Text Size */
-        this.setTextSize(12f);
+        this.setTextSize(10f);
 
         /* Text Color */
         this.setTextColor(Color.BLACK);
