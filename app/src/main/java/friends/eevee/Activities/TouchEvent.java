@@ -18,27 +18,27 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import friends.eevee.Calender.Constants;
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
+import friends.eevee.Calender.DateTimeDiff;
 import friends.eevee.Calender.Time;
+import friends.eevee.DB.Def.EventDef;
 import friends.eevee.DB.Def.PersonalEventDef;
 import friends.eevee.DB.Helpers.Events;
 import friends.eevee.Log.ZeroLog;
 import friends.eevee.NewEventUtil.UIPreferences;
 import friends.eevee.R;
 
-public class NewEvent extends AppCompatActivity {
+public class TouchEvent extends AppCompatActivity {
 
     InputUIManager inputUIManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_event);
+        setContentView(R.layout.touch_event);
 
         this.inputUIManager = new InputUIManager();
-        this.inputUIManager.initInputUI();
     }
 
     private void flagInappropriateInput(String message) {
@@ -75,7 +75,10 @@ public class NewEvent extends AppCompatActivity {
 
         /* duration */
         String duration = inputUIManager.duration_hint.getText().toString();
-        // TODO : verify duration
+        if(DateTimeDiff.isValidHrMinRepresentation(duration)){
+            flagInappropriateInput("Duration?");
+            return;
+        }
         newEntry.$DURATION = duration;
         /*--*/
 
@@ -98,30 +101,31 @@ public class NewEvent extends AppCompatActivity {
 
         InputMethodManager imm;
 
-        ScrollView new_event;
-        LinearLayout new_event_ll_container;
+        ScrollView touch_event;
+        LinearLayout touch_event_ll_container;
         EditText name;
         TextView start_time, start_date;
         TextView duration_hint;
         SeekBar duration_select;
         EditText comment;
+        Button duration_increment,duration_decrement;
         Button submit;
 
         public InputUIManager() {
-
+            this.initInputUI();
         }
 
         public void initInputUI() {
 
             this.imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            /* new_event scroll view  */
-            this.new_event = (ScrollView) findViewById(R.id.new_event);
+            /* touch_event scroll view  */
+            this.touch_event = (ScrollView) findViewById(R.id.touch_event);
             /*--*/
 
-            /* new_event_ll_container */
-            this.new_event_ll_container = (LinearLayout) new_event.findViewById(R.id.new_event_ll_container);
-            this.new_event_ll_container.setOnClickListener(new View.OnClickListener() {
+            /* touch_event_ll_container */
+            this.touch_event_ll_container = (LinearLayout) touch_event.findViewById(R.id.touch_event_ll_container);
+            this.touch_event_ll_container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -130,11 +134,11 @@ public class NewEvent extends AppCompatActivity {
             /*--*/
 
             /* event name  */
-            this.name = (EditText) this.new_event.findViewById(R.id.name);
+            this.name = (EditText) this.touch_event.findViewById(R.id.name);
             /*--*/
 
             /* start time */
-            this.start_time = (TextView) this.new_event.findViewById(R.id.start_time);
+            this.start_time = (TextView) this.touch_event.findViewById(R.id.start_time);
             this.start_time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -143,7 +147,7 @@ public class NewEvent extends AppCompatActivity {
 
                     Time present_time = new Time(true);
 
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(NewEvent.this,
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(TouchEvent.this,
                             new TimePickerDialog.OnTimeSetListener() {
                                 @Override
                                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -159,7 +163,7 @@ public class NewEvent extends AppCompatActivity {
             /*--*/
 
             /* start date */
-            this.start_date = (TextView) this.new_event.findViewById(R.id.start_date);
+            this.start_date = (TextView) this.touch_event.findViewById(R.id.start_date);
             this.start_date.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -168,7 +172,7 @@ public class NewEvent extends AppCompatActivity {
 
                     Date present_date = new Date(true);
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(NewEvent.this,
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(TouchEvent.this,
                             new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -184,8 +188,11 @@ public class NewEvent extends AppCompatActivity {
             /*--*/
 
             /* duration select and hint */
-            this.duration_hint = (TextView) this.new_event.findViewById(R.id.duration_hint);
-            this.duration_select = (SeekBar) this.new_event.findViewById(R.id.duration_select);
+            this.duration_hint = (TextView) this.touch_event.findViewById(R.id.duration_hint);
+            DateTimeDiff initial_duration = new DateTimeDiff(UIPreferences.DURATION);
+            this.duration_hint.setText(initial_duration.hourMinRepresentation());
+
+            this.duration_select = (SeekBar) this.touch_event.findViewById(R.id.duration_select);
             int max = (UIPreferences.MAXIMUM_DURATION - UIPreferences.MINIMUM_DURATION) / UIPreferences.DURATION_STEP;
             this.duration_select.setMax(max);
             int progress = (UIPreferences.DURATION - UIPreferences.MINIMUM_DURATION) / UIPreferences.DURATION_STEP;
@@ -194,10 +201,8 @@ public class NewEvent extends AppCompatActivity {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     UIPreferences.DURATION = UIPreferences.MINIMUM_DURATION + UIPreferences.DURATION_STEP * progress;
-                    int hrs = UIPreferences.DURATION / Constants.MINUTES_IN_HOUR;
-                    int min = UIPreferences.DURATION % Constants.MINUTES_IN_HOUR;
-
-                    duration_hint.setText(String.valueOf(hrs) + " hrs " + String.valueOf(min) + " min ");
+                    DateTimeDiff present_duration = new DateTimeDiff(UIPreferences.DURATION);
+                    duration_hint.setText(present_duration.hourMinRepresentation());
                 }
 
                 @Override
@@ -212,19 +217,52 @@ public class NewEvent extends AppCompatActivity {
             });
             /*--*/
 
-            /* comment */
-            this.comment = (EditText) new_event.findViewById(R.id.comment);
-            /*--*/
-
-            /* submit button */
-            this.submit = (Button) new_event.findViewById(R.id.submit);
-            this.submit.setOnClickListener(new View.OnClickListener() {
+            /* duration increment and decrement */
+            this.duration_increment = (Button) touch_event.findViewById(R.id.duration_increment);
+            this.duration_increment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewEvent.this.verifyInput();
+                    duration_select.setProgress(duration_select.getProgress() + 1);
+                }
+            });
+            this.duration_decrement = (Button) touch_event.findViewById(R.id.duration_decrement);
+            this.duration_decrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    duration_select.setProgress(duration_select.getProgress() - 1);
                 }
             });
             /*--*/
+
+            /* comment */
+            this.comment = (EditText) touch_event.findViewById(R.id.comment);
+            /*--*/
+
+            /* submit button */
+            this.submit = (Button) touch_event.findViewById(R.id.submit);
+            this.submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TouchEvent.this.verifyInput();
+                }
+            });
+            /*--*/
+
+            this.fillInput();
+        }
+
+        private void fillInput(){
+            EventDef eventDef = getIntent().getParcelableExtra("EventDef");
+            if(eventDef == null) return;
+            else {
+                name.setText(eventDef.$NAME);
+                DateTime start = new DateTime(eventDef.$START,Date.SIMPLE_REPR_SEPARATOR,Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
+                start_time.setText(start.$TIME.simpleRepresentation());
+                start_date.setText(start.$DATE.simpleRepresentation());
+                // TODO : duration seek bar set, validate, update instead of insert
+                duration_hint.setText(eventDef.$DURATION);
+                comment.setText(eventDef.get$COMMENT());
+            }
         }
 
     }

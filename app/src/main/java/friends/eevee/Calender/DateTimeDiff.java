@@ -6,6 +6,7 @@ import friends.eevee.Log.ZeroLog;
 
 import static java.lang.Integer.parseInt;
 
+
 // DateTimeDiff class is explicitly defined for maintaining difference in dateTime
 // So use develop it accordingly
 public class DateTimeDiff {
@@ -29,12 +30,11 @@ public class DateTimeDiff {
     }
 
     //String format = x<space>hrs<space>y<space>min
-    // TODO : improve this function
     public DateTimeDiff(String dateTimeDiffString){
         String[] comp = dateTimeDiffString.split(Constants.SPACE_SEP);
         try{
             int hr = parseInt(comp[0]);
-            int min = Integer.parseInt(comp[2]);
+            int min = parseInt(comp[2]);
 
             this.$24hr = 0;
             this.$sec = hr * Constants.SECONDS_IN_HOUR + min * Constants.SECONDS_IN_MINUTE;
@@ -86,6 +86,27 @@ public class DateTimeDiff {
     public long minutesDiff(){return this.$24hr * Constants.MINUTES_IN_DAY + this.$sec / Constants.SECONDS_IN_MINUTE;}
 
     public String daySecRepresentation(){
-        return this.$24hr + " day(s) " + this.$sec + " second(s) ";
+        return this.$24hr  + Constants.SPACE_SEP + "day"
+                + Constants.SPACE_SEP + this.$sec  + Constants.SPACE_SEP + "second";
+    }
+
+    public String hourMinRepresentation(){
+        long _hr = (int) (this.$24hr*Constants.HOURS_IN_DAY);
+        _hr = _hr + this.$sec/Constants.SECONDS_IN_HOUR;
+        int _min = (int) (this.$sec%Constants.SECONDS_IN_HOUR)/Constants.SECONDS_IN_MINUTE;
+
+        return _hr + Constants.SPACE_SEP + "hr" + Constants.SPACE_SEP
+                + _min + Constants.SPACE_SEP + "min";
+    }
+
+    public static boolean isValidHrMinRepresentation(String dateTimeDiffString){
+        String[] comp = dateTimeDiffString.split(Constants.SPACE_SEP);
+        try{
+            parseInt(comp[0]);
+            parseInt(comp[2]);
+        }catch (Exception e){
+            Log.i(ZeroLog.TAG, "DateTimeDiff: not a proper DateTimeDiff object initialization with " + dateTimeDiffString);
+        }
+        return false;
     }
 }

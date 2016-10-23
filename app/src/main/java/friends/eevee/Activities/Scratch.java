@@ -53,7 +53,7 @@ public class Scratch extends AppCompatActivity {
     }
 
     public void got_new(View view){
-        Intent intent = new Intent(this,NewEvent.class);
+        Intent intent = new Intent(this,TouchEvent.class);
         startActivity(intent);
     }
 }

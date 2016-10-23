@@ -1,6 +1,7 @@
 package friends.eevee.TimeWallUtil;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
@@ -11,13 +12,19 @@ import android.widget.RelativeLayout;
 
 import java.util.Random;
 
+import friends.eevee.Activities.TouchEvent;
+import friends.eevee.Calender.Constants;
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
 import friends.eevee.Calender.DateTimeDiff;
 import friends.eevee.Calender.Time;
+import friends.eevee.DB.Def.EventDef;
+import friends.eevee.DB.Def.PersonalEventDef;
 import friends.eevee.Log.ZeroLog;
 
 public class EventStub extends Button {
+
+    EventDef EVENT_DEF;
 
     /** from the activity in which renders this view */
     Context CONTEXT;
@@ -38,17 +45,18 @@ public class EventStub extends Button {
     /** pk value in Personal Events Table */
     int PK;
 
-    public EventStub(Context context, DateTime start, int duration, String name,int pk ) {
+    public EventStub(Context context,EventDef eventDef, DateTime start, int duration) {
         super(context);
-        this.initFields(context, start, duration, name, pk);
+        this.initFields(context,eventDef, start, duration);
     }
 
-    private void initFields(Context context, DateTime start, int duration, String name, int pk){
+    private void initFields(Context context,EventDef eventDef, DateTime start, int duration){
         this.CONTEXT = context;
+        this.EVENT_DEF = eventDef;
         this.START = start;
         this.DURATION = duration;
-        this.NAME = name;
-        this.PK = pk;
+        this.NAME = eventDef.$NAME;
+        this.PK = Integer.parseInt(eventDef.$PK);
     }
 
     public void reloadStub(){
@@ -90,7 +98,7 @@ public class EventStub extends Button {
 
         /* Display Text */
         String display_text = "";
-        String[] parts = this.NAME.split(" ");
+        String[] parts = this.NAME.split(Constants.SPACE_SEP);
         if(parts.length == 1){
             display_text = String.valueOf(parts[0].charAt(0)) + String.valueOf(parts[0].charAt(1));
         }
@@ -103,7 +111,17 @@ public class EventStub extends Button {
         this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(EventStub.this, NAME, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(EventStub.this, NAME, Snackbar.LENGTH_SHORT).setAction("Peek", new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent touchEvent = new Intent(CONTEXT, TouchEvent.class);
+                        if(EVENT_DEF instanceof PersonalEventDef){
+                            Log.i(ZeroLog.TAG, "EventStub: personal");
+                        }
+                        touchEvent.putExtra("EventDef", EVENT_DEF);
+                        CONTEXT.startActivity(touchEvent);
+                    }
+                }).show();
             }
         });
     }

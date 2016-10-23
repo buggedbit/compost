@@ -157,7 +157,7 @@ public class TimeWall extends AppCompatActivity {
                         && end.isFutureOrEqualTo(ref_date_time)
                         && end.isPastOrEqualTo(plus_24hr)){
 
-                    EventStub eventStub = new EventStub(TimeWall.this, start, duration_min, personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
+                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , start, duration_min);
                     stubs_stack.addView(eventStub);
                     eventStub.reloadStub();
                 }
@@ -168,7 +168,7 @@ public class TimeWall extends AppCompatActivity {
                         && start.isPastOrEqualTo(plus_24hr)
                         && end.isFutureOrEqualTo(plus_24hr)){
 
-                    EventStub eventStub = new EventStub(TimeWall.this, start, (int) plus_24hr.dateTimeDifferenceFrom(start).minutesDiff(), personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
+                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , start, (int) plus_24hr.dateTimeDifferenceFrom(start).minutesDiff());
                     stubs_stack.addView(eventStub);
                     eventStub.reloadStub();
                 }
@@ -179,7 +179,7 @@ public class TimeWall extends AppCompatActivity {
                         && end.isFutureOrEqualTo(ref_date_time)
                         && end.isPastOrEqualTo(plus_24hr)){
 
-                    EventStub eventStub = new EventStub(TimeWall.this, ref_date_time, (int) end.dateTimeDifferenceFrom(ref_date_time).minutesDiff(), personalEventDefs.get(i).$NAME, Integer.parseInt(personalEventDefs.get(i).$PK));
+                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , ref_date_time, (int) end.dateTimeDifferenceFrom(ref_date_time).minutesDiff());
                     stubs_stack.addView(eventStub);
                     eventStub.reloadStub();
                 }

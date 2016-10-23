@@ -1,18 +1,26 @@
 package friends.eevee.DB.Def;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Encapsulates the rows in tables of the events db
  * */
-public class EventDef {
+public class EventDef implements Parcelable {
     public String $PK;
     public String $NAME;
     public String $START;
     public String $DURATION;
 
-    public String get(){
-        return null;
+    public EventDef(){}
+
+    public EventDef(Parcel source){
+
     }
 
+    public String get(){
+        return "";
+    }
 
     /* GETTER AND SETTER */
 
@@ -55,4 +63,27 @@ public class EventDef {
     public void set$PK(String $PK) {
         this.$PK = $PK;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+
+        @Override
+        public EventDef createFromParcel(Parcel source) {
+            return new EventDef(source);
+        }
+
+        @Override
+        public EventDef[] newArray(int size) {
+            return new EventDef[size];
+        }
+    };
 }

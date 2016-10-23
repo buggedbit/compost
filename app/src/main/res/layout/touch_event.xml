@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/new_event"
+    android:id="@+id/touch_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="friends.eevee.Activities.NewEvent">
+    tools:context="friends.eevee.Activities.TouchEvent">
 
     <LinearLayout
-        android:id="@+id/new_event_ll_container"
+        android:id="@+id/touch_event_ll_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -85,6 +85,28 @@
             android:gravity="center"
             android:padding="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/margin_bw_rows"/>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/duration_decrement"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:text="--"/>
+
+            <Button
+                android:id="@+id/duration_increment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:text="++"/>
+        </FrameLayout>
 
         <SeekBar
             android:id="@+id/duration_select"
