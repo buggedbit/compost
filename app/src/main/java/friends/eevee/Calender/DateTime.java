@@ -70,7 +70,7 @@ public class DateTime {
 
     public DateTime(Date date){
         if (date.isValid()) {
-            this.$DATE = date;
+            this.$DATE = new Date(date);
             this.$TIME = new Time();
             this.$TIME.toStartOfDay();
         } else {
@@ -80,8 +80,8 @@ public class DateTime {
 
     public DateTime(Date date, Time time) {
         if (date.isValid() && time.isValid()) {
-            this.$DATE = date;
-            this.$TIME = time;
+            this.$DATE = new Date(date);
+            this.$TIME = new Time(time);
         } else {
             unsetDateTime();
         }
