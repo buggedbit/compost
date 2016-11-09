@@ -1,9 +1,11 @@
 package friends.eevee.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +24,8 @@ import friends.eevee.Calender.DateTime;
 import friends.eevee.Calender.DateTimeDiff;
 import friends.eevee.Calender.Time;
 import friends.eevee.DB.Def.EventDef;
-import friends.eevee.DB.Helpers.Events;
+import friends.eevee.DB.Helpers.DB;
+import friends.eevee.Log.ZeroLog;
 import friends.eevee.R;
 import friends.eevee.TimeWallUtil.EventStub;
 import friends.eevee.TimeWallUtil.TimeDivisions;
@@ -32,18 +35,14 @@ import friends.eevee.TimeWallUtil.UIPreferences;
 
 public class TimeWall extends AppCompatActivity {
 
-    TimeDivisionsManager timeDivisionsManager;
-    StubsStackManager stubsStackManager;
-    TimeWallControlCenter timeWallControlCenter;
+    ControlCenter controlCenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.time_wall);
 
-        timeDivisionsManager = new TimeDivisionsManager();
-        stubsStackManager = new StubsStackManager();
-        timeWallControlCenter = new TimeWallControlCenter();
+        controlCenter = new ControlCenter();
     }
 
     @Override
@@ -57,10 +56,14 @@ public class TimeWall extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.time_wall_control_center_UI_Tweak_menu_button:
-                timeWallControlCenter.onOptionsItemSelected(item);
+                controlCenter.onOptionsItemSelected(item);
                 break;
             case R.id.time_wall_control_center_day_select_menu_button:
-                timeWallControlCenter.onOptionsItemSelected(item);
+                controlCenter.onOptionsItemSelected(item);
+                break;
+            case R.id.time_wall_control_center_new:
+                Intent touch_event = new Intent(this, TouchEvent.class);
+                startActivity(touch_event);
                 break;
             default:
                 break;
@@ -68,156 +71,50 @@ public class TimeWall extends AppCompatActivity {
         return true;
     }
 
-    public class TimeDivisionsManager {
-
-        TimeFlow time_flow;
-        TimeDivisions time_divisions;
-
-        public TimeDivisionsManager() {
-            this.initTimeDivisions();
-        }
-
-        private void initTimeDivisions() {
-            /* getting time_divisions reference */
-            time_divisions = (TimeDivisions) findViewById(R.id.time_divisions);
-            /* getting time_flow reference */
-            time_flow = (TimeFlow) findViewById(R.id.time_flow);
-            time_flow.timeDivisionsManager = this;
-        }
-
-        private void UITweaked() {
-            int y = time_flow.getScrollY();
-            time_divisions.UITweaked(y);
-        }
-
-        public void scrollWithOffset() {
-            int y = time_flow.getScrollY();
-            time_divisions.scrollWithOffSet(y);
-        }
-
-        public void showThisDay(Date date) {
-            time_divisions.showThisDay(date);
-        }
-    }
-
-    public class StubsStackManager {
-
-        friends.eevee.DB.Helpers.Events eventsDB;
-        TimeFlow time_flow;
-        RelativeLayout stubs_stack;
-
-        public StubsStackManager() {
-            this.initStubsStack();
-        }
-
-        public void initStubsStack() {
-            /* creating a DB manager */
-            eventsDB = new Events(TimeWall.this, Events.DB_NAME, null, Events.DB_VERSION);
-            /* getting time_flow reference */
-            time_flow = (TimeFlow) findViewById(R.id.time_flow);
-            time_flow.stubsStackManager = this;
-            /* getting stubs_stack reference */
-            stubs_stack = (RelativeLayout) time_flow.findViewById(R.id.stubs_stack);
-
-            /* setting stubs_stack height */
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) stubs_stack.getLayoutParams();
-            params.height = (int) (Constants.MINUTES_IN_DAY * UIPreferences.MINUTE_PX_SCALE);
-            stubs_stack.setLayoutParams(params);
-        }
-
-        public void reloadThisDay(Date day){
-            stubs_stack.removeAllViews();
-
-            Vector<EventDef> personalEventDefs = eventsDB.getRelatedEvents(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME, day);
-
-            if(personalEventDefs.size() == 0){
-                Snackbar.make(stubs_stack,"This day seems free",Snackbar.LENGTH_LONG).show();
-            }
-
-            for (int i = 0; i < personalEventDefs.size(); i++) {
-
-                /* Getting Start and End of event */
-                DateTime start = new DateTime(personalEventDefs.get(i).$START,Date.SIMPLE_REPR_SEPARATOR, Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
-                int duration_min = (int) new DateTimeDiff(personalEventDefs.get(i).$DURATION).minutesDiff();
-                DateTimeDiff duration = new DateTimeDiff(duration_min);
-                DateTime end = new DateTime(start);
-                end.addDateTimeDiff(duration);
-
-                /* Getting Ref date time and +24 and -24 mark */
-                DateTime ref_date_time = new DateTime(day, UIPreferences.START_OF_THE_DAY);
-                DateTime plus_24hr = new DateTime(ref_date_time);
-                plus_24hr.addDaysSeconds(1,0);
-
-                /* Cases for events */
-
-                /*      ref                  +24            */
-                /*       |  <-------------->  |             */
-                if(start.isFutureOrEqualTo(ref_date_time)
-                        && start.isPastOrEqualTo(plus_24hr)
-                        && end.isFutureOrEqualTo(ref_date_time)
-                        && end.isPastOrEqualTo(plus_24hr)){
-
-                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , start, duration_min);
-                    stubs_stack.addView(eventStub);
-                    eventStub.reloadStub();
-                }
-
-                /*      ref                  +24            */
-                /*       |          <---------|----->       */
-                else if(start.isFutureOrEqualTo(ref_date_time)
-                        && start.isPastOrEqualTo(plus_24hr)
-                        && end.isFutureOrEqualTo(plus_24hr)){
-
-                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , start, (int) plus_24hr.dateTimeDifferenceFrom(start).minutesDiff());
-                    stubs_stack.addView(eventStub);
-                    eventStub.reloadStub();
-                }
-
-                /*        ref                  +24            */
-                /*  <------|-------->           |             */
-                else if(start.isPastOrEqualTo(ref_date_time)
-                        && end.isFutureOrEqualTo(ref_date_time)
-                        && end.isPastOrEqualTo(plus_24hr)){
-
-                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , ref_date_time, (int) end.dateTimeDifferenceFrom(ref_date_time).minutesDiff());
-                    stubs_stack.addView(eventStub);
-                    eventStub.reloadStub();
-                }
-            }
-        }
-
-        public void UITweak(){
-            this.reloadThisDay(UIPreferences.SHOWING_DATE);
-            /* setting stubs_stack height */
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) stubs_stack.getLayoutParams();
-            params.height = (int) (Constants.MINUTES_IN_DAY * UIPreferences.MINUTE_PX_SCALE);
-            stubs_stack.setLayoutParams(params);
-        }
-    }
+    @Override
+    public void onBackPressed() {}
 
     /**
      * Manager of TimeWall Activity
      */
-    public class TimeWallControlCenter {
+    public class ControlCenter {
 
+        TimeDivisionsManager timeDivisionsManager;
+        StubsStackManager stubsStackManager;
+
+        TimeFlow time_flow;
         LinearLayout time_wall_control_center;
         SeekBar time_divisions_time_text_size;
         SeekBar time_divisions_time_bw_marks;
         SeekBar time_wall_minute_px_scale;
         SeekBar time_divisions_past_time;
 
-        public TimeWallControlCenter() {
+        public ControlCenter() {
+            this.time_flow = (TimeFlow) findViewById(R.id.time_flow);
+            /* creating instances of the time divisions and stub stack manager */
+            timeDivisionsManager = new TimeDivisionsManager();
+            stubsStackManager = new StubsStackManager();
+            /* setting the timeDivisionsManager and stubsStackManager references to time flow class */
+            this.time_flow.timeDivisionsManager = timeDivisionsManager;
+            this.time_flow.stubsStackManager = stubsStackManager;
+            /* getting UI preferences */
+            UIPreferences.SHOWING_DATE = new Date(true);
+
             this.initTimeWallControlCenter();
         }
 
-        public void initTimeWallControlCenter() {
-            this.initInterfaceControl();
-            UIPreferences.SHOWING_DATE = new Date(true);
-            timeDivisionsManager.showThisDay(UIPreferences.SHOWING_DATE);
-            stubsStackManager.reloadThisDay(UIPreferences.SHOWING_DATE);
+        /**
+         * Do not call this method explicitly
+         * */
+        void initTimeWallControlCenter() {
+            this.initUITweaker();
         }
 
-        private void initInterfaceControl(){
+        /**
+         * UI options
+         * Do not call this method explicitly
+         * */
+        private void initUITweaker(){
             //////////// initializes time wall control center
 
             time_wall_control_center = (LinearLayout) findViewById(R.id.time_wall_control_center);
@@ -365,7 +262,7 @@ public class TimeWall extends AppCompatActivity {
                                     Date selected = new Date(year,monthOfYear + 1, dayOfMonth);
                                     UIPreferences.SHOWING_DATE = selected;
                                     timeDivisionsManager.showThisDay(UIPreferences.SHOWING_DATE);
-                                    stubsStackManager.reloadThisDay(UIPreferences.SHOWING_DATE);
+                                    stubsStackManager.showThisDay(UIPreferences.SHOWING_DATE);
                                 }
                             },
                             UIPreferences.SHOWING_DATE.$YEAR, UIPreferences.SHOWING_DATE.$MONTH - 1, UIPreferences.SHOWING_DATE.$DAY);
@@ -377,4 +274,137 @@ public class TimeWall extends AppCompatActivity {
             }
         }
     }
+
+    public class TimeDivisionsManager {
+
+        TimeDivisions time_divisions;
+
+        public TimeDivisionsManager() {
+            this.initTimeDivisions();
+        }
+
+        /**
+         * Do not call this method explicitly
+         * */
+        private void initTimeDivisions() {
+            /* getting time_divisions reference */
+            time_divisions = (TimeDivisions) findViewById(R.id.time_divisions);
+            showThisDay(UIPreferences.SHOWING_DATE);
+        }
+
+        private void UITweaked() {
+            int y = controlCenter.time_flow.getScrollY();
+            time_divisions.UITweaked(y);
+        }
+
+        public void showThisDay(Date date) {
+            time_divisions.showThisDay(date);
+        }
+
+        public void scrollWithOffset() {
+            int y = controlCenter.time_flow.getScrollY();
+            time_divisions.scrollWithOffSet(y);
+        }
+    }
+
+    public class StubsStackManager {
+
+        DB eventsDB;
+        FrameLayout time_wall;
+        RelativeLayout stubs_stack;
+
+        public StubsStackManager() {
+            this.initStubsStack();
+        }
+
+        /**
+         * Do not call this method explicitly
+         * */
+        public void initStubsStack() {
+            /* creating a DB manager */
+            eventsDB = new DB(TimeWall.this, DB.DB_NAME, null, DB.DB_VERSION);
+
+            /* getting time_wall reference */
+            time_wall = (FrameLayout) findViewById(R.id.time_wall);
+            /* getting stubs_stack reference */
+            stubs_stack = (RelativeLayout) time_wall.findViewById(R.id.stubs_stack);
+            /* setting stubs_stack height */
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) stubs_stack.getLayoutParams();
+            params.height = (int) (Constants.MINUTES_IN_DAY * UIPreferences.MINUTE_PX_SCALE);
+            stubs_stack.setLayoutParams(params);
+
+            showThisDay(UIPreferences.SHOWING_DATE);
+        }
+
+        public void showThisDay(Date day){
+            stubs_stack.removeAllViews();
+
+            Vector<EventDef> personalEventDefs = eventsDB.getRelatedEvents(DB.TABLES.PERSONAL_EVENTS.TABLE_NAME, day);
+
+            Log.i(ZeroLog.TAG, "On " + day.formalRepresentation());
+            if(personalEventDefs.size() == 0){
+                Snackbar.make(stubs_stack,"This day seems free",Snackbar.LENGTH_LONG).show();
+                Log.i(ZeroLog.TAG, "no personal events ");
+            }
+
+            for (int i = 0; i < personalEventDefs.size(); i++) {
+                /* Getting Start and End of event */
+                DateTime start = new DateTime(personalEventDefs.get(i).$START,Date.SIMPLE_REPR_SEPARATOR, Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
+                int duration_min = (int) new DateTimeDiff(personalEventDefs.get(i).$DURATION).minutesDiff();
+                DateTimeDiff duration = new DateTimeDiff(duration_min);
+                DateTime end = new DateTime(start);
+                end.addDateTimeDiff(duration);
+
+                /* Getting Ref date time and +24 and -24 mark */
+                DateTime ref_date_time = new DateTime(day, UIPreferences.START_OF_THE_DAY);
+                DateTime plus_24hr = new DateTime(ref_date_time);
+                plus_24hr.addDaysSeconds(1,0);
+
+                /* Cases for events */
+
+                /*      ref                  +24            */
+                /*       |  <-------------->  |             */
+                if(start.isFutureOrEqualTo(ref_date_time)
+                        && start.isPastOrEqualTo(plus_24hr)
+                        && end.isFutureOrEqualTo(ref_date_time)
+                        && end.isPastOrEqualTo(plus_24hr)){
+
+                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , start, duration_min);
+                    stubs_stack.addView(eventStub);
+                    eventStub.reloadStub();
+                }
+
+                /*      ref                  +24            */
+                /*       |          <---------|----->       */
+                else if(start.isFutureOrEqualTo(ref_date_time)
+                        && start.isPastOrEqualTo(plus_24hr)
+                        && end.isFutureOrEqualTo(plus_24hr)){
+
+                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , start, (int) plus_24hr.dateTimeDifferenceFrom(start).minutesDiff());
+                    stubs_stack.addView(eventStub);
+                    eventStub.reloadStub();
+                }
+
+                /*        ref                  +24            */
+                /*  <------|-------->           |             */
+                else if(start.isPastOrEqualTo(ref_date_time)
+                        && end.isFutureOrEqualTo(ref_date_time)
+                        && end.isPastOrEqualTo(plus_24hr)){
+
+                    EventStub eventStub = new EventStub(TimeWall.this,personalEventDefs.get(i) , ref_date_time, (int) end.dateTimeDifferenceFrom(ref_date_time).minutesDiff());
+                    stubs_stack.addView(eventStub);
+                    eventStub.reloadStub();
+                }
+            }
+        }
+
+        public void UITweak(){
+            this.showThisDay(UIPreferences.SHOWING_DATE);
+            /* setting stubs_stack height */
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) stubs_stack.getLayoutParams();
+            params.height = (int) (Constants.MINUTES_IN_DAY * UIPreferences.MINUTE_PX_SCALE);
+            stubs_stack.setLayoutParams(params);
+        }
+    }
+
 }

@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import friends.eevee.DB.Helpers.Events;
+import friends.eevee.DB.Helpers.DB;
 import friends.eevee.Log.ZeroLog;
 
 public class PersonalEventDef extends EventDef{
@@ -16,11 +16,11 @@ public class PersonalEventDef extends EventDef{
 
     public PersonalEventDef(Cursor cursor){
         if(cursor != null){
-            this.$PK  = cursor.getString(cursor.getColumnIndex(Events.PRIMARY_KEY));
-            this.$NAME  = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.NAME));
-            this.$START = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.START));
-            this.$DURATION = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.DURATION));
-            this.$COMMENT = cursor.getString(cursor.getColumnIndex(Events.TABLES.PERSONAL_EVENTS_TABLE.COMMENT));
+            this.$PK  = Integer.parseInt(cursor.getString(cursor.getColumnIndex(DB.PRIMARY_KEY)));
+            this.$NAME  = cursor.getString(cursor.getColumnIndex(DB.TABLES.PERSONAL_EVENTS.NAME));
+            this.$START = cursor.getString(cursor.getColumnIndex(DB.TABLES.PERSONAL_EVENTS.START));
+            this.$DURATION = cursor.getString(cursor.getColumnIndex(DB.TABLES.PERSONAL_EVENTS.DURATION));
+            this.$COMMENT = cursor.getString(cursor.getColumnIndex(DB.TABLES.PERSONAL_EVENTS.COMMENT));
         }
         else {
             Log.i(ZeroLog.TAG, "PersonalEventDef: Tried to initialize personal_event_def with null cursor");
@@ -28,14 +28,14 @@ public class PersonalEventDef extends EventDef{
     }
 
     public PersonalEventDef(Parcel source) {
-        this.$PK = source.readString();
+        this.$PK = source.readInt();
         this.$NAME = source.readString();
         this.$START = source.readString();
         this.$DURATION = source.readString();
         this.$COMMENT = source.readString();
     }
 
-    public String get(){
+    public String toString(){
         return
                 this.$PK + "  " +
                 this.$NAME  + "  " +
@@ -56,7 +56,7 @@ public class PersonalEventDef extends EventDef{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.$PK);
+        dest.writeInt(this.$PK);
         dest.writeString(this.$NAME);
         dest.writeString(this.$START);
         dest.writeString(this.$DURATION);

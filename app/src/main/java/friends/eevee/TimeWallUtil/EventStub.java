@@ -42,7 +42,7 @@ public class EventStub extends Button {
     int DURATION;
 
     String NAME;
-    /** pk value in Personal Events Table */
+    /** pk value in Personal events Table */
     int PK;
 
     public EventStub(Context context,EventDef eventDef, DateTime start, int duration) {
@@ -56,11 +56,11 @@ public class EventStub extends Button {
         this.START = start;
         this.DURATION = duration;
         this.NAME = eventDef.$NAME;
-        this.PK = Integer.parseInt(eventDef.$PK);
+        this.PK = eventDef.$PK;
+        Log.i(ZeroLog.TAG, this.toString());
     }
 
     public void reloadStub(){
-        Log.i(ZeroLog.TAG, this.__str__());
         /* ref date time */
         Date ref_date = UIPreferences.SHOWING_DATE;
         Time ref_time = UIPreferences.START_OF_THE_DAY;
@@ -115,10 +115,10 @@ public class EventStub extends Button {
                     @Override
                     public void onClick(View v) {
                         Intent touchEvent = new Intent(CONTEXT, TouchEvent.class);
-                        if(EVENT_DEF instanceof PersonalEventDef){
-                            Log.i(ZeroLog.TAG, "EventStub: personal");
-                        }
                         touchEvent.putExtra("EventDef", EVENT_DEF);
+                        if (EVENT_DEF instanceof PersonalEventDef){
+                            Log.i(ZeroLog.TAG, "peeking personal event " + EVENT_DEF.toString());
+                        }
                         CONTEXT.startActivity(touchEvent);
                     }
                 }).show();
@@ -138,8 +138,13 @@ public class EventStub extends Button {
         canvas.restore();
     }
 
-    public String __str__(){
-        return " Name = " + this.NAME + " Start = " + this.START.formal12Representation() + " Duration = " + String.valueOf(this.DURATION);
+    public String toString(){
+        if (EVENT_DEF instanceof PersonalEventDef){
+            return "Personal Event <<< name = " + this.NAME +
+                    "; start = " + this.START.formal12Representation() +
+                    "; duration = " + String.valueOf(this.DURATION);
+        }
+        return "";
     }
 
     public int getBgColor(){

@@ -30,12 +30,12 @@ import friends.eevee.TimeWallUtil.UIPreferences;
  * 8. re-install the app or more preferably TODO: upgrade the db
  * </p>
  */
-public class Events extends Helper {
+public class DB extends Helper {
 
     /**
      * DB name
      */
-    public static final String DB_NAME = "events.db";
+    public static final String DB_NAME = "eevee.db";
     /**
      * DB version
      */
@@ -65,9 +65,9 @@ public class Events extends Helper {
         /**
          * personal events table
          */
-        public static final class PERSONAL_EVENTS_TABLE {
+        public static final class PERSONAL_EVENTS {
             /* personal events table - name*/
-            public static final String PERSONAL_EVENTS_TABLE_NAME = "personal_events";
+            public static final String TABLE_NAME = "personal_events";
 
             /* personal events table - columns*/
             //PRIMARY KEY
@@ -79,7 +79,7 @@ public class Events extends Helper {
             /* create table query*/
             private static final String CREATE_TABLE_QUERY =
                     "CREATE TABLE "
-                            + PERSONAL_EVENTS_TABLE_NAME
+                            + TABLE_NAME
                             + "("
                             + PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                             + START + " VARCHAR(255) NOT NULL,"
@@ -90,7 +90,7 @@ public class Events extends Helper {
         }
     }
 
-    public Events(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DB(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
@@ -98,14 +98,14 @@ public class Events extends Helper {
     public void onCreate(SQLiteDatabase db) {
         super.onCreate(db);
         // create tables
-        TABLES.createTable(db, TABLES.PERSONAL_EVENTS_TABLE.CREATE_TABLE_QUERY);
+        TABLES.createTable(db, TABLES.PERSONAL_EVENTS.CREATE_TABLE_QUERY);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onUpgrade(db, oldVersion, newVersion);
         // drop tables
-        TABLES.dropTable(db, TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
+        TABLES.dropTable(db, TABLES.PERSONAL_EVENTS.TABLE_NAME);
         // create new ones
         onCreate(db);
     }
@@ -114,14 +114,14 @@ public class Events extends Helper {
 
     public void insert(EventDef eventDef, String table) {
         switch (table) {
-            case TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME:
+            case TABLES.PERSONAL_EVENTS.TABLE_NAME:
                 /* Personal events table */
                 ContentValues values = new ContentValues();
 
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.NAME, eventDef.get$NAME());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.START, eventDef.get$START());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.DURATION, eventDef.get$DURATION());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.COMMENT, eventDef.get$COMMENT());
+                values.put(TABLES.PERSONAL_EVENTS.NAME, eventDef.get$NAME());
+                values.put(TABLES.PERSONAL_EVENTS.START, eventDef.get$START());
+                values.put(TABLES.PERSONAL_EVENTS.DURATION, eventDef.get$DURATION());
+                values.put(TABLES.PERSONAL_EVENTS.COMMENT, eventDef.get$COMMENT());
 
                 SQLiteDatabase db = getWritableDatabase();
                 db.insert(table, null, values);
@@ -133,31 +133,29 @@ public class Events extends Helper {
         }
     }
 
-    public void updateEntryWithKeyValue(EventDef entry, String table, String key, String value) {
-        switch (table) {
-            case TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME:
-                /* Personal events table */
-                ContentValues values = new ContentValues();
+    public void updateEntryWithKeyValue(EventDef entry, String key, String value) {
 
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.NAME, entry.get$NAME());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.START, entry.get$START());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.DURATION, entry.get$DURATION());
-                values.put(TABLES.PERSONAL_EVENTS_TABLE.COMMENT, entry.get$COMMENT());
+        if (entry instanceof PersonalEventDef) {
+            /* Personal events table */
+            ContentValues values = new ContentValues();
 
-                SQLiteDatabase db = getWritableDatabase();
-                String where = key + " = '" + value + "' ";
-                db.update(table, values, where, null);
-                db.close();
+            values.put(TABLES.PERSONAL_EVENTS.NAME, entry.get$NAME());
+            values.put(TABLES.PERSONAL_EVENTS.START, entry.get$START());
+            values.put(TABLES.PERSONAL_EVENTS.DURATION, entry.get$DURATION());
+            values.put(TABLES.PERSONAL_EVENTS.COMMENT, entry.get$COMMENT());
 
-                break;
-            default:
-                break;
+            SQLiteDatabase db = getWritableDatabase();
+            String where = key + " = '" + value + "' ";
+            db.update(TABLES.PERSONAL_EVENTS.TABLE_NAME, values, where, null);
+            db.close();
+
+        } else {
         }
     }
 
     public EventDef getFirstEntryWithKeyValue(String table, String key, String value) {
         switch (table) {
-            case TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME:
+            case TABLES.PERSONAL_EVENTS.TABLE_NAME:
                 /* Personal events table */
                 SQLiteDatabase db = getWritableDatabase();
                 String query = "SELECT * FROM " + table + " WHERE " + key + " ='" + value + "';";
@@ -185,7 +183,7 @@ public class Events extends Helper {
 
     public Vector<EventDef> getAllEntryWithKeyValue(String table, String key, String value) {
         switch (table) {
-            case TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME:
+            case TABLES.PERSONAL_EVENTS.TABLE_NAME:
                 /* Personal events table */
                 SQLiteDatabase db = getWritableDatabase();
                 String query = "SELECT * FROM " + table + " WHERE " + key + " ='" + value + "';";
@@ -220,7 +218,7 @@ public class Events extends Helper {
         plus_24hr.addDaysSeconds(1,0);
 
         switch (table) {
-            case TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME:
+            case TABLES.PERSONAL_EVENTS.TABLE_NAME:
                 /* Personal events table */
                 SQLiteDatabase db = getWritableDatabase();
                 String query = "SELECT * FROM " + table + ";";

@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Encapsulates the rows in tables of the events db
+ * Encapsulates the info about events
  * */
 public class EventDef implements Parcelable {
-    public String $PK;
+    public int $PK;
     public String $NAME;
     public String $START;
     public String $DURATION;
@@ -18,7 +18,7 @@ public class EventDef implements Parcelable {
 
     }
 
-    public String get(){
+    public String toString(){
         return "";
     }
 
@@ -56,11 +56,11 @@ public class EventDef implements Parcelable {
 
     }
 
-    public String get$PK() {
+    public int get$PK() {
         return $PK;
     }
 
-    public void set$PK(String $PK) {
+    public void set$PK(int $PK) {
         this.$PK = $PK;
     }
 

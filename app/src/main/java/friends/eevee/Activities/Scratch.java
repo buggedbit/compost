@@ -14,7 +14,7 @@ public class Scratch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scratch);
 
-//        Events events_db_helper = new Exvents(this, Events.DB_NAME, null, Events.DB_VERSION);
+//        DB events_db_helper = new Exvents(this, DB.DB_NAME, null, DB.DB_VERSION);
 //        PersonalEventDef eventDef = new PersonalEventDef();
 //
 //        eventDef.$NAME = "yash";
@@ -22,11 +22,11 @@ public class Scratch extends AppCompatActivity {
 //        eventDef.$DURATION = "later";
 //        eventDef.$COMMENT = "comment";
 //
-//        events_db_helper.insert(eventDef,Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
-//        EventDef eventDef1 = events_db_helper.getFirstEntryWithKeyValue(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME,Events.TABLES.PERSONAL_EVENTS_TABLE.NAME,"yash");
+//        events_db_helper.insert(eventDef,DB.TABLES.PERSONAL_EVENTS.TABLE_NAME);
+//        EventDef eventDef1 = events_db_helper.getFirstEntryWithKeyValue(DB.TABLES.PERSONAL_EVENTS.TABLE_NAME,DB.TABLES.PERSONAL_EVENTS.NAME,"yash");
 //
-//        Log.i(ZeroLog.TAG, String.valueOf(events_db_helper.numberOfEntries(Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME)));
-//        Log.i(ZeroLog.TAG, eventDef1.get());
+//        Log.i(ZeroLog.TAG, String.valueOf(events_db_helper.numberOfEntries(DB.TABLES.PERSONAL_EVENTS.TABLE_NAME)));
+//        Log.i(ZeroLog.TAG, eventDef1.toString());
 
 
 //        RelativeLayout stack = (RelativeLayout) findViewById(R.id.stack);

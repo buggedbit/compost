@@ -40,9 +40,8 @@ public class TimeFlow extends ScrollView {
 
             if (forward == 0) {
                 // if forward is zero, then the bottom has been reached
-
-                Snackbar.make(this, "Go to next day?", Snackbar.LENGTH_SHORT)
-                        .setAction("Yes", new OnClickListener() {
+                Snackbar.make(this, "Next day?", Snackbar.LENGTH_SHORT)
+                        .setAction("Go", new OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 changeDay(1);
@@ -51,8 +50,8 @@ public class TimeFlow extends ScrollView {
                         }).show();
             } else if (back == 0) {
                 // if back is zero, then the top has been reached
-                Snackbar.make(this, "Go to prev day?", Snackbar.LENGTH_SHORT)
-                        .setAction("Yes", new OnClickListener() {
+                Snackbar.make(this, "Previous day?", Snackbar.LENGTH_SHORT)
+                        .setAction("Go", new OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 changeDay(-1);
@@ -71,7 +70,7 @@ public class TimeFlow extends ScrollView {
         if (timeDivisionsManager != null && stubsStackManager != null) {
             UIPreferences.SHOWING_DATE.addDays(no_days);
             timeDivisionsManager.showThisDay(UIPreferences.SHOWING_DATE);
-            stubsStackManager.reloadThisDay(UIPreferences.SHOWING_DATE);
+            stubsStackManager.showThisDay(UIPreferences.SHOWING_DATE);
         }
 
     }

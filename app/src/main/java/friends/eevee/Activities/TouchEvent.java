@@ -3,6 +3,7 @@ package friends.eevee.Activities;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,7 +25,7 @@ import friends.eevee.Calender.DateTimeDiff;
 import friends.eevee.Calender.Time;
 import friends.eevee.DB.Def.EventDef;
 import friends.eevee.DB.Def.PersonalEventDef;
-import friends.eevee.DB.Helpers.Events;
+import friends.eevee.DB.Helpers.DB;
 import friends.eevee.Log.ZeroLog;
 import friends.eevee.NewEventUtil.UIPreferences;
 import friends.eevee.R;
@@ -32,6 +33,8 @@ import friends.eevee.R;
 public class TouchEvent extends AppCompatActivity {
 
     InputUIManager inputUIManager;
+    boolean IS_NEW_EVENT = true;
+    EventDef EVENT_IN_FOCUS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +49,17 @@ public class TouchEvent extends AppCompatActivity {
     }
 
     // TODO : improve this to suite your needs
-    private void verifyInput() {
-        PersonalEventDef newEntry = new PersonalEventDef();
+    private void submit() {
+        /* Validation */
+        if (IS_NEW_EVENT)
+            this.EVENT_IN_FOCUS = new PersonalEventDef();
 
         /* name */
         String name = inputUIManager.name.getText().toString();
         if (name.matches("")) {
             flagInappropriateInput("What's it called?");
             return;
-        } else newEntry.$NAME = name;
+        } else this.EVENT_IN_FOCUS.$NAME = name;
         /*--*/
 
         /* start_date_time */
@@ -69,32 +74,49 @@ public class TouchEvent extends AppCompatActivity {
             return;
         } else {
             DateTime dateTime = new DateTime(date, time);
-            newEntry.$START = dateTime.simpleRepresentation();
+            this.EVENT_IN_FOCUS.$START = dateTime.simpleRepresentation();
         }
         /*--*/
 
         /* duration */
         String duration = inputUIManager.duration_hint.getText().toString();
-        if(DateTimeDiff.isValidHrMinRepresentation(duration)){
+        if (DateTimeDiff.isValidHrMinRepresentation(duration)) {
             flagInappropriateInput("Duration?");
             return;
         }
-        newEntry.$DURATION = duration;
+        this.EVENT_IN_FOCUS.$DURATION = duration;
         /*--*/
 
         /* comment */
-        newEntry.$COMMENT = inputUIManager.comment.getText().toString();
+        this.EVENT_IN_FOCUS.set$COMMENT(inputUIManager.comment.getText().toString());
         /*--*/
 
-        /* If all the verifications are OK then insert into DB */
-        insertIntoDB(newEntry);
+        /* Inserting or updating */
+        if (IS_NEW_EVENT) {
+            /* If all the verifications are OK then insert into DB */
+            insertInDB(this.EVENT_IN_FOCUS);
+        }
+        else {
+            /* If all the verifications are OK then update into DB */
+            updateInDB(this.EVENT_IN_FOCUS);
+        }
+
+        Intent time_wall = new Intent(this, TimeWall.class);
+        startActivity(time_wall);
     }
 
-    private void insertIntoDB(PersonalEventDef newEntry) {
-        Events eventsDB = new Events(this, Events.DB_NAME, null, Events.DB_VERSION);
-        eventsDB.insert(newEntry, Events.TABLES.PERSONAL_EVENTS_TABLE.PERSONAL_EVENTS_TABLE_NAME);
-        Log.i(ZeroLog.TAG, " new personal event added [ " + newEntry.get() + "] ");
-        Toast.makeText(this," Good to go! ", Toast.LENGTH_SHORT).show();
+    private void insertInDB(EventDef newEntry) {
+        DB db = new DB(this, DB.DB_NAME, null, DB.DB_VERSION);
+        db.insert(newEntry, DB.TABLES.PERSONAL_EVENTS.TABLE_NAME);
+        Log.i(ZeroLog.TAG, " new personal event added [ " + newEntry.toString() + "] ");
+        Toast.makeText(this, "Created", Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateInDB(EventDef oldEntry) {
+        DB db = new DB(this, DB.DB_NAME, null, DB.DB_VERSION);
+        db.updateEntryWithKeyValue(oldEntry, DB.PRIMARY_KEY, String.valueOf(oldEntry.$PK));
+        Log.i(ZeroLog.TAG, " old personal event updated to [ " + oldEntry.toString() + "] ");
+        Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
     }
 
     class InputUIManager {
@@ -108,7 +130,7 @@ public class TouchEvent extends AppCompatActivity {
         TextView duration_hint;
         SeekBar duration_select;
         EditText comment;
-        Button duration_increment,duration_decrement;
+        Button duration_increment, duration_decrement;
         Button submit;
 
         public InputUIManager() {
@@ -243,7 +265,7 @@ public class TouchEvent extends AppCompatActivity {
             this.submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TouchEvent.this.verifyInput();
+                    TouchEvent.this.submit();
                 }
             });
             /*--*/
@@ -251,21 +273,25 @@ public class TouchEvent extends AppCompatActivity {
             this.fillInput();
         }
 
-        private void fillInput(){
-            EventDef eventDef = getIntent().getParcelableExtra("EventDef");
-            if(eventDef == null) return;
-            else {
-                name.setText(eventDef.$NAME);
-                DateTime start = new DateTime(eventDef.$START,Date.SIMPLE_REPR_SEPARATOR,Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
+        private void fillInput() {
+            EVENT_IN_FOCUS = getIntent().getParcelableExtra("EventDef");
+            if (EVENT_IN_FOCUS != null) {
+                name.setText(EVENT_IN_FOCUS.$NAME);
+                DateTime start = new DateTime(EVENT_IN_FOCUS.$START, Date.SIMPLE_REPR_SEPARATOR, Time.SIMPLE_REPR_SEPARATOR, DateTime.SIMPLE_REPR_SEPARATOR);
                 start_time.setText(start.$TIME.simpleRepresentation());
                 start_date.setText(start.$DATE.simpleRepresentation());
-                // TODO : duration seek bar set, validate, update instead of insert
-                duration_hint.setText(eventDef.$DURATION);
-                comment.setText(eventDef.get$COMMENT());
+                DateTimeDiff duration = new DateTimeDiff(EVENT_IN_FOCUS.$DURATION);
+                UIPreferences.DURATION = (int) duration.minutesDiff();
+                int progress = (UIPreferences.DURATION - UIPreferences.MINIMUM_DURATION) / UIPreferences.DURATION_STEP;
+                this.duration_select.setProgress(progress);
+                duration_hint.setText(EVENT_IN_FOCUS.$DURATION);
+                comment.setText(EVENT_IN_FOCUS.get$COMMENT());
+                IS_NEW_EVENT = false;
+            } else {
+                IS_NEW_EVENT = true;
             }
         }
 
     }
-
 
 }
