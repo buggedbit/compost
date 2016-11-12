@@ -1,17 +1,17 @@
 /**
- * @fn ajax_request(request,params_array,action_address="NoteBooks.xml",request_type="POST")
+ * @fn ajax_request(request,params_array,action_address="data.xml",request_type="POST")
  * framework for implementing ajax operations.
  * Requests asynchronously.
  * @param request action to be performed by processing script
  * @param params_array array of the parameters req for executing the request
  * @param request_type "POST" or "GET" here by default "POST"
- * @param action_address the address of the scripting page here by default "Processor.php"
+ * @param action_address the address of the scripting page here by default "processor.php"
  * @param function_params functions to be called after the response is ready and status is "OK",
  * The parameter for each function is the xml_http_request object
  * */
 function ajax_request(request, params_array, function_params, action_address, request_type) {
 
-    action_address = action_address == undefined ? "Processor.php" : action_address;
+    action_address = action_address == undefined ? "processor.php" : action_address;
     request_type = request_type == undefined ? "POST" : request_type;
 
     var xml_http_request = new XMLHttpRequest();
