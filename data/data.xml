@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bag max_pk="5">
 
-    <book pk="1" name="Audi1" max_pk="2">
-        <chapter pk="1" name="chapter1234">jfadklsdf;ajdskl</chapter>
-        <chapter pk="2" name="ter2">ffjas;dljfasldkf</chapter>
+    <book pk="1" name="Audi" max_pk="2">
+        <chapter pk="1" name="Augmenting Paths">Hello World ...</chapter>
+        <chapter pk="2" name="Groups">four properties</chapter>
     </book>
     <book pk="2" name="BMW" max_pk="1">
-        <chapter pk="1" name="apt">
-            1
-        </chapter>
+        <chapter pk="1" name="Z-series">most powerful engine</chapter>
     </book>
     <book pk="3" name="Mercedes" max_pk="0">
     </book>

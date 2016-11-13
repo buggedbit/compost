@@ -141,6 +141,43 @@ function Context(document) {
         return undefined;
     };
     /**
+     * if (this.document == undefined)return false
+     * */
+    this.book_create = function (book_name) {
+        var doc = this.document;
+        if (doc == undefined)return undefined;
+        var bags = doc.getElementsByTagName('bag');
+        if (bags == null)return false;
+        var bag = bags.item(0);
+        var max_book_pk = Number(bag.getAttribute('max_pk'));
+        var book = this.document.createElement('book');
+        book.setAttribute('pk', String(max_book_pk + 1));
+        book.setAttribute('name', book_name);
+        book.setAttribute('max_pk', "0");
+        bag.appendChild(book);
+        bag.setAttribute('max_pk', String(max_book_pk + 1));
+        return true;
+    };
+    /**
+     * return false if
+     * no param
+     * no books
+     * no such book
+     * */
+    this.book_delete = function (book_pk) {
+        if (book_pk == undefined)return false;
+        var books = this.document.getElementsByTagName("book");
+        if (books == null)return false;
+        for (var i = 0; i < books.length; ++i) {
+            if (books.item(i).getAttribute("pk") == book_pk) {
+                var book = books.item(i);
+                book.parentNode.removeChild(book);
+                return true;
+            }
+        }
+        return false;
+    };
+    /**
      * if (book == undefined)return undefined;
      * */
     this.book_name = function (book_pk) {
@@ -183,6 +220,49 @@ function Context(document) {
                 return chapters.item(i);
         }
         return undefined;
+    };
+    /**
+     * returns false if
+     * param undefined
+     * if (this.document == undefined)return false
+     * no such book exists
+     *
+     * */
+    this.chapter_create = function (chapter_name, book_pk) {
+        if (chapter_name == undefined || book_pk == undefined)return false;
+        if (this.document == undefined)return false;
+        var book = this.book(book_pk);
+        if (book == undefined)return false;
+        var max_chapter_pk = Number(book.getAttribute('max_pk'));
+        var chapter = this.document.createElement('chapter');
+        chapter.setAttribute('pk', String(max_chapter_pk + 1));
+        chapter.setAttribute('name', chapter_name);
+        book.appendChild(chapter);
+        book.setAttribute('max_pk', String(max_chapter_pk + 1));
+        return true;
+    };
+    /**
+     * return false if
+     * no param
+     * no such book
+     * no chapters
+     * no such chapter
+     * */
+    this.chapter_delete = function (book_pk, chapter_pk) {
+        if (chapter_pk == undefined)return undefined;
+        this.book_pk = book_pk;
+        var book = this.book(book_pk);
+        if (book == undefined)return false;
+        var chapters = book.getElementsByTagName("chapter");
+        if (chapters == null)return false;
+        for (var i = 0; i < chapters.length; ++i) {
+            if (chapters.item(i).getAttribute("pk") == chapter_pk) {
+                var chapter = chapters.item(i);
+                chapter.parentNode.removeChild(chapter);
+                return true;
+            }
+        }
+        return false;
     };
     /**
      * if book_pk is undefined or no book exists with such pk returns undefined
