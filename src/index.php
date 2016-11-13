@@ -355,7 +355,7 @@
                         {
                             left: $(message_box).parent().width() / 2 - 250
                         }, 'fast')
-                    .delay(Number(message.length) / 6 * 1000)
+                    .delay(3000)
                     .animate(
                         {
                             left: '100%'
