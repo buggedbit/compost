@@ -211,10 +211,10 @@
                     for (var i = 0; i < book_list.length; ++i) {
                         var name = book_list.item(i).getAttribute('name');
                         if (regex.test(name)) {
-                            $('#book_list_item_' + book_list.item(i).getAttribute('pk')).fadeIn(0);
+                            $('#book_list_item_' + book_list.item(i).getAttribute('pk')).parent().fadeIn(0);
                         }
                         else {
-                            $('#book_list_item_' + book_list.item(i).getAttribute('pk')).fadeOut(0);
+                            $('#book_list_item_' + book_list.item(i).getAttribute('pk')).parent().fadeOut(0);
                         }
                     }
                 });
@@ -227,10 +227,10 @@
                     for (var i = 0; i < chapter_list.length; ++i) {
                         var name = chapter_list.item(i).getAttribute('name');
                         if (regex.test(name)) {
-                            $('#chapter_list_item_' + chapter_list.item(i).getAttribute('pk')).fadeIn(0);
+                            $('#chapter_list_item_' + chapter_list.item(i).getAttribute('pk')).parent().fadeIn(0);
                         }
                         else {
-                            $('#chapter_list_item_' + chapter_list.item(i).getAttribute('pk')).fadeOut(0);
+                            $('#chapter_list_item_' + chapter_list.item(i).getAttribute('pk')).parent().fadeOut(0);
                         }
                     }
                 });
