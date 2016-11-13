@@ -2,6 +2,7 @@
 <html>
 <head>
     <!--LIB HEADERS-->
+    <link href="https://fonts.googleapis.com/css?family=Pacifico|VT323" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -13,6 +14,11 @@
     <style>
         body {
             background-image: url("https://s-media-cache-ak0.pinimg.com/originals/8c/9c/4f/8c9c4f9d9305496ae5164b271ca4be03.jpg");
+        	font-family: 'VT323', monospace;
+        }
+
+        .modal{
+        	font-size: xx-large;
         }
 
         .writable {
@@ -24,6 +30,7 @@
             cursor: pointer;
             color: black;
             background-color: rgba(255, 255, 255, 0.40);
+            font-family: 'VT323', monospace;
         }
 
         .writable:focus {
@@ -36,6 +43,7 @@
             font-size: large;
             max-height: 100%;
             background-color: rgba(255, 255, 255, 0.40);
+            font-family: 'Pacifico', cursive;
         }
 
         .list tr:hover {
@@ -428,17 +436,17 @@
             </div>
             <div class="col-xs-1"></div>
             <div class="col-xs-3">
-                <br>
+                <blockquote class="blockquote-reverse">
                 <input id="book_name"
                        class="writable"
                        style="text-align: right;
-                                  height: 100%;
                                   font-size: larger;"
                        data-toggle="tooltip"
                        data-placement="right"
                        title="Book"
                        type="text"
                        placeholder="Book">
+                </blockquote>
             </div>
         </div>
         <textarea id="chapter_content"
@@ -479,7 +487,7 @@
 <div class="modal fade"
      id="chapter_create_modal"
      role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -505,7 +513,7 @@
 <div class="modal fade"
      id="book_create_modal"
      role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -542,7 +550,7 @@
 <div class="modal fade"
      id="log_modal"
      role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
