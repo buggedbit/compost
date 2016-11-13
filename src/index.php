@@ -249,6 +249,12 @@
                 /* assuming that context.book_pk and context.chapter_pk
                  point to the currently viewing book and chapter */
                 $('#book_name').on('keyup', function () {
+                	var regex = new RegExp("[<>&\"']");
+                	var illegal = regex.test($(this).val());
+                	if (illegal){
+                		alert("< , > , & , \" , ' are not allowed");
+                		return;
+                	}
                     var book = context.book(context.book_pk);
                     if (book == undefined)return;
                     var book_list_item = $('#book_list_item_' + book.getAttribute('pk'));
@@ -256,6 +262,12 @@
                     book.setAttribute('name', $(this).val());
                 });
                 $('#chapter_name').on('keyup', function () {
+                    var regex = new RegExp("[<>&\"']");
+                	var illegal = regex.test($(this).val());
+                	if (illegal){
+                		alert("< , > , & , \" , ' are not allowed");
+                		return;
+                	}
                     var chapter = context.chapter(context.book_pk, context.chapter_pk);
                     if (chapter == undefined)return;
                     var chapter_list_item = $('#chapter_list_item_' + chapter.getAttribute('pk'));
@@ -263,6 +275,12 @@
                     chapter.setAttribute('name', $(this).val());
                 });
                 $('#chapter_content').on('keyup', function () {
+                    var regex = new RegExp("[<>&\"']");
+                	var illegal = regex.test($(this).val());
+                	if (illegal){
+                		alert("< , > , & , \" , ' are not allowed");
+                		return;
+                	}
                     var chapter = context.chapter(context.book_pk, context.chapter_pk);
                     if (chapter == undefined)return;
                     chapter.textContent = $(this).val();
@@ -378,6 +396,15 @@
         $(document).ready(function () {
             /* In built's */
             $('[data-toggle="tooltip"]').tooltip();
+            if (!String.prototype.encodeHTML) {
+			  String.prototype.encodeHTML = function () {
+			    return this.replace(/&/g, '&amp;')
+			               .replace(/</g, '&lt;')
+			               .replace(/>/g, '&gt;')
+			               .replace(/"/g, '&quot;')
+			               .replace(/'/g, '&apos;');
+			  };
+			}
             $(window).bind('beforeunload', function () {
 //                manager.synchronize();
             });
