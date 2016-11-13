@@ -341,6 +341,7 @@
                     },
                     [
                         function () {
+                            $('#log_credential').val("");
                             manager.showMessage(AJAXManager.textResponse);
                         }
                     ]
