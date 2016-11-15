@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bag max_pk="5">
+<bag max_pk="6">
 
     <book pk="1" name="Audi" max_pk="2">
         <chapter pk="1" name="Augmenting Paths">Hello World ...</chapter>
