@@ -1,4 +1,4 @@
-package friends.eevee.TimeWallUtil;
+package friends.eevee.Activities.TimeWall.Utilities;
 
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.Time;
@@ -10,7 +10,11 @@ public class UIPreferences {
     public final static int MAXIMUM_PAST_TIME = 1440;               /** minutes */ // one week
     public final static int PAST_TIME_STEP = 60;                     /** minutes */ // one week
 
-
+    /**
+     * changes
+     * time divisions
+     * event stubs
+     * */
     public static float MINUTE_PX_SCALE = 2.0f;                 /** 1 MINUTE = (this many) px */
     public final static float MIN_MINUTE_PX_SCALE = 1.0f;             /** 1 MINUTE = (this many) px */
     public final static float MAX_MINUTE_PX_SCALE = 6.0f;             /** 1 MINUTE = (this many) px */
@@ -22,11 +26,19 @@ public class UIPreferences {
 
     public static class TIME_DIVISIONS{
 
+        /**
+         * changes
+         * time divisions
+         * */
         public static int MINUTES_BW_DIVISIONS = 60;           /** minutes*/
         public final static int MIN_MINUTES_BW_DIVISIONS = 30;       /** minutes*/
         public final static int MAX_MINUTES_BW_DIVISIONS = 60;       /** minutes*/
         public final static int MINUTES_BW_DIVISIONS_STEP = 30;       /** minutes*/
 
+        /**
+         * changes
+         * time divisions
+         * */
         public static int TIME_TEXT_SIZE = 36;              /** px*/
         public final static int MIN_TEXT_SIZE = 0;               /** px*/
         public final static int MAX_TEXT_SIZE = 100;              /** px*/

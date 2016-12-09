@@ -1,4 +1,4 @@
-package friends.eevee.DB.Def;
+package friends.eevee.Activities.TouchEvent.Def;
 
 import android.os.Parcel;
 import android.os.Parcelable;

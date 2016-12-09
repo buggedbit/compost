@@ -1,4 +1,4 @@
-package friends.eevee.DB.Helpers;
+package friends.eevee.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class Helper extends SQLiteOpenHelper {
+public class Base extends SQLiteOpenHelper {
 
     public static final String PRIMARY_KEY = "_id";
 
-    public Helper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public Base(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

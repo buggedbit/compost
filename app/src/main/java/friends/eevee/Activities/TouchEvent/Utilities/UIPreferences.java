@@ -1,4 +1,4 @@
-package friends.eevee.NewEventUtil;
+package friends.eevee.Activities.TouchEvent.Utilities;
 
 public class UIPreferences {
 

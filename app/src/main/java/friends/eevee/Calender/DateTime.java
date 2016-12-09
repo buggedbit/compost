@@ -181,16 +181,16 @@ public class DateTime {
     //
 
     // difference
-    // return A - B in DateTimeDiff with sign
-    public static DateTimeDiff dateTimeDifferenceSecondToFirst(DateTime A, DateTime B) {
-        return new DateTimeDiff(Date.dayDifferenceSecondToFirst(A.$DATE, B.$DATE), Time.timeDifferenceSecondToFirst(A.$TIME, B.$TIME));
+    // return A - B in DateTimeDelta with sign
+    public static DateTimeDelta dateTimeDifferenceSecondToFirst(DateTime A, DateTime B) {
+        return new DateTimeDelta(Date.dayDifferenceSecondToFirst(A.$DATE, B.$DATE), Time.timeDifferenceSecondToFirst(A.$TIME, B.$TIME));
     }
 
-    public DateTimeDiff dateTimeDifferenceFrom(DateTime B) {
+    public DateTimeDelta dateTimeDifferenceFrom(DateTime B) {
         return DateTime.dateTimeDifferenceSecondToFirst(this, B);
     }
 
-    public DateTimeDiff dateTimeDifferenceTo(DateTime A) {
+    public DateTimeDelta dateTimeDifferenceTo(DateTime A) {
         return DateTime.dateTimeDifferenceSecondToFirst(A, this);
     }
     //
@@ -230,8 +230,8 @@ public class DateTime {
         return returnValue;
     }
 
-    public boolean addDateTimeDiff(DateTimeDiff dateTimeDiff) {
-        return this.addDaysSeconds(dateTimeDiff.$24hr, dateTimeDiff.$sec);
+    public boolean addDateTimeDiff(DateTimeDelta dateTimeDelta) {
+        return this.addDaysSeconds(dateTimeDelta.$24hr, dateTimeDelta.$sec);
     }
     //
 

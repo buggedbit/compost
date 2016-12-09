@@ -1,4 +1,4 @@
-package friends.eevee.Activities;
+package friends.eevee.Activities.TouchEvent;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -19,15 +19,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import friends.eevee.Activities.TimeWall.TimeWall;
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
-import friends.eevee.Calender.DateTimeDiff;
+import friends.eevee.Calender.DateTimeDelta;
 import friends.eevee.Calender.Time;
-import friends.eevee.DB.Def.EventDef;
-import friends.eevee.DB.Def.PersonalEventDef;
-import friends.eevee.DB.Helpers.DB;
+import friends.eevee.Activities.TouchEvent.Def.EventDef;
+import friends.eevee.Activities.TouchEvent.Def.PersonalEventDef;
+import friends.eevee.DB.DB;
 import friends.eevee.Log.ZeroLog;
-import friends.eevee.NewEventUtil.UIPreferences;
+import friends.eevee.Activities.TouchEvent.Utilities.UIPreferences;
 import friends.eevee.R;
 
 public class TouchEvent extends AppCompatActivity {
@@ -80,7 +81,7 @@ public class TouchEvent extends AppCompatActivity {
 
         /* duration */
         String duration = inputUIManager.duration_hint.getText().toString();
-        if (DateTimeDiff.isValidHrMinRepresentation(duration)) {
+        if (DateTimeDelta.isValidHrMinRepresentation(duration)) {
             flagInappropriateInput("Duration?");
             return;
         }
@@ -211,7 +212,7 @@ public class TouchEvent extends AppCompatActivity {
 
             /* duration select and hint */
             this.duration_hint = (TextView) this.touch_event.findViewById(R.id.duration_hint);
-            DateTimeDiff initial_duration = new DateTimeDiff(UIPreferences.DURATION);
+            DateTimeDelta initial_duration = new DateTimeDelta(UIPreferences.DURATION);
             this.duration_hint.setText(initial_duration.hourMinRepresentation());
 
             this.duration_select = (SeekBar) this.touch_event.findViewById(R.id.duration_select);
@@ -223,7 +224,7 @@ public class TouchEvent extends AppCompatActivity {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     UIPreferences.DURATION = UIPreferences.MINIMUM_DURATION + UIPreferences.DURATION_STEP * progress;
-                    DateTimeDiff present_duration = new DateTimeDiff(UIPreferences.DURATION);
+                    DateTimeDelta present_duration = new DateTimeDelta(UIPreferences.DURATION);
                     duration_hint.setText(present_duration.hourMinRepresentation());
                 }
 
@@ -280,7 +281,7 @@ public class TouchEvent extends AppCompatActivity {
                 DateTime start = new DateTime(EVENT_IN_FOCUS.$START, Date.SIMPLE_REPR_SEPARATOR, Time.SIMPLE_REPR_SEPARATOR, DateTime.SIMPLE_REPR_SEPARATOR);
                 start_time.setText(start.$TIME.simpleRepresentation());
                 start_date.setText(start.$DATE.simpleRepresentation());
-                DateTimeDiff duration = new DateTimeDiff(EVENT_IN_FOCUS.$DURATION);
+                DateTimeDelta duration = new DateTimeDelta(EVENT_IN_FOCUS.$DURATION);
                 UIPreferences.DURATION = (int) duration.minutesDiff();
                 int progress = (UIPreferences.DURATION - UIPreferences.MINIMUM_DURATION) / UIPreferences.DURATION_STEP;
                 this.duration_select.setProgress(progress);

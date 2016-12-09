@@ -11,11 +11,11 @@
 
         <view
             android:id="@+id/time_divisions"
-            class="friends.eevee.TimeWallUtil.TimeDivisions"
+            class="friends.eevee.Activities.TimeWall.Utilities.TimeDivisions"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <friends.eevee.TimeWallUtil.TimeFlow
+        <friends.eevee.Activities.TimeWall.Utilities.TimeFlow
             android:id="@+id/time_flow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,7 +34,7 @@
                 </RelativeLayout>
 
             </HorizontalScrollView>
-        </friends.eevee.TimeWallUtil.TimeFlow>
+        </friends.eevee.Activities.TimeWall.Utilities.TimeFlow>
 
         <LinearLayout
             android:id="@+id/time_wall_control_center"
@@ -88,6 +88,14 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/date_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:text="Date"/>
     </FrameLayout>
 
 </RelativeLayout>

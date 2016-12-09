@@ -1,11 +1,11 @@
-package friends.eevee.DB.Def;
+package friends.eevee.Activities.TouchEvent.Def;
 
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import friends.eevee.DB.Helpers.DB;
+import friends.eevee.DB.DB;
 import friends.eevee.Log.ZeroLog;
 
 public class PersonalEventDef extends EventDef{

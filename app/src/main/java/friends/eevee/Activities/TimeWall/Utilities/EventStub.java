@@ -1,4 +1,4 @@
-package friends.eevee.TimeWallUtil;
+package friends.eevee.Activities.TimeWall.Utilities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,14 +12,14 @@ import android.widget.RelativeLayout;
 
 import java.util.Random;
 
-import friends.eevee.Activities.TouchEvent;
+import friends.eevee.Activities.TouchEvent.TouchEvent;
 import friends.eevee.Calender.Constants;
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
-import friends.eevee.Calender.DateTimeDiff;
+import friends.eevee.Calender.DateTimeDelta;
 import friends.eevee.Calender.Time;
-import friends.eevee.DB.Def.EventDef;
-import friends.eevee.DB.Def.PersonalEventDef;
+import friends.eevee.Activities.TouchEvent.Def.EventDef;
+import friends.eevee.Activities.TouchEvent.Def.PersonalEventDef;
 import friends.eevee.Log.ZeroLog;
 
 public class EventStub extends Button {
@@ -67,7 +67,7 @@ public class EventStub extends Button {
         DateTime ref_date_time = new DateTime(ref_date, ref_time);
 
         /* TOP_MARGIN */
-        DateTimeDiff start_to_ref = this.START.dateTimeDifferenceFrom(ref_date_time);
+        DateTimeDelta start_to_ref = this.START.dateTimeDifferenceFrom(ref_date_time);
         int start_to_ref_min = (int) start_to_ref.minutesDiff();
         this.TOP_MARGIN = (int) (start_to_ref_min * UIPreferences.MINUTE_PX_SCALE);
 

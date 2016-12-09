@@ -1,4 +1,4 @@
-package friends.eevee.TimeWallUtil;
+package friends.eevee.Activities.TimeWall.Utilities;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ScrollView;
 
-import friends.eevee.Activities.TimeWall;
+import friends.eevee.Activities.TimeWall.TimeWall;
 
 
 public class TimeFlow extends ScrollView {

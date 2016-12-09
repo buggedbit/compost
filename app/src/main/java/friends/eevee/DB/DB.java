@@ -1,4 +1,4 @@
-package friends.eevee.DB.Helpers;
+package friends.eevee.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,12 +10,12 @@ import java.util.Vector;
 
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
-import friends.eevee.Calender.DateTimeDiff;
+import friends.eevee.Calender.DateTimeDelta;
 import friends.eevee.Calender.Time;
-import friends.eevee.DB.Def.EventDef;
-import friends.eevee.DB.Def.PersonalEventDef;
+import friends.eevee.Activities.TouchEvent.Def.EventDef;
+import friends.eevee.Activities.TouchEvent.Def.PersonalEventDef;
 import friends.eevee.Log.ZeroLog;
-import friends.eevee.TimeWallUtil.UIPreferences;
+import friends.eevee.Activities.TimeWall.TimeWall.TimeWallUtil.UIPreferences;
 
 /**
  * <p>
@@ -30,7 +30,7 @@ import friends.eevee.TimeWallUtil.UIPreferences;
  * 8. re-install the app or more preferably TODO: upgrade the db
  * </p>
  */
-public class DB extends Helper {
+public class DB extends Base {
 
     /**
      * DB name
@@ -232,7 +232,7 @@ public class DB extends Helper {
                     EventDef row = new PersonalEventDef(c);
 
                     DateTime start = new DateTime(row.$START,Date.SIMPLE_REPR_SEPARATOR,Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
-                    DateTimeDiff duration = new DateTimeDiff(row.$DURATION);
+                    DateTimeDelta duration = new DateTimeDelta(row.$DURATION);
                     DateTime end = new DateTime(start);
                     end.addDateTimeDiff(duration);
 

@@ -7,30 +7,30 @@ import friends.eevee.Log.ZeroLog;
 import static java.lang.Integer.parseInt;
 
 
-// DateTimeDiff class is explicitly defined for maintaining difference in dateTime
+// DateTimeDelta class is explicitly defined for maintaining difference in dateTime
 // So use develop it accordingly
-public class DateTimeDiff {
-    // as there is no such thing as a VALID DateTimeDiff
+public class DateTimeDelta {
+    // as there is no such thing as a VALID DateTimeDelta
     // restrict with only a
-    // public DateTimeDiff(long $24hr,int $sec) constructor
+    // public DateTimeDelta(long $24hr,int $sec) constructor
     // i.e as there is no default constructor,
-    // the DateTimeDiff is always VALID and SET whenever it is initialized
+    // the DateTimeDelta is always VALID and SET whenever it is initialized
 
     public long $24hr = 0L;
     public long $sec = 0L;
 
-    public DateTimeDiff(long $24hr,int $sec){
+    public DateTimeDelta(long $24hr, int $sec){
         this.$24hr = $24hr;
         this.$sec = $sec;
     }
 
-    public DateTimeDiff(long $24hr,long $sec){
+    public DateTimeDelta(long $24hr, long $sec){
         this.$24hr = $24hr;
         this.$sec = $sec;
     }
 
     //String format = x<space>hrs<space>y<space>min
-    public DateTimeDiff(String dateTimeDiffString){
+    public DateTimeDelta(String dateTimeDiffString){
         String[] comp = dateTimeDiffString.split(Constants.SPACE_SEP);
         try{
             int hr = parseInt(comp[0]);
@@ -39,15 +39,15 @@ public class DateTimeDiff {
             this.$24hr = 0;
             this.$sec = hr * Constants.SECONDS_IN_HOUR + min * Constants.SECONDS_IN_MINUTE;
         }catch (Exception e){
-            Log.i(ZeroLog.TAG, "DateTimeDiff: not a proper DateTimeDiff object initialization with " + dateTimeDiffString);
+            Log.i(ZeroLog.TAG, "DateTimeDelta: not a proper DateTimeDelta object initialization with " + dateTimeDiffString);
         }
     }
 
     //String Format = Days<sep>Seconds<sep>
     //String Format = Days<sep>Seconds
-    public DateTimeDiff(String dateTimeDiffString, String sep) {
+    public DateTimeDelta(String dateTimeDiffString, String sep) {
 
-        String error = "DateTimeDiff: not a proper DateTimeDiff object initialization with "
+        String error = "DateTimeDelta: not a proper DateTimeDelta object initialization with "
                 + "\n string " + dateTimeDiffString
                 + "\n and with separator " + sep;
 
@@ -70,7 +70,7 @@ public class DateTimeDiff {
         }
     }
 
-    public DateTimeDiff(long minutes){
+    public DateTimeDelta(long minutes){
         this.$24hr = minutes/Constants.MINUTES_IN_DAY;
         this.$sec = (minutes%Constants.MINUTES_IN_DAY)*Constants.SECONDS_IN_MINUTE;
     }
@@ -105,7 +105,7 @@ public class DateTimeDiff {
             parseInt(comp[0]);
             parseInt(comp[2]);
         }catch (Exception e){
-            Log.i(ZeroLog.TAG, "DateTimeDiff: not a proper DateTimeDiff object initialization with " + dateTimeDiffString);
+            Log.i(ZeroLog.TAG, "DateTimeDelta: not a proper DateTimeDelta object initialization with " + dateTimeDiffString);
         }
         return false;
     }

@@ -1,4 +1,4 @@
-package friends.eevee.Activities;
+package friends.eevee.Activities.TimeWall;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -18,19 +19,20 @@ import android.widget.SeekBar;
 
 import java.util.Vector;
 
+import friends.eevee.Activities.TimeWall.Utilities.EventStub;
+import friends.eevee.Activities.TimeWall.Utilities.TimeDivisions;
+import friends.eevee.Activities.TimeWall.Utilities.TimeFlow;
+import friends.eevee.Activities.TimeWall.Utilities.UIPreferences;
+import friends.eevee.Activities.TouchEvent.TouchEvent;
 import friends.eevee.Calender.Constants;
 import friends.eevee.Calender.Date;
 import friends.eevee.Calender.DateTime;
-import friends.eevee.Calender.DateTimeDiff;
+import friends.eevee.Calender.DateTimeDelta;
 import friends.eevee.Calender.Time;
-import friends.eevee.DB.Def.EventDef;
-import friends.eevee.DB.Helpers.DB;
+import friends.eevee.Activities.TouchEvent.Def.EventDef;
+import friends.eevee.DB.DB;
 import friends.eevee.Log.ZeroLog;
 import friends.eevee.R;
-import friends.eevee.TimeWallUtil.EventStub;
-import friends.eevee.TimeWallUtil.TimeDivisions;
-import friends.eevee.TimeWallUtil.TimeFlow;
-import friends.eevee.TimeWallUtil.UIPreferences;
 
 
 public class TimeWall extends AppCompatActivity {
@@ -79,10 +81,10 @@ public class TimeWall extends AppCompatActivity {
      */
     public class ControlCenter {
 
+        TimeFlow time_flow;
         TimeDivisionsManager timeDivisionsManager;
         StubsStackManager stubsStackManager;
 
-        TimeFlow time_flow;
         LinearLayout time_wall_control_center;
         SeekBar time_divisions_time_text_size;
         SeekBar time_divisions_time_bw_marks;
@@ -235,6 +237,10 @@ public class TimeWall extends AppCompatActivity {
             /////////////
         }
 
+        /**
+         * UI_Tweak_menu_button
+         * day_select_menu_button
+         * */
         private void onOptionsItemSelected(MenuItem item) {
 
             switch (item.getItemId()) {
@@ -277,6 +283,8 @@ public class TimeWall extends AppCompatActivity {
 
     public class TimeDivisionsManager {
 
+        private Button date_hint;
+        private FrameLayout time_wall;
         TimeDivisions time_divisions;
 
         public TimeDivisionsManager() {
@@ -299,6 +307,9 @@ public class TimeWall extends AppCompatActivity {
 
         public void showThisDay(Date date) {
             time_divisions.showThisDay(date);
+            time_wall = (FrameLayout) findViewById(R.id.time_wall);
+            date_hint = (Button) time_wall.findViewById(R.id.date_hint);
+            date_hint.setText(date.formalRepresentation());
         }
 
         public void scrollWithOffset() {
@@ -350,8 +361,8 @@ public class TimeWall extends AppCompatActivity {
             for (int i = 0; i < personalEventDefs.size(); i++) {
                 /* Getting Start and End of event */
                 DateTime start = new DateTime(personalEventDefs.get(i).$START,Date.SIMPLE_REPR_SEPARATOR, Time.SIMPLE_REPR_SEPARATOR,DateTime.SIMPLE_REPR_SEPARATOR);
-                int duration_min = (int) new DateTimeDiff(personalEventDefs.get(i).$DURATION).minutesDiff();
-                DateTimeDiff duration = new DateTimeDiff(duration_min);
+                int duration_min = (int) new DateTimeDelta(personalEventDefs.get(i).$DURATION).minutesDiff();
+                DateTimeDelta duration = new DateTimeDelta(duration_min);
                 DateTime end = new DateTime(start);
                 end.addDateTimeDiff(duration);
 

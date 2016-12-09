@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.Calendar;
 
 import friends.eevee.Log.ZeroLog;
-import friends.eevee.TimeWallUtil.UIPreferences;
+import friends.eevee.Activities.TimeWall.TimeWall.TimeWallUtil.UIPreferences;
 
 // by default it stores 24hr time
 // starts from 00:00:00 ends at 23:59:59

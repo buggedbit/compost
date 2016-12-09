@@ -4,11 +4,11 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_logo"
+        android:icon="@drawable/eevee48"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.TimeWall" />
+        <activity android:name=".Activities.TimeWall.TimeWall" />
         <activity android:name=".Activities.Scratch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.TouchEvent"></activity>
+        <activity android:name=".Activities.TouchEvent.TouchEvent"></activity>
     </application>
 
 </manifest>
