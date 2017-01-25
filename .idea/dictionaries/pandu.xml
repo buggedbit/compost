@@ -6,16 +6,19 @@
       <w>beforeunload</w>
       <w>bootstrapcdn</w>
       <w>cachefly</w>
+      <w>cloudflare</w>
       <w>glyphicon</w>
       <w>googleapis</w>
       <w>keudown</w>
       <w>keydown</w>
       <w>keyup</w>
       <w>maxcdn</w>
+      <w>minified</w>
       <w>navbar</w>
       <w>onbeforeunload</w>
       <w>onreadystatechange</w>
       <w>pandu</w>
+      <w>subheader</w>
       <w>textarea</w>
       <w>tinymce</w>
     </words>

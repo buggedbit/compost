@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     switch ($_POST["q"]) {
         case "log":
-            if ($_POST['log_credential'] == "airturtle"){
+            if ($_POST['log_credential'] == "panduscientist"){
                 $_SESSION['logged_in'] = true;
                 echo "Logged in";
             }

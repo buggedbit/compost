@@ -2,10 +2,12 @@
 <html>
 <head>
     <!--LIB HEADERS-->
-    <link href="https://fonts.googleapis.com/css?family=Audiowide|Crafty+Girls" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
     <script src="header.js"></script>
     <!-- TITLE -->
     <title>schoolbag</title>
@@ -24,12 +26,6 @@
 
         body {
             background-image: url("http://www.walldevil.com/wallpapers/a82/wallpaper-graphic-design-colorful-square-background-texture-art-desktop-minimalist-black.jpg");
-            font-family: 'Crafty Girls', cursive;
-            font-size: xx-large;
-        }
-
-        .modal {
-            font-size: xx-large;
         }
 
         .writable {
@@ -39,21 +35,17 @@
             overflow: auto;
             padding: 10px;
             cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.60);
+            background-color: rgba(0, 0, 0, 0.90);
             color: white;
         }
 
         .writable:focus {
-            outline-style: dashed;
-            outline-color: white;
-            outline-width: thin;
-            outline-offset: 1px;
+            border: none;
+            outline: none;
         }
 
         .list {
             font-size: large;
-            max-height: 100%;
-            font-family: 'Audiowide', cursive;
         }
 
         .select:hover {
@@ -61,59 +53,9 @@
         }
 
         .search {
-            font-size: large;
-            text-align: center;
-            color: white;
-            background-color: transparent;
-        }
-
-        .floating_button {
-            height: 100px;
-            width: 100px;
-            border-radius: 50px;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9990;
-            font-family: monospace;
-            font-size: x-large;
-            background-color: white;
-            color: white;
-            opacity: 0.95;
-            border-width: 0;
-        }
-
-        .floating_button:hover {
-            background-color: deeppink;
-            color: white;
             font-size: xx-large;
-            opacity: 1.0;
-        }
-
-        .floating_button:focus {
-            background-color: deeppink;
-            color: white;
-            outline: none;
-        }
-
-        .message_box {
-            height: 500px;
-            width: 500px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            background-color: rgba(91, 91, 91, 0.95);
-            z-index: 9999;
-            padding: 20px;
             text-align: center;
         }
-
-        .message {
-            color: white;
-            position: relative;
-            font-family: 'Audiowide', cursive;
-        }
-
     </style>
     <!-- JS DECLARATIONS -->
     <script>
@@ -139,15 +81,13 @@
                 }
                 $(book_count).html(String(list.length));
                 var book_list = $('#book_list');
-                var html1 = "<tr><td class='select' id='";
+                var html1 = "<tr><td class='select truncate' id='";
                 var html2 = "'><a href='#'>";
-                var html3 = "</a></td><td><button id='";
-                var html4 = "'class='btn-danger delete'>del</button></td><td><button id='";
+                var html3 = "</a></td><td><a id='";
+                var html4 = "'class='btn-danger delete btn red white-text'><i class='material-icons'>delete</i></a></td><td><a id='";
                 var html5 =
-                    "'class='btn-success create' " +
-                    "data-toggle='modal' " +
-                    "title='New Chapter' " +
-                    "data-target='#chapter_create_modal'>+</button></tr>";
+                    "'class='btn create' " +
+                    "href='#chapter_new'><i class='material-icons'>note_add</i></a></tr>";
 
                 $(book_list).empty();
                 for (var i = 0; i < list.length; ++i) {
@@ -177,10 +117,10 @@
                 }
                 $(chapter_count).html(String(list.length));
                 var chapter_list = $('#chapter_list');
-                var html1 = "<tr><td class='select' id='";
+                var html1 = "<tr class='teal-text'><td class='select truncate' id='";
                 var html2 = "'><a href='#'>";
-                var html3 = "</a></td><td><button id='";
-                var html4 = "'class='btn-danger delete'>del</button></td></tr>";
+                var html3 = "</a></td><td><a id='";
+                var html4 = "'class='btn-danger delete btn red white-text'><i class='material-icons'>delete</i></a></td></tr>";
 
                 $(chapter_list).empty();
                 for (var i = 0; i < list.length; ++i) {
@@ -411,9 +351,7 @@
             };
 
             this.showMessage = function (message) {
-                $('#message').text(message);
-                var message_box = $('#message_box');
-                $(message_box).slideDown().delay(1000).slideUp();
+                Materialize.toast(message, 1500);
             };
         }
 
@@ -432,9 +370,6 @@
                         .replace(/'/g, '&apos;');
                 };
             }
-            $(window).bind('beforeunload', function () {
-//                manager.synchronize();
-            });
             ajax_manager.open_and_send
             (
                 {
@@ -455,208 +390,174 @@
             );
         });
     </script>
+    <!-- MATERIAL JS -->
+    <script>
+        $(document).ready(function () {
+                $('.modal').modal();
+                $("#chapter_nav_btn").sideNav({
+                    menuWidth: 500, // Default is 240
+                    edge: 'left', // Choose the horizontal origin
+                    closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                    draggable: true // Choose whether you can drag to open on touch screens
+                });
+                $("#book_nav_btn").sideNav({
+                        menuWidth: 600, // Default is 240
+                        edge: 'right', // Choose the horizontal origin
+                        closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                        draggable: true // Choose whether you can drag to open on touch screens
+                    }
+                );
+            }
+        );
+    </script>
 </head>
 
-<body class="container-fluid">
-<div class="row"
-     style="padding: 10px;">
-    <div class="col-xs-2">
+<body>
+
+<div id="chapter_nav" class="side-nav black-text">
+    <div class="input-field">
         <input id="chapter_search"
-               class="writable search"
+               class="search pink-text"
                type="text"
                placeholder="Find Chapters">
-        <br>
-        <br>
-        <table class="table table-hover">
-            <h3 style="color: white;"><span id="chapter_count"></span> chapters available </h3>
-            <tbody id="chapter_list"
-                   class="list">
+    </div>
+    <!--NEW CHAPTER-->
+    <a href="#chapter_new" class="btn btn-large pink"><i class="material-icons">note_add</i></a>
+    <h5 class="center-align teal-text"><span id="chapter_count"></span> chapter(s) available</h5>
+    <table class="striped centered">
+        <colgroup>
+            <col width="90%">
+            <col width="10%">
+        </colgroup>
+        <tbody style="overflow: auto" id="chapter_list"
+               class="list">
+        </tbody>
+    </table>
+</div>
 
-            </tbody>
-        </table>
-    </div>
-    <div class="col-xs-8">
-        <blockquote>
-            <div class="row">
-                <div class="col-xs-8">
-                    <input id="chapter_name"
-                           class="writable text-info"
-                           style="font-size: x-large;background-color: transparent"
-                           data-toggle="tooltip"
-                           data-placement="left"
-                           title="Chapter"
-                           type="text"
-                           placeholder="Chapter">
-                </div>
-                <div class="col-xs-1"></div>
-                <div class="col-xs-3">
-                    <input id="book_name"
-                           class="writable"
-                           style="text-align: right;
-                              font-size: larger;
-                              background-color: transparent"
-                           data-toggle="tooltip"
-                           data-placement="right"
-                           title="Book"
-                           type="text"
-                           placeholder="Book">
-                </div>
-            </div>
-        </blockquote>
-        <textarea id="chapter_content"
-                  class="writable"
-                  style="font-size: x-large;max-height: 800px;height: 800px"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Your Thoughts"
-                  placeholder="Content"></textarea>
-    </div>
-    <div class="col-xs-2">
+
+<div id="book_nav" class="side-nav black-text">
+    <div class="input-field">
         <input id="book_search"
-               class="writable search"
+               class="search pink-text"
                type="text"
                placeholder="Find Books">
-        <br>
-        <br>
-        <table class="table table-hover ">
-            <h3 style="color: white;"><span id="book_count"></span> books available </h3>
-            <tbody id="book_list"
-                   class="list">
-            </tbody>
-        </table>
     </div>
+    <!--NEW BOOK-->
+    <a href="#book_new" class="btn btn-large green"><i class="material-icons">queue</i></a>
+    <h5 class="center-align teal-text"><span id="book_count"></span> book(s) available</h5>
+    <table class="striped centered">
+        <colgroup>
+            <col width="80%">
+            <col width="10%">
+            <col width="10%">
+        </colgroup>
+        <tbody style="overflow: auto" id="book_list"
+               class="list">
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+
+    <div>
+        <div class="row">
+            <div class="col l8 m8 s8">
+                <label for="chapter_name">Chapter</label>
+                <input id="chapter_name"
+                       class="writable text-info"
+                       type="text"
+                       placeholder="Chapter">
+            </div>
+            <div class="col l4 m4 s4">
+                <label for="book_name">Book</label>
+                <input id="book_name"
+                       class="writable"
+                       type="text"
+                       placeholder="Book">
+            </div>
+        </div>
+        <label for="chapter_content">Content</label>
+        <textarea id="chapter_content"
+                  class="writable"
+                  style="height: 78vh"
+                  placeholder="Content"></textarea>
+    </div>
+</div>
+
+
+<!--CUSTOM FABS-->
+
+<!--CHAPTER NAV-->
+<div style="position:fixed;left: 20px;bottom: 20px;">
+    <a href="#" id="chapter_nav_btn" data-activates="chapter_nav"
+       class="btn-large pink btn-floating button-collapse"><i class="material-icons">note</i></a>
+</div>
+
+<!--BOOK NAV-->
+<div style="position:fixed;right: 180px;bottom: 20px;">
+    <a href="#" id="book_nav_btn" data-activates="book_nav"
+       class="btn-large btn-floating blue button-collapse"><i class="material-icons">library_books</i></a>
+</div>
+
+<!--SIGN-->
+<div style="position:fixed;right: 100px;bottom: 20px;">
+    <a href="#sign" class="btn-floating btn-large "><i class="material-icons">power_settings_new</i></a>
 </div>
 
 <!--SYNCHRONIZE-->
-<button id="synchronize"
-        class="floating_button btn-default"
-        style="background-color: white;color: black;"
-        data-toggle="tooltip"
-        title="Synchronize">
-    <span class="glyphicon glyphicon-refresh"></span>
-</button>
-
-<!--MESSAGE BOX-->
-<div id="message_box"
-     class="message_box"
-     style="display: none">
-    <p id="message" class="message"></p>
+<div style="position:fixed;right: 20px;bottom: 20px;">
+    <a id="synchronize" class="btn-floating btn-large red"><i class="material-icons">sync</i></a>
 </div>
 
-<!--NEW CHAPTER-->
-<div class="modal fade"
-     id="chapter_create_modal"
-     role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Give this chapter a name...</h4>
-            </div>
-            <div class="modal-body">
-                <input type="text"
-                       id="chapter_create_name">
-                <input type="button"
-                       id="chapter_create"
-                       value="Go"
-                       class="btn-success"
-                       data-dismiss="modal">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-default" data-dismiss="modal">Close</button>
-            </div>
+<!--MODALS-->
+<div id="chapter_new" class="modal">
+    <div class="row" style="margin: 0">
+        <div class="col l6 m6 s6 input-field">
+            <label for="chapter_create_name">New Chapter</label>
+            <input type="text" id="chapter_create_name">
         </div>
+        <a href="#"
+           id="chapter_create"
+           style="margin: 10px"
+           class="btn-floating btn-large green white-text">
+            <i class="material-icons">send</i>
+        </a>
     </div>
 </div>
 
-<!--NEW BOOK-->
-<div class="modal fade"
-     id="book_create_modal"
-     role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Give this book a name...</h4>
-            </div>
-            <div class="modal-body">
-                <input type="text"
-                       id="book_create_name">
-                <input type="button"
-                       id="book_create"
-                       value="Go"
-                       class="btn-success"
-                       data-dismiss="modal">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-default" data-dismiss="modal">Close</button>
-            </div>
+<div id="book_new" class="modal">
+    <div class="row" style="margin: 0">
+        <div class="col l6 m6 s6 input-field">
+            <label for="book_create_name">New Book</label>
+            <input type="text"
+                   id="book_create_name">
         </div>
+        <a href="#"
+           id="book_create"
+           style="margin: 10px"
+           class="btn-floating btn-large green white-text">
+            <i class="material-icons">send</i>
+        </a>
     </div>
 </div>
 
-<button class="floating_button"
-        style="background-color: white;color: black;right: 160px;"
-        data-toggle="modal"
-        title="New Book"
-        data-target="#book_create_modal">
-    <span data-toggle="tooltip"
-          title="New book"
-          data-placement="top"
-          class="glyphicon glyphicon-book"></span>
-</button>
-
-<!--LOG-->
-<div class="modal fade"
-     id="log_modal"
-     role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Give this book a name...</h4>
-            </div>
-            <div class="modal-body">
-                <input type="password"
-                       id="log_credential">
-                <input type="button"
-                       id="log"
-                       value="Go"
-                       class="btn-info"
-                       data-dismiss="modal">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-default" data-dismiss="modal">Close</button>
-            </div>
+<div id="sign" class="modal">
+    <div class="row" style="margin: 0">
+        <div class="col l6 m6 s6 input-field">
+            <label for="log_credential">Identify Yourself</label>
+            <input type="text"
+                   id="log_credential">
         </div>
+        <a href="#"
+           id="log"
+           style="margin: 10px"
+           class="btn-floating btn-large green white-text">
+            <i class="material-icons">send</i>
+        </a>
     </div>
 </div>
-
-<button class="floating_button"
-        style="background-color: white;color: black;bottom: 160px;"
-        data-toggle="modal"
-        title="New Book"
-        data-target="#log_modal">
-    <span data-toggle="tooltip"
-          title="Log"
-          data-placement="top"
-          class="glyphicon glyphicon-off"></span>
-</button>
 
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
