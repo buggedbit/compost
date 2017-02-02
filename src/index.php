@@ -3,7 +3,7 @@
 <head>
     <!--LIB HEADERS-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
@@ -24,10 +24,6 @@
             background: darkorange;
         }
 
-        body {
-            background-image: url("http://www.walldevil.com/wallpapers/a82/wallpaper-graphic-design-colorful-square-background-texture-art-desktop-minimalist-black.jpg");
-        }
-
         .writable {
             width: 100%;
             height: 100%;
@@ -35,8 +31,6 @@
             overflow: auto;
             padding: 10px;
             cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.90);
-            color: white;
         }
 
         .writable:focus {
@@ -395,13 +389,13 @@
         $(document).ready(function () {
                 $('.modal').modal();
                 $("#chapter_nav_btn").sideNav({
-                    menuWidth: 500, // Default is 240
+                    menuWidth: 300, // Default is 240
                     edge: 'left', // Choose the horizontal origin
                     closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
                     draggable: true // Choose whether you can drag to open on touch screens
                 });
                 $("#book_nav_btn").sideNav({
-                        menuWidth: 600, // Default is 240
+                        menuWidth: 400, // Default is 240
                         edge: 'right', // Choose the horizontal origin
                         closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
                         draggable: true // Choose whether you can drag to open on touch screens
@@ -459,7 +453,6 @@
 </div>
 
 <div class="row">
-
     <div>
         <div class="row">
             <div class="col l8 m8 s8">
@@ -477,12 +470,19 @@
                        placeholder="Book">
             </div>
         </div>
-        <label for="chapter_content">Content</label>
+    </div>
+</div>
+
+<div class="container">
+	<div class="hoverable card z-depth-2">
+        <div class="card-content">
+		<div class="card-title">Content</div>	
+        <label for="chapter_content"></label>
         <textarea id="chapter_content"
                   class="writable"
-                  style="height: 78vh"
-                  placeholder="Content"></textarea>
-    </div>
+                  style="height: 78vh;font-size: large;"></textarea>
+        </div>
+	</div>
 </div>
 
 
