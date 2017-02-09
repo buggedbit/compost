@@ -14,15 +14,6 @@
     <link rel="icon" href="../static/logo.png">
     <!--CSS INCLUDES-->
     <style>
-        ::-moz-selection { /* Code for Firefox */
-            color: white;
-            background: darkorange;
-        }
-
-        ::selection {
-            color: white;
-            background: darkorange;
-        }
 
         .writable {
             width: 100%;
@@ -395,7 +386,7 @@
                     draggable: true // Choose whether you can drag to open on touch screens
                 });
                 $("#book_nav_btn").sideNav({
-                        menuWidth: 400, // Default is 240
+                        menuWidth: 330, // Default is 240
                         edge: 'right', // Choose the horizontal origin
                         closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
                         draggable: true // Choose whether you can drag to open on touch screens
@@ -476,7 +467,7 @@
 <div class="container">
 	<div class="hoverable card z-depth-2">
         <div class="card-content">
-		<div class="card-title">Content</div>	
+		<div class="card-title waves-effect">Content</div>	
         <label for="chapter_content"></label>
         <textarea id="chapter_content"
                   class="writable"
