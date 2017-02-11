@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="View/Edit"
+        android:id="@+id/viewOrEditItem" />
+    <item
+        android:title="Delete"
+        android:id="@+id/deleteItem"/>
+    <item
+        android:title="Notify Me !!"
+        android:id="@+id/setNotificationItem"/>
+</menu>

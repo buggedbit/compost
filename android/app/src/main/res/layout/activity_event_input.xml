@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/event_input_bg"
+    android:fillViewport="false"
+    tools:context="com.harsha.eevee.EventInput">
+
+    <LinearLayout
+        android:id="@+id/eventPanelLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></RelativeLayout>
+
+        <TextView
+            android:id="@+id/eventDetailsTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Event"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:id="@+id/layoutEventOne"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/eventNameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Event Name"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/eventPlaceET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Event Venue " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventOne"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/skipEventOneBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="235dp"
+                    android:text="Skip" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventTwo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/repetitionEventTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repetition Type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/repetitionEventRG"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="20dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingTop="20dp">
+
+                        <RadioButton
+                            android:id="@+id/noneEventRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:onClick="dailyOrNoneEventRBClicked"
+                            android:text="None"
+                            android:textColor="@color/colorPrimary" />
+
+                        <RadioButton
+                            android:id="@+id/dailyEventRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:onClick="dailyOrNoneEventRBClicked"
+                            android:text="Daily"
+                            android:textColor="@color/colorPrimary" />
+
+                        <RadioButton
+                            android:id="@+id/weeklyEventRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:onClick="weeklyEventRBClicked"
+                            android:text="Weekly"
+                            android:textColor="@color/colorPrimary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dayEventCheckboxGrp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:visibility="visible">
+
+                    <CheckBox
+                        android:id="@+id/sundayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Sunday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/mondayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Monday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/tuesdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Tuesday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/wednesdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Wednesday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/thursdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Thursday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/fridayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Friday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/saturdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Saturday"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventTwo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousEventTwoBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="Previous" />
+
+                <Button
+                    android:id="@+id/nextEventTwoBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventThree"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/eventTimingsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Timings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/startDateEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Start Date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/startTimeEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Start Time"
+                    android:inputType="time" />
+
+                <EditText
+                    android:id="@+id/endDateEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="End Date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/endTimeEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="End Time"
+                    android:inputType="time" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventThree"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousEventThreeBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="Previous" />
+
+                <Button
+                    android:id="@+id/nextEventThreeBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="next" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventThreeA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/eventTimingsATV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Timings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startTimeEventThreeATV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/startTimeEventAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Start Time"
+                        android:inputType="time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/durationEventTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Duration"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/durationEventAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Duration"
+                        android:inputType="time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/endTimeEventThreeATV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="End Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/endTimeEventAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="End Time"
+                        android:inputType="time" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventThreeA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousEventThreeABTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/nextEventThreeABTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="next" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventThreeB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/eventLimitsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Limits"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/startDateEventBET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Starts from"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/endDateEventBET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Ends on"
+                    android:inputType="date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventThreeB"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousEventThreeBBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/skipEventThreeBBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="skip" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventFour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/eventTypeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/typeEventRG"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="20dp"></RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventFour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousEventFourBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/nextEventFourBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="next" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventFive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/regnDetailsEventTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registration Details"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/regnPlaceEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Registration Place" />
+
+                <EditText
+                    android:id="@+id/regnDateEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Registration Date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/regnTimeEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Registration Time"
+                    android:inputType="time" />
+
+                <EditText
+                    android:id="@+id/regnWebsiteEventET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Website"
+                    android:hyphenationFrequency="full" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventFive"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousEventFiveBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/skipEventFiveBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="skip" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventSix"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/commentsEventTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/commentsEventET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="Comments ( if any )" />
+
+            <LinearLayout
+                android:id="@+id/buttonPanelEventSix"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousEventSixBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/addEventBTN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0162b1"
+                    android:text="add event"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonPanelEventViewDrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/viewEventsTableBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="viewEventsTableClicked"
+                android:text="View Table" />
+
+            <Button
+                android:id="@+id/dropEventsTableBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="dropEventsTableClicked"
+                android:text="DROP TABLE" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

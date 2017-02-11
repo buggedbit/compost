@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.harsha.eevee">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/eevee_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".WelcomeScreen"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".UserDetailsInput"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ShowUsersTable" />
+        <activity
+            android:name=".EventsHome"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_events_home"
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".ShowEventsTable" />
+        <activity android:name=".ShowTasksTable" />
+        <activity
+            android:name=".TasksHome"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_tasks_home"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".Home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EventInput"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TaskInput"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EditAndViewEvent"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EditAndViewTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AppSettings"
+            android:label="@string/title_activity_app_settings"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ShowOnlineEventsTable" />
+        <activity
+            android:name=".ViewOnlineEvent"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserGroupInput"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AppTour"
+            android:label="@string/title_activity_app_tour"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SetEventFilters"
+            android:screenOrientation="portrait"></activity>
+    </application>
+</manifest>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_info_black_48px"
+            android:title="About" />
+        <item
+            android:id="@+id/gestures"
+            android:icon="@drawable/ic_fingerprint_black_48px"
+            android:title="Gestures" />
+        <item
+            android:id="@+id/tools"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Tools" />
+        <item
+            android:id="@+id/help"
+            android:icon="@drawable/ic_help_black_48px"
+            android:title="Help" />
+    </group>
+
+</menu>

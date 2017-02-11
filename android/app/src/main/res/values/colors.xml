@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#006ac0</color>
+    <color name="colorPrimaryDark">#321CA0</color>
+    <color name="colorAccent">#5d9cf5</color>
+    <color name="black_overlay">#66000000</color>
+
+    <color name="all_activities_bg">#EFEFFB</color>
+    <color name="all_activities_text">#424242</color>
+
+    <color name="balls_pressed">#F1C40F</color>
+    <color name="balls_normal">#009509</color>
+    <color name="ball_focused">#0080FF</color>
+    <color name="ball_text_color">#FFFFFF</color>
+    <color name="thread_color">#8C3D00</color>
+
+    <!--GESTURE AREA TOOLS-->
+    <color name="gesture_area_tools_Text">#000000</color>
+    <color name="gesture_area_tools_View">#E6E6E6</color>
+    <color name="gesture_area_tools_Edit">#E6E6E6</color>
+    <color name="gesture_area_tools_Delete">#E6E6E6</color>
+    <color name="gesture_area_tools_NotifyMe">#E6E6E6</color>
+    <color name="gesture_area_tools_Check">#E6E6E6</color>
+
+    <color name="onlineEventNormal">#FEFE</color>
+    <color name="onlineEventPressed">#00900F</color>
+</resources>

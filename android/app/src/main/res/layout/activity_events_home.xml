@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Events"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/events_home_bg"
+    tools:context="com.harsha.eevee.EventsHome">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#000000">
+
+        <Button
+            android:id="@+id/greet_events"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="#000000"
+            android:textColor="#ffffff" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/Events_main_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="35dp"
+        android:layout_marginTop="35dp">
+
+        <HorizontalScrollView
+            android:id="@+id/H_scroll_events"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="false"
+            android:fillViewport="true">
+
+            <RelativeLayout
+                android:id="@+id/H_scroll_rel_layout_events"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <com.harsha.eevee.Overlaps
+                    android:id="@+id/overlaps_events_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <com.harsha.eevee.TimeDivisions
+                    android:id="@+id/timedivisions_events"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ScrollView
+                    android:id="@+id/V_scroll_events"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:layout_marginTop="35dp">
+
+                    <RelativeLayout
+                        android:id="@+id/V_scroll_rel_layout_events"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/EventPanel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                </ScrollView>
+
+                <TextView
+                    android:id="@+id/pastRegionEvents"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="false"
+                    android:background="#8c2a5ce5"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </RelativeLayout>
+        </HorizontalScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gestureAreaEvents"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#000000">
+
+        <TextView
+            android:id="@+id/event_make_your_move"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="MAKE YOUR MOVE"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/make_your_move" />
+
+        <ImageButton
+            android:id="@+id/overlaps_events_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:background="#000000"
+            android:src="@drawable/ic_shuffle_white_24px" />
+
+        <ImageButton
+            android:id="@+id/filtersEventBTN"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="#000000"
+            android:src="@drawable/filterfinal" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

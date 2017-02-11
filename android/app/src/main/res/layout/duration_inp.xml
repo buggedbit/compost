@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <NumberPicker
+        android:id="@+id/dayNP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/hourNP"
+        android:background="#6edafb" />
+
+    <NumberPicker
+        android:id="@+id/hourNP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="#6edafb" />
+
+    <NumberPicker
+        android:id="@+id/minNP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/dayNP"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/hourNP"
+        android:background="#6edafb" />
+
+    <TextView
+        android:id="@+id/hourTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/dayTV"
+        android:layout_toEndOf="@+id/dayNP"
+        android:text="Hours"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/dayTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/dayNP"
+        android:layout_below="@+id/dayNP"
+        android:layout_marginTop="27dp"
+        android:text="Days"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/minTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/minNP"
+        android:layout_alignTop="@+id/hourTV"
+        android:text="Minutes"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>

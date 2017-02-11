@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_cloud_download_white_24px"
+        android:title="Refresh"
+        android:id="@+id/refreshItem"
+        app:showAsAction="always|withText"/>
+    <item
+        android:icon="@drawable/ic_settings_white_24px"
+        android:title="Settings"
+        android:id="@+id/settingsItem"
+        app:showAsAction="always|withText"/>
+</menu>
