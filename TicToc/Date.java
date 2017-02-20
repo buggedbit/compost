@@ -1,5 +1,3 @@
-package com.yashasvi.calender;
-
 /* For getting log uncomment the comments starting with (android) */
 //(android) import android.util.Log;
 

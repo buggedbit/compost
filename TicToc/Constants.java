@@ -1,5 +1,3 @@
-package com.yashasvi.calender;
-
 /**
  * Contains constants related to<br>
  * Time conversions,<br>
