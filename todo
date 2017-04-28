@@ -1,0 +1,1 @@
+1. check pk of objects when save(), delete() are called
