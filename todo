@@ -1,1 +1,3 @@
-1. check pk of objects when save(), delete() are called
+(done) 1. check pk of objects when delete() are called
+(done) 2. [pk, name] format for chapters field in Book model
+3. chapter handling from its book

@@ -19,42 +19,24 @@ class Book
         }
     }
 
+    private static function object_exists($pk)
+    {
+        if (is_null(Book::$objects[$pk])) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // Fields
     public $pk = 0;
     public $name = "";
-    public $chapters = array();
+    public $chapter_pks = array();
+    public $chapter_names = array();
     public $time_stamp = null;
 
     function __construct()
     {
-    }
-
-    public function add_chapter($chapter_pk)
-    {
-        $index = array_search($chapter_pk, $this->chapters);
-
-        if ($index === false) {
-            // no such chapter pk
-            array_push($this->chapters, $chapter_pk);
-            return true;
-        } else {
-            // there is already a chapter pk
-            return false;
-        }
-    }
-
-    public function remove_chapter($chapter_pk)
-    {
-        $index = array_search($chapter_pk, $this->chapters);
-        if ($index === false) {
-            // no such chapter pk
-            return false;
-        } else {
-            // there is a chapter pk
-            unset($this->chapters[$index]);
-            $this->chapters = array_values($this->chapters);
-            return true;
-        }
     }
 
     public function get($pk)
@@ -63,10 +45,10 @@ class Book
         Book::connect();
         // Read
         $book = Book::$objects[$pk];
-        if ($book != null) {
+        if (!is_null($book)) {
             $this->pk = $pk;
             $this->name = $book['name'];
-            $this->chapters = $book['chapters'];
+            $this->chapter_pks = $book['chapter_pks'];
             $this->time_stamp = null;
         } else {
             throw new Exception('No such Book');
@@ -84,7 +66,8 @@ class Book
             $this->pk = Book::$objects['meta']['new_pk'];
             Book::$objects[$this->pk] = array(
                 'name' => $this->name,
-                'chapters' => $this->chapters,
+                'chapter_pks' => $this->chapter_pks,
+                'chapter_names' => $this->chapter_names,
                 'time_stamp' => new DateTime());
 
             // Update meta data
@@ -97,7 +80,8 @@ class Book
             // Update
             Book::$objects[$this->pk] = array(
                 'name' => $this->name,
-                'chapters' => $this->chapters,
+                'chapter_pks' => $this->chapter_pks,
+                'chapter_names' => $this->chapter_names,
                 'time_stamp' => new DateTime());
         }
 
@@ -110,7 +94,7 @@ class Book
         // Connect
         Book::connect();
         // Delete
-        if ($this->pk != 0) {
+        if (Book::object_exists($this->pk)) {
             unset(Book::$objects[$this->pk]);
 
             // Update meta data
@@ -120,6 +104,37 @@ class Book
         }
         // Write
         file_put_contents(Book::$LEVELS_FILE_URL, json_encode(Book::$objects));
+    }
+
+    public function add_chapter($chapter_pk, $chapter_name="")
+    {
+        $index = array_search($chapter_pk, $this->chapter_pks);
+
+        if ($index === false) {
+            // no such chapter pk
+            array_push($this->chapter_pks, $chapter_pk);
+            array_push($this->chapter_names, $chapter_name);
+            return true;
+        } else {
+            // there is already a chapter pk
+            return false;
+        }
+    }
+
+    public function remove_chapter($chapter_pk)
+    {
+        $index = array_search($chapter_pk, $this->chapter_pks);
+        if ($index === false) {
+            // no such chapter pk
+            return false;
+        } else {
+            // there is a chapter pk
+            unset($this->chapter_pks[$index]);
+            unset($this->chapter_names[$index]);
+            $this->chapter_pks = array_values($this->chapter_pks);
+            $this->chapter_names = array_values($this->chapter_names);
+            return true;
+        }
     }
 
 }

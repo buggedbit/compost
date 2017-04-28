@@ -19,6 +19,15 @@ class Chapter
         }
     }
 
+    private static function object_exists($pk)
+    {
+        if (is_null(Chapter::$objects[$pk])) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // Fields
     public $pk = 0;
     public $book_id = 0;
@@ -36,7 +45,7 @@ class Chapter
         Chapter::connect();
         // Read
         $chapter = Chapter::$objects[$pk];
-        if ($chapter != null) {
+        if (!is_null($chapter)) {
             $this->pk = $pk;
             $this->book_id = $chapter['book_id'];
             $this->name = $chapter['name'];
@@ -87,7 +96,7 @@ class Chapter
         // Connect
         Chapter::connect();
         // Delete
-        if ($this->pk != 0) {
+        if (Chapter::object_exists($this->pk)) {
             unset(Chapter::$objects[$this->pk]);
 
             // Update meta data

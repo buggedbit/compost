@@ -1,16 +1,42 @@
 {
   "meta": {
     "new_pk": 4,
-    "count": 1
+    "count": 3
   },
-  "3": {
-    "name": "General Science",
-    "chapters": [
-      4,
-      5
+  "1": {
+    "name": "Science",
+    "chapter_pks": [
+      1
+    ],
+    "chapter_names": [
+      "hello"
     ],
     "time_stamp": {
-      "date": "2017-04-28 14:28:03",
+      "date": "2017-04-28 16:49:07",
+      "timezone_type": 3,
+      "timezone": "Asia\/Calcutta"
+    }
+  },
+  "2": {
+    "name": "Science",
+    "chapter_pks": [],
+    "chapter_names": [],
+    "time_stamp": {
+      "date": "2017-04-28 16:56:35",
+      "timezone_type": 3,
+      "timezone": "Asia\/Calcutta"
+    }
+  },
+  "3": {
+    "name": "Science",
+    "chapter_pks": [
+      1
+    ],
+    "chapter_names": [
+      ""
+    ],
+    "time_stamp": {
+      "date": "2017-04-28 16:57:34",
       "timezone_type": 3,
       "timezone": "Asia\/Calcutta"
     }

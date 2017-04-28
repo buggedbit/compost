@@ -7,12 +7,15 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     switch ($_GET["q"]) {
         case 'c':
-            $chapter = new Chapter();
+            $book = new Book();
             try{
-                $chapter->get(1);
-                $chapter->name = 'Mathematics';
-                $chapter->content = 'a+b';
-                $chapter->delete();
+                $book->name = 'Science';
+                $book->add_chapter(1, 'hello');
+                $book->remove_chapter(1);
+                $book->add_chapter(1, 'yash');
+                $book->remove_chapter(1);
+                $book->add_chapter(1);
+                $book->save();
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
