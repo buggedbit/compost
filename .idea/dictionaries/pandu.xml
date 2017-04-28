@@ -7,20 +7,25 @@
       <w>bootstrapcdn</w>
       <w>cachefly</w>
       <w>cloudflare</w>
+      <w>cmd</w>
+      <w>cmds</w>
       <w>dhtmlxeditor</w>
       <w>fabs</w>
       <w>glyphicon</w>
       <w>googleapis</w>
+      <w>iter</w>
       <w>keudown</w>
       <w>keydown</w>
       <w>keyup</w>
       <w>maxcdn</w>
       <w>minified</w>
+      <w>monospace</w>
       <w>navbar</w>
       <w>onbeforeunload</w>
       <w>onreadystatechange</w>
       <w>pandu</w>
       <w>parsable</w>
+      <w>repl</w>
       <w>subheader</w>
       <w>textarea</w>
       <w>tinymce</w>
