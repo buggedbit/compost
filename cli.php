@@ -529,8 +529,7 @@
                                     print_err('This error may be due to outdated db, please refresh and try again');
                                 }
                                 else {
-                                    console.log(reduced_book);
-//                                    CONTEXT.BOOK = JSON.parse(reduced_book);
+                                    CONTEXT.BOOK = JSON.parse(reduced_book);
                                     CONTEXT.CHAPTER = undefined;
                                     print_out('Delete successful')
                                 }
