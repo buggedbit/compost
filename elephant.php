@@ -4,13 +4,30 @@ require 'Chapter.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    switch ($_POST["q"]) {
-        case 'rb':
+    switch ($_POST['q']) {
+        // All books
+        case 'ab':
             echo json_encode(Book::get_all_objects());
             break;
-        case 'r':
+        // Select book
+        case 'sb':
+            $old_book = new Book();
+            try {
+                $old_book->get($_POST['pk']);
+                echo json_encode($old_book);
+            } catch (Exception $e) {
+                echo '-1';
+            }
             break;
-        case 'u':
+        // Select chapter
+        case 'sc':
+            $old_chapter = new Chapter();
+            try {
+                $old_chapter->get($_POST['pk']);
+                echo json_encode($old_chapter);
+            } catch (Exception $e) {
+                echo '-1';
+            }
             break;
         case 'd':
             break;

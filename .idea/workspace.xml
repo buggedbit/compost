@@ -4,6 +4,8 @@
     <list default="true" id="a5dd2da0-2481-445a-8edd-b6f7afa70f3e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Book.php" afterPath="$PROJECT_DIR$/Book.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/books.json" afterPath="$PROJECT_DIR$/books.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chapters.json" afterPath="$PROJECT_DIR$/chapters.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cli.php" afterPath="$PROJECT_DIR$/cli.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/elephant.php" afterPath="$PROJECT_DIR$/elephant.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/todo" afterPath="$PROJECT_DIR$/todo" />
@@ -38,12 +40,40 @@
       <file leaf-file-name="cli.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cli.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6947">
-              <caret line="58" column="16" lean-forward="true" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
+            <state relative-caret-position="78">
+              <caret line="55" column="16" lean-forward="false" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
               <folding>
-                <element signature="e#1164#1361#0#HTML" expanded="false" />
-                <element signature="e#1379#1747#0#HTML" expanded="false" />
-                <element signature="e#1765#1952#0#HTML" expanded="false" />
+                <element signature="e#1251#1400#0#HTML" expanded="false" />
+                <element signature="e#1418#1942#0#HTML" expanded="false" />
+                <element signature="e#1960#2250#0#HTML" expanded="false" />
+                <element signature="e#2268#2474#0#HTML" expanded="false" />
+                <element signature="e#2492#2728#0#HTML" expanded="false" />
+                <element signature="e#2789#4510#0#HTML" expanded="false" />
+                <element signature="e#4576#6217#0#HTML" expanded="false" />
+                <element signature="e#6281#8991#0#HTML" expanded="false" />
+                <element signature="e#9055#10122#0#HTML" expanded="false" />
+                <element signature="e#10198#11232#0#HTML" expanded="false" />
+                <element signature="e#11320#14800#0#HTML" expanded="false" />
+                <element signature="e#14988#16565#0#HTML" expanded="false" />
+                <element signature="e#16919#17903#0#HTML" expanded="false" />
+                <element signature="e#17988#18311#0#HTML" expanded="false" />
+                <element signature="e#18350#18554#0#HTML" expanded="false" />
+                <element signature="e#18889#19697#0#HTML" expanded="false" />
+                <element signature="e#19742#20094#0#HTML" expanded="false" />
+                <element signature="e#20135#20578#0#HTML" expanded="false" />
+                <element signature="e#20605#20645#0#HTML" expanded="false" />
+                <element signature="e#20679#20730#0#HTML" expanded="false" />
+                <element signature="e#20764#20814#0#HTML" expanded="false" />
+                <element signature="e#20848#20895#0#HTML" expanded="false" />
+                <element signature="e#20925#20964#0#HTML" expanded="false" />
+                <element signature="e#20991#21062#0#HTML" expanded="false" />
+                <element signature="e#21092#21193#0#HTML" expanded="false" />
+                <element signature="e#21224#22227#0#HTML" expanded="false" />
+                <element signature="e#22267#22548#0#HTML" expanded="false" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#input#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#script#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -52,33 +82,56 @@
       <file leaf-file-name="elephant.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/elephant.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+            <state relative-caret-position="598">
+              <caret line="26" column="45" lean-forward="false" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Book.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Book.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Book.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="489">
-              <caret line="35" column="37" lean-forward="false" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
+            <state relative-caret-position="1690">
+              <caret line="65" column="9" lean-forward="true" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Chapter.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Chapter.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding>
-                <element signature="n#connect#0;n#Book#0;n#!!top" expanded="false" />
-                <element signature="e#321#520#0#PHP" expanded="false" />
-                <element signature="n#object_exists#0;n#Book#0;n#!!top" expanded="false" />
-                <element signature="e#589#702#0#PHP" expanded="false" />
-                <element signature="e#661#702#0#PHP" expanded="false" />
-                <element signature="n#__construct#0;n#Book#0;n#!!top" expanded="false" />
-                <element signature="n#get#0;n#Book#0;n#!!top" expanded="false" />
-                <element signature="e#1388#1649#0#PHP" expanded="false" />
-                <element signature="e#1584#1649#0#PHP" expanded="false" />
-                <element signature="n#save#0;n#Book#0;n#!!top" expanded="false" />
-                <element signature="n#delete#0;n#Book#0;n#!!top" expanded="false" />
-                <element signature="n#add_chapter#0;n#Book#0;n#!!top" expanded="false" />
-                <element signature="n#remove_chapter#0;n#Book#0;n#!!top" expanded="false" />
+                <element signature="n#connect#0;n#Chapter#0;n#!!top" expanded="false" />
+                <element signature="n#object_exists#0;n#Chapter#0;n#!!top" expanded="false" />
+                <element signature="n#__construct#0;n#Chapter#0;n#!!top" expanded="false" />
+                <element signature="n#get#0;n#Chapter#0;n#!!top" expanded="false" />
+                <element signature="n#save#0;n#Chapter#0;n#!!top" expanded="false" />
+                <element signature="n#delete#0;n#Chapter#0;n#!!top" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chapters.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/chapters.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="385">
+              <caret line="17" column="34" lean-forward="true" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="books.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/books.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="78">
+              <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="12" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -94,12 +147,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>books</find>
-      <find>Book::</find>
-      <find>level</find>
-      <find>chapter</find>
-      <find>===</find>
-      <find>$chapters</find>
       <find>time_stamp</find>
       <find>$name</find>
       <find>name</find>
@@ -124,6 +171,12 @@
       <find>print</find>
       <find>print(</find>
       <find>print_span</find>
+      <find>cmd</find>
+      <find>book</find>
+      <find>CONTEXT.BOOK</find>
+      <find>gett</find>
+      <find>Selecting</find>
+      <find>chapter</find>
     </findStrings>
     <replaceStrings>
       <replace>Book</replace>
@@ -140,10 +193,15 @@
       <replace>$cmd</replace>
       <replace>$:</replace>
       <replace>Book::</replace>
+      <replace>CONTEXT.BOOK</replace>
+      <replace>CONTEXT.CHAPTER</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.txt" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -169,13 +227,13 @@
         <option value="$PROJECT_DIR$/data.json" />
         <option value="$PROJECT_DIR$/schoolbag.php" />
         <option value="$PROJECT_DIR$/TODO" />
-        <option value="$PROJECT_DIR$/Chapter.php" />
-        <option value="$PROJECT_DIR$/chapters.json" />
-        <option value="$PROJECT_DIR$/books.json" />
         <option value="$PROJECT_DIR$/index.php" />
-        <option value="$PROJECT_DIR$/todo" />
         <option value="$PROJECT_DIR$/Book.php" />
+        <option value="$PROJECT_DIR$/todo" />
+        <option value="$PROJECT_DIR$/Chapter.php" />
         <option value="$PROJECT_DIR$/elephant.php" />
+        <option value="$PROJECT_DIR$/books.json" />
+        <option value="$PROJECT_DIR$/chapters.json" />
         <option value="$PROJECT_DIR$/cli.php" />
       </list>
     </option>
@@ -489,12 +547,12 @@
       <workItem from="1493381110289" duration="3575000" />
       <workItem from="1493398232119" duration="15439000" />
       <workItem from="1493416912320" duration="425000" />
-      <workItem from="1493441602215" duration="500000" />
+      <workItem from="1493441602215" duration="13859000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="222844000" />
+    <option name="totallyTimeSpent" value="236203000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -504,6 +562,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Command Line Tools Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982087" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32948583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -612,73 +671,98 @@
     <entry file="file://$PROJECT_DIR$/src/index.php" />
     <entry file="file://$PROJECT_DIR$/src/elephant.php" />
     <entry file="file://$PROJECT_DIR$/header.js" />
-    <entry file="file://$PROJECT_DIR$/Chapter.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="108" column="0" lean-forward="true" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/chapters.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="2" column="16" lean-forward="false" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/todo">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="33" lean-forward="false" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/books.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="723">
-          <caret line="43" column="1" lean-forward="false" selection-start-line="43" selection-start-column="1" selection-end-line="43" selection-end-column="1" />
+        <state relative-caret-position="78">
+          <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cli.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6947">
-          <caret line="58" column="16" lean-forward="true" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
+        <state relative-caret-position="78">
+          <caret line="55" column="16" lean-forward="false" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="16" />
           <folding>
-            <element signature="e#1164#1361#0#HTML" expanded="false" />
-            <element signature="e#1379#1747#0#HTML" expanded="false" />
-            <element signature="e#1765#1952#0#HTML" expanded="false" />
+            <element signature="e#1251#1400#0#HTML" expanded="false" />
+            <element signature="e#1418#1942#0#HTML" expanded="false" />
+            <element signature="e#1960#2250#0#HTML" expanded="false" />
+            <element signature="e#2268#2474#0#HTML" expanded="false" />
+            <element signature="e#2492#2728#0#HTML" expanded="false" />
+            <element signature="e#2789#4510#0#HTML" expanded="false" />
+            <element signature="e#4576#6217#0#HTML" expanded="false" />
+            <element signature="e#6281#8991#0#HTML" expanded="false" />
+            <element signature="e#9055#10122#0#HTML" expanded="false" />
+            <element signature="e#10198#11232#0#HTML" expanded="false" />
+            <element signature="e#11320#14800#0#HTML" expanded="false" />
+            <element signature="e#14988#16565#0#HTML" expanded="false" />
+            <element signature="e#16919#17903#0#HTML" expanded="false" />
+            <element signature="e#17988#18311#0#HTML" expanded="false" />
+            <element signature="e#18350#18554#0#HTML" expanded="false" />
+            <element signature="e#18889#19697#0#HTML" expanded="false" />
+            <element signature="e#19742#20094#0#HTML" expanded="false" />
+            <element signature="e#20135#20578#0#HTML" expanded="false" />
+            <element signature="e#20605#20645#0#HTML" expanded="false" />
+            <element signature="e#20679#20730#0#HTML" expanded="false" />
+            <element signature="e#20764#20814#0#HTML" expanded="false" />
+            <element signature="e#20848#20895#0#HTML" expanded="false" />
+            <element signature="e#20925#20964#0#HTML" expanded="false" />
+            <element signature="e#20991#21062#0#HTML" expanded="false" />
+            <element signature="e#21092#21193#0#HTML" expanded="false" />
+            <element signature="e#21224#22227#0#HTML" expanded="false" />
+            <element signature="e#22267#22548#0#HTML" expanded="false" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#script#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/elephant.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+        <state relative-caret-position="598">
+          <caret line="26" column="45" lean-forward="false" selection-start-line="26" selection-start-column="45" selection-end-line="26" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Book.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="35" column="37" lean-forward="false" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
+        <state relative-caret-position="1690">
+          <caret line="65" column="9" lean-forward="true" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Chapter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding>
-            <element signature="n#connect#0;n#Book#0;n#!!top" expanded="false" />
-            <element signature="e#321#520#0#PHP" expanded="false" />
-            <element signature="n#object_exists#0;n#Book#0;n#!!top" expanded="false" />
-            <element signature="e#589#702#0#PHP" expanded="false" />
-            <element signature="e#661#702#0#PHP" expanded="false" />
-            <element signature="n#__construct#0;n#Book#0;n#!!top" expanded="false" />
-            <element signature="n#get#0;n#Book#0;n#!!top" expanded="false" />
-            <element signature="e#1388#1649#0#PHP" expanded="false" />
-            <element signature="e#1584#1649#0#PHP" expanded="false" />
-            <element signature="n#save#0;n#Book#0;n#!!top" expanded="false" />
-            <element signature="n#delete#0;n#Book#0;n#!!top" expanded="false" />
-            <element signature="n#add_chapter#0;n#Book#0;n#!!top" expanded="false" />
-            <element signature="n#remove_chapter#0;n#Book#0;n#!!top" expanded="false" />
+            <element signature="n#connect#0;n#Chapter#0;n#!!top" expanded="false" />
+            <element signature="n#object_exists#0;n#Chapter#0;n#!!top" expanded="false" />
+            <element signature="n#__construct#0;n#Chapter#0;n#!!top" expanded="false" />
+            <element signature="n#get#0;n#Chapter#0;n#!!top" expanded="false" />
+            <element signature="n#save#0;n#Chapter#0;n#!!top" expanded="false" />
+            <element signature="n#delete#0;n#Chapter#0;n#!!top" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/todo">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="47" lean-forward="false" selection-start-line="6" selection-start-column="47" selection-end-line="6" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapters.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="17" column="34" lean-forward="true" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>

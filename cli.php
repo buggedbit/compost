@@ -16,8 +16,10 @@
 <div class="row">
     <!--CONTEXT-->
     <script>
-        var book = undefined;
-        var chapter = undefined;
+        var CONTEXT = {
+            BOOK: undefined,
+            CHAPTER: undefined
+        };
     </script>
 
     <!--TERMINAL-->
@@ -29,52 +31,89 @@
         var CMD = {
             /**
              * Assert distinct keywords for all commands
-             * The string part after <keyword><SPACE> is passed as an argument to action method of the cmd
+             * Assert keyword does not have any space character
+             * The other words of cmd are passed as an array argument to action method of the cmd
              * */
             list: [
                 {
                     keyword: "",
                     desc: "",
                     action: function (arg) {
-                        print_out(ShellSymbol);
                     }
                 },
                 {
                     keyword: "help",
-                    desc: "",
+                    desc: "shows commands and their descriptions",
                     action: function (arg) {
                         for (var i = 0; i < CMD.list.length; i++) {
                             var ith_cmd = CMD.list[i];
-                            print_span(ith_cmd.keyword, 'white');
+                            var _tab = '        ';
+                            var _help = ith_cmd.keyword + _tab + ith_cmd.desc;
+                            print_pre(_help, 'white');
                         }
                     }
                 },
                 {
+                    keyword: "about",
+                    desc: "brief description about school bag",
+                    action: function (arg) {
+                        print_pre('School Bag is a place where you keep all your knowledge', 'gold');
+                    }
+                },
+                {
                     keyword: "clear",
-                    desc: "",
+                    desc: "clears the terminal",
                     action: function (arg) {
                         clear();
                     }
                 },
                 {
                     keyword: "print",
-                    desc: "",
+                    desc: "prints the text given next to it",
                     action: function (arg) {
-                        print_out(arg);
+                        print_out(arg.join(" "));
                     }
                 },
+                /* Prints selected book */
                 {
                     keyword: "book",
-                    desc: "",
+                    desc: "shows currently selected book",
                     action: function (arg) {
-                        if (book === undefined) {
+                        // Show the book context
+                        if (CONTEXT.BOOK === undefined) {
                             print_war('No book selected')
+                        }
+                        else {
+                            // Print selected book
+                            var _tab = '                ';
+                            // Book
+                            print_pre('Book', 'wheat');
+                            var _head = 'pk' + _tab + 'name';
+                            print_pre(_head, 'wheat');
+                            var _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name;
+                            print_pre(_book, 'white');
+                            print_br();
+
+                            // Chapters
+                            print_pre('Chapters', 'wheat');
+                            _head = 'pk' + _tab + 'name';
+                            print_pre(_head, 'wheat');
+                            for (var i = 0; i < CONTEXT.BOOK.chapter_pks.length; ++i) {
+                                var ith_pk = CONTEXT.BOOK.chapter_pks[i];
+                                var ith_name = CONTEXT.BOOK.chapter_names[i];
+                                var _chapter = ith_pk + _tab + ith_name;
+                                print_pre(_chapter, 'white');
+                            }
+                            if (CONTEXT.BOOK.chapter_pks.length === 0) {
+                                print_pre('No chapters yet', 'white');
+                            }
                         }
                     }
                 },
+                /* Lists all books available */
                 {
-                    keyword: "books",
-                    desc: "",
+                    keyword: "book-a",
+                    desc: "lists all books available",
                     action: function (arg) {
                         block();
                         print_out('Getting all books ...');
@@ -82,17 +121,17 @@
                             url: 'elephant.php',
                             type: 'POST',
                             data: {
-                                'q': 'rb'
+                                'q': 'ab'
                             },
                             error: function () {
                                 print_err('Could not get all books');
                                 un_block();
                             },
                             success: function (books) {
-                                print_out('Got all books');
                                 books = JSON.parse(books);
                                 // Print table head
-                                var _tab = '    ';
+                                var _tab = '            ';
+                                print_pre('Books', 'wheat');
                                 var _head = 'pk' + _tab + 'name';
                                 print_pre(_head, 'wheat');
                                 // Print books one by one
@@ -106,7 +145,164 @@
                             }
                         });
                     }
-                }
+                },
+                /* Selects a book using pk */
+                {
+                    keyword: "book-s",
+                    desc: "selects a book with it's pk as argument",
+                    action: function (arg) {
+                        if (arg.length === 1) {
+                            block();
+                            print_out('Selecting book with pk=' + arg[0] + ' ...');
+                            $.ajax({
+                                url: 'elephant.php',
+                                type: 'POST',
+                                data: {
+                                    'q': 'sb',
+                                    'pk': arg[0]
+                                },
+                                error: function () {
+                                    print_err('Could not select book');
+                                    un_block();
+                                },
+                                success: function (book) {
+                                    if (book === '-1') {
+                                        print_err('No book with pk=' + arg[0]);
+                                    }
+                                    else {
+                                        CONTEXT.BOOK = JSON.parse(book);
+                                        CONTEXT.CHAPTER = undefined;
+                                        print_out('[OK]');
+                                        // Print selected book
+                                        var _tab = '                ';
+                                        // Head
+                                        var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
+                                        print_pre(_head, 'wheat');
+                                        // Body
+                                        var _book;
+                                        if (CONTEXT.BOOK.chapter_pks.length === 0) {
+                                            _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
+                                            print_pre(_book, 'white');
+                                        } else if (CONTEXT.BOOK.chapter_pks.length > 0) {
+                                            _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + CONTEXT.BOOK.chapter_pks;
+                                            print_pre(_book, 'white');
+                                        }
+                                    }
+                                    un_block();
+                                }
+                            });
+                        }
+                        else {
+                            print_err('Usage : book-s "pk"');
+                        }
+                    }
+                },
+                /* Prints selected chapter */
+                {
+                    keyword: "chapter",
+                    desc: "shows the currently selected chapter",
+                    action: function (arg) {
+                        // Show the chapter context
+                        if (CONTEXT.CHAPTER === undefined) {
+                            print_war('No chapter selected')
+                        }
+                        else {
+                            // Print selected chapter
+                            var _tab = '                ';
+                            // Head
+                            var _head = 'pk' + _tab + 'name';
+                            print_pre(_head, 'wheat');
+                            // Meta
+                            var _book = CONTEXT.CHAPTER.pk + _tab + CONTEXT.CHAPTER.name;
+                            print_pre(_book, 'white');
+                            // Content
+                            print_pre('Content', 'wheat');
+                            print_pre(CONTEXT.CHAPTER.content, 'white');
+                        }
+                    }
+                },
+                /* Lists all chapters of selected book */
+                {
+                    keyword: "chapter-a",
+                    desc: "lists all chapters in the selected book",
+                    action: function (arg) {
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected, select a book first');
+                            return;
+                        }
+                        // Chapters
+                        var _tab = '                ';
+                        print_pre('Chapters', 'wheat');
+                        var _head = 'pk' + _tab + 'name';
+                        print_pre(_head, 'wheat');
+                        for (var i = 0; i < CONTEXT.BOOK.chapter_pks.length; ++i) {
+                            var ith_pk = CONTEXT.BOOK.chapter_pks[i];
+                            var ith_name = CONTEXT.BOOK.chapter_names[i];
+                            var _chapter = ith_pk + _tab + ith_name;
+                            print_pre(_chapter, 'white');
+                        }
+                    }
+                },
+                /* Selects a chapter using pk in the selected book */
+                {
+                    keyword: "chapter-s",
+                    desc: "selects a chapter with it's pk as argument",
+                    action: function (arg) {
+                        // If no book select book first
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected, select a book first');
+                            return;
+                        }
+                        if (arg.length === 1) {
+                            // If selected book contains chapter with pk = arg
+                            for (var i = 0; i < CONTEXT.BOOK.chapter_pks.length; i++) {
+                                var ith_chapter_pk = CONTEXT.BOOK.chapter_pks[i];
+                                if (arg[0] === String(ith_chapter_pk)) {
+                                    block();
+                                    print_out('Selecting chapter ' + CONTEXT.BOOK.chapter_names[i]);
+                                    $.ajax({
+                                        url: 'elephant.php',
+                                        type: 'POST',
+                                        data: {
+                                            'q': 'sc',
+                                            'pk': arg[0]
+                                        },
+                                        error: function () {
+                                            print_err('Could not select chapter');
+                                            un_block();
+                                        },
+                                        success: function (chapter) {
+                                            if (chapter === '-1') {
+                                                print_err('No chapter with pk=' + arg[0]);
+                                                print_err('This error may be due to outdated book, please re-select the book and try again');
+                                            }
+                                            else {
+                                                CONTEXT.CHAPTER = JSON.parse(chapter);
+                                                print_out('[OK]');
+                                                // Print selected book
+                                                var _tab = '                ';
+                                                // Head
+                                                var _head = 'pk' + _tab + 'name';
+                                                print_pre(_head, 'wheat');
+                                                // Body
+                                                var _chapter;
+                                                _chapter = CONTEXT.CHAPTER.pk + _tab + CONTEXT.CHAPTER.name;
+                                                print_pre(_chapter, 'white');
+                                            }
+                                            un_block();
+                                        }
+                                    });
+                                    return;
+                                }
+                            }
+                            // Else flag no chapter found
+                            print_err('No chapter with pk=' + arg[0] + ' is found in book ' + CONTEXT.BOOK.name);
+                        }
+                        else {
+                            print_err('Usage : chapter-s "pk"');
+                        }
+                    }
+                },
             ],
             /**
              * @return {boolean}
@@ -123,17 +319,17 @@
                 CMD.head = CMD.history.length;
 
                 try {
+                    // Split the cmd
+                    var cmd_split = cmd.split(" ");
                     // For all commands
                     for (var i = 0; i < CMD.list.length; ++i) {
                         var ith_cmd = CMD.list[i];
-                        // If first word matches ith_cmd keyword
-                        if (ith_cmd.keyword === cmd.split(" ")[0]) {
+                        // If first word of cmd matches ith_cmd keyword
+                        if (cmd_split[0] === ith_cmd.keyword) {
                             // Print the command
-                            if (ith_cmd.keyword !== "") {
-                                print_out(ShellSymbol + cmd);
-                            }
-                            // Pass the remaining part of the string to that cmd's action method
-                            ith_cmd.action(cmd.slice(ith_cmd.keyword.length + 1, cmd.length));
+                            print_out(ShellSymbol + cmd);
+                            // Pass the remaining words of cmd to that cmd's action method
+                            ith_cmd.action(cmd_split.splice(1));
                             // Empty the cmd line
                             $($cmd).val("");
                             return true;
@@ -151,9 +347,10 @@
                 }
             },
             /**
-             * no  cmd found        -> Nothing happens
-             * one cmd found        -> Auto completes the command
-             * multiple cmd found   -> Displays all matching cmds
+             * Tries to match given cmd with any of the listed cmds keywords
+             * no  match found          -> Nothing happens
+             * one match found          -> Auto completes the command
+             * multiple matches found   -> Displays all matching cmds
              * */
             auto_complete: function (cmd) {
                 if (cmd === "")return;
@@ -173,6 +370,8 @@
                 }
                 // If more display them on terminal
                 else if (matches.length > 1) {
+                    // Print the command
+                    print_out(ShellSymbol + cmd);
                     var available_commands = matches.join("\n");
                     print_span(available_commands, 'skyblue');
                 }
@@ -278,6 +477,10 @@
             print_span(msg, 'red');
         }
 
+        function print_br() {
+            print_span('');
+        }
+
         function block() {
             $($cmd).prop('disabled', true).parent().hide();
         }
@@ -293,12 +496,14 @@
                 // Enter
                 case 13:
                     cmd = $($cmd).val();
+                    cmd = cmd.trim().replace(/ +/g, ' ');
                     CMD.evaluate(cmd);
                     break;
                 // Tab Key
                 case 9:
                     event.preventDefault();
                     cmd = $($cmd).val();
+                    cmd = cmd.trim().replace(/ +/g, ' ');
                     CMD.auto_complete(cmd);
                     break;
                 // Up Arrow
@@ -334,11 +539,12 @@
          class="row black"
          style="position: fixed;top: 0;width: 100vw;height: 100vh;
             margin: 0;z-index: 100;overflow-y: auto;padding: 20px;
-            font-family: 'Ubuntu Mono', monospace;color: #64dd17">
+            font-family: 'Ubuntu Mono', monospace;color: #64dd17;
+            font-size: large">
         <div id="log"></div>
         <span>$: <input id="cmd"
                         type="text"
-                        style="border: none;margin: 0;width: 90%;height: 20px;box-shadow: none" autofocus>
+                        style="border: none;margin: 0;width: 90%;height: 20px;box-shadow: none;font-size: large" autofocus>
         </span>
     </div>
 

@@ -61,8 +61,10 @@ class Book
             $this->pk = $pk;
             $this->name = $book['name'];
             $this->chapter_pks = $book['chapter_pks'];
+            $this->chapter_names = $book['chapter_names'];
             $this->time_stamp = null;
-        } else {
+        }
+        else {
             throw new Exception('No such Book');
         }
     }
