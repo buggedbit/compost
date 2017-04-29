@@ -229,21 +229,26 @@
                                     un_block();
                                 },
                                 success: function (updated_book) {
-                                    CONTEXT.BOOK = JSON.parse(updated_book);
-                                    print_out('[OK]');
-                                    // Print updated book
-                                    var _tab = '                ';
-                                    // Head
-                                    var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
-                                    print_pre(_head, 'wheat');
-                                    // Body
-                                    var _book;
-                                    if (CONTEXT.BOOK.chapter_pks.length === 0) {
-                                        _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
-                                        print_pre(_book, 'white');
-                                    } else if (CONTEXT.BOOK.chapter_pks.length > 0) {
-                                        _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + CONTEXT.BOOK.chapter_pks;
-                                        print_pre(_book, 'white');
+                                    if (updated_book === '-1') {
+                                        print_err('No book with pk=' + CONTEXT.BOOK.pk);
+                                        print_err('This error may be due to outdated db, please refresh and try again');
+                                    } else {
+                                        CONTEXT.BOOK = JSON.parse(updated_book);
+                                        print_out('[OK]');
+                                        // Print updated book
+                                        var _tab = '                ';
+                                        // Head
+                                        var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
+                                        print_pre(_head, 'wheat');
+                                        // Body
+                                        var _book;
+                                        if (CONTEXT.BOOK.chapter_pks.length === 0) {
+                                            _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
+                                            print_pre(_book, 'white');
+                                        } else if (CONTEXT.BOOK.chapter_pks.length > 0) {
+                                            _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + CONTEXT.BOOK.chapter_pks;
+                                            print_pre(_book, 'white');
+                                        }
                                     }
                                     un_block();
                                 }
@@ -599,16 +604,46 @@
                         matches.push(CMD.list[i].keyword);
                     }
                 }
+
+                /* Assert matches.length > 1 */
+                function get_best_auto_complete(matches) {
+                    // Finds best auto complete
+                    var best_auto_complete = '';
+
+                    var pos = 0;
+                    while (true) {
+                        var base = matches[0].charAt(pos);
+                        if (base === undefined)
+                            return best_auto_complete;
+                        for (var m = 1; m < matches.length; ++m) {
+                            var ith = matches[m].charAt(pos);
+                            // If this word ends
+                            if (ith === undefined)
+                                return best_auto_complete;
+                            // If this char does not match
+                            if (ith !== base)
+                                return best_auto_complete;
+                        }
+                        best_auto_complete += base;
+                        pos++;
+                    }
+                }
+
                 // If only one command auto complete
                 if (matches.length === 1) {
                     $($cmd).val(matches[0] + " ");
                 }
                 // If more display them on terminal
                 else if (matches.length > 1) {
-                    // Print the command
-                    print_out(ShellSymbol + cmd);
-                    var available_commands = matches.join("\n");
-                    print_span(available_commands, 'skyblue');
+                    var best_auto_complete = get_best_auto_complete(matches);
+                    if (best_auto_complete.length - cmd.length === 0) {
+                        // Show all options
+                        print_out(ShellSymbol + best_auto_complete);
+                        var available_commands = matches.join("\n");
+                        print_span(available_commands, 'skyblue');
+                    } else {
+                        $($cmd).val(best_auto_complete);
+                    }
                 }
             },
 
@@ -795,8 +830,12 @@
         var $chapter_name;
         var $chapter_content;
 
-        function close() {
+        function editor_close() {
             $($editor).hide();
+        }
+
+        function editor_open() {
+            $($editor).show();
         }
 
         $(document).ready(function () {
@@ -811,8 +850,9 @@
                 'keydown',
                 function (e) {
                     switch (e.keyCode) {
+                        // Escape key
                         case 27:
-                            close();
+                            editor_close();
                             break;
                         default:
                             break;
@@ -822,7 +862,8 @@
         });
     </script>
     <div id="editor" class="row white"
-         style="position: fixed;top: 0;width: 100vw;height: 100vh;margin: 0;z-index: 99;overflow-y: auto;padding: 20px;">
+         style="position: fixed;top: 0;width: 100vw;height: 100vh;
+                margin: 0;z-index: 99;overflow-y: auto;padding: 20px;">
         <div id="book_name">book</div>
         <div id="chapter_name">chapter</div>
         <textarea id="chapter_content"
