@@ -63,8 +63,7 @@ class Book
             $this->chapter_pks = $book['chapter_pks'];
             $this->chapter_names = $book['chapter_names'];
             $this->time_stamp = null;
-        }
-        else {
+        } else {
             throw new Exception('No such Book');
         }
     }
@@ -105,6 +104,17 @@ class Book
 
     public function delete()
     {
+        // Delete related chapters
+        foreach ($this->chapter_pks as $chapter_pk) {
+            $related_chapter = new Chapter();
+            try {
+                $related_chapter->get($chapter_pk);
+                $related_chapter->delete();
+            } catch (Exception $e) {
+
+            }
+        }
+
         // Connect
         Book::connect();
         // Delete
@@ -120,34 +130,47 @@ class Book
         file_put_contents(Book::$LEVELS_FILE_URL, json_encode(Book::$objects));
     }
 
-    public function add_chapter($chapter_pk, $chapter_name="")
+    public function add_chapter($chapter_name)
     {
-        $index = array_search($chapter_pk, $this->chapter_pks);
+        // Create new chapter
+        $new_chapter = new Chapter();
+        $new_chapter->book_id = $this->pk;
+        $new_chapter->name = $chapter_name;
+        $new_chapter->save();
 
-        if ($index === false) {
-            // no such chapter pk
-            array_push($this->chapter_pks, $chapter_pk);
-            array_push($this->chapter_names, $chapter_name);
-            return true;
-        } else {
-            // there is already a chapter pk
-            return false;
-        }
+        // Keep track of it's pk and name
+        array_push($this->chapter_pks, $new_chapter->pk);
+        array_push($this->chapter_names, $new_chapter->name);
+
+        // Save
+        $this->save();
+
+        return $new_chapter;
     }
 
     public function remove_chapter($chapter_pk)
     {
+        // Removing the tracking variables
         $index = array_search($chapter_pk, $this->chapter_pks);
         if ($index === false) {
             // no such chapter pk
-            return false;
         } else {
-            // there is a chapter pk
+            // chapter exists in book
             unset($this->chapter_pks[$index]);
             unset($this->chapter_names[$index]);
             $this->chapter_pks = array_values($this->chapter_pks);
             $this->chapter_names = array_values($this->chapter_names);
+            $this->save();
+        }
+
+        // Deleting chapter from json db
+        try {
+            $old_chapter = new Chapter();
+            $old_chapter->get($chapter_pk);
+            $old_chapter->delete();
             return true;
+        } catch (Exception $e) {
+            return false;
         }
     }
 

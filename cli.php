@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 
+    <style>
+        pre {
+            font-size: medium;
+        }
+    </style>
 </head>
 <body>
 <div class="row">
@@ -81,33 +86,33 @@
                     action: function (arg) {
                         // Show the book context
                         if (CONTEXT.BOOK === undefined) {
-                            print_war('No book selected')
+                            print_war('No book selected');
+                            return;
                         }
-                        else {
-                            // Print selected book
-                            var _tab = '                ';
-                            // Book
-                            print_pre('Book', 'wheat');
-                            var _head = 'pk' + _tab + 'name';
-                            print_pre(_head, 'wheat');
-                            var _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name;
-                            print_pre(_book, 'white');
-                            print_br();
+                        // Print selected book
+                        var _tab = '                ';
+                        // Book
+                        print_pre('Book', 'wheat');
+                        var _head = 'pk' + _tab + 'name';
+                        print_pre(_head, 'wheat');
+                        var _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name;
+                        print_pre(_book, 'white');
+                        print_br();
 
-                            // Chapters
-                            print_pre('Chapters', 'wheat');
-                            _head = 'pk' + _tab + 'name';
-                            print_pre(_head, 'wheat');
-                            for (var i = 0; i < CONTEXT.BOOK.chapter_pks.length; ++i) {
-                                var ith_pk = CONTEXT.BOOK.chapter_pks[i];
-                                var ith_name = CONTEXT.BOOK.chapter_names[i];
-                                var _chapter = ith_pk + _tab + ith_name;
-                                print_pre(_chapter, 'white');
-                            }
-                            if (CONTEXT.BOOK.chapter_pks.length === 0) {
-                                print_pre('No chapters yet', 'white');
-                            }
+                        // Chapters
+                        print_pre('Chapters', 'wheat');
+                        _head = 'pk' + _tab + 'name';
+                        print_pre(_head, 'wheat');
+                        for (var i = 0; i < CONTEXT.BOOK.chapter_pks.length; ++i) {
+                            var ith_pk = CONTEXT.BOOK.chapter_pks[i];
+                            var ith_name = CONTEXT.BOOK.chapter_names[i];
+                            var _chapter = ith_pk + _tab + ith_name;
+                            print_pre(_chapter, 'white');
                         }
+                        if (CONTEXT.BOOK.chapter_pks.length === 0) {
+                            print_pre('No chapters yet', 'white');
+                        }
+
                     }
                 },
                 /* Lists all books available */
@@ -168,6 +173,7 @@
                                 success: function (book) {
                                     if (book === '-1') {
                                         print_err('No book with pk=' + arg[0]);
+                                        print_err('This error may be due to outdated db, please refresh and try again');
                                     }
                                     else {
                                         CONTEXT.BOOK = JSON.parse(book);
@@ -195,6 +201,131 @@
                         else {
                             print_err('Usage : book-s "pk"');
                         }
+                    }
+                },
+                /* Updates the selected book */
+                {
+                    keyword: "book-u",
+                    desc: "updates the selected book with it's new name as argument",
+                    action: function (arg) {
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected');
+                            print_err('Select a book first to update');
+                            return;
+                        }
+                        if (arg.length === 1) {
+                            block();
+                            print_out('Updating book with pk=' + CONTEXT.BOOK.pk + ' ...');
+                            $.ajax({
+                                url: 'elephant.php',
+                                type: 'POST',
+                                data: {
+                                    'q': 'ub',
+                                    'pk': CONTEXT.BOOK.pk,
+                                    'name': arg[0]
+                                },
+                                error: function () {
+                                    print_err('Could not update book');
+                                    un_block();
+                                },
+                                success: function (updated_book) {
+                                    CONTEXT.BOOK = JSON.parse(updated_book);
+                                    print_out('[OK]');
+                                    // Print updated book
+                                    var _tab = '                ';
+                                    // Head
+                                    var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
+                                    print_pre(_head, 'wheat');
+                                    // Body
+                                    var _book;
+                                    if (CONTEXT.BOOK.chapter_pks.length === 0) {
+                                        _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
+                                        print_pre(_book, 'white');
+                                    } else if (CONTEXT.BOOK.chapter_pks.length > 0) {
+                                        _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + CONTEXT.BOOK.chapter_pks;
+                                        print_pre(_book, 'white');
+                                    }
+                                    un_block();
+                                }
+                            });
+                        }
+                        else {
+                            print_err('Usage : book-u "new-name"');
+                        }
+                    }
+                },
+                /* Creates a new book */
+                {
+                    keyword: "book-n",
+                    desc: "creates a new book with it's name as argument",
+                    action: function (arg) {
+                        if (arg.length === 1) {
+                            block();
+                            print_out('Creating book ' + arg[0] + ' ...');
+                            $.ajax({
+                                url: 'elephant.php',
+                                type: 'POST',
+                                data: {
+                                    'q': 'cb',
+                                    'name': arg[0]
+                                },
+                                error: function () {
+                                    print_err('Could not create book');
+                                    un_block();
+                                },
+                                success: function (new_book) {
+                                    CONTEXT.BOOK = JSON.parse(new_book);
+                                    CONTEXT.CHAPTER = undefined;
+                                    print_out('[OK]');
+                                    // Print selected book
+                                    var _tab = '                ';
+                                    // Head
+                                    var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
+                                    print_pre(_head, 'wheat');
+                                    // Body
+                                    var _book;
+                                    _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
+                                    print_pre(_book, 'white');
+                                    un_block();
+                                }
+                            });
+                        }
+                        else {
+                            print_err('Usage : book-n "name"');
+                        }
+                    }
+                },
+                /* Deletes selected book */
+                {
+                    keyword: "book-d",
+                    desc: "deletes selected book",
+                    action: function (arg) {
+                        block();
+                        print_out('Deleting book with pk=' + CONTEXT.BOOK.pk + ' ...');
+                        $.ajax({
+                            url: 'elephant.php',
+                            type: 'POST',
+                            data: {
+                                'q': 'db',
+                                'pk': CONTEXT.BOOK.pk
+                            },
+                            error: function () {
+                                print_err('Could not delete book');
+                                un_block();
+                            },
+                            success: function (success) {
+                                if (success === '-1') {
+                                    print_err('No book with pk=' + CONTEXT.BOOK.pk);
+                                    print_err('This error may be due to outdated db, please refresh and try again');
+                                }
+                                else if (success === '1') {
+                                    CONTEXT.BOOK = undefined;
+                                    CONTEXT.CHAPTER = undefined;
+                                    print_out('Delete successful')
+                                }
+                                un_block();
+                            }
+                        });
                     }
                 },
                 /* Prints selected chapter */
@@ -227,7 +358,8 @@
                     desc: "lists all chapters in the selected book",
                     action: function (arg) {
                         if (CONTEXT.BOOK === undefined) {
-                            print_err('No book selected, select a book first');
+                            print_err('No book selected');
+                            print_err('Select a book first to see chapters in it');
                             return;
                         }
                         // Chapters
@@ -250,7 +382,8 @@
                     action: function (arg) {
                         // If no book select book first
                         if (CONTEXT.BOOK === undefined) {
-                            print_err('No book selected, select a book first');
+                            print_err('No book selected');
+                            print_err('Select a book first to select chapters in it');
                             return;
                         }
                         if (arg.length === 1) {
@@ -274,7 +407,7 @@
                                         success: function (chapter) {
                                             if (chapter === '-1') {
                                                 print_err('No chapter with pk=' + arg[0]);
-                                                print_err('This error may be due to outdated book, please re-select the book and try again');
+                                                print_err('This error may be due to outdated db, please refresh and try again');
                                             }
                                             else {
                                                 CONTEXT.CHAPTER = JSON.parse(chapter);
@@ -301,6 +434,109 @@
                         else {
                             print_err('Usage : chapter-s "pk"');
                         }
+                    }
+                },
+                /* Creates a chapter using name in the selected book */
+                {
+                    keyword: "chapter-n",
+                    desc: "creates a new chapter in the selected book with it's name as argument",
+                    action: function (arg) {
+                        // If no book select book first
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected');
+                            print_err('Select a book first to create chapter in');
+                            return;
+                        }
+                        if (arg.length === 1) {
+                            block();
+                            print_out('Creating chapter ' + arg[0] + ' in book ' + CONTEXT.BOOK.name + ' ...');
+                            $.ajax({
+                                url: 'elephant.php',
+                                type: 'POST',
+                                data: {
+                                    'q': 'cc',
+                                    'book_pk': CONTEXT.BOOK.pk,
+                                    'name': arg[0]
+                                },
+                                error: function () {
+                                    print_err('Could not create chapter');
+                                    un_block();
+                                },
+                                success: function (chapter_book_pair) {
+                                    if (chapter_book_pair === '-1') {
+                                        print_err('No book with pk=' + CONTEXT.BOOK.pk);
+                                        print_err('This error may be due to outdated db, please refresh and try again');
+                                    }
+                                    else {
+                                        chapter_book_pair = JSON.parse(chapter_book_pair);
+                                        CONTEXT.CHAPTER = chapter_book_pair[0];
+                                        CONTEXT.BOOK = chapter_book_pair[1];
+                                        print_out('[OK]');
+                                        // Print selected book
+                                        var _tab = '                ';
+                                        // Head
+                                        print_pre('Chapter', 'wheat');
+                                        var _head = 'pk' + _tab + 'name';
+                                        print_pre(_head, 'wheat');
+                                        // Body
+                                        var _chapter = CONTEXT.CHAPTER.pk + _tab + CONTEXT.CHAPTER.name;
+                                        print_pre(_chapter, 'white');
+                                    }
+                                    un_block();
+                                }
+                            });
+                        }
+                        else {
+                            print_err('Usage : chapter-n "name"');
+                        }
+                    }
+                },
+                /* Deletes selected chapter in the selected book */
+                {
+                    keyword: "chapter-d",
+                    desc: "deletes selected chapter in the selected book",
+                    action: function (arg) {
+                        // If no book selected, select book first
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected');
+                            print_err('Select a book first to delete chapters in it');
+                            return;
+                        }
+                        // If no chapter selected, select chapter first
+                        if (CONTEXT.CHAPTER === undefined) {
+                            print_err('No chapter selected');
+                            print_err('Select a chapter first to delete it');
+                            return;
+                        }
+
+                        block();
+                        print_out('Deleting chapter ' + CONTEXT.CHAPTER.name);
+                        $.ajax({
+                            url: 'elephant.php',
+                            type: 'POST',
+                            data: {
+                                'q': 'dc',
+                                'book_pk': CONTEXT.BOOK.pk,
+                                'pk': CONTEXT.CHAPTER.pk
+                            },
+                            error: function () {
+                                print_err('Could not select chapter');
+                                un_block();
+                            },
+                            success: function (reduced_book) {
+                                if (reduced_book === '-1') {
+                                    print_err('No such book or no such chapter found');
+                                    print_err('This error may be due to outdated db, please refresh and try again');
+                                }
+                                else {
+                                    console.log(reduced_book);
+//                                    CONTEXT.BOOK = JSON.parse(reduced_book);
+                                    CONTEXT.CHAPTER = undefined;
+                                    print_out('Delete successful')
+                                }
+                                un_block();
+                            }
+                        });
                     }
                 },
             ],
@@ -516,6 +752,10 @@
                     // Going forward in history
                     CMD.go_forward();
                     break;
+                // Escape Key
+                case 27:
+                    clear();
+                    break;
                 // None of the above
                 default:
                     break;
@@ -544,7 +784,8 @@
         <div id="log"></div>
         <span>$: <input id="cmd"
                         type="text"
-                        style="border: none;margin: 0;width: 90%;height: 20px;box-shadow: none;font-size: large" autofocus>
+                        style="border: none;margin: 0;width: 90%;height: 20px;box-shadow: none;font-size: large"
+                        autofocus>
         </span>
     </div>
 
