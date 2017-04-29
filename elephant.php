@@ -2,24 +2,11 @@
 require 'Book.php';
 require 'Chapter.php';
 
-// todo : post
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    switch ($_GET["q"]) {
-        case 'c':
-            $book = new Book();
-            try{
-                $book->name = 'Science';
-                $book->add_chapter(1, 'hello');
-                $book->remove_chapter(1);
-                $book->add_chapter(1, 'yash');
-                $book->remove_chapter(1);
-                $book->add_chapter(1);
-                $book->save();
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
-            echo 'C';
+    switch ($_POST["q"]) {
+        case 'rb':
+            echo json_encode(Book::get_all_objects());
             break;
         case 'r':
             break;

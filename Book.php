@@ -28,6 +28,18 @@ class Book
         }
     }
 
+    public static function get_all_objects()
+    {
+        // Connect
+        Book::connect();
+        // This assignment is copy assignment
+        $all_objects = Book::$objects;
+        // So there is no effect on db due to unset()
+        unset($all_objects['meta']);
+        // Return all objects
+        return $all_objects;
+    }
+
     // Fields
     public $pk = 0;
     public $name = "";

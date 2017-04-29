@@ -14,6 +14,11 @@
 </head>
 <body>
 <div class="row">
+    <!--CONTEXT-->
+    <script>
+        var book = undefined;
+        var chapter = undefined;
+    </script>
 
     <!--TERMINAL-->
     <script>
@@ -40,7 +45,7 @@
                     action: function (arg) {
                         for (var i = 0; i < CMD.list.length; i++) {
                             var ith_cmd = CMD.list[i];
-                            print(ith_cmd.keyword, 'white');
+                            print_span(ith_cmd.keyword, 'white');
                         }
                     }
                 },
@@ -56,6 +61,50 @@
                     desc: "",
                     action: function (arg) {
                         print_out(arg);
+                    }
+                },
+                {
+                    keyword: "book",
+                    desc: "",
+                    action: function (arg) {
+                        if (book === undefined) {
+                            print_war('No book selected')
+                        }
+                    }
+                },
+                {
+                    keyword: "books",
+                    desc: "",
+                    action: function (arg) {
+                        block();
+                        print_out('Getting all books ...');
+                        $.ajax({
+                            url: 'elephant.php',
+                            type: 'POST',
+                            data: {
+                                'q': 'rb'
+                            },
+                            error: function () {
+                                print_err('Could not get all books');
+                                un_block();
+                            },
+                            success: function (books) {
+                                print_out('Got all books');
+                                books = JSON.parse(books);
+                                // Print table head
+                                var _tab = '    ';
+                                var _head = 'pk' + _tab + 'name';
+                                print_pre(_head, 'wheat');
+                                // Print books one by one
+                                for (var book_pk in books) {
+                                    if (books.hasOwnProperty(book_pk)) {
+                                        var _display = book_pk + _tab + books[book_pk].name;
+                                        print_pre(_display, 'white');
+                                    }
+                                }
+                                un_block();
+                            }
+                        });
                     }
                 }
             ],
@@ -125,14 +174,14 @@
                 // If more display them on terminal
                 else if (matches.length > 1) {
                     var available_commands = matches.join("\n");
-                    print(available_commands, 'skyblue');
+                    print_span(available_commands, 'skyblue');
                 }
             },
 
             history: [],
             head: 0,
             go_forward: function () {
-                if (0 <= CMD.head + 1 && CMD.head + 1 <= CMD.history.length - 1){
+                if (0 <= CMD.head + 1 && CMD.head + 1 <= CMD.history.length - 1) {
                     CMD.head++;
                     $($cmd).val(CMD.history[CMD.head]);
                 }
@@ -141,7 +190,7 @@
                 }
             },
             go_backward: function () {
-                if (0 <= CMD.head - 1 && CMD.head - 1 <= CMD.history.length - 1){
+                if (0 <= CMD.head - 1 && CMD.head - 1 <= CMD.history.length - 1) {
                     CMD.head--;
                     $($cmd).val(CMD.history[CMD.head]);
                 }
@@ -185,7 +234,7 @@
             return $element;
         }
 
-        function print(string, color) {
+        function print_span(string, color) {
             color = color === undefined ? 'green' : color;
             $($log).append(_element(
                 ['span'],
@@ -197,16 +246,45 @@
             $($terminal).scrollTop($($terminal).prop('scrollHeight'));
         }
 
+        function print_pre(msg, color) {
+            color = color === undefined ? 'green' : color;
+            $($log).append(_element(
+                ['pre'],
+                [
+                    {
+                        'style': 'color:' + color + ';' +
+                        'margin: 0px;'
+                    }
+                ],
+                [msg],
+                [true]
+            ));
+            $($terminal).scrollTop($($terminal).prop('scrollHeight'));
+        }
+
         function clear() {
             $($log).empty();
         }
 
         function print_out(msg) {
-            print(msg, '#64dd17');
+            print_span(msg, '#64dd17');
+        }
+
+        function print_war(msg) {
+            print_span(msg, 'yellow');
         }
 
         function print_err(msg) {
-            print(msg, 'red');
+            print_span(msg, 'red');
+        }
+
+        function block() {
+            $($cmd).prop('disabled', true).parent().hide();
+        }
+
+        function un_block() {
+            $($cmd).prop('disabled', false).parent().show();
+            $($cmd).focus();
         }
 
         function REPL(event) {
@@ -260,7 +338,7 @@
         <div id="log"></div>
         <span>$: <input id="cmd"
                         type="text"
-                        style="border: none;margin: 0;width: 98%;height: 20px;box-shadow: none" autofocus>
+                        style="border: none;margin: 0;width: 90%;height: 20px;box-shadow: none" autofocus>
         </span>
     </div>
 
