@@ -189,11 +189,32 @@ class Book
             $this->save();
         }
 
-        // Deleting chapter from json db
+        // Updating chapter from json db
         try {
             $old_chapter = new Chapter();
             $old_chapter->get($chapter_pk);
             $old_chapter->name = $new_name;
+            $old_chapter->save();
+            return $old_chapter;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function update_chapter_content($chapter_pk, $new_content)
+    {
+        // Getting the tracking variable
+        $index = array_search($chapter_pk, $this->chapter_pks);
+        if ($index === false) {
+            // no such chapter pk
+            return false;
+        }
+
+        // Updating chapter from json db
+        try {
+            $old_chapter = new Chapter();
+            $old_chapter->get($chapter_pk);
+            $old_chapter->content = $new_content;
             $old_chapter->save();
             return $old_chapter;
         } catch (Exception $e) {

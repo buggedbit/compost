@@ -11,11 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 
-    <style>
-        pre {
-            font-size: medium;
-        }
-    </style>
 </head>
 <body>
 <div class="row">
@@ -203,6 +198,47 @@
                         }
                     }
                 },
+                /* Creates a new book */
+                {
+                    keyword: "book-n",
+                    desc: "creates a new book with it's name as argument",
+                    action: function (arg) {
+                        if (arg.length === 1) {
+                            block();
+                            print_out('Creating book ' + arg[0] + ' ...');
+                            $.ajax({
+                                url: 'elephant.php',
+                                type: 'POST',
+                                data: {
+                                    'q': 'cb',
+                                    'name': arg[0]
+                                },
+                                error: function () {
+                                    print_err('Could not create book');
+                                    un_block();
+                                },
+                                success: function (new_book) {
+                                    CONTEXT.BOOK = JSON.parse(new_book);
+                                    CONTEXT.CHAPTER = undefined;
+                                    print_out('[OK]');
+                                    // Print selected book
+                                    var _tab = '                ';
+                                    // Head
+                                    var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
+                                    print_pre(_head, 'wheat');
+                                    // Body
+                                    var _book;
+                                    _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
+                                    print_pre(_book, 'white');
+                                    un_block();
+                                }
+                            });
+                        }
+                        else {
+                            print_err('Usage : book-n "name"');
+                        }
+                    }
+                },
                 /* Updates the selected book */
                 {
                     keyword: "book-u",
@@ -259,47 +295,6 @@
                         }
                     }
                 },
-                /* Creates a new book */
-                {
-                    keyword: "book-n",
-                    desc: "creates a new book with it's name as argument",
-                    action: function (arg) {
-                        if (arg.length === 1) {
-                            block();
-                            print_out('Creating book ' + arg[0] + ' ...');
-                            $.ajax({
-                                url: 'elephant.php',
-                                type: 'POST',
-                                data: {
-                                    'q': 'cb',
-                                    'name': arg[0]
-                                },
-                                error: function () {
-                                    print_err('Could not create book');
-                                    un_block();
-                                },
-                                success: function (new_book) {
-                                    CONTEXT.BOOK = JSON.parse(new_book);
-                                    CONTEXT.CHAPTER = undefined;
-                                    print_out('[OK]');
-                                    // Print selected book
-                                    var _tab = '                ';
-                                    // Head
-                                    var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
-                                    print_pre(_head, 'wheat');
-                                    // Body
-                                    var _book;
-                                    _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
-                                    print_pre(_book, 'white');
-                                    un_block();
-                                }
-                            });
-                        }
-                        else {
-                            print_err('Usage : book-n "name"');
-                        }
-                    }
-                },
                 /* Deletes selected book */
                 {
                     keyword: "book-d",
@@ -333,7 +328,7 @@
                         });
                     }
                 },
-                /* Prints selected chapter */
+                /* Opens selected chapter in editor in read mode */
                 {
                     keyword: "chapter",
                     desc: "shows the currently selected chapter",
@@ -353,6 +348,25 @@
 
                         // Open in editor read-mode
                         editor_open(CONTEXT.BOOK.name, CONTEXT.CHAPTER.name, CONTEXT.CHAPTER.content, false);
+                    }
+                },
+                /* Opens selected chapter in editor in write mode */
+                {
+                    keyword: "chapter-e",
+                    desc: "opens selected chapter in editor in write mode",
+                    action: function (arg) {
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected');
+                            print_err('Select a book first to update');
+                            return;
+                        }
+                        if (CONTEXT.CHAPTER === undefined) {
+                            print_err('No chapter selected');
+                            print_err('Select a chapter first to update');
+                            return;
+                        }
+                        // Open in editor read-mode
+                        editor_open(CONTEXT.BOOK.name, CONTEXT.CHAPTER.name, CONTEXT.CHAPTER.content, true);
                     }
                 },
                 /* Lists all chapters of selected book */
@@ -497,53 +511,6 @@
                         }
                     }
                 },
-                /* Deletes selected chapter in the selected book */
-                {
-                    keyword: "chapter-d",
-                    desc: "deletes selected chapter in the selected book",
-                    action: function (arg) {
-                        // If no book selected, select book first
-                        if (CONTEXT.BOOK === undefined) {
-                            print_err('No book selected');
-                            print_err('Select a book first to delete chapters in it');
-                            return;
-                        }
-                        // If no chapter selected, select chapter first
-                        if (CONTEXT.CHAPTER === undefined) {
-                            print_err('No chapter selected');
-                            print_err('Select a chapter first to delete it');
-                            return;
-                        }
-
-                        block();
-                        print_out('Deleting chapter ' + CONTEXT.CHAPTER.name);
-                        $.ajax({
-                            url: 'elephant.php',
-                            type: 'POST',
-                            data: {
-                                'q': 'dc',
-                                'book_pk': CONTEXT.BOOK.pk,
-                                'pk': CONTEXT.CHAPTER.pk
-                            },
-                            error: function () {
-                                print_err('Could not select chapter');
-                                un_block();
-                            },
-                            success: function (reduced_book) {
-                                if (reduced_book === '-1') {
-                                    print_err('No such book or no such chapter found');
-                                    print_err('This error may be due to outdated db, please refresh and try again');
-                                }
-                                else {
-                                    CONTEXT.BOOK = JSON.parse(reduced_book);
-                                    CONTEXT.CHAPTER = undefined;
-                                    print_out('Delete successful')
-                                }
-                                un_block();
-                            }
-                        });
-                    }
-                },
                 /* Updates the selected chapter name in selected book */
                 {
                     keyword: "chapter-u",
@@ -603,6 +570,53 @@
                         else {
                             print_err('Usage : chapter-u "new-name"');
                         }
+                    }
+                },
+                /* Deletes selected chapter in the selected book */
+                {
+                    keyword: "chapter-d",
+                    desc: "deletes selected chapter in the selected book",
+                    action: function (arg) {
+                        // If no book selected, select book first
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected');
+                            print_err('Select a book first to delete chapters in it');
+                            return;
+                        }
+                        // If no chapter selected, select chapter first
+                        if (CONTEXT.CHAPTER === undefined) {
+                            print_err('No chapter selected');
+                            print_err('Select a chapter first to delete it');
+                            return;
+                        }
+
+                        block();
+                        print_out('Deleting chapter ' + CONTEXT.CHAPTER.name);
+                        $.ajax({
+                            url: 'elephant.php',
+                            type: 'POST',
+                            data: {
+                                'q': 'dc',
+                                'book_pk': CONTEXT.BOOK.pk,
+                                'pk': CONTEXT.CHAPTER.pk
+                            },
+                            error: function () {
+                                print_err('Could not select chapter');
+                                un_block();
+                            },
+                            success: function (reduced_book) {
+                                if (reduced_book === '-1') {
+                                    print_err('No such book or no such chapter found');
+                                    print_err('This error may be due to outdated db, please refresh and try again');
+                                }
+                                else {
+                                    CONTEXT.BOOK = JSON.parse(reduced_book);
+                                    CONTEXT.CHAPTER = undefined;
+                                    print_out('Delete successful')
+                                }
+                                un_block();
+                            }
+                        });
                     }
                 },
             ],
@@ -783,7 +797,7 @@
                 ['pre'],
                 [
                     {
-                        'style': 'color:' + color + ';' +
+                        'style': 'color:' + color + ';font-size: medium;' +
                         'margin: 0px;'
                     }
                 ],
@@ -891,13 +905,51 @@
         var $book_name;
         var $chapter_name;
         var $chapter_content;
-        var $close_editor_btn;
+        var $close_btn;
+        var $done_btn;
+        var $save_btn;
 
         var EDITOR_MODE_WRITE = false;
 
         function editor_close() {
+            $($chapter_content).prop('disabled', true);
             $($editor).hide();
             un_block();
+        }
+
+        function save_content() {
+            if (EDITOR_MODE_WRITE === true) {
+                print_out('Saving chapter ' + CONTEXT.CHAPTER.name + ' ...');
+                $.ajax({
+                    url: 'elephant.php',
+                    type: 'POST',
+                    data: {
+                        'q': 'ucc',
+                        'book_pk': CONTEXT.BOOK.pk,
+                        'pk': CONTEXT.CHAPTER.pk,
+                        'content': $($chapter_content).val()
+                    },
+                    error: function () {
+                        print_err('Could not save chapter');
+                    },
+                    success: function (updated_chapter_book) {
+                        if (updated_chapter_book === '-1') {
+                            print_err('No book with pk=' + CONTEXT.BOOK.pk);
+                            print_err('or');
+                            print_err('No chapter with pk=' + CONTEXT.CHAPTER.pk);
+                            print_err('This error may be due to outdated db, please refresh and try again');
+                        }
+                        else {
+                            console.log(updated_chapter_book);
+                            updated_chapter_book = JSON.parse(updated_chapter_book);
+                            CONTEXT.CHAPTER = updated_chapter_book[0];
+                            CONTEXT.BOOK = updated_chapter_book[1];
+                            print_out('[OK]');
+                            Materialize.toast('Chapter saved', 2000);
+                        }
+                    }
+                });
+            }
         }
 
         function editor_open(book_name, chapter_name, chapter_content, write_mode) {
@@ -909,10 +961,16 @@
             $($book_name).html(book_name);
             $($chapter_name).html(chapter_name);
             $($chapter_content).val(chapter_content);
-            if (write_mode === true)
+            if (write_mode === true) {
                 $($chapter_content).prop('disabled', false);
-            else
+                $($done_btn).show();
+                $($save_btn).show();
+            }
+            else {
                 $($chapter_content).prop('disabled', true);
+                $($done_btn).hide();
+                $($save_btn).hide();
+            }
             EDITOR_MODE_WRITE = write_mode;
 
             $($editor).show();
@@ -925,46 +983,64 @@
             $book_name = $("#book_name");
             $chapter_name = $('#chapter_name');
             $chapter_content = $('#chapter_content');
-            $close_editor_btn = $('#close_editor_btn');
+            $close_btn = $('#close_btn');
+            $done_btn = $('#done_btn');
+            $save_btn = $('#save_btn');
 
-            // Content key listener
-            $($chapter_content).on(
-                'keydown',
-                function (e) {
-                    switch (e.keyCode || e.which) {
-                        // Escape key
-                        case 27:
-                            editor_close();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            );
-
-            // Close editor btn listener
-            $($close_editor_btn).on(
+            // Close btn listener
+            $($close_btn).on(
                 'click',
                 function () {
                     editor_close();
                 }
             );
+
+            // Done btn listener
+            $($done_btn).on(
+                'click',
+                function () {
+                    save_content();
+                    editor_close();
+                }
+            );
+
+            // Save btn listener
+            $($save_btn).on(
+                'click',
+                function () {
+                    save_content();
+                }
+            );
+
         });
     </script>
     <div id="editor" class="row white"
          style="position: fixed;top: 0;width: 100vw;height: 100vh;
-                margin: 0;z-index: 101;padding: 20px;display: none">
-        <div id="book_name">book</div>
-        <div id="chapter_name">chapter</div>
-        <a id="close_editor_btn"
+                margin: 0;z-index: 101;padding: 20px;display: none;">
+        <a id="close_btn"
            href="#"
            class="btn-floating red"
            style="position: absolute;top: 20px;right: 20px;">
             <i class="material-icons">close</i>
         </a>
-        <div class="divider"></div>
+        <a id="done_btn"
+           href="#"
+           class="btn btn-floating"
+           style="position: absolute;top: 20px;right: 80px;">
+            <i class="material-icons">done</i>
+        </a>
+        <a id="save_btn"
+           href="#"
+           class="btn btn-floating blue"
+           style="position: absolute;top: 20px;right: 140px;">
+            <i class="material-icons">sync</i>
+        </a>
+        <pre style="margin: 0">Book    : <span id="book_name"></span></pre>
+        <pre style="margin: 0">Chapter : <span id="chapter_name"></span></pre>
         <textarea id="chapter_content"
-                  style="width: 95vw;height: 80vh;border: none"
+                  style="width: 100%;height: 100%;border: 1px solid black;
+                  background-color: white;color: black;
+                  padding: 10px;font-family: 'Ubuntu Mono', monospace;font-size: large"
                   title="content"></textarea>
     </div>
 
