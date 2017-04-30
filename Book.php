@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Assert for any instance created
  *      if it is changed, either save() or delete() is called on it
@@ -150,10 +151,11 @@ class Book
 
     public function remove_chapter($chapter_pk)
     {
-        // Removing the tracking variables
+        // Removing the tracking variable
         $index = array_search($chapter_pk, $this->chapter_pks);
         if ($index === false) {
             // no such chapter pk
+            return false;
         } else {
             // chapter exists in book
             unset($this->chapter_pks[$index]);
@@ -174,4 +176,28 @@ class Book
         }
     }
 
+    public function update_chapter_name($chapter_pk, $new_name)
+    {
+        // Getting the tracking variable
+        $index = array_search($chapter_pk, $this->chapter_pks);
+        if ($index === false) {
+            // no such chapter pk
+            return false;
+        } else {
+            // chapter exists in book
+            $this->chapter_names[$index] = $new_name;
+            $this->save();
+        }
+
+        // Deleting chapter from json db
+        try {
+            $old_chapter = new Chapter();
+            $old_chapter->get($chapter_pk);
+            $old_chapter->name = $new_name;
+            $old_chapter->save();
+            return $old_chapter;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }

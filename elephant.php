@@ -49,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '-1';
             }
             break;
+
         // Select chapter
         case 'sc':
             $old_chapter = new Chapter();
@@ -71,6 +72,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '-1';
             }
             break;
+        // Update chapter name
+        case 'ucn':
+            $old_book = new Book();
+            try {
+                $old_book->get($_POST['book_pk']);
+                $updated_chapter = $old_book->update_chapter_name($_POST['pk'], $_POST['name']);
+                if ($updated_chapter !== false) {
+                    echo json_encode(array($updated_chapter, $old_book));
+                } else {
+                    echo '-1';
+                }
+            } catch (Exception $e) {
+                echo '-1';
+            }
+            break;
         // Delete chapter
         case 'dc':
             $old_book = new Book();
@@ -80,10 +96,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo json_encode($old_book);
                 else
                     echo '-1';
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 echo '-1';
             }
             break;
+
         default:
             break;
     }

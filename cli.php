@@ -338,23 +338,21 @@
                     keyword: "chapter",
                     desc: "shows the currently selected chapter",
                     action: function (arg) {
-                        // Show the chapter context
+                        // If no book selected, select book first
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected');
+                            print_err('Select a book first to open chapters in it');
+                            return;
+                        }
+                        // If no chapter selected, select chapter first
                         if (CONTEXT.CHAPTER === undefined) {
-                            print_war('No chapter selected')
+                            print_err('No chapter selected');
+                            print_err('Select a chapter first to open it');
+                            return;
                         }
-                        else {
-                            // Print selected chapter
-                            var _tab = '                ';
-                            // Head
-                            var _head = 'pk' + _tab + 'name';
-                            print_pre(_head, 'wheat');
-                            // Meta
-                            var _book = CONTEXT.CHAPTER.pk + _tab + CONTEXT.CHAPTER.name;
-                            print_pre(_book, 'white');
-                            // Content
-                            print_pre('Content', 'wheat');
-                            print_pre(CONTEXT.CHAPTER.content, 'white');
-                        }
+
+                        // Open in editor read-mode
+                        editor_open(CONTEXT.BOOK.name, CONTEXT.CHAPTER.name, CONTEXT.CHAPTER.content, false);
                     }
                 },
                 /* Lists all chapters of selected book */
@@ -367,6 +365,7 @@
                             print_err('Select a book first to see chapters in it');
                             return;
                         }
+
                         // Chapters
                         var _tab = '                ';
                         print_pre('Chapters', 'wheat');
@@ -391,6 +390,7 @@
                             print_err('Select a book first to select chapters in it');
                             return;
                         }
+
                         if (arg.length === 1) {
                             // If selected book contains chapter with pk = arg
                             for (var i = 0; i < CONTEXT.BOOK.chapter_pks.length; i++) {
@@ -452,6 +452,7 @@
                             print_err('Select a book first to create chapter in');
                             return;
                         }
+
                         if (arg.length === 1) {
                             block();
                             print_out('Creating chapter ' + arg[0] + ' in book ' + CONTEXT.BOOK.name + ' ...');
@@ -541,6 +542,67 @@
                                 un_block();
                             }
                         });
+                    }
+                },
+                /* Updates the selected chapter name in selected book */
+                {
+                    keyword: "chapter-u",
+                    desc: "updates the selected chapter name in selected book with it's new name as argument",
+                    action: function (arg) {
+                        if (CONTEXT.BOOK === undefined) {
+                            print_err('No book selected');
+                            print_err('Select a book first to update');
+                            return;
+                        }
+                        if (CONTEXT.CHAPTER === undefined) {
+                            print_err('No chapter selected');
+                            print_err('Select a chapter first to update');
+                            return;
+                        }
+                        if (arg.length === 1) {
+                            block();
+                            print_out('Updating chapter with pk=' + CONTEXT.CHAPTER.pk + ' ...');
+                            $.ajax({
+                                url: 'elephant.php',
+                                type: 'POST',
+                                data: {
+                                    'q': 'ucn',
+                                    'book_pk': CONTEXT.BOOK.pk,
+                                    'pk': CONTEXT.CHAPTER.pk,
+                                    'name': arg[0]
+                                },
+                                error: function () {
+                                    print_err('Could not update chapter');
+                                    un_block();
+                                },
+                                success: function (updated_chapter_book) {
+                                    if (updated_chapter_book === '-1') {
+                                        print_err('No book with pk=' + CONTEXT.BOOK.pk);
+                                        print_err('or');
+                                        print_err('No chapter with pk=' + CONTEXT.CHAPTER.pk);
+                                        print_err('This error may be due to outdated db, please refresh and try again');
+                                    }
+                                    else {
+                                        updated_chapter_book = JSON.parse(updated_chapter_book);
+                                        CONTEXT.CHAPTER = updated_chapter_book[0];
+                                        CONTEXT.BOOK = updated_chapter_book[1];
+                                        print_out('[OK]');
+                                        // Print updated chapter
+                                        var _tab = '                ';
+                                        // Head
+                                        var _head = 'pk' + _tab + 'name';
+                                        print_pre(_head, 'wheat');
+                                        // Body
+                                        var _book = CONTEXT.CHAPTER.pk + _tab + CONTEXT.CHAPTER.name;
+                                        print_pre(_book, 'white');
+                                    }
+                                    un_block();
+                                }
+                            });
+                        }
+                        else {
+                            print_err('Usage : chapter-u "new-name"');
+                        }
                     }
                 },
             ],
@@ -829,13 +891,32 @@
         var $book_name;
         var $chapter_name;
         var $chapter_content;
+        var $close_editor_btn;
+
+        var EDITOR_MODE_WRITE = false;
 
         function editor_close() {
             $($editor).hide();
+            un_block();
         }
 
-        function editor_open() {
+        function editor_open(book_name, chapter_name, chapter_content, write_mode) {
+            if (book_name === undefined) return;
+            if (chapter_name === undefined) return;
+            if (chapter_content === undefined) return;
+            if (write_mode === undefined) return;
+
+            $($book_name).html(book_name);
+            $($chapter_name).html(chapter_name);
+            $($chapter_content).val(chapter_content);
+            if (write_mode === true)
+                $($chapter_content).prop('disabled', false);
+            else
+                $($chapter_content).prop('disabled', true);
+            EDITOR_MODE_WRITE = write_mode;
+
             $($editor).show();
+            block();
         }
 
         $(document).ready(function () {
@@ -844,12 +925,13 @@
             $book_name = $("#book_name");
             $chapter_name = $('#chapter_name');
             $chapter_content = $('#chapter_content');
+            $close_editor_btn = $('#close_editor_btn');
 
-            // Cmd line listener
+            // Content key listener
             $($chapter_content).on(
                 'keydown',
                 function (e) {
-                    switch (e.keyCode) {
+                    switch (e.keyCode || e.which) {
                         // Escape key
                         case 27:
                             editor_close();
@@ -858,18 +940,34 @@
                             break;
                     }
                 }
-            )
+            );
+
+            // Close editor btn listener
+            $($close_editor_btn).on(
+                'click',
+                function () {
+                    editor_close();
+                }
+            );
         });
     </script>
     <div id="editor" class="row white"
          style="position: fixed;top: 0;width: 100vw;height: 100vh;
-                margin: 0;z-index: 99;overflow-y: auto;padding: 20px;">
+                margin: 0;z-index: 101;padding: 20px;display: none">
         <div id="book_name">book</div>
         <div id="chapter_name">chapter</div>
+        <a id="close_editor_btn"
+           href="#"
+           class="btn-floating red"
+           style="position: absolute;top: 20px;right: 20px;">
+            <i class="material-icons">close</i>
+        </a>
+        <div class="divider"></div>
         <textarea id="chapter_content"
-                  class=""
+                  style="width: 95vw;height: 80vh;border: none"
                   title="content"></textarea>
     </div>
+
 </div>
 </body>
 </html>
