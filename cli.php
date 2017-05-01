@@ -74,6 +74,72 @@
                         print_out(arg.join(" "));
                     }
                 },
+                /* Log In */
+                {
+                    keyword: "login",
+                    desc: "logs in with credentials",
+                    action: function (arg) {
+                        if (arg.length === 1) {
+                            block();
+                            print_out('Requesting login ...');
+                            $.ajax({
+                                url: 'elephant.php',
+                                type: 'POST',
+                                data: {
+                                    'q': 'li',
+                                    'key': arg[0]
+                                },
+                                error: function () {
+                                    print_err('Could not log in');
+                                    un_block();
+                                },
+                                success: function (success) {
+                                    if (success === '-1') {
+                                        print_err('Credentials are invalid');
+                                    }
+                                    else if (success === '1') {
+                                        print_out('[OK]');
+                                        print_out('Logged In');
+                                    }
+                                    un_block();
+                                }
+                            });
+                        }
+                        else {
+                            print_err('Usage : login "name"');
+                        }
+                    }
+                },
+                /* Log Out */
+                {
+                    keyword: "logout",
+                    desc: "logs out from this device",
+                    action: function (arg) {
+                        block();
+                        print_out('Requesting logout ...');
+                        $.ajax({
+                            url: 'elephant.php',
+                            type: 'POST',
+                            data: {
+                                'q': 'lo'
+                            },
+                            error: function () {
+                                print_err('Could not log out');
+                                un_block();
+                            },
+                            success: function (success) {
+                                if (success === '1') {
+                                    print_out('[OK]');
+                                    print_out('Logged Out');
+                                }
+                                else {
+                                    print_err('Could not log out');
+                                }
+                                un_block();
+                            }
+                        });
+                    }
+                },
                 /* Prints selected book */
                 {
                     keyword: "book",
@@ -129,6 +195,7 @@
                             },
                             success: function (books) {
                                 books = JSON.parse(books);
+                                print_out('[OK]');
                                 // Print table head
                                 var _tab = '            ';
                                 print_pre('Books', 'wheat');
@@ -218,18 +285,23 @@
                                     un_block();
                                 },
                                 success: function (new_book) {
-                                    CONTEXT.BOOK = JSON.parse(new_book);
-                                    CONTEXT.CHAPTER = undefined;
-                                    print_out('[OK]');
-                                    // Print selected book
-                                    var _tab = '                ';
-                                    // Head
-                                    var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
-                                    print_pre(_head, 'wheat');
-                                    // Body
-                                    var _book;
-                                    _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
-                                    print_pre(_book, 'white');
+                                    if (new_book === '-2') {
+                                        print_war('Please log in to continue');
+                                    }
+                                    else {
+                                        CONTEXT.BOOK = JSON.parse(new_book);
+                                        CONTEXT.CHAPTER = undefined;
+                                        print_out('[OK]');
+                                        // Print selected book
+                                        var _tab = '                ';
+                                        // Head
+                                        var _head = 'pk' + _tab + 'name' + _tab + 'chapter pks';
+                                        print_pre(_head, 'wheat');
+                                        // Body
+                                        var _book;
+                                        _book = CONTEXT.BOOK.pk + _tab + CONTEXT.BOOK.name + _tab + 'No chapters yet';
+                                        print_pre(_book, 'white');
+                                    }
                                     un_block();
                                 }
                             });
@@ -265,7 +337,10 @@
                                     un_block();
                                 },
                                 success: function (updated_book) {
-                                    if (updated_book === '-1') {
+                                    if (updated_book === '-2') {
+                                        print_war('Please log in to continue');
+                                    }
+                                    else if (updated_book === '-1') {
                                         print_err('No book with pk=' + CONTEXT.BOOK.pk);
                                         print_err('This error may be due to outdated db, please refresh and try again');
                                     } else {
@@ -314,7 +389,10 @@
                                 un_block();
                             },
                             success: function (success) {
-                                if (success === '-1') {
+                                if (success === '-2') {
+                                    print_war('Please log in to continue');
+                                }
+                                else if (success === '-1') {
                                     print_err('No book with pk=' + CONTEXT.BOOK.pk);
                                     print_err('This error may be due to outdated db, please refresh and try again');
                                 }
@@ -483,7 +561,10 @@
                                     un_block();
                                 },
                                 success: function (chapter_book_pair) {
-                                    if (chapter_book_pair === '-1') {
+                                    if (chapter_book_pair === '-2') {
+                                        print_war('Please log in to continue');
+                                    }
+                                    else if (chapter_book_pair === '-1') {
                                         print_err('No book with pk=' + CONTEXT.BOOK.pk);
                                         print_err('This error may be due to outdated db, please refresh and try again');
                                     }
@@ -543,7 +624,10 @@
                                     un_block();
                                 },
                                 success: function (updated_chapter_book) {
-                                    if (updated_chapter_book === '-1') {
+                                    if (updated_chapter_book === '-2') {
+                                        print_war('Please log in to continue');
+                                    }
+                                    else if (updated_chapter_book === '-1') {
                                         print_err('No book with pk=' + CONTEXT.BOOK.pk);
                                         print_err('or');
                                         print_err('No chapter with pk=' + CONTEXT.CHAPTER.pk);
@@ -605,7 +689,10 @@
                                 un_block();
                             },
                             success: function (reduced_book) {
-                                if (reduced_book === '-1') {
+                                if (reduced_book === '-2') {
+                                    print_war('Please log in to continue');
+                                }
+                                else if (reduced_book === '-1') {
                                     print_err('No such book or no such chapter found');
                                     print_err('This error may be due to outdated db, please refresh and try again');
                                 }
@@ -933,11 +1020,16 @@
                         print_err('Could not save chapter');
                     },
                     success: function (updated_chapter_book) {
-                        if (updated_chapter_book === '-1') {
+                        if (updated_chapter_book === '-2') {
+                            print_war('Please log in to continue');
+                            Materialize.toast('Please log in to continue', 2000);
+                        }
+                        else if (updated_chapter_book === '-1') {
                             print_err('No book with pk=' + CONTEXT.BOOK.pk);
                             print_err('or');
                             print_err('No chapter with pk=' + CONTEXT.CHAPTER.pk);
                             print_err('This error may be due to outdated db, please refresh and try again');
+                            Materialize.toast('No such book or chapter', 2000);
                         }
                         else {
                             console.log(updated_chapter_book);

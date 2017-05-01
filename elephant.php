@@ -4,7 +4,30 @@ require 'Chapter.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    $login_key = 'airturtle';
+    $valid_user = 'valid_user';
+
+    session_start();
+
     switch ($_POST['q']) {
+        // Login
+        case 'li':
+            if ($_POST['key'] === $login_key) {
+                $_SESSION[$valid_user] = true;
+                echo '1';
+                break;
+            } else {
+                $_SESSION[$valid_user] = false;
+                echo '-1';
+                break;
+            }
+            break;
+        // Login
+        case 'lo':
+            $_SESSION[$valid_user] = false;
+            echo '1';
+            break;
+
         // All books
         case 'ab':
             echo json_encode(Book::get_all_objects());
@@ -21,6 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         // Create book
         case 'cb':
+            if ($_SESSION[$valid_user] !== true){
+                echo '-2';
+                break;
+            }
             $new_book = new Book();
             $new_book->name = $_POST['name'];
             $new_book->save();
@@ -28,6 +55,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         // Update book
         case 'ub':
+            if ($_SESSION[$valid_user] !== true){
+                echo '-2';
+                break;
+            }
             $old_book = new Book();
             try {
                 $old_book->get($_POST['pk']);
@@ -40,6 +71,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         // Delete book
         case 'db':
+            if ($_SESSION[$valid_user] !== true){
+                echo '-2';
+                break;
+            }
             $old_book = new Book();
             try {
                 $old_book->get($_POST['pk']);
@@ -62,6 +97,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         // Create chapter
         case 'cc':
+            if ($_SESSION[$valid_user] !== true){
+                echo '-2';
+                break;
+            }
             $old_book = new Book();
             try {
                 $old_book->get($_POST['book_pk']);
@@ -74,6 +113,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         // Update chapter name
         case 'ucn':
+            if ($_SESSION[$valid_user] !== true){
+                echo '-2';
+                break;
+            }
             $old_book = new Book();
             try {
                 $old_book->get($_POST['book_pk']);
@@ -89,6 +132,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         // Update chapter content
         case 'ucc':
+            if ($_SESSION[$valid_user] !== true){
+                echo '-2';
+                break;
+            }
             $old_book = new Book();
             try {
                 $old_book->get($_POST['book_pk']);
@@ -104,6 +151,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             break;
         // Delete chapter
         case 'dc':
+            if ($_SESSION[$valid_user] !== true){
+                echo '-2';
+                break;
+            }
             $old_book = new Book();
             try {
                 $old_book->get($_POST['book_pk']);
