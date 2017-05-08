@@ -36,39 +36,39 @@
              * */
             list: [
                 {
-                    keyword: "",
+                    keyword: [""],
                     desc: "",
                     action: function (arg) {
                     }
                 },
                 {
-                    keyword: "help",
+                    keyword: ["help"],
                     desc: "shows commands and their descriptions",
                     action: function (arg) {
                         for (var i = 0; i < CMD.list.length; i++) {
                             var ith_cmd = CMD.list[i];
                             var _tab = '        ';
-                            var _help = ith_cmd.keyword + _tab + ith_cmd.desc;
+                            var _help = ith_cmd.keyword.join(",") + _tab + ith_cmd.desc;
                             print_pre(_help, 'white');
                         }
                     }
                 },
                 {
-                    keyword: "about",
+                    keyword: ["about"],
                     desc: "brief description about school bag",
                     action: function (arg) {
                         print_pre('School Bag is a place where you keep all your knowledge', 'gold');
                     }
                 },
                 {
-                    keyword: "clear",
+                    keyword: ["clear"],
                     desc: "clears the terminal",
                     action: function (arg) {
                         clear();
                     }
                 },
                 {
-                    keyword: "print",
+                    keyword: ["print"],
                     desc: "prints the text given next to it",
                     action: function (arg) {
                         print_out(arg.join(" "));
@@ -76,7 +76,7 @@
                 },
                 /* Log In */
                 {
-                    keyword: "login",
+                    keyword: ["login"],
                     desc: "logs in with credentials",
                     action: function (arg) {
                         if (arg.length === 1) {
@@ -112,7 +112,7 @@
                 },
                 /* Log Out */
                 {
-                    keyword: "logout",
+                    keyword: ["logout"],
                     desc: "logs out from this device",
                     action: function (arg) {
                         block();
@@ -142,7 +142,7 @@
                 },
                 /* Prints selected book */
                 {
-                    keyword: "book",
+                    keyword: ["book", "pwb"],
                     desc: "shows currently selected book",
                     action: function (arg) {
                         // Show the book context
@@ -178,7 +178,7 @@
                 },
                 /* Lists all books available */
                 {
-                    keyword: "book-a",
+                    keyword: ["book-a", "lsb", "ls"],
                     desc: "lists all books available",
                     action: function (arg) {
                         block();
@@ -215,7 +215,7 @@
                 },
                 /* Selects a book using pk */
                 {
-                    keyword: "book-s",
+                    keyword: ["book-s", "cb", "cd"],
                     desc: "selects a book with it's pk as argument",
                     action: function (arg) {
                         if (arg.length === 1) {
@@ -267,7 +267,7 @@
                 },
                 /* Creates a new book */
                 {
-                    keyword: "book-n",
+                    keyword: ["book-n", "mkb"],
                     desc: "creates a new book with it's name as argument",
                     action: function (arg) {
                         if (arg.length === 1) {
@@ -313,7 +313,7 @@
                 },
                 /* Updates the selected book */
                 {
-                    keyword: "book-u",
+                    keyword: ["book-u"],
                     desc: "updates the selected book with it's new name as argument",
                     action: function (arg) {
                         if (CONTEXT.BOOK === undefined) {
@@ -372,7 +372,7 @@
                 },
                 /* Deletes selected book */
                 {
-                    keyword: "book-d",
+                    keyword: ["book-d", "rmb"],
                     desc: "deletes selected book",
                     action: function (arg) {
                         block();
@@ -408,7 +408,7 @@
                 },
                 /* Opens selected chapter in editor in read mode */
                 {
-                    keyword: "chapter",
+                    keyword: ["chapter", "cat"],
                     desc: "shows the currently selected chapter",
                     action: function (arg) {
                         // If no book selected, select book first
@@ -430,7 +430,7 @@
                 },
                 /* Opens selected chapter in editor in write mode */
                 {
-                    keyword: "chapter-e",
+                    keyword: ["chapter-e", "nano"],
                     desc: "opens selected chapter in editor in write mode",
                     action: function (arg) {
                         if (CONTEXT.BOOK === undefined) {
@@ -443,13 +443,33 @@
                             print_err('Select a chapter first to update');
                             return;
                         }
-                        // Open in editor read-mode
-                        editor_open(CONTEXT.BOOK.name, CONTEXT.CHAPTER.name, CONTEXT.CHAPTER.content, true);
+                        block();
+                        $.ajax({
+                            url: 'elephant.php',
+                            type: 'POST',
+                            data: {
+                                'q': 'ss'
+                            },
+                            error: function () {
+                                print_err('Could not get session status');
+                                un_block();
+                            },
+                            success: function (success) {
+                                if (success === '-2') {
+                                    print_war('Please log in to continue');
+                                    un_block();
+                                }
+                                else if (success === '1') {
+                                    // Open in editor read-mode
+                                    editor_open(CONTEXT.BOOK.name, CONTEXT.CHAPTER.name, CONTEXT.CHAPTER.content, true);
+                                }
+                            }
+                        });
                     }
                 },
                 /* Lists all chapters of selected book */
                 {
-                    keyword: "chapter-a",
+                    keyword: ["chapter-a", "lsc"],
                     desc: "lists all chapters in the selected book",
                     action: function (arg) {
                         if (CONTEXT.BOOK === undefined) {
@@ -473,7 +493,7 @@
                 },
                 /* Selects a chapter using pk in the selected book */
                 {
-                    keyword: "chapter-s",
+                    keyword: ["chapter-s", "cc"],
                     desc: "selects a chapter with it's pk as argument",
                     action: function (arg) {
                         // If no book select book first
@@ -535,7 +555,7 @@
                 },
                 /* Creates a chapter using name in the selected book */
                 {
-                    keyword: "chapter-n",
+                    keyword: ["chapter-n", "mkc"],
                     desc: "creates a new chapter in the selected book with it's name as argument",
                     action: function (arg) {
                         // If no book select book first
@@ -594,7 +614,7 @@
                 },
                 /* Updates the selected chapter name in selected book */
                 {
-                    keyword: "chapter-u",
+                    keyword: ["chapter-u"],
                     desc: "updates the selected chapter name in selected book with it's new name as argument",
                     action: function (arg) {
                         if (CONTEXT.BOOK === undefined) {
@@ -658,7 +678,7 @@
                 },
                 /* Deletes selected chapter in the selected book */
                 {
-                    keyword: "chapter-d",
+                    keyword: ["chapter-d", "rmc"],
                     desc: "deletes selected chapter in the selected book",
                     action: function (arg) {
                         // If no book selected, select book first
@@ -727,15 +747,19 @@
                     // For all commands
                     for (var i = 0; i < CMD.list.length; ++i) {
                         var ith_cmd = CMD.list[i];
-                        // If first word of cmd matches ith_cmd keyword
-                        if (cmd_split[0] === ith_cmd.keyword) {
-                            // Print the command
-                            print_out(ShellSymbol + cmd);
-                            // Pass the remaining words of cmd to that cmd's action method
-                            ith_cmd.action(cmd_split.splice(1));
-                            // Empty the cmd line
-                            $($cmd).val("");
-                            return true;
+                        // If first word of cmd matches some keyword
+                        for (var j = 0; j < ith_cmd.keyword.length; ++j) {
+                            var ith_keyword = ith_cmd.keyword[j];
+
+                            if (cmd_split[0] === ith_keyword) {
+                                // Print the command
+                                print_out(ShellSymbol + cmd);
+                                // Pass the remaining words of cmd to that cmd's action method
+                                ith_cmd.action(cmd_split.splice(1));
+                                // Empty the cmd line
+                                $($cmd).val("");
+                                return true;
+                            }
                         }
                     }
                     // Indicate cmd not available
@@ -759,12 +783,17 @@
                 if (cmd === "")return;
                 var regex = new RegExp('^' + cmd, 'i');
                 var matches = [];
-                // For each cmd
+                // For some cmd
                 for (var i = 0; i < CMD.list.length; ++i) {
-                    // If the regex matches
-                    if (regex.test(CMD.list[i].keyword)) {
-                        // Keep track of it
-                        matches.push(CMD.list[i].keyword);
+                    var ith_cmd = CMD.list[i];
+                    // For some keyword
+                    for (var j = 0; j < ith_cmd.keyword.length; ++j) {
+                        var ith_keyword = ith_cmd.keyword[j];
+                        // If the regex matches
+                        if (regex.test(ith_keyword)) {
+                            // Keep track of that keyword
+                            matches.push(ith_keyword);
+                        }
                     }
                 }
 

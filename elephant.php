@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     session_start();
 
     switch ($_POST['q']) {
-        // Login
+        // LogIn
         case 'li':
             if ($_POST['key'] === $login_key) {
                 $_SESSION[$valid_user] = true;
@@ -22,11 +22,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 break;
             }
             break;
-        // Login
+        // LogOut
         case 'lo':
             $_SESSION[$valid_user] = false;
             echo '1';
             break;
+        // Session status
+        case 'ss':
+            if ($_SESSION[$valid_user] === true)
+                echo '1';
+            else
+                echo '-2';
+            break;
+
 
         // All books
         case 'ab':

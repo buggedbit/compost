@@ -1,7 +1,8 @@
 (done) 1. check pk of objects when delete() are called
 (done) 2. [pk, name] format for chapters field in Book model
-3. chapter handling from its book
-4. auto complete up to best match
+(done) 3. chapter handling from its book
+(done) 4. auto complete up to best match
 5. implement cmd line args
 6. block and unblock for all commands
 7. print exceptions caught in evaluate() in log
+8. handle json db opening exceptions
