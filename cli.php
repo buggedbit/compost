@@ -28,7 +28,11 @@
         var $log;
         var $terminal;
 
-        var CMD = {
+        /**
+         * dependencies :
+         *      _element()
+         * */
+        var TERMINAL = {
             /**
              * Assert distinct keywords for all commands
              * Assert keyword does not have any space character
@@ -45,8 +49,8 @@
                     keyword: ["help"],
                     desc: "shows commands and their descriptions",
                     action: function (arg) {
-                        for (var i = 0; i < CMD.list.length; i++) {
-                            var ith_cmd = CMD.list[i];
+                        for (var i = 0; i < TERMINAL.list.length; i++) {
+                            var ith_cmd = TERMINAL.list[i];
                             var _tab = '        ';
                             var _help = ith_cmd.keyword.join(",") + _tab + ith_cmd.desc;
                             print_pre(_help, 'white');
@@ -64,7 +68,7 @@
                     keyword: ["clear"],
                     desc: "clears the terminal",
                     action: function (arg) {
-                        clear();
+                        $($log).empty();
                     }
                 },
                 {
@@ -178,7 +182,7 @@
                 },
                 /* Lists all books available */
                 {
-                    keyword: ["book-a", "lsb", "ls"],
+                    keyword: ["book-a", "lsb"],
                     desc: "lists all books available",
                     action: function (arg) {
                         block();
@@ -215,7 +219,7 @@
                 },
                 /* Selects a book using pk */
                 {
-                    keyword: ["book-s", "cb", "cd"],
+                    keyword: ["book-s", "cb"],
                     desc: "selects a book with it's pk as argument",
                     action: function (arg) {
                         if (arg.length === 1) {
@@ -734,26 +738,26 @@
              * */
             evaluate: function (cmd) {
                 // If the latest cmd is not "" & not the top one in history
-                if (cmd !== "" && CMD.history[CMD.history.length - 1] !== cmd) {
+                if (cmd !== "" && TERMINAL.history[TERMINAL.history.length - 1] !== cmd) {
                     // Stores cmd in history
-                    CMD.history.push(cmd);
+                    TERMINAL.history.push(cmd);
                 }
                 // Reset head
-                CMD.head = CMD.history.length;
+                TERMINAL.head = TERMINAL.history.length;
 
                 try {
                     // Split the cmd
                     var cmd_split = cmd.split(" ");
                     // For all commands
-                    for (var i = 0; i < CMD.list.length; ++i) {
-                        var ith_cmd = CMD.list[i];
+                    for (var i = 0; i < TERMINAL.list.length; ++i) {
+                        var ith_cmd = TERMINAL.list[i];
                         // If first word of cmd matches some keyword
                         for (var j = 0; j < ith_cmd.keyword.length; ++j) {
                             var ith_keyword = ith_cmd.keyword[j];
 
                             if (cmd_split[0] === ith_keyword) {
                                 // Print the command
-                                print_out(ShellSymbol + cmd);
+                                print_out(TERMINAL.Prefix + cmd);
                                 // Pass the remaining words of cmd to that cmd's action method
                                 ith_cmd.action(cmd_split.splice(1));
                                 // Empty the cmd line
@@ -763,7 +767,7 @@
                         }
                     }
                     // Indicate cmd not available
-                    print_err(ShellSymbol + cmd + ' : command not found');
+                    print_err(TERMINAL.Prefix + cmd + ' : command not found');
                     // Empty the cmd line
                     $($cmd).val("");
                     return false;
@@ -784,8 +788,8 @@
                 var regex = new RegExp('^' + cmd, 'i');
                 var matches = [];
                 // For some cmd
-                for (var i = 0; i < CMD.list.length; ++i) {
-                    var ith_cmd = CMD.list[i];
+                for (var i = 0; i < TERMINAL.list.length; ++i) {
+                    var ith_cmd = TERMINAL.list[i];
                     // For some keyword
                     for (var j = 0; j < ith_cmd.keyword.length; ++j) {
                         var ith_keyword = ith_cmd.keyword[j];
@@ -830,7 +834,7 @@
                     var best_auto_complete = get_best_auto_complete(matches);
                     if (best_auto_complete.length - cmd.length === 0) {
                         // Show all options
-                        print_out(ShellSymbol + best_auto_complete);
+                        print_out(TERMINAL.Prefix + best_auto_complete);
                         var available_commands = matches.join("\n");
                         print_span(available_commands, 'skyblue');
                     } else {
@@ -840,30 +844,74 @@
             },
 
             history: [],
+
             head: 0,
+
             go_forward: function () {
-                if (0 <= CMD.head + 1 && CMD.head + 1 <= CMD.history.length - 1) {
-                    CMD.head++;
-                    $($cmd).val(CMD.history[CMD.head]);
+                if (0 <= TERMINAL.head + 1 && TERMINAL.head + 1 <= TERMINAL.history.length - 1) {
+                    TERMINAL.head++;
+                    $($cmd).val(TERMINAL.history[TERMINAL.head]);
                 }
-                else if (CMD.head + 1 === CMD.history.length) {
+                else if (TERMINAL.head + 1 === TERMINAL.history.length) {
                     $($cmd).val("");
                 }
             },
+
             go_backward: function () {
-                if (0 <= CMD.head - 1 && CMD.head - 1 <= CMD.history.length - 1) {
-                    CMD.head--;
-                    $($cmd).val(CMD.history[CMD.head]);
+                if (0 <= TERMINAL.head - 1 && TERMINAL.head - 1 <= TERMINAL.history.length - 1) {
+                    TERMINAL.head--;
+                    $($cmd).val(TERMINAL.history[TERMINAL.head]);
                 }
+            },
+
+            REPL: function (event) {
+                var cmd;
+                switch (event.keyCode || event.which) {
+                    // Enter
+                    case 13:
+                        cmd = $($cmd).val();
+                        cmd = cmd.trim().replace(/ +/g, ' ');
+                        TERMINAL.evaluate(cmd);
+                        break;
+                    // Tab Key
+                    case 9:
+                        event.preventDefault();
+                        cmd = $($cmd).val();
+                        cmd = cmd.trim().replace(/ +/g, ' ');
+                        TERMINAL.auto_complete(cmd);
+                        break;
+                    // Up Arrow
+                    case 38:
+                        // Going backward in history
+                        TERMINAL.go_backward();
+                        break;
+                    // Down Arrow
+                    case 40:
+                        // Going forward in history
+                        TERMINAL.go_forward();
+                        break;
+                    // Escape Key
+                    case 27:
+                        TERMINAL.evaluate("clear");
+                        break;
+                    // None of the above
+                    default:
+                        break;
+                }
+            },
+
+            Prefix: _element(
+                ['span'],
+                [{'style': 'color="#64dd17"'}],
+                ['$: '],
+                [true]
+            ),
+
+            bashrc: function () {
+                console.log('Hello');
+                print_out('Type "help" for displaying all commands');
             }
         };
-
-        var ShellSymbol = _element(
-            ['span'],
-            [{'style': 'color="#64dd17"'}],
-            ['$: '],
-            [true]
-        );
 
         /**
          * Builds html strings which can be directly appended to a DOM object
@@ -923,10 +971,6 @@
             $($terminal).scrollTop($($terminal).prop('scrollHeight'));
         }
 
-        function clear() {
-            $($log).empty();
-        }
-
         function print_out(msg) {
             print_span(msg, '#64dd17');
         }
@@ -952,51 +996,16 @@
             $($cmd).focus();
         }
 
-        function REPL(event) {
-            var cmd;
-            switch (event.keyCode || event.which) {
-                // Enter
-                case 13:
-                    cmd = $($cmd).val();
-                    cmd = cmd.trim().replace(/ +/g, ' ');
-                    CMD.evaluate(cmd);
-                    break;
-                // Tab Key
-                case 9:
-                    event.preventDefault();
-                    cmd = $($cmd).val();
-                    cmd = cmd.trim().replace(/ +/g, ' ');
-                    CMD.auto_complete(cmd);
-                    break;
-                // Up Arrow
-                case 38:
-                    // Going backward in history
-                    CMD.go_backward();
-                    break;
-                // Down Arrow
-                case 40:
-                    // Going forward in history
-                    CMD.go_forward();
-                    break;
-                // Escape Key
-                case 27:
-                    clear();
-                    break;
-                // None of the above
-                default:
-                    break;
-            }
-        }
-
         $(document).ready(function () {
             // Gets references
             $cmd = $('#cmd');
             $log = $('#log');
             $terminal = $('#terminal');
 
+            TERMINAL.bashrc();
             // Cmd line listener
             $($cmd).keydown(function (e) {
-                    REPL(e);
+                    TERMINAL.REPL(e);
                 }
             );
         });
