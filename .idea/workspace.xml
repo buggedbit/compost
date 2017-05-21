@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2d603a3-97d2-43fa-aac9-41eed199049a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/db/raw/new/shipments.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/db/raw/new/shipped_items.csv" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Abstract/SInequality.java" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Physical/Shipment.java" afterPath="$PROJECT_DIR$/src/Physical/Shipment.java" />
@@ -21,12 +22,10 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="54" column="25" lean-forward="false" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
+            <state relative-caret-position="831">
+              <caret line="190" column="0" lean-forward="true" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
-                <element signature="method#main#0;class#Main#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -35,12 +34,11 @@
       <file leaf-file-name="Shipment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="72" column="43" lean-forward="false" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="43" />
+            <state relative-caret-position="1612">
+              <caret line="62" column="11" lean-forward="true" selection-start-line="62" selection-start-column="11" selection-end-line="62" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#Shipment#0;class#Shipment#0" expanded="true" />
-                <element signature="method#addPart#0;class#Shipment#0" expanded="true" />
                 <element signature="method#extractSInequality#0;class#Shipment#0" expanded="true" />
                 <element signature="method#toString#0;class#Shipment#0" expanded="true" />
               </folding>
@@ -51,9 +49,20 @@
       <file leaf-file-name="SInequality.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
-              <caret line="23" column="7" lean-forward="true" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-              <folding />
+            <state relative-caret-position="182">
+              <caret line="38" column="7" lean-forward="true" selection-start-line="38" selection-start-column="7" selection-end-line="38" selection-end-column="7" />
+              <folding>
+                <element signature="docComment;class#SInequality#0" expanded="false" />
+                <element signature="docComment;field#terms#0;class#SInequality#0" expanded="false" />
+                <element signature="docComment;field#upper_limits#0;class#SInequality#0" expanded="false" />
+                <element signature="docComment;method#SInequality#0;class#SInequality#0" expanded="false" />
+                <element signature="docComment;method#addTerm#0;class#SInequality#0" expanded="false" />
+                <element signature="docComment;method#getVariableCount#0;class#SInequality#0" expanded="false" />
+                <element signature="docComment;method#getCardinality#0;class#SInequality#0" expanded="false" />
+                <element signature="docComment;method#getVariableSet#0;class#SInequality#0" expanded="false" />
+                <element signature="docComment;method#getSignature#0;class#SInequality#0" expanded="false" />
+                <marker date="1495369183319" expanded="false" signature="2462:2901" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -69,20 +78,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>MODULE_DIR$</find>
-      <find>,</find>
-      <find>org.tie.estimator.</find>
-      <find>CSV.remove_quotes(fields[</find>
-      <find>Integer.parseInt(fields[</find>
-      <find>]))</find>
-      <find>))</find>
-      <find>])</find>
-      <find>int</find>
-      <find>Shipment</find>
-      <find>terms</find>
       <find>upper_limit</find>
       <find>ext</find>
-      <find>shp_a75e372b007641bbb549bb4e12b13294</find>
       <find>shp_240697a8b6eb4745a374758c5b0239cf</find>
       <find>ext_010b98cb91b14448b5d533b0e7dcbc78</find>
       <find>shp_026d4c5a95ec4141b7ada3fec7543ade</find>
@@ -96,6 +93,21 @@
       <find>&lt;p&gt;</find>
       <find>&lt;br&gt;</find>
       <find>l</find>
+      <find>hash</find>
+      <find>Vector</find>
+      <find>hashCode</find>
+      <find>has</find>
+      <find>edx4pg2aw3</find>
+      <find>3wodbo9wbe</find>
+      <find>3wodbo9wbe</find>
+      <find>edzkj94w2n</find>
+      <find>3799vxy4vn</find>
+      <find>assum</find>
+      <find>assert</find>
+      <find>hipment</find>
+      <find>shipment</find>
+      <find>clone</find>
+      <find>shp_a75e372b007641bbb549bb4e12b13294</find>
     </findStrings>
     <replaceStrings>
       <replace>\n</replace>
@@ -110,6 +122,8 @@
       <replace>b</replace>
       <replace>h</replace>
       <replace>w</replace>
+      <replace>Set</replace>
+      <replace>Assert</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -155,8 +169,10 @@
         <option value="$PROJECT_DIR$/src/CSV.java" />
         <option value="$PROJECT_DIR$/src/Physical/Box.java" />
         <option value="$PROJECT_DIR$/src/Log/Log.java" />
-        <option value="$PROJECT_DIR$/src/Physical/Shipment.java" />
+        <option value="$PROJECT_DIR$/src/Scratch.java" />
         <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
+        <option value="$PROJECT_DIR$/src/out" />
+        <option value="$PROJECT_DIR$/src/Physical/Shipment.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -703,12 +719,12 @@
       <workItem from="1495267633726" duration="3855000" />
       <workItem from="1495253446157" duration="4437000" />
       <workItem from="1495280466330" duration="10885000" />
-      <workItem from="1495357885101" duration="6318000" />
+      <workItem from="1495357885101" duration="13273000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48896000" />
+    <option name="totallyTimeSpent" value="55851000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -728,8 +744,9 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43638274" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16765499" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20539084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -741,7 +758,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -761,56 +777,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
-            <element signature="method#main#0;class#Main#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1248">
-          <caret line="75" column="0" lean-forward="true" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="8" column="24" lean-forward="false" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PackedPart.java" />
     <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -840,8 +806,6 @@
           <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
-            <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -871,8 +835,6 @@
           <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
-            <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -966,7 +928,6 @@
     <entry file="file://$PROJECT_DIR$/src/Estimates.java" />
     <entry file="file://$PROJECT_DIR$/src/PackedPart.java" />
     <entry file="file://$PROJECT_DIR$/src/CSV.class" />
-    <entry file="file://$PROJECT_DIR$/src/out" />
     <entry file="file://$PROJECT_DIR$/src/ids" />
     <entry file="file://$PROJECT_DIR$/src/pck" />
     <entry file="file://$PROJECT_DIR$/src/qun" />
@@ -989,22 +950,192 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/util/AbstractList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="540" column="28" lean-forward="false" selection-start-line="540" selection-start-column="28" selection-end-line="540" selection-end-column="28" />
+          <folding>
+            <element signature="docComment;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#AbstractList#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#add#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#get#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#set#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#add#1;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#remove#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#indexOf#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#lastIndexOf#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#clear#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#addAll#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#iterator#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#listIterator#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#listIterator#1;class#AbstractList#0" expanded="false" />
+            <element signature="class#Itr#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;field#cursor#0;class#Itr#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;field#lastRet#0;class#Itr#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;field#expectedModCount#0;class#Itr#0;class#AbstractList#0" expanded="false" />
+            <element signature="class#ListItr#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#subList#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#equals#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#hashCode#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;method#removeRange#0;class#AbstractList#0" expanded="false" />
+            <element signature="docComment;field#modCount#0;class#AbstractList#0" expanded="false" />
+            <element signature="class#SubList#0" expanded="false" />
+            <element signature="class#RandomAccessSubList#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/util/Vector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="83" column="17" lean-forward="true" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
+          <folding>
+            <element signature="docComment;class#Vector#0" expanded="false" />
+            <element signature="docComment;field#elementData#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;field#elementCount#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;field#capacityIncrement#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;field#serialVersionUID#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#Vector#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#Vector#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#Vector#2;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#Vector#3;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#copyInto#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#trimToSize#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#ensureCapacity#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#ensureCapacityHelper#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;field#MAX_ARRAY_SIZE#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#setSize#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#capacity#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#size#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#isEmpty#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#elements#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#contains#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#indexOf#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#indexOf#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#lastIndexOf#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#lastIndexOf#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#elementAt#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#firstElement#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#lastElement#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#setElementAt#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#removeElementAt#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#insertElementAt#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#addElement#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#removeElement#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#removeAllElements#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#clone#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#toArray#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#toArray#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#get#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#set#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#add#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#remove#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#add#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#remove#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#clear#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#containsAll#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#addAll#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#removeAll#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#retainAll#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#addAll#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#equals#0;class#Vector#0" expanded="false" />
+            <element signature="e#37995#37996#0" expanded="false" />
+            <element signature="e#38034#38035#0" expanded="false" />
+            <element signature="docComment;method#toString#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#subList#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#removeRange#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#writeObject#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#listIterator#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#listIterator#1;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#iterator#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;class#Itr#0;class#Vector#0" expanded="false" />
+            <element signature="class#Itr#0;class#Vector#0" expanded="false" />
+            <element signature="e#43663#43719#0" expanded="false" />
+            <element signature="docComment;class#ListItr#0;class#Vector#0" expanded="false" />
+            <element signature="class#ListItr#0;class#Vector#0" expanded="false" />
+            <element signature="e#47566#47575#0" expanded="false" />
+            <element signature="e#47731#47777#0" expanded="false" />
+            <element signature="e#49223#49232#0" expanded="false" />
+            <element signature="e#49753#49783#0" expanded="false" />
+            <element signature="e#49753#49783#0" expanded="false" />
+            <element signature="docComment;method#spliterator#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;class#VectorSpliterator#0;class#Vector#0" expanded="false" />
+            <element signature="class#VectorSpliterator#0;class#Vector#0" expanded="false" />
+            <element signature="docComment;method#VectorSpliterator#0;class#VectorSpliterator#0;class#Vector#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/util/Set.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#Set#0" expanded="false" />
+            <element signature="docComment;method#size#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#isEmpty#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#contains#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#iterator#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#toArray#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#toArray#1;class#Set#0" expanded="false" />
+            <element signature="docComment;method#add#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#remove#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#containsAll#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#addAll#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#retainAll#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#removeAll#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#clear#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#equals#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#hashCode#0;class#Set#0" expanded="false" />
+            <element signature="docComment;method#spliterator#0;class#Set#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scratch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33369">
+          <caret line="36009" column="0" lean-forward="true" selection-start-line="36009" selection-start-column="0" selection-end-line="36009" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="23" column="7" lean-forward="true" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-          <folding />
+        <state relative-caret-position="182">
+          <caret line="38" column="7" lean-forward="true" selection-start-line="38" selection-start-column="7" selection-end-line="38" selection-end-column="7" />
+          <folding>
+            <element signature="docComment;class#SInequality#0" expanded="false" />
+            <element signature="docComment;field#terms#0;class#SInequality#0" expanded="false" />
+            <element signature="docComment;field#upper_limits#0;class#SInequality#0" expanded="false" />
+            <element signature="docComment;method#SInequality#0;class#SInequality#0" expanded="false" />
+            <element signature="docComment;method#addTerm#0;class#SInequality#0" expanded="false" />
+            <element signature="docComment;method#getVariableCount#0;class#SInequality#0" expanded="false" />
+            <element signature="docComment;method#getCardinality#0;class#SInequality#0" expanded="false" />
+            <element signature="docComment;method#getVariableSet#0;class#SInequality#0" expanded="false" />
+            <element signature="docComment;method#getSignature#0;class#SInequality#0" expanded="false" />
+            <marker date="1495369183319" expanded="false" signature="2462:2901" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="72" column="43" lean-forward="false" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="43" />
+        <state relative-caret-position="1612">
+          <caret line="62" column="11" lean-forward="true" selection-start-line="62" selection-start-column="11" selection-end-line="62" selection-end-column="11" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#Shipment#0;class#Shipment#0" expanded="true" />
-            <element signature="method#addPart#0;class#Shipment#0" expanded="true" />
             <element signature="method#extractSInequality#0;class#Shipment#0" expanded="true" />
             <element signature="method#toString#0;class#Shipment#0" expanded="true" />
           </folding>
@@ -1013,12 +1144,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="54" column="25" lean-forward="false" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
+        <state relative-caret-position="831">
+          <caret line="190" column="0" lean-forward="true" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
-            <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
       </provider>

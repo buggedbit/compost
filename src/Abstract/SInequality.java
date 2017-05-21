@@ -1,7 +1,9 @@
 package Abstract;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Shipment Inequality
@@ -79,6 +81,24 @@ public class SInequality {
      */
     public int getCardinality() {
         return this.getVariableCount();
+    }
+
+    /**
+     * Returns set of variables in the SInequality
+     */
+    public Set<String> getVariableSet() {
+        Set<String> variableSet = new HashSet<>();
+        for (Map.Entry<String, Integer> entry : this.terms.entrySet()) {
+            variableSet.add(entry.getKey());
+        }
+        return variableSet;
+    }
+
+    /**
+     * Signature = variable set
+     */
+    public Set<String> getSignature() {
+        return this.getVariableSet();
     }
 
     @Override

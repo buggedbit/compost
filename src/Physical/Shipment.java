@@ -24,7 +24,7 @@ public class Shipment {
      * Items as parts and their clone counts
      * Map : Id of part in the box -> Its quantity
      */
-    Map<String, Integer> part_clone_count_map = new HashMap<>();
+    public Map<String, Integer> part_clone_count_map = new HashMap<>();
 
     // Box fields
     // length >= breadth >= height > 0
