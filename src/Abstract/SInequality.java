@@ -4,40 +4,57 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Shipment Inequality
+ * <br/>
  * constant     : integer
  * variable     : float
- * upper_limit  : float
- *
+ * upper_limits  : float
+ * <br/>
  * Term : constant * variable
- *      constant > 0
- *      variable > 0
- *
- * A SInequality is defined as
- *      SUMMATION(term_i) <= upper_limit
- *      term_i      > 0 (for all i)
- *      upper_limit > 0
+ * constant > 0
+ * variable > 0
+ * <br/>
+ * A SInequality has following props
+ * 1. SUMMATION(term_i) <= upper_limit_i
+ * 2. term_i      > 0 (for all i)
+ * 3. upper_limit_i > 0
+ * <br/>
+ * There are four upper limits length, breadth, height, weight for now (can be any number > 0)
+ * For each upper limit, variable for term changes but not constant
+ * <br/>
+ * Ex:
+ * ===
+ * 4*x + 5*y <= U
+ * 4*xl + 5*yl <= Ul
+ * 4*xb + 5*yb <= Ub
+ * 4*xh + 5*yh <= Uh
+ * 4*xw + 5*yw <= Uw
  */
 public class SInequality {
 
     /**
      * Map : Variable -> Constant
-     * */
+     */
     Map<String, Integer> terms = new HashMap<>();
     /**
-     * Upper limit
-     * */
-    float upper_limit;
+     * Upper limits
+     */
+    float[] upper_limits = new float[4];
 
     /**
-     * Assert upper_limit > 0
-     * */
-    public SInequality(float upper_limit) {
-        this.upper_limit = upper_limit;
+     * Assert params > 0
+     * Assert length >= breadth >= height
+     */
+    public SInequality(float length, float breadth, float height, float weight) {
+        this.upper_limits[0] = length;
+        this.upper_limits[1] = breadth;
+        this.upper_limits[2] = height;
+        this.upper_limits[3] = weight;
     }
 
     /**
      * Assert constant > 0
-     * */
+     */
     public void addTerm(int constant, String variable) {
         // Old term
         if (this.terms.containsKey(variable)) {
@@ -51,27 +68,17 @@ public class SInequality {
     }
 
     /**
-     * If the SInequality has the variable
-     *      Substitutes the value in variable and subtracts from upper_limit
-     *      If the upper_limit becomes <= 0
-     *             Does not keep the substitution
-     *             Throws HugeEstimateException
-     * */
-    public void substitute(String variable, float value) {
-        // If variable exists
-        if (this.terms.containsKey(variable)) {
-            int constant = this.terms.get(variable);
-            float term_value = constant * value;
-            // If upper_limit becomes <= 0
-            if (this.upper_limit <= term_value) {
-                throw new HugeEstimateException();
-            }
-            // Else
-            else {
-                this.upper_limit -= term_value;
-                this.terms.remove(variable);
-            }
-        }
+     * Returns the number of variables in the SInequality
+     */
+    public int getVariableCount() {
+        return this.terms.size();
+    }
+
+    /**
+     * Cardinality = variable count
+     */
+    public int getCardinality() {
+        return this.getVariableCount();
     }
 
     @Override
@@ -80,23 +87,20 @@ public class SInequality {
         for (Map.Entry<String, Integer> entry : this.terms.entrySet()) {
             sb.append(entry.getValue()).append("*").append(entry.getKey()).append(" + ");
         }
-        sb.append("<= ").append(String.valueOf(this.upper_limit));
+        sb.append(">>");
+        for (int i = 0; i < this.upper_limits.length; ++i) {
+            sb.append(" UL").append(i + 1).append("=").append(this.upper_limits[i]);
+        }
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        SInequality a = new SInequality(600);
-        a.addTerm(100, "a");
-        a.addTerm(100, "a");
-        a.addTerm(100, "b");
-        a.addTerm(200, "c");
-        System.out.println(a);
-        try {
-            a.substitute("c", 3);
-            System.out.println(a);
-        } catch (HugeEstimateException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,7 @@
 package Physical;
 
+import Abstract.SInequality;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class Shipment {
      * Items as parts and their clone counts
      * Map : Id of part in the box -> Its quantity
      */
-    Map<String, Integer> part_clone_map = new HashMap<>();
+    Map<String, Integer> part_clone_count_map = new HashMap<>();
 
     // Box fields
     // length >= breadth >= height > 0
@@ -58,14 +60,22 @@ public class Shipment {
      */
     public void addPart(String part, int quantity) {
         // Old part
-        if (this.part_clone_map.containsKey(part)) {
-            int prev_quantity = this.part_clone_map.get(part);
-            this.part_clone_map.put(part, quantity + prev_quantity);
+        if (this.part_clone_count_map.containsKey(part)) {
+            int prev_quantity = this.part_clone_count_map.get(part);
+            this.part_clone_count_map.put(part, quantity + prev_quantity);
         }
         // New part
         else {
-            this.part_clone_map.put(part, quantity);
+            this.part_clone_count_map.put(part, quantity);
         }
+    }
+
+    public SInequality extractSInequality() {
+        SInequality sInequality = new SInequality(this.length, this.breadth, this.height, this.weight);
+        for (Map.Entry<String, Integer> entry : this.part_clone_count_map.entrySet()) {
+            sInequality.addTerm(entry.getValue(), entry.getKey());
+        }
+        return sInequality;
     }
 
     @Override
@@ -73,15 +83,16 @@ public class Shipment {
         StringBuilder sb = new StringBuilder();
         sb.append("length = ")
                 .append(this.length)
-                .append("breadth = ")
+                .append(" breadth = ")
                 .append(this.breadth)
-                .append("height = ")
+                .append(" height = ")
                 .append(this.height)
-                .append("weight = ")
+                .append(" weight = ")
                 .append(this.weight);
-        for (Map.Entry<String, Integer> entry : this.part_clone_map.entrySet()) {
-            sb.append("\t").append(entry.getKey()).append(" -> ").append(entry.getValue()).append("\n");
+        for (Map.Entry<String, Integer> entry : this.part_clone_count_map.entrySet()) {
+            sb.append("\n").append(entry.getKey()).append(" -> ").append(entry.getValue());
         }
+        sb.append("\n");
         return sb.toString();
     }
 

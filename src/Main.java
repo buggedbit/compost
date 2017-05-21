@@ -1,9 +1,11 @@
+import Abstract.SInequality;
 import Physical.Shipment;
 import com.opencsv.CSVReader;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  * Main program
@@ -12,10 +14,15 @@ public class Main {
 
     /**
      * Reads shipments and items in it
-     *      The file path and format contract happens here
+     * <br/>
+     * The file path and format contract happens here
+     * Assert all shipments are unique
+     * Assert the file paths
+     * Assert the formats
+     * <br/>
      * Returns a map : shipment id -> shipment
      */
-    private static Map<String, Shipment> read_shipments() throws IOException {
+    private static Map<String, Shipment> readNewShipments() throws IOException {
         final String shipments_file_path = "../db/raw/new/shipments.csv";
         final String packed_parts_file_path = "../db/raw/new/shipped_items.csv";
 
@@ -78,8 +85,48 @@ public class Main {
         return shipments;
     }
 
+    /**
+     * Prepares and returns all Full SInequality Sets
+     * Full set = Set of all n-SInequalities among available
+     */
+    private static Map<Integer, Vector<SInequality>> extractAllFullSets() throws IOException {
+        Map<Integer, Vector<SInequality>> full_sets = new HashMap<>();
+
+        // Old data
+        // todo implement this
+
+        // New data
+        Map<String, Shipment> shipments = Main.readNewShipments();
+        for (Map.Entry<String, Shipment> entry : shipments.entrySet()) {
+
+            SInequality sInequality = entry.getValue().extractSInequality();
+            int cardinality = sInequality.getCardinality();
+
+            // If already there add
+            if (full_sets.containsKey(cardinality)) {
+                full_sets.get(cardinality).add(sInequality);
+            }
+            // Else create
+            else {
+                Vector<SInequality> full_set = new Vector<>();
+                full_set.add(sInequality);
+                full_sets.put(cardinality, full_set);
+            }
+
+        }
+
+        return full_sets;
+    }
+
     public static void main(String[] args) throws IOException {
-        Map<String, Shipment> shipments = Main.read_shipments();
+        Map<Integer, Vector<SInequality>> full_sets = extractAllFullSets();
+        // For each full set
+        for (Map.Entry<Integer, Vector<SInequality>> entry : full_sets.entrySet()) {
+            //
+            for (SInequality person : entry.getValue()) {
+                System.out.println(person.getCardinality());
+            }
+        }
     }
 
 }

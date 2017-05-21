@@ -2,23 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2d603a3-97d2-43fa-aac9-41eed199049a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/opencsv.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Estimator.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/estimates/estimates.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/log/log.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/raw/new/shipments.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/raw/new/shipped_items.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Abstract/HugeEstimateException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Main.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Physical/Shipment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Abstract/SInequality.java" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Physical/Shipment.java" afterPath="$PROJECT_DIR$/src/Physical/Shipment.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,7 +17,48 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="311">
+              <caret line="54" column="25" lean-forward="false" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+                <element signature="method#main#0;class#Main#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Shipment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="78">
+              <caret line="72" column="43" lean-forward="false" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="43" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#Shipment#0;class#Shipment#0" expanded="true" />
+                <element signature="method#addPart#0;class#Shipment#0" expanded="true" />
+                <element signature="method#extractSInequality#0;class#Shipment#0" expanded="true" />
+                <element signature="method#toString#0;class#Shipment#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SInequality.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="26">
+              <caret line="23" column="7" lean-forward="true" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -65,6 +93,9 @@
       <find>container</find>
       <find>box</find>
       <find>Main.</find>
+      <find>&lt;p&gt;</find>
+      <find>&lt;br&gt;</find>
+      <find>l</find>
     </findStrings>
     <replaceStrings>
       <replace>\n</replace>
@@ -74,6 +105,11 @@
       <replace>Cons</replace>
       <replace>shipment_id</replace>
       <replace>shipment</replace>
+      <replace>&lt;br&gt;</replace>
+      <replace>&lt;br/&gt;</replace>
+      <replace>b</replace>
+      <replace>h</replace>
+      <replace>w</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -117,10 +153,10 @@
         <option value="$PROJECT_DIR$/src/PackedPart.java" />
         <option value="$PROJECT_DIR$/src/Box.java" />
         <option value="$PROJECT_DIR$/src/CSV.java" />
-        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
         <option value="$PROJECT_DIR$/src/Physical/Box.java" />
         <option value="$PROJECT_DIR$/src/Log/Log.java" />
         <option value="$PROJECT_DIR$/src/Physical/Shipment.java" />
+        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -155,6 +191,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -168,10 +206,58 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Estimator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Estimator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Physical" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Estimator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Abstract" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -616,15 +702,17 @@
       <workItem from="1495194514545" duration="7300000" />
       <workItem from="1495267633726" duration="3855000" />
       <workItem from="1495253446157" duration="4437000" />
-      <workItem from="1495280466330" duration="9303000" />
+      <workItem from="1495280466330" duration="10885000" />
+      <workItem from="1495357885101" duration="6318000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40996000" />
+    <option name="totallyTimeSpent" value="48896000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -640,9 +728,8 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43638274" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16765499" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16765499" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -654,6 +741,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -679,6 +767,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
             <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
@@ -692,7 +781,7 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_map#0;class#Shipment#0" expanded="false" />
+            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
           </folding>
@@ -703,10 +792,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1248">
           <caret line="75" column="0" lean-forward="true" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#SInequality#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -718,7 +804,7 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_map#0;class#Shipment#0" expanded="false" />
+            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
           </folding>
@@ -730,10 +816,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#SInequality#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -750,20 +833,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/SSolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="17" lean-forward="true" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Abstract/SSolver.java" />
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
           <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
             <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
@@ -777,7 +854,7 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_map#0;class#Shipment#0" expanded="false" />
+            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
           </folding>
@@ -787,20 +864,14 @@
     <entry file="file://$PROJECT_DIR$/src/PackedPart.java" />
     <entry file="file://$PROJECT_DIR$/src/Estimates.java" />
     <entry file="file://$PROJECT_DIR$/src/Part.java" />
-    <entry file="file://$PROJECT_DIR$/src/CSV.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CSV.java" />
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
           <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
             <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
@@ -814,7 +885,7 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_map#0;class#Shipment#0" expanded="false" />
+            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
           </folding>
@@ -824,14 +895,7 @@
     <entry file="file://$PROJECT_DIR$/src/PackedPart.java" />
     <entry file="file://$PROJECT_DIR$/src/Estimates.java" />
     <entry file="file://$PROJECT_DIR$/src/Part.java" />
-    <entry file="file://$PROJECT_DIR$/src/CSV.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="12" column="20" lean-forward="true" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CSV.java" />
     <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1092">
@@ -840,7 +904,7 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_map#0;class#Shipment#0" expanded="false" />
+            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
           </folding>
@@ -858,7 +922,7 @@
             <element signature="imports" expanded="true" />
             <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_map#0;class#Shipment#0" expanded="false" />
+            <element signature="docComment;field#part_clone_count_map#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
             <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
           </folding>
@@ -898,136 +962,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/HugeEstimateException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
-          <folding>
-            <element signature="e#116#117#0" expanded="false" />
-            <element signature="e#139#140#0" expanded="false" />
-            <element signature="e#190#191#0" expanded="false" />
-            <element signature="e#219#220#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Part.java" />
     <entry file="file://$PROJECT_DIR$/src/Estimates.java" />
     <entry file="file://$PROJECT_DIR$/src/PackedPart.java" />
-    <entry file="file://$PROJECT_DIR$/src/CSV.class">
+    <entry file="file://$PROJECT_DIR$/src/CSV.class" />
+    <entry file="file://$PROJECT_DIR$/src/out" />
+    <entry file="file://$PROJECT_DIR$/src/ids" />
+    <entry file="file://$PROJECT_DIR$/src/pck" />
+    <entry file="file://$PROJECT_DIR$/src/qun" />
+    <entry file="file://$PROJECT_DIR$/db/raw/new/packed_parts.csv" />
+    <entry file="file://$PROJECT_DIR$/src/CSV.java" />
+    <entry file="file://$PROJECT_DIR$/src/Log/Log.java" />
+    <entry file="file://$PROJECT_DIR$/db/estimates/estimates.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/out">
+    <entry file="file://$PROJECT_DIR$/src/Abstract/SSolver.java" />
+    <entry file="file://$PROJECT_DIR$/src/Abstract/HugeEstimateException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="11639" column="3" lean-forward="false" selection-start-line="11639" selection-start-column="0" selection-end-line="11639" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ids">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="18454" column="36" lean-forward="false" selection-start-line="18454" selection-start-column="36" selection-end-line="18454" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pck">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="36" lean-forward="false" selection-start-line="0" selection-start-column="36" selection-end-line="0" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/qun">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-17097">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/raw/new/packed_parts.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="681" column="26" lean-forward="true" selection-start-line="681" selection-start-column="26" selection-end-line="681" selection-end-column="26" />
+        <state relative-caret-position="78">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#SInequality#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/CSV.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="26">
+          <caret line="23" column="7" lean-forward="true" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Log/Log.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="13" column="8" lean-forward="false" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/estimates/estimates.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="16" column="7" lean-forward="true" selection-start-line="16" selection-start-column="7" selection-end-line="16" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#main#0;class#Main#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="701">
-          <caret line="34" column="4" lean-forward="true" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
+        <state relative-caret-position="78">
+          <caret line="72" column="43" lean-forward="false" selection-start-line="72" selection-start-column="23" selection-end-line="72" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="docComment;field#id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#order_id#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;field#part_clone_map#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;method#Shipment#0;class#Shipment#0" expanded="false" />
-            <element signature="docComment;method#addPart#0;class#Shipment#0" expanded="false" />
+            <element signature="method#Shipment#0;class#Shipment#0" expanded="true" />
+            <element signature="method#addPart#0;class#Shipment#0" expanded="true" />
+            <element signature="method#extractSInequality#0;class#Shipment#0" expanded="true" />
+            <element signature="method#toString#0;class#Shipment#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/SSolver.java">
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="311">
+          <caret line="54" column="25" lean-forward="false" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+            <element signature="method#main#0;class#Main#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
