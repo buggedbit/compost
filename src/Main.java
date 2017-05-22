@@ -21,6 +21,8 @@ public class Main {
      * Assert the file paths
      * Assert the formats
      * <br/>
+     * Validates and cleans new data
+     * 1. Empty Boxes - removes them from returning map
      * Returns a map : shipment id -> shipment
      */
     private static Map<String, Shipment> readNewShipments() throws IOException {
@@ -93,8 +95,8 @@ public class Main {
 
             // Keep track of Empty Shipments
             if (shipment.getValue().part_clone_count_map.size() == 0) {
-                System.out.println("Warning : Found box shipment " + shipment.getKey());
                 empty_boxes.add(shipment.getKey());
+                System.out.println("Warning : Empty box found " + shipment.getKey());
             }
         }
 
@@ -144,9 +146,10 @@ public class Main {
 
     /**
      * Prepares and returns all Similar SInequality sets, from all Full SInequality Sets
+     * todo : instead of removing unsolvable similar sets store them for future use
      * Similar set with a signature = Set of all n-SInequalities among available with given signature
      * All similar sets is a map : signature -> similar set
-     * */
+     */
     private static Map<Set<String>, Vector<SInequality>> extractAllSimilarSets() throws IOException {
         Map<Set<String>, Vector<SInequality>> similar_sets = new HashMap<>();
 
@@ -172,6 +175,25 @@ public class Main {
                 }
 
             }
+        }
+
+        // Removes the unsolvable similar sets
+        Vector<Set<String>> unsolvable_similar_sets = new Vector<>();
+
+        for (Map.Entry<Set<String>, Vector<SInequality>> similar_set : similar_sets.entrySet()) {
+
+            // If number of variables > number of SInequalities
+            // Keep track of such sets
+            if (similar_set.getKey().size() > similar_set.getValue().size()) {
+                unsolvable_similar_sets.add(similar_set.getKey());
+                System.out.println("Note : Unsolvable similar set found " + similar_set.getKey());
+            }
+        }
+
+        // Remove all unsolvable similar sets
+        for (Set<String> unsolvable_similar_set : unsolvable_similar_sets) {
+            similar_sets.remove(unsolvable_similar_set);
+            System.out.println("Note : Unsolvable similar set removed " + unsolvable_similar_set);
         }
 
         return similar_sets;
