@@ -2,58 +2,15 @@ package packer;
 
 import java.util.*;
 
-public class SingleFillNR {
+public class FillSingleStackBuildingNR {
 	Box b;
 	Stack<Surface> s;
-	public SingleFillNR(Box b) {
+	
+	public FillSingleStackBuildingNR(Box b) {
 		this.b = b;
 		this.s = new Stack<>();
 	}
-	void fillSectionC(Order newOrder, Vector partDim, Vector boxDim, Vector origLeftBottom, Integer i){
-		Vector newBoxDim = new Vector(partDim.x, boxDim.y - partDim.y, partDim.z);
-		Vector newLeftBottom = new Vector(origLeftBottom.x, origLeftBottom.y + partDim.y, origLeftBottom.z);
-		
-		b.dimension = newBoxDim;
-		fill(newOrder,newLeftBottom,i);
-		b.dimension = boxDim;
-	}
-	void fillSectionB(Order newOrder, Vector partDim, Vector boxDim, Vector origLeftBottom, Integer i){
-		Vector newBoxDim = new Vector(partDim.x, boxDim.y, boxDim.z - partDim.z);
-		Vector newLeftBottom = new Vector(origLeftBottom.x, origLeftBottom.y, origLeftBottom.z + partDim.z);
-		
-		b.dimension = newBoxDim;
-		fill(newOrder,newLeftBottom,i);
-		b.dimension = boxDim;
-	}
-	void fillSectionA(Order newOrder, Vector partDim, Vector boxDim, Vector origLeftBottom, Integer i){
-		Vector newBoxDim = new Vector(boxDim.x - partDim.x, boxDim.y, boxDim.z);
-		Vector newLeftBottom = new Vector(origLeftBottom.x + partDim.x, origLeftBottom.y, origLeftBottom.z);
-		
-		b.dimension = newBoxDim;
-		fill(newOrder,newLeftBottom,i);
-		b.dimension = boxDim;
-	}
-	public void  fill(Order ord,Vector leftBottom, Integer i){
-		// check for parts in order. check next while qty = 0 or that part is bigger than box size
-		while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-		!b.dimension.isEqualOrGreater(ord.order_list.get(i).dimension))){
-			i++;
-		}
-		if(i == ord.order_list.size())//No other item in order fits the box
-			return;
-		else{//update order, box, left bottom for section c
-			ord.order_list.get(i).quantity--; 
-		
-			Part p = new Part(ord.order_list.get(i), leftBottom, 1);
-			b.parts.add(p);
-			
-			fillSectionC(ord, p.dimension, b.dimension, leftBottom, i);
-			fillSectionB(ord, p.dimension, b.dimension, leftBottom, i);
-			fillSectionA(ord, p.dimension, b.dimension, leftBottom, i);
-		}
-		
-	}
-
+	
 	private void upwardFill(Order ord,Vector leftBottom, Vector sliceDim){
 		// check for parts in order. check next while qty = 0 or that part is bigger than box size
 		Integer i = 0;
@@ -123,6 +80,7 @@ public class SingleFillNR {
 			}
 		}
 	}
+	
 	private Integer fillBoxWidth(Order ord, Vector leftBottom, Vector sliceDim){
 		Integer i = 0;
 		while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
@@ -151,6 +109,7 @@ public class SingleFillNR {
 			x = fillBoxWidth(ord,new Vector(x, 0, 0),new Vector(b.dimension.x - x, b.dimension.y, b.dimension.z));
 		}
 	}
+	
 	public Float calcAcc(){
 		Integer fillVol = 0;
 		for (Part p : b.parts) {
@@ -161,6 +120,7 @@ public class SingleFillNR {
 	public Float prev_calcAcc(Order ord){
 		return  (100* (ord.getVol() /(float) (b.dimension.x*b.dimension.y*b.dimension.z)));
 	}
+	
 	public static void main(String[] args){
 		Random r = new Random();
 		Integer min = 4, max = 40, qty_min = 1, qty_max = 5;
@@ -186,10 +146,9 @@ public class SingleFillNR {
 		new_order.volSort();
 		System.out.println(new_order);
 		
-		SingleFillNR  tmp = new SingleFillNR(new Box(10,10,7));
+		FillSingleStackBuildingNR  tmp = new FillSingleStackBuildingNR(new Box(10,10,7));
 		Float a = tmp.prev_calcAcc(new_order);
 		
-//		tmp.fill(new_order, new Vector(0,0,0), 0);
 		tmp.fillBox(new_order) ;
 		System.out.println(tmp.b);
 		System.out.println(a);
