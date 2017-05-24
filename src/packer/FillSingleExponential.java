@@ -3,9 +3,9 @@ package packer;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class FillSingleExponentialNR {
+public class FillSingleExponential {
 	Box b;
-	public FillSingleExponentialNR(Box b) {
+	public FillSingleExponential(Box b) {
 		this.b = b;
 	}
 	void fillSectionC(Order newOrder, Vector partDim, Vector boxDim, Vector origLeftBottom, Integer i){
@@ -36,7 +36,7 @@ public class FillSingleExponentialNR {
 	public void  fill(Order ord,Vector leftBottom, Integer i){
 		// check for parts in order. check next while qty = 0 or that part is bigger than box size
 		while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-		!b.dimension.isEqualOrGreater(ord.order_list.get(i).dimension))){
+		!b.dimension.isEqualOrGreater(ord.order_list.get(i)))){
 			i++;
 		}
 		if(i == ord.order_list.size())//No other item in order fits the box
@@ -67,7 +67,7 @@ public class FillSingleExponentialNR {
 	
 	public static void main(String[] args){
 		Random r = new Random();
-		Integer min = 4, max = 40, qty_min = 1, qty_max = 5;
+		Integer min = 4, max = 30, qty_min = 1, qty_max = 5;
 		ArrayList<Part> ps = new ArrayList<>();
 		for (Integer i = 0; i < 5; i++) {
 			Integer x = r.nextInt((max - min) + 1) + min;
@@ -90,7 +90,7 @@ public class FillSingleExponentialNR {
 		new_order.volSort();
 		System.out.println(new_order);
 		
-		FillSingleExponentialNR  tmp = new FillSingleExponentialNR(new Box(10,10,7));
+		FillSingleExponential  tmp = new FillSingleExponential(new Box(10,10,7));
 		Float a = tmp.prev_calcAcc(new_order);
 		
 		tmp.fill(new_order, new Vector(0,0,0), 0);

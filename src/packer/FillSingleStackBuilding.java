@@ -2,11 +2,13 @@ package packer;
 
 import java.util.*;
 
-public class FillSingleStackBuildingNR {
+public class FillSingleStackBuilding {
 	Box b;
 	Stack<Surface> s;
-	
-	public FillSingleStackBuildingNR(Box b) {
+	public String toString(){
+		return b.toString();
+	}
+	public FillSingleStackBuilding(Box b) {
 		this.b = b;
 		this.s = new Stack<>();
 	}
@@ -15,7 +17,7 @@ public class FillSingleStackBuildingNR {
 		// check for parts in order. check next while qty = 0 or that part is bigger than box size
 		Integer i = 0;
 		while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-		!sliceDim.isEqualOrGreater(ord.order_list.get(i).dimension))){
+		!sliceDim.isEqualOrGreater(ord.order_list.get(i)))){
 			i++;
 		}
 		if(i == ord.order_list.size()){//No other item in order fits the box
@@ -43,7 +45,7 @@ public class FillSingleStackBuildingNR {
 			
 			Integer i = 0;
 			while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-			!frontSliceDim.isEqualOrGreater(ord.order_list.get(i).dimension))){
+			!frontSliceDim.isEqualOrGreater(ord.order_list.get(i)))){
 				i++;
 			}
 			if(i != ord.order_list.size()){
@@ -62,11 +64,11 @@ public class FillSingleStackBuildingNR {
 			
 			i = 0;
 			while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-			!sideSliceDim.isEqualOrGreater(ord.order_list.get(i).dimension))){
+			!sideSliceDim.isEqualOrGreater(ord.order_list.get(i)))){
 				i++;
 			}
 			if(i == ord.order_list.size()){//No other item in order fits the box
-				return;
+				continue;
 			}
 			else{
 				ord.order_list.get(i).quantity--; 
@@ -84,7 +86,7 @@ public class FillSingleStackBuildingNR {
 	private Integer fillBoxWidth(Order ord, Vector leftBottom, Vector sliceDim){
 		Integer i = 0;
 		while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-		!sliceDim.isEqualOrGreater(ord.order_list.get(i).dimension))){
+		!sliceDim.isEqualOrGreater(ord.order_list.get(i)))){
 			i++;
 		}
 		if(i == ord.order_list.size()){//No other item in order fits the box
@@ -125,7 +127,7 @@ public class FillSingleStackBuildingNR {
 		Random r = new Random();
 		Integer min = 4, max = 40, qty_min = 1, qty_max = 5;
 		ArrayList<Part> ps = new ArrayList<>();
-		for (Integer i = 0; i < 5; i++) {
+		for (Integer i = 0; i < 50; i++) {
 			Integer x = r.nextInt((max - min) + 1) + min;
 			Integer y = r.nextInt((max - min) + 1) + min;
 			Integer z = r.nextInt((max - min) + 1) + min;
@@ -138,15 +140,19 @@ public class FillSingleStackBuildingNR {
 		Part p2 = new Part("B",2,5,7,10,5);
 		Part p3 = new Part("C",10,1,1,10,7);
 		Part p4 = new Part("D",3,3,3,10,1);
+//		Part p1 = new Part("A",35,31,26,5,5);
+//		Part p2 = new Part("B",35,7,26,3,3);
+//		Part p3 = new Part("C",31,40,14,10,4);
+//		Part p4 = new Part("D",14,7,12,10,5);
 		
 		ArrayList<Part> p = new ArrayList<>();
-		p.add(p2);p.add(p3);p.add(p4);p.add(p1);
+		p.add(p1);p.add(p2);p.add(p3);p.add(p4);
 		
 		Order new_order = new Order(p);
 		new_order.volSort();
 		System.out.println(new_order);
 		
-		FillSingleStackBuildingNR  tmp = new FillSingleStackBuildingNR(new Box(10,10,7));
+		FillSingleStackBuilding  tmp = new FillSingleStackBuilding(new Box(10,10,7));
 		Float a = tmp.prev_calcAcc(new_order);
 		
 		tmp.fillBox(new_order) ;
