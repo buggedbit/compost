@@ -3,17 +3,36 @@ package packer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 
 
 
 public class Vector {
 	public Integer x, y, z;
-	public Vector(Integer x, Integer  y, Integer  z){
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
+    }
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) return true;
+        if (!(o instanceof Vector)) {
+            return false;
+        }
+
+        Vector v = (Vector) o;
+
+        return v.x == x && v.y == y && v.z == z;
+    }
+	
+    public Vector(Integer x, Integer  y, Integer  z){
 		this.x = x; this.y = y; this.z = z;
 	}
 	public String toString(){
 		return "x:" + x.toString() + " y:" + y.toString() +  " z:" + z.toString();
 	}
+	
 	private ArrayList<Direction> sort(){
 		Integer max = x, middle = y, min = z;
 		ArrayList<Direction> tmp = new ArrayList<>();
@@ -31,7 +50,7 @@ public class Vector {
 	    });
 		return tmp; 
 	}
-	public boolean isEqualOrGreater(Part p){
+	public boolean rotateAndCheckIsEqualOrGreater(Part p){
 		ArrayList<Direction> tmpPart = p.dimension.sort();
 		ArrayList<Direction> tmpBox = this.sort();
 		
@@ -60,8 +79,15 @@ public class Vector {
 			
 			return true;
 		}
+		if(x >= p.dimension.x && y >= p.dimension.y && z >= p.dimension.z )
+			return true;
+		else
+			return false;
+	}
+	public boolean checkIsEqualOrGreater(Part p){
+		if(x >= p.dimension.x && y >= p.dimension.y && z >= p.dimension.z )
+			return true;
 		else
 			return false;
 	}
 }
-

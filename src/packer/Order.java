@@ -7,16 +7,9 @@ public class Order {
 	Order(List<Part> p){
 		order_list = p;
 	}
+	
 	public String toString() {
 		return order_list.toString();
-	}
-	public void hwlSort(){
-		Collections.sort(order_list, new Comparator<Part>() {
-			@Override
-	        public int compare(Part p1, Part p2) {
-				return  p1.hwlCompareTo(p2);
-	        }
-	    });
 	}
 	public void volSort(){
 		Collections.sort(order_list, new Comparator<Part>() {
@@ -29,9 +22,10 @@ public class Order {
 	public Integer getVol(){
 		Integer vol = 0;
 		for (Part p : order_list) {
-			vol+= p.getVol();
+			vol+= p.getVol()*p.quantity;
 		}
 		return vol;
 	}
 }
+
 
