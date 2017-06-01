@@ -29,20 +29,20 @@ public class Shipment {
     // Box fields
     // length >= breadth >= height > 0
     // weight > 0
-    float length;
-    float breadth;
-    float height;
-    float weight;
+    double length;
+    double breadth;
+    double height;
+    double weight;
 
     /**
      * Assert length, breadth, height > 0
      * Assert weight > 0
      */
-    public Shipment(String order_id, String id, float length, float breadth, float height, float weight) {
+    public Shipment(String order_id, String id, double length, double breadth, double height, double weight) {
         this.order_id = order_id;
         this.id = id;
 
-        float hbl[] = {
+        double hbl[] = {
                 height,
                 breadth,
                 length

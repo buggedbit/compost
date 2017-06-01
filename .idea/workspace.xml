@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f2d603a3-97d2-43fa-aac9-41eed199049a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Estimator.iml" afterPath="$PROJECT_DIR$/Estimator.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Abstract/SInequality.java" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Physical/Shipment.java" afterPath="$PROJECT_DIR$/src/Physical/Shipment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Scratch.java" afterPath="$PROJECT_DIR$/src/Scratch.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,19 +23,24 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="571">
-              <caret line="197" column="0" lean-forward="true" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+            <state relative-caret-position="623">
+              <caret line="291" column="33" lean-forward="true" selection-start-line="291" selection-start-column="33" selection-end-line="291" selection-end-column="33" />
               <folding>
-                <element signature="docComment;class#Main#0" expanded="false" />
-                <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-                <element signature="e#1168#1177#0" expanded="false" />
-                <element signature="e#2222#2231#0" expanded="false" />
-                <element signature="e#2487#2496#0" expanded="false" />
-                <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
-                <element signature="e#4038#4049#0" expanded="false" />
-                <element signature="e#5491#5514#0" expanded="false" />
-                <element signature="e#6509#6560#0" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="method#readNewShipments#0;class#Main#0" expanded="true" />
+                <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+                <element signature="method#extractAllSimilarSets#0;class#Main#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SInequality.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="389">
+              <caret line="121" column="7" lean-forward="true" selection-start-line="121" selection-start-column="7" selection-end-line="121" selection-end-column="7" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -47,27 +56,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>upper_limit</find>
-      <find>ext</find>
-      <find>shp_240697a8b6eb4745a374758c5b0239cf</find>
-      <find>ext_010b98cb91b14448b5d533b0e7dcbc78</find>
-      <find>shp_026d4c5a95ec4141b7ada3fec7543ade</find>
-      <find>static</find>
-      <find>CSV.remove_quotes</find>
-      <find>Box</find>
-      <find>box_id</find>
-      <find>container</find>
-      <find>box</find>
-      <find>Main.</find>
-      <find>&lt;p&gt;</find>
-      <find>&lt;br&gt;</find>
-      <find>l</find>
-      <find>hash</find>
-      <find>Vector</find>
-      <find>hashCode</find>
       <find>has</find>
       <find>edx4pg2aw3</find>
-      <find>3wodbo9wbe</find>
       <find>3wodbo9wbe</find>
       <find>edzkj94w2n</find>
       <find>3799vxy4vn</find>
@@ -77,6 +67,25 @@
       <find>shipment</find>
       <find>clone</find>
       <find>shp_a75e372b007641bbb549bb4e12b13294</find>
+      <find>3j69g7pp9n</find>
+      <find>3xo8lvp4d3</find>
+      <find>3wyqmw2byn</find>
+      <find>3px9789b9n</find>
+      <find>1*3xzp9y6kkn + 1*ngb8z4dwr3 + &gt;&gt; UL1=16.0 UL2=14.0 UL3=9.0 UL4=18.4</find>
+      <find>1*3xzp9y6kkn + 1*ngb8z4dwr3 + &gt;&gt; UL1=16.0 UL2=15.0 UL3=9.0 UL4=18.0</find>
+      <find>1*3xzp9y6kkn + 1*ngb8z4dwr3 + &gt;&gt; UL1=18.0 UL2=18.0 UL3=11.0 UL4=20.0</find>
+      <find>UL4</find>
+      <find>[1*3xzp9y6kkn + 1*ngb8z4dwr3 + &gt;&gt; UL1=16.0 UL2=14.0 UL3=9.0 UL4=18.4</find>
+      <find>[1*nya9b27p9n + 1*m39qozkbgn + 1*3962ovygp3 + &gt;&gt; UL1=9.0 UL2=7.0 UL3=7.0 UL4=1.0, 1*nya9b27p9n + 1*m39qozkbgn + 1*3962ovygp3 + &gt;&gt; UL1=10.0 UL2=9.0 UL3=2.0 UL4=2.0, 1*nya9b27p9n + 1*m39qozkbgn + 1*3962ovygp3 + &gt;&gt; UL1=8.0 UL2=6.0 UL3=4.0 UL4=1.0]</find>
+      <find>[1*3ax7qa758n + 1*nvbb5o8pp3 + 2*qnvd69xjxn + &gt;&gt; UL1=21.0 UL2=17.0 UL3=12.0 UL4=24.0, 1*3ax7qa758n + 1*nvbb5o8pp3 + 2*qnvd69xjxn + &gt;&gt; UL1=21.0 UL2=17.0 UL3=12.0 UL4=24.0, 1*3ax7qa758n + 1*nvbb5o8pp3 + 2*qnvd69xjxn + &gt;&gt; UL1=20.0 UL2=17.0 UL3=10.0 UL4=35.0]</find>
+      <find>null</find>
+      <find>1*73oloddjy3 + 1*e25zolp56e + &gt;&gt; UL1=21.0 UL2=17.0 UL3=8.0 UL4=21.0</find>
+      <find>1*73oloddjy3 + 1*e25zolp56e + &gt;&gt; UL1=21.0 UL2=17.0 UL3=9.0 UL4=21.0</find>
+      <find>upper_limits</find>
+      <find>float</find>
+      <find>HashMap</find>
+      <find>asd</find>
+      <find>Main</find>
     </findStrings>
     <replaceStrings>
       <replace>\n</replace>
@@ -93,6 +102,7 @@
       <replace>w</replace>
       <replace>Set</replace>
       <replace>Assert</replace>
+      <replace>double</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -138,10 +148,13 @@
         <option value="$PROJECT_DIR$/src/CSV.java" />
         <option value="$PROJECT_DIR$/src/Physical/Box.java" />
         <option value="$PROJECT_DIR$/src/Log/Log.java" />
-        <option value="$PROJECT_DIR$/src/Scratch.java" />
-        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
         <option value="$PROJECT_DIR$/src/out" />
+        <option value="$PROJECT_DIR$/src/out2" />
+        <option value="$PROJECT_DIR$/src/Scratch.java" />
+        <option value="$PROJECT_DIR$/src/Abstract/Solver.java" />
         <option value="$PROJECT_DIR$/src/Physical/Shipment.java" />
+        <option value="$PROJECT_DIR$/src/Demo.java" />
+        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -176,7 +189,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -204,51 +217,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TakeItEasy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Estimator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Physical" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TakeItEasy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Estimator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Abstract" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/opencsv.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/jama.jar!/" />
     <property name="settings.editor.selected.configurable" value="editing.templates" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -690,12 +667,16 @@
       <workItem from="1495280466330" duration="10885000" />
       <workItem from="1495357885101" duration="16825000" />
       <workItem from="1495431865539" duration="52000" />
-      <workItem from="1495432994027" duration="94000" />
+      <workItem from="1495432994027" duration="356000" />
+      <workItem from="1495437750642" duration="2047000" />
+      <workItem from="1495458965422" duration="6095000" />
+      <workItem from="1495637332962" duration="2228000" />
+      <workItem from="1496302876970" duration="19329000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59549000" />
+    <option name="totallyTimeSpent" value="89510000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -715,8 +696,9 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43638274" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19245283" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18436658" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -728,7 +710,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -748,51 +729,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/PackedPart.java" />
-    <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="docComment;class#SInequality#0" expanded="false" />
-            <element signature="docComment;field#terms#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;field#upper_limits#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#SInequality#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#addTerm#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getVariableCount#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getCardinality#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getVariableSet#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getSignature#0;class#SInequality#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/HugeEstimateException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="16" lean-forward="true" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/SSolver.java" />
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
-          <folding>
-            <element signature="docComment;class#Main#0" expanded="false" />
-            <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-            <element signature="e#1168#1177#0" expanded="false" />
-            <element signature="e#2222#2231#0" expanded="false" />
-            <element signature="e#2487#2496#0" expanded="false" />
-            <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
-            <element signature="e#4038#4049#0" expanded="false" />
-            <element signature="e#5491#5514#0" expanded="false" />
-            <element signature="e#6509#6560#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
@@ -816,15 +752,10 @@
         <state relative-caret-position="468">
           <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
           <folding>
-            <element signature="docComment;class#Main#0" expanded="false" />
-            <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-            <element signature="e#1168#1177#0" expanded="false" />
-            <element signature="e#2222#2231#0" expanded="false" />
-            <element signature="e#2487#2496#0" expanded="false" />
-            <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
-            <element signature="e#4038#4049#0" expanded="false" />
-            <element signature="e#5491#5514#0" expanded="false" />
-            <element signature="e#6509#6560#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#readNewShipments#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllSimilarSets#0;class#Main#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -929,13 +860,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/SSolver.java" />
-    <entry file="file://$PROJECT_DIR$/src/Abstract/HugeEstimateException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/util/AbstractList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="520">
@@ -1031,38 +955,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scratch.java">
+    <entry file="file://$PROJECT_DIR$/src/out2" />
+    <entry file="jar://$PROJECT_DIR$/lib/jlinalg/jlinalg.jar!/org/jlinalg/LinSysSolver.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+        <state relative-caret-position="225">
+          <caret line="98" column="59" lean-forward="false" selection-start-line="98" selection-start-column="59" selection-end-line="98" selection-end-column="59" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#solve#0;class#LinSysSolver#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
+    <entry file="file://$PROJECT_DIR$/src/Abstract/Solver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="99" column="37" lean-forward="false" selection-start-line="99" selection-start-column="4" selection-end-line="99" selection-end-column="37" />
+        <state relative-caret-position="104">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jama.jar!/Jama/Matrix.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="479">
+          <caret line="630" column="30" lean-forward="false" selection-start-line="630" selection-start-column="30" selection-end-line="630" selection-end-column="30" />
           <folding>
-            <element signature="docComment;class#SInequality#0" expanded="false" />
-            <element signature="docComment;field#terms#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;field#upper_limits#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#SInequality#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#addTerm#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getVariableCount#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getCardinality#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getVariableSet#0;class#SInequality#0" expanded="false" />
-            <element signature="docComment;method#getSignature#0;class#SInequality#0" expanded="false" />
+            <element signature="e#17607#17608#0" expanded="true" />
+            <element signature="e#17680#17681#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scratch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="13" column="17" lean-forward="true" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+          <folding>
+            <element signature="method#main#0;class#Scratch#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Abstract/HugeEstimateException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-546">
+          <caret line="9" column="25" lean-forward="false" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Demo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="26" column="32" lean-forward="true" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="52" />
+        <state relative-caret-position="-1197">
+          <caret line="25" column="7" lean-forward="true" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#Shipment#0;class#Shipment#0" expanded="true" />
@@ -1073,27 +1033,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/out">
+    <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-367971">
-          <caret line="24" column="33" lean-forward="true" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+        <state relative-caret-position="389">
+          <caret line="121" column="7" lean-forward="true" selection-start-line="121" selection-start-column="7" selection-end-line="121" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="571">
-          <caret line="197" column="0" lean-forward="true" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+        <state relative-caret-position="623">
+          <caret line="291" column="33" lean-forward="true" selection-start-line="291" selection-start-column="33" selection-end-line="291" selection-end-column="33" />
           <folding>
-            <element signature="docComment;class#Main#0" expanded="false" />
-            <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-            <element signature="e#1168#1177#0" expanded="false" />
-            <element signature="e#2222#2231#0" expanded="false" />
-            <element signature="e#2487#2496#0" expanded="false" />
-            <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
-            <element signature="e#4038#4049#0" expanded="false" />
-            <element signature="e#5491#5514#0" expanded="false" />
-            <element signature="e#6509#6560#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#readNewShipments#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllSimilarSets#0;class#Main#0" expanded="true" />
           </folding>
         </state>
       </provider>

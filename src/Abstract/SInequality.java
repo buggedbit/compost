@@ -1,16 +1,13 @@
 package Abstract;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Shipment Inequality
  * <br/>
  * constant     : integer
- * variable     : float
- * upper_limits  : float
+ * variable     : double
+ * upper_limits  : double
  * <br/>
  * Term : constant * variable
  * constant > 0
@@ -33,21 +30,24 @@ import java.util.Set;
  * 4*xw + 5*yw <= Uw
  */
 public class SInequality {
-
     /**
      * Map : Variable -> Constant
      */
     Map<String, Integer> terms = new HashMap<>();
     /**
      * Upper limits
+     * 0 : length
+     * 1 : breadth
+     * 2 : height
+     * 3 : weight
      */
-    float[] upper_limits = new float[4];
+    double[] upper_limits = new double[4];
 
     /**
      * Assert params > 0
      * Assert length >= breadth >= height
      */
-    public SInequality(float length, float breadth, float height, float weight) {
+    public SInequality(double length, double breadth, double height, double weight) {
         this.upper_limits[0] = length;
         this.upper_limits[1] = breadth;
         this.upper_limits[2] = height;
@@ -101,13 +101,55 @@ public class SInequality {
         return this.getVariableSet();
     }
 
+    /**
+     * Returns the coefficient row
+     * Coefficient Row: [each term's coefficient] for all terms sorted w.r.t variable in lexicographic way
+     */
+    public double[] getCoefficientRow() {
+        // Sort the terms according to variable
+        Map<String, Integer> sorted_terms = new TreeMap<>(this.terms);
+
+        // Pick the coefficients
+        double[] coefficient_row = new double[this.terms.size()];
+        int i = 0;
+        for (Map.Entry<String, Integer> sorted_term : sorted_terms.entrySet()) {
+            coefficient_row[i] = (double) sorted_term.getValue();
+            i++;
+        }
+        return coefficient_row;
+    }
+
+    /**
+     * Returns the variable row
+     * Variable Row: Vector of [each term's variable] for all terms sorted w.r.t variable in lexicographic way
+     */
+    public Vector<String> getVariableRow() {
+        // Sort the terms according to variable
+        Map<String, Integer> sorted_terms = new TreeMap<>(this.terms);
+
+        // Pick the variables
+        Vector<String> variable_row = new Vector<>();
+        for (Map.Entry<String, Integer> sorted_term : sorted_terms.entrySet()) {
+            variable_row.add(sorted_term.getKey());
+        }
+        return variable_row;
+    }
+
+    /**
+     * Returns the constant row
+     * Constant Row : the upper limits array
+     */
+    public double[] getConstantRow() {
+        return this.upper_limits;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, Integer> entry : this.terms.entrySet()) {
             sb.append(entry.getValue()).append("*").append(entry.getKey()).append(" + ");
         }
-        sb.append(">>");
+        sb.append("<=");
         for (int i = 0; i < this.upper_limits.length; ++i) {
             sb.append(" UL").append(i + 1).append("=").append(this.upper_limits[i]);
         }

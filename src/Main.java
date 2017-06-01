@@ -1,4 +1,5 @@
 import Abstract.SInequality;
+import Jama.Matrix;
 import Physical.Shipment;
 import com.opencsv.CSVReader;
 
@@ -10,6 +11,7 @@ import java.util.Vector;
 
 /**
  * Main program
+ * todo : implement the merge feature
  */
 public class Main {
 
@@ -154,7 +156,7 @@ public class Main {
         Map<Set<String>, Vector<SInequality>> similar_sets = new HashMap<>();
 
         // All full sets
-        Map<Integer, Vector<SInequality>> full_sets = extractAllFullSets();
+        Map<Integer, Vector<SInequality>> full_sets = Main.extractAllFullSets();
         // Prepare similar sets
         // For each full set
         for (Map.Entry<Integer, Vector<SInequality>> full_set : full_sets.entrySet()) {
@@ -199,16 +201,98 @@ public class Main {
         return similar_sets;
     }
 
+    /**
+     * Assert all sInequalities have same signature
+     * and each sInequality's cardinality = size of sInequalities vector
+     * todo : throw the unused sInequalities into old data
+     */
+    public static Matrix Solve(Vector<SInequality> sInequalities) {
+        // Declare array of arrays
+        // The coefficient matrix
+        double[][] a = new double[sInequalities.size()][sInequalities.size()];
+        // The constant matrix
+        double[][] b = new double[sInequalities.size()][4];
+
+        // Fill the array of arrays
+        // For each sInequality
+        for (int i = 0; i < sInequalities.size(); i++) {
+            SInequality sInequality = sInequalities.get(i);
+            // Keep track of coefficient row
+            a[i] = sInequality.getCoefficientRow();
+            // Keep track of constant row
+            b[i] = sInequality.getConstantRow();
+        }
+
+        // Create Coefficient matrix and constant matrix
+        Matrix A = new Matrix(a);
+        Matrix B = new Matrix(b);
+
+        // X = A^-1 * B
+        Matrix X = null;
+        try {
+            X = A.solve(B);
+            X.print(1, 0);
+        } catch (RuntimeException e) {
+            System.out.println("Note : Singular matrix found");
+        }
+        return X;
+    }
+
+    /**
+     * Prepares and solves all possible Square SInequality sets, from a given similar set
+     * Assert param similar_set to be a similar set
+     * Reference : geeks for geeks
+     * <br/>
+     * Selects 'cardinality' number of SInequalities from 'similar_set' into 'buffer'
+     * Creates all such combinations
+     * There are
+     * ------similar_set.size()
+     * ------------------------C
+     * -------------------------cardinality
+     * number of combinations
+     * Each buffer (a combination) is a square set therefore Solve() is called upon it
+     */
+    private static void extractSquareSets(Vector<SInequality> similar_set, int cardinality, Vector<SInequality> buffer, int buffer_i, int input_i) {
+        if (buffer_i == cardinality) {
+            Main.Solve(buffer);
+            return;
+        }
+
+        // When no more elements are there to put in data[]
+        if (input_i >= similar_set.size())
+            return;
+
+        // current is included
+        buffer.set(buffer_i, similar_set.get(input_i));
+
+        // put next at next location
+        extractSquareSets(similar_set, cardinality, buffer, buffer_i + 1, input_i + 1);
+
+        // current is excluded, replace it with next (Note that i+1 is passed, but index is not changed)
+        extractSquareSets(similar_set, cardinality, buffer, buffer_i, input_i + 1);
+    }
+
+
     public static void main(String[] args) throws IOException {
-        Map<Set<String>, Vector<SInequality>> similar_sets = extractAllSimilarSets();
-        for (Map.Entry<Set<String>, Vector<SInequality>> similar_set : similar_sets.entrySet()) {
-            if (similar_set.getKey().size() <= similar_set.getValue().size()) {
-                System.out.println(similar_set.getKey());
-                System.out.println(similar_set.getKey().size());
-                System.out.println(similar_set.getValue().size());
-            } else {
-                System.out.println("Note : Unsolvable similar set found " + similar_set.getKey());
+
+        // All similar sets
+        // with unsolvable sets filtered
+        Map<Set<String>, Vector<SInequality>> similar_sets = Main.extractAllSimilarSets();
+
+        // For every similar set
+        for (Map.Entry<Set<String>, Vector<SInequality>> similar_set_m : similar_sets.entrySet()) {
+
+            Vector<SInequality> similar_set = similar_set_m.getValue();
+            int cardinality = similar_set_m.getKey().size();
+
+            if (cardinality <= 1) continue;
+
+            Vector<SInequality> buffer = new Vector<>();
+            for (int i = 0; i < cardinality; i++) {
+                buffer.add(null);
             }
+            System.out.println(similar_set.size() + " C " + cardinality);
+            extractSquareSets(similar_set, cardinality, buffer, 0, 0);
         }
 
     }
