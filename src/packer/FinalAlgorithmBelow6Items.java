@@ -77,9 +77,8 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 		List<Part> expList = new ArrayList<>();
 		for (Part p : ord.order_list) {
 			Integer qty = p.quantity;
-			p.quantity = 1;
 			for (int i = 0; i < qty; i++) {
-				expList.add(p);
+				expList.add(new Part(p.id, p.dimension.x, p.dimension.y, p.dimension.z, p.weight, 1));
 			}
 		}
 		return new Order(expList);
@@ -142,7 +141,8 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 		return out;
 	}
 	
-	public void MainAlgo(Order new_order){
+	@Override
+	public Order MainAlgo(Order new_order){
 		ArrayList<Order> rotatedOrders = genRotations(expandOrder(new_order), 0);
 		
 		Float acc = (float) 0;
@@ -151,7 +151,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 				q.quantity =1;
 			}
 			ord.volSort();
-			FinalAlgorithmBelow6Items  tmp = new FinalAlgorithmBelow6Items(new Box(40,20,20));
+			FinalAlgorithmBelow6Items  tmp = new FinalAlgorithmBelow6Items(new Box(b.dimension.x,b.dimension.y,b.dimension.z,b.id,b.num));
 			Float prev = tmp.prev_calcAcc(ord);
 			tmp.fillBox(ord,new Vector(0, 0, 0),tmp.b.dimension) ;		
 			HashMap<Vector, Vector> unFilled = tmp.combineUnused();
@@ -163,22 +163,26 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 				this.b = tmp.b;
 				this.s = tmp.s;
 				this.unused = tmp.unused;
+				new_order = ord.copy();
 				acc = tmp.calcAcc();
 				System.out.println("CURR :" + tmp.calcAcc().toString());
 			}
 		}
 		System.out.println("FINAL :" + acc.toString());
+		return new_order;
 	}
 	
 	public static void main(String[] args) {
-		Part p1 = new Part("A",16,20,10,10,3);
-		Part p2 = new Part("D",9,11,8,10,3);
-		Part p3 = new Part("E",16,12,8,10,1);
+		Part p1 = new Part("A",6,16,19,10,3);
+		Part p2 = new Part("D",18,11,9,10,4);
+//		Part p3 = new Part("E",24,9,9,10,1);
+		
 		ArrayList<Part> p = new ArrayList<>();
-		p.add(p1);p.add(p2);p.add(p3);
+		p.add(p1);p.add(p2);//p.add(p3);
 		
 		Order new_order = new Order(p);
-		FinalAlgorithmBelow6Items tmp = new FinalAlgorithmBelow6Items(null);
+		FinalAlgorithmBelow6Items tmp = new FinalAlgorithmBelow6Items(new Box(40,20,20,"Box1",1));
 		tmp.MainAlgo(new_order);
+		System.out.println(tmp.b);
 	}
 }

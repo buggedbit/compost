@@ -1,11 +1,5 @@
 package packer;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Objects;
-
-
+import java.util.*;
 
 public class Vector {
 	public Integer x, y, z;
@@ -33,7 +27,7 @@ public class Vector {
 		return "x:" + x.toString() + " y:" + y.toString() +  " z:" + z.toString();
 	}
 	
-	private ArrayList<Direction> sort(){
+	ArrayList<Direction> sort(){
 		Integer max = x, middle = y, min = z;
 		ArrayList<Direction> tmp = new ArrayList<>();
 		tmp.add(new Direction('x', max));tmp.add(new Direction('y', middle));tmp.add(new Direction('z', min));
@@ -84,10 +78,82 @@ public class Vector {
 		else
 			return false;
 	}
+	
 	public boolean checkIsEqualOrGreater(Part p){
 		if(x >= p.dimension.x && y >= p.dimension.y && z >= p.dimension.z )
 			return true;
 		else
 			return false;
+	}
+	
+	static Integer getContribution(Integer box, Integer part, Integer minPart){
+		Integer cost = 0;
+		if(box - part > minPart && box - part < 2*minPart)
+			cost+=25;
+		else if(box - part > 2*minPart && box - part < 5*minPart)
+			cost+=35;
+		else if(box - part > 5*minPart)
+			cost+=50;
+		else if(box - part == 0)
+			cost+=100;
+		return cost;
+	}
+	static Integer calculateCost(ArrayList<Direction> inp, Integer minPart){
+		if(inp.get(0).val >= inp.get(3).val && inp.get(1).val >= inp.get(4).val && inp.get(2).val >= inp.get(5).val)
+			return getContribution(inp.get(0).val, inp.get(3).val, minPart) +
+			getContribution(inp.get(1).val, inp.get(4).val, minPart) +
+			getContribution(inp.get(2).val, inp.get(5).val, minPart);		
+		return -1;
+	}
+	ArrayList<Direction> getBestOrientation(Integer minPart, Part p){
+		ArrayList<Direction> tmpPart = p.dimension.sort();
+		ArrayList<Direction> tmpBox = this.sort();
+		ArrayList<Direction> out = null;
+		Integer maxCost = -1;
+		for (int i = 0; i < 3; i++) {
+			ArrayList<Direction> tmp1 = new ArrayList<>();
+			tmp1.addAll(Arrays.asList(tmpBox.get(0),tmpBox.get(1),tmpBox.get(2),tmpPart.get(i),tmpPart.get((i+1)%3),tmpPart.get((i+2)%3)));
+			Integer tmpCost = calculateCost(tmp1,minPart);
+			if(tmpCost > maxCost){
+				maxCost = tmpCost;
+				out = tmp1;
+			}
+			ArrayList<Direction> tmp2 = new ArrayList<>();
+			tmp2.addAll(Arrays.asList(tmpBox.get(0),tmpBox.get(1),tmpBox.get(2),tmpPart.get(i),tmpPart.get((i+2)%3),tmpPart.get((i+1)%3)));
+			tmpCost = calculateCost(tmp2,minPart);
+			if(tmpCost > maxCost){
+				maxCost = tmpCost;
+				out = tmp2;
+			}
+		}
+		return out;
+	}
+	public boolean bestRotateAndCheckIsEqualOrGreater(Integer minPart, Part p){
+		ArrayList<Direction>  req = getBestOrientation(minPart, p);
+		if(req == null)
+			return false;
+		
+		if(req.get(0).c.equals('x'))
+			p.dimension.x = req.get(3).val;
+		else if(req.get(0).c.equals('y'))
+			p.dimension.y = req.get(3).val;
+		else if(req.get(0).c.equals('z'))
+			p.dimension.z = req.get(3).val;
+		
+		if(req.get(1).c.equals('x'))
+			p.dimension.x = req.get(4).val;
+		else if(req.get(1).c.equals('y'))
+			p.dimension.y = req.get(4).val;
+		else if(req.get(1).c.equals('z'))
+			p.dimension.z = req.get(4).val;
+		
+		if(req.get(2).c.equals('x'))
+			p.dimension.x = req.get(5).val;
+		else if(req.get(2).c.equals('y'))
+			p.dimension.y = req.get(5).val;
+		else if(req.get(2).c.equals('z'))
+			p.dimension.z = req.get(5).val;
+		
+		return true;
 	}
 }

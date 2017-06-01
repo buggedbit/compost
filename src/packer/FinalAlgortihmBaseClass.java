@@ -1,4 +1,5 @@
 package packer;
+import java.io.*;
 import java.util.*;
 
 public class FinalAlgortihmBaseClass {
@@ -10,6 +11,16 @@ public class FinalAlgortihmBaseClass {
 		return b.toString() + "\n" + s.toString();
 	}
 	
+	public void setBox(Box bb){
+		b.dimension.x = bb.dimension.x;
+		b.dimension.y = bb.dimension.y;
+		b.dimension.z = bb.dimension.z;
+		b.id =bb.id;
+		b.num = bb.num;
+		s.clear();
+		b.parts.clear();
+		unused.clear();
+	}
 	@SuppressWarnings("serial")
 	public FinalAlgortihmBaseClass(Box b) {
 		this.b = b;
@@ -84,9 +95,34 @@ public class FinalAlgortihmBaseClass {
 			Integer y = r.nextInt((max - min) + 1) + min;
 			Integer z = r.nextInt((max - min) + 1) + min;
 			Integer q = r.nextInt((qty_max - qty_min) + 1) + qty_min;
-			Part p = new Part(i.toString(),x,y,z,10,q);
+			Part p = new Part("Part" + i.toString(),x,y,z,10,q);
 			ps.add(p);
 		}
 		return new Order(ps);
+	}
+	
+	public void publish() throws IOException{
+		File f = new File("Packing.csv");
+		Boolean c = f.exists();
+		FileWriter fw = new FileWriter("Packing.csv", true);
+		if(!c) { 
+			fw.append("PartID,DimX,DimY,DimZ,PosX,PosY,PosZ,BoxID,Weight\n");
+		}
+		for(Part part: b.parts){
+        	fw.append(part.id + ",");
+        	fw.append(part.dimension.x - 0.5 + ",");
+        	fw.append(part.dimension.y - 0.5 + ",");
+        	fw.append(part.dimension.z - 0.5 + ",");
+        	fw.append(part.position.x + ",");
+        	fw.append(part.position.y + ",");
+        	fw.append(part.position.z + ",");
+        	fw.append(b.id + "-" + b.num + ",");
+        	fw.append(part.weight + "\n");
+        }
+        fw.flush();
+        fw.close();
+	}
+	public Order MainAlgo(Order new_order) {
+	 return new_order;
 	}
 }

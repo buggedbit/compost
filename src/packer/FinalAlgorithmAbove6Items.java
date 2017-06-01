@@ -1,4 +1,5 @@
 package packer;
+import java.io.IOException;
 import java.util.*;
 
 public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass{
@@ -10,7 +11,8 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass{
 	private void upwardFill(Order ord,Vector leftBottom, Vector sliceDim){//fill a column recursively in upward dir
 		Integer i = 0;	
 		while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-		!sliceDim.rotateAndCheckIsEqualOrGreater(ord.order_list.get(i)))){
+		!sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.minPart(),ord.order_list.get(i)))){
+//		!sliceDim.rotateAndCheckIsEqualOrGreater(ord.order_list.get(i)))){		
 			i++;
 		}
 		if(i == ord.order_list.size()){//No fit found
@@ -50,7 +52,8 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass{
 	public void fillBox(Order ord, Vector leftBottom, Vector sliceDim){
 		Integer i = 0;
 		while(ord.order_list.size() > i && (ord.order_list.get(i).quantity == 0 || 
-		!sliceDim.rotateAndCheckIsEqualOrGreater(ord.order_list.get(i)))){
+		!sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.minPart(),ord.order_list.get(i)))){
+//		!sliceDim.rotateAndCheckIsEqualOrGreater(ord.order_list.get(i)))){		
 			i++;
 		}
 		if(i == ord.order_list.size()){ // No fit found
@@ -72,8 +75,8 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass{
 			backwardFill(ord,partBottom); // Fill completely only the column with bottom surface as bottom of box
 		}
 	}
-		
-	public void MainAlgo(Order new_order){
+	@Override	
+	public Order MainAlgo(Order new_order){
 		new_order.volSort();
 		System.out.println("WITHOUT PREV :" + prev_calcAcc(new_order).toString());
 		fillBox(new_order,new Vector(0, 0, 0),b.dimension) ;		
@@ -82,17 +85,23 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass{
 			fillBox(new_order , key, new Vector(unFilled.get(key).x, b.dimension.y - key.y, unFilled.get(key).z));
 		}
 		System.out.println("WITHOUT FINAL :" + calcAcc().toString());
+		return new_order;
 	}
-	public static void main(String[] args){//3 3 1 3 2
-		Part p1 = new Part("A",16,20,10,10,3);
-		Part p2 = new Part("D",9,11,8,10,3);
-		Part p3 = new Part("E",16,12,8,10,1);
-		
-		ArrayList<Part> p = new ArrayList<>();
-		p.add(p1);p.add(p2);p.add(p3);
-		
-		Order new_order = new Order(p);
-		FinalAlgorithmAbove6Items tmp = new FinalAlgorithmAbove6Items(new Box(40,20,20));
+	public static void main(String[] args) throws IOException{//3 3 1 3 2
+//		Part p1 = new Part("Part1",18,8,10,10,1);
+//		Part p2 = new Part("part2",13,5,14,10,2);
+//		Part p3 = new Part("Part3",15,15,9,10,2);
+//		
+//		ArrayList<Part> p = new ArrayList<>();
+//		p.add(p1);p.add(p2);p.add(p3);
+//		
+//		Order new_order = new Order(p);
+		Order new_order = makeRandomOrder(5, 20, 1, 3, 5);
+		new_order.publish();
+		System.out.println(new_order);
+		FinalAlgorithmAbove6Items tmp = new FinalAlgorithmAbove6Items(new Box(40,40,20,"Box1",1));
 		tmp.MainAlgo(new_order);
+		System.err.println(tmp.b);
+		tmp.publish();
 	}
 }

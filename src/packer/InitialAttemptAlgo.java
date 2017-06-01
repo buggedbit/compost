@@ -1,11 +1,10 @@
 package packer;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class FillSingleExponential extends FinalAlgortihmBaseClass {
+public class InitialAttemptAlgo extends FinalAlgortihmBaseClass {
 	
-	public FillSingleExponential(Box b) {
+	public InitialAttemptAlgo(Box b) {
 		super(b);
 	}
 	void fillSectionC(Order newOrder, Vector partDim, Vector boxDim, Vector origLeftBottom, Integer i){
@@ -55,20 +54,19 @@ public class FillSingleExponential extends FinalAlgortihmBaseClass {
 	}
 
 	public static void main(String[] args){
-		Part p1 = new Part("A",1,2,3,10,3);
-		Part p2 = new Part("B",2,5,7,10,5);
-		Part p3 = new Part("C",10,1,1,10,7);
-		Part p4 = new Part("D",3,3,3,10,1);
+		Part p1 = new Part("A",16,20,10,10,3);
+		Part p2 = new Part("D",9,11,8,10,3);
+		Part p3 = new Part("E",16,12,8,10,1);
 		
 		ArrayList<Part> p = new ArrayList<>();
-		p.add(p2);p.add(p4);p.add(p3);p.add(p1);
+		p.add(p1);p.add(p2);p.add(p3);
 		
 		Order new_order = new Order(p);
 //		Order new_order = makeRandomOrder(4, 30, 1, 5, 5);
 		new_order.volSort();
 		System.out.println(new_order);
 		
-		FillSingleExponential  tmp = new FillSingleExponential(new Box(10,10,7));
+		InitialAttemptAlgo  tmp = new InitialAttemptAlgo(new Box(40,20,20,"Box1",1));
 		Float a = tmp.prev_calcAcc(new_order);
 		
 		tmp.fill(new_order, new Vector(0,0,0), 0);
