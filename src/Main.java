@@ -4,16 +4,14 @@ import Physical.Shipment;
 import com.opencsv.CSVReader;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Main program
- * todo : implement the merge feature
  */
 public class Main {
+
+    private static boolean LOG = false;
 
     /**
      * Reads boxes and items in it
@@ -55,13 +53,13 @@ public class Main {
                     new Shipment(
                             box_fields[1],
                             box_fields[2],
-                            Float.parseFloat(box_fields[10]),
-                            Float.parseFloat(box_fields[11]),
-                            Float.parseFloat(box_fields[12]),
-                            Float.parseFloat((box_fields[13]))
+                            Double.parseDouble(box_fields[10]),
+                            Double.parseDouble(box_fields[11]),
+                            Double.parseDouble(box_fields[12]),
+                            Double.parseDouble((box_fields[13]))
                     ));
         }
-        System.out.println("Read boxes finished");
+        if (LOG) System.out.println("Read boxes finished");
 
         CSVReader pc_map_reader = new CSVReader(new FileReader(part_clone_count_maps_path));
         // Ignore CSV heading
@@ -81,12 +79,12 @@ public class Main {
             // quantity > 0
             Shipment shipment = shipments.get(shipment_id);
             if (shipment == null) {
-                System.out.println("Warning : Unknown box found " + shipment_id);
+                if (LOG) System.out.println("Warning : Unknown box found " + shipment_id);
             } else {
                 shipment.addPart(sku, quantity);
             }
         }
-        System.out.println("Read part clone count maps finished");
+        if (LOG) System.out.println("Read part clone count maps finished");
 
         // Validate Bad Cases ///////////////////////////////////////////////////////////////////////////////////
 
@@ -98,26 +96,24 @@ public class Main {
             // Keep track of Empty Shipments
             if (shipment.getValue().part_clone_count_map.size() == 0) {
                 empty_boxes.add(shipment.getKey());
-                System.out.println("Warning : Empty box found " + shipment.getKey());
+                if (LOG) System.out.println("Warning : Empty box found " + shipment.getKey());
             }
         }
 
         // Removing Empty box
         for (String empty_box : empty_boxes) {
             shipments.remove(empty_box);
-            System.out.println("Note : Empty box ignored " + empty_box);
+            if (LOG) System.out.println("Note : Empty box ignored " + empty_box);
         }
 
         return shipments;
     }
 
     /**
-     * Prepares and returns all Full SInequality Sets, from both old and new data
-     * Full set = Set of all n-SInequalities among available
-     * All full sets is a map : cardinality -> full set
+     * Prepares and returns all SInequalities from both old and new data
      */
-    private static Map<Integer, Vector<SInequality>> extractAllFullSets() throws IOException {
-        Map<Integer, Vector<SInequality>> full_sets = new HashMap<>();
+    private static Vector<SInequality> extractAll() throws IOException {
+        Vector<SInequality> all = new Vector<>();
 
         // Old data
         // todo implement this
@@ -125,9 +121,28 @@ public class Main {
         // New data
         Map<String, Shipment> shipments = Main.readNewShipments();
         // For each shipment
-        for (Map.Entry<String, Shipment> shipment : shipments.entrySet()) {
+        for (Map.Entry<String, Shipment> id_shipment_map : shipments.entrySet()) {
 
-            SInequality sInequality = shipment.getValue().extractSInequality();
+            SInequality sInequality = id_shipment_map.getValue().extractSInequality();
+            all.add(sInequality);
+
+        }
+
+        return all;
+    }
+
+    /**
+     * Prepares and returns all Full SInequality Sets, from all SInequalities
+     * Full set = Set of all n-SInequalities among available
+     * All full sets is a map : cardinality -> full set
+     */
+    private static Map<Integer, Vector<SInequality>> extractAllFullSets() throws IOException {
+        Map<Integer, Vector<SInequality>> full_sets = new HashMap<>();
+
+        Vector<SInequality> all = Main.extractAll();
+        // For each shipment
+        for (SInequality sInequality : all) {
+
             int cardinality = sInequality.getCardinality();
 
             // If already there add
@@ -148,6 +163,7 @@ public class Main {
 
     /**
      * Prepares and returns all Similar SInequality sets, from all Full SInequality Sets
+     * Filters out the unsolvable similar sets i.e. when cardinality > # SInequalities in similar set
      * todo : instead of removing unsolvable similar sets store them for future use
      * Similar set with a signature = Set of all n-SInequalities among available with given signature
      * All similar sets is a map : signature -> similar set
@@ -188,73 +204,37 @@ public class Main {
             // Keep track of such sets
             if (similar_set.getKey().size() > similar_set.getValue().size()) {
                 unsolvable_similar_sets.add(similar_set.getKey());
-                System.out.println("Note : Unsolvable similar set found " + similar_set.getKey());
+                if (LOG) System.out.println("Note : Unsolvable similar set found " + similar_set.getKey());
             }
         }
 
         // Remove all unsolvable similar sets
         for (Set<String> unsolvable_similar_set : unsolvable_similar_sets) {
             similar_sets.remove(unsolvable_similar_set);
-            System.out.println("Note : Unsolvable similar set removed " + unsolvable_similar_set);
+            if (LOG) System.out.println("Note : Unsolvable similar set removed " + unsolvable_similar_set);
         }
 
         return similar_sets;
     }
 
     /**
-     * Assert all sInequalities have same signature
-     * and each sInequality's cardinality = size of sInequalities vector
-     * todo : throw the unused sInequalities into old data
-     */
-    public static Matrix Solve(Vector<SInequality> sInequalities) {
-        // Declare array of arrays
-        // The coefficient matrix
-        double[][] a = new double[sInequalities.size()][sInequalities.size()];
-        // The constant matrix
-        double[][] b = new double[sInequalities.size()][4];
-
-        // Fill the array of arrays
-        // For each sInequality
-        for (int i = 0; i < sInequalities.size(); i++) {
-            SInequality sInequality = sInequalities.get(i);
-            // Keep track of coefficient row
-            a[i] = sInequality.getCoefficientRow();
-            // Keep track of constant row
-            b[i] = sInequality.getConstantRow();
-        }
-
-        // Create Coefficient matrix and constant matrix
-        Matrix A = new Matrix(a);
-        Matrix B = new Matrix(b);
-
-        // X = A^-1 * B
-        Matrix X = null;
-        try {
-            X = A.solve(B);
-            X.print(1, 0);
-        } catch (RuntimeException e) {
-            System.out.println("Note : Singular matrix found");
-        }
-        return X;
-    }
-
-    /**
-     * Prepares and solves all possible Square SInequality sets, from a given similar set
+     * Prepares and puts into param square_sets all possible Square SInequality sets, from a given Similar SInequality set
      * Assert param similar_set to be a similar set
      * Reference : geeks for geeks
      * <br/>
      * Selects 'cardinality' number of SInequalities from 'similar_set' into 'buffer'
-     * Creates all such combinations
      * There are
      * ------similar_set.size()
      * ------------------------C
      * -------------------------cardinality
      * number of combinations
-     * Each buffer (a combination) is a square set therefore Solve() is called upon it
+     * <p>
+     * todo : put a limit to it
      */
-    private static void extractSquareSets(Vector<SInequality> similar_set, int cardinality, Vector<SInequality> buffer, int buffer_i, int input_i) {
+    private static void extractSquaresFromSimilar(Vector<SInequality> similar_set, int cardinality, Vector<SInequality> buffer, int buffer_i, int input_i, Vector<Vector<SInequality>> square_sets) {
         if (buffer_i == cardinality) {
-            Main.Solve(buffer);
+            Vector<SInequality> square = new Vector<>(buffer);
+            square_sets.add(square);
             return;
         }
 
@@ -266,14 +246,19 @@ public class Main {
         buffer.set(buffer_i, similar_set.get(input_i));
 
         // put next at next location
-        extractSquareSets(similar_set, cardinality, buffer, buffer_i + 1, input_i + 1);
+        Main.extractSquaresFromSimilar(similar_set, cardinality, buffer, buffer_i + 1, input_i + 1, square_sets);
 
         // current is excluded, replace it with next (Note that i+1 is passed, but index is not changed)
-        extractSquareSets(similar_set, cardinality, buffer, buffer_i, input_i + 1);
+        Main.extractSquaresFromSimilar(similar_set, cardinality, buffer, buffer_i, input_i + 1, square_sets);
+
     }
 
-
-    public static void main(String[] args) throws IOException {
+    /**
+     * Prepares and returns all Square SInequality sets, from all Similar SInequality sets
+     * Square set = A set of “n” n-sInequalities, in which all sInequalities have the same signature
+     */
+    private static Map<Set<String>, Vector<Vector<SInequality>>> extractAllSquareSets() throws IOException {
+        Map<Set<String>, Vector<Vector<SInequality>>> square_sets = new HashMap<>();
 
         // All similar sets
         // with unsolvable sets filtered
@@ -287,13 +272,116 @@ public class Main {
 
             if (cardinality <= 1) continue;
 
+            // Prepare buffer
             Vector<SInequality> buffer = new Vector<>();
             for (int i = 0; i < cardinality; i++) {
                 buffer.add(null);
             }
-            System.out.println(similar_set.size() + " C " + cardinality);
-            extractSquareSets(similar_set, cardinality, buffer, 0, 0);
+            // Prepares all square sets from this similar set
+            Vector<Vector<SInequality>> square_sets_from_this = new Vector<>();
+
+            // Extract all square sets from this similar set
+            Main.extractSquaresFromSimilar(similar_set, cardinality, buffer, 0, 0, square_sets_from_this);
+
+            // Puts the signature as key
+            // All square sets from this similar set as value
+            square_sets.put(similar_set_m.getKey(), square_sets_from_this);
+
         }
+
+        return square_sets;
+    }
+
+    /**
+     * Assert index of an id equals the index of its estimate in new_estimates
+     */
+    private static void pushNewEstimates(Vector<String> ids, double[][] new_estimates) {
+        for (int i = 0; i < ids.size(); i++) {
+            PartEstimates.pushEstimate(ids.get(i), new_estimates[i]);
+        }
+    }
+
+    /**
+     * Estimates values from the given square set, in all possible ways
+     * Ways of estimation:
+     * ==================
+     * 1. simple linear solution
+     * todo 2. intelligent merge
+     * <p>
+     * Assert param square_set is a square set
+     * Assert there is at least one element in param square_set i.e. empty boxes are removed from new data
+     * todo : throw the unused sInequalities into old data
+     */
+    private static void estimateFromSquareSet(Vector<SInequality> square_set) {
+
+        // Declare array of arrays
+        // The coefficient matrix
+        double[][] a = new double[square_set.size()][square_set.size()];
+        // The constant matrix
+        double[][] b = new double[square_set.size()][4];
+
+        // Fill the array of arrays
+        // For each sInequality
+        for (int i = 0; i < square_set.size(); i++) {
+            SInequality sInequality = square_set.get(i);
+            // Keep track of coefficient row
+            a[i] = sInequality.getCoefficientRow();
+            // Keep track of constant row
+            b[i] = sInequality.getConstantRow();
+        }
+
+        // Create Coefficient matrix and constant matrix
+        Matrix A = new Matrix(a);
+        Matrix B = new Matrix(b);
+
+        // Try to solve
+        if (A.det() != 0) {
+            // X = A^-1 * B
+            Matrix X = A.solve(B);
+            double[][] estimates = X.getArray();
+
+            boolean has_non_positive_dimension = false;
+
+            for (double[] estimate : estimates) {
+                for (double dimension : estimate) {
+                    if (dimension <= 0) {
+                        has_non_positive_dimension = true;
+                        break;
+                    }
+                }
+                if (has_non_positive_dimension) break;
+            }
+
+            // Has non positive dimension
+            if (has_non_positive_dimension) {
+                // Pass
+                // todo : specially solve these
+            }
+            // Else
+            else {
+                // At least one element exists in param square_set
+                Main.pushNewEstimates(square_set.get(0).getVariableRow(), estimates);
+            }
+
+        }
+        // Singular coefficient matrix
+        else {
+            if (LOG) System.out.println("Note : Singular matrix found");
+        }
+
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        Map<Set<String>, Vector<Vector<SInequality>>> square_sets = Main.extractAllSquareSets();
+
+        for (Map.Entry<Set<String>, Vector<Vector<SInequality>>> square_sets_from_this : square_sets.entrySet()) {
+            for (Vector<SInequality> square_set : square_sets_from_this.getValue()) {
+                Main.estimateFromSquareSet(square_set);
+            }
+        }
+
+        PartEstimates.printAllEstimates();
 
     }
 
