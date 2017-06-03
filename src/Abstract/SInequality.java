@@ -143,6 +143,32 @@ public class SInequality {
         return this.upper_limits;
     }
 
+    /**
+     * Assert the param estimate is in correspondence with upper_limits
+     */
+    public void substitute(String variable, double[] estimate) throws HugeEstimateException {
+        // If such a variable exists
+        if (this.terms.containsKey(variable)) {
+            // Substitute one by one
+            double term_value;
+
+            for (int i = 0; i < estimate.length; ++i) {
+
+                term_value = this.terms.get(variable) * estimate[i];
+                // May be a good estimate
+                if (term_value < this.upper_limits[i]) {
+                    this.terms.remove(variable);
+                    this.upper_limits[i] = this.upper_limits[i] - term_value;
+                }
+                // Huge estimate
+                else throw new HugeEstimateException();
+
+            }
+
+        }
+
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

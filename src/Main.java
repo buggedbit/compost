@@ -13,6 +13,12 @@ public class Main {
 
     private static boolean LOG = false;
 
+    private static Vector<SInequality> all = new Vector<>();
+
+    private static Vector<SInequality> left_overs = new Vector<>();
+
+    // -----------------------------------------------------------------------------------------------
+
     /**
      * Reads boxes and items in it
      * <br/>
@@ -110,9 +116,9 @@ public class Main {
     }
 
     /**
-     * Prepares and returns all SInequalities from both old and new data
+     * Prepares and puts all SInequalities from both old and new data into the static field all
      */
-    private static Vector<SInequality> extractAll() throws IOException {
+    private static void fillAllBuffer() throws IOException {
         Vector<SInequality> all = new Vector<>();
 
         // Old data
@@ -128,8 +134,10 @@ public class Main {
 
         }
 
-        return all;
+        Main.all = all;
     }
+
+    // -----------------------------------------------------------------------------------------------
 
     /**
      * Prepares and returns all Full SInequality Sets, from all SInequalities
@@ -139,7 +147,7 @@ public class Main {
     private static Map<Integer, Vector<SInequality>> extractAllFullSets() throws IOException {
         Map<Integer, Vector<SInequality>> full_sets = new HashMap<>();
 
-        Vector<SInequality> all = Main.extractAll();
+        Vector<SInequality> all = Main.all;
         // For each shipment
         for (SInequality sInequality : all) {
 
@@ -208,8 +216,12 @@ public class Main {
             }
         }
 
-        // Remove all unsolvable similar sets
+        // Remove all unsolvable similar sets from returning map
         for (Set<String> unsolvable_similar_set : unsolvable_similar_sets) {
+
+            // Keep track of unsolvable similar set's sInequalities
+            Main.left_overs.addAll(similar_sets.get(unsolvable_similar_set));
+
             similar_sets.remove(unsolvable_similar_set);
             if (LOG) System.out.println("Note : Unsolvable similar set removed " + unsolvable_similar_set);
         }
@@ -270,8 +282,6 @@ public class Main {
             Vector<SInequality> similar_set = similar_set_m.getValue();
             int cardinality = similar_set_m.getKey().size();
 
-            if (cardinality <= 1) continue;
-
             // Prepare buffer
             Vector<SInequality> buffer = new Vector<>();
             for (int i = 0; i < cardinality; i++) {
@@ -291,6 +301,8 @@ public class Main {
 
         return square_sets;
     }
+
+    // -----------------------------------------------------------------------------------------------
 
     /**
      * Assert index of an id equals the index of its estimate in new_estimates
@@ -371,17 +383,42 @@ public class Main {
 
     }
 
+    // -----------------------------------------------------------------------------------------------
+
+    /**
+     * Takes all estimates estimated, substitutes them in left_overs recursively until no more substitution is possible
+     * Whenever a substitution results in the upper limit to reduce to non-positive number raises HugeEstimateException
+     */
+    private static void resubstitute() {
+        // Nothing to resubstitute
+        if (Main.left_overs.size() == 0) {
+            // Clear the all buffer
+            Main.all.clear();
+        }
+
+
+
+    }
 
     public static void main(String[] args) throws IOException {
-        Map<Set<String>, Vector<Vector<SInequality>>> square_sets = Main.extractAllSquareSets();
+        // Initialize
+        // Fill the all buffer
+        Main.fillAllBuffer();
+        Map<Set<String>, Vector<Vector<SInequality>>> square_sets;
 
+        // Extract
+        square_sets = Main.extractAllSquareSets();
+
+        // Estimate
         for (Map.Entry<Set<String>, Vector<Vector<SInequality>>> square_sets_from_this : square_sets.entrySet()) {
             for (Vector<SInequality> square_set : square_sets_from_this.getValue()) {
                 Main.estimateFromSquareSet(square_set);
             }
         }
-
         PartEstimates.printAllEstimates();
+
+        // Re-Substitute
+//        Main.resubstitute();
 
     }
 

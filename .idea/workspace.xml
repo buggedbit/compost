@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2d603a3-97d2-43fa-aac9-41eed199049a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/PartEstimates.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Abstract/SInequality.java" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PartEstimates.java" afterPath="$PROJECT_DIR$/src/PartEstimates.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,42 +21,28 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="701">
-              <caret line="314" column="73" lean-forward="true" selection-start-line="314" selection-start-column="73" selection-end-line="314" selection-end-column="73" />
+            <state relative-caret-position="420">
+              <caret line="413" column="37" lean-forward="false" selection-start-line="413" selection-start-column="37" selection-end-line="413" selection-end-column="37" />
               <folding>
                 <element signature="docComment;class#Main#0" expanded="false" />
                 <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-                <element signature="e#1154#1163#0" expanded="false" />
-                <element signature="e#2225#2234#0" expanded="false" />
-                <element signature="e#2490#2499#0" expanded="false" />
-                <element signature="docComment;method#extractAll#0;class#Main#0" expanded="false" />
-                <element signature="e#3908#3919#0" expanded="false" />
+                <element signature="docComment;method#fillAllBuffer#0;class#Main#0" expanded="false" />
+                <element signature="e#4154#4165#0" expanded="false" />
                 <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
                 <element signature="docComment;method#extractAllSimilarSets#0;class#Main#0" expanded="false" />
-                <element signature="e#6062#6085#0" expanded="false" />
-                <element signature="e#7080#7131#0" expanded="false" />
+                <element signature="e#6407#6430#0" expanded="false" />
+                <element signature="e#7425#7476#0" expanded="false" />
                 <element signature="docComment;method#extractSquaresFromSimilar#0;class#Main#0" expanded="false" />
                 <element signature="docComment;method#extractAllSquareSets#0;class#Main#0" expanded="false" />
-                <element signature="e#9675#9694#0" expanded="false" />
-                <element signature="e#10652#10680#0" expanded="false" />
+                <element signature="e#10187#10206#0" expanded="false" />
+                <element signature="e#11119#11147#0" expanded="false" />
                 <element signature="docComment;method#pushNewEstimates#0;class#Main#0" expanded="false" />
                 <element signature="docComment;method#estimateFromSquareSet#0;class#Main#0" expanded="false" />
-                <element signature="e#11704#11730#0" expanded="false" />
-                <element signature="e#11935#11962#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PartEstimates.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/PartEstimates.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="20" column="47" lean-forward="false" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="docComment;field#id_estimate_map#0;class#PartEstimates#0" expanded="false" />
-                <element signature="initializer##0;class#PartEstimates#0" expanded="true" />
+                <element signature="e#12275#12301#0" expanded="false" />
+                <element signature="e#12506#12533#0" expanded="false" />
+                <element signature="docComment;method#resubstitute#0;class#Main#0" expanded="false" />
+                <element signature="method#resubstitute#0;class#Main#0" expanded="true" />
+                <marker date="1496488799807" expanded="false" signature="4093:4560" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -171,11 +158,11 @@
         <option value="$PROJECT_DIR$/src/Abstract/Solver.java" />
         <option value="$PROJECT_DIR$/src/Physical/Shipment.java" />
         <option value="$PROJECT_DIR$/src/Demo.java" />
-        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
         <option value="$PROJECT_DIR$/src/Estimates.java" />
         <option value="$PROJECT_DIR$/src/Makefile" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates.java" />
+        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
   </component>
@@ -209,7 +196,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -239,6 +225,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -691,12 +678,13 @@
       <workItem from="1495437750642" duration="2047000" />
       <workItem from="1495458965422" duration="6095000" />
       <workItem from="1495637332962" duration="2228000" />
-      <workItem from="1496302876970" duration="42135000" />
+      <workItem from="1496302876970" duration="43952000" />
+      <workItem from="1496481998373" duration="6087000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112316000" />
+    <option name="totallyTimeSpent" value="120220000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -760,23 +748,23 @@
           <folding>
             <element signature="docComment;class#Main#0" expanded="false" />
             <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-            <element signature="e#1154#1163#0" expanded="false" />
-            <element signature="e#2225#2234#0" expanded="false" />
-            <element signature="e#2490#2499#0" expanded="false" />
-            <element signature="docComment;method#extractAll#0;class#Main#0" expanded="false" />
-            <element signature="e#3908#3919#0" expanded="false" />
+            <element signature="docComment;method#fillAllBuffer#0;class#Main#0" expanded="false" />
+            <element signature="e#4154#4165#0" expanded="false" />
             <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#extractAllSimilarSets#0;class#Main#0" expanded="false" />
-            <element signature="e#6062#6085#0" expanded="false" />
-            <element signature="e#7080#7131#0" expanded="false" />
+            <element signature="e#6407#6430#0" expanded="false" />
+            <element signature="e#7425#7476#0" expanded="false" />
             <element signature="docComment;method#extractSquaresFromSimilar#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#extractAllSquareSets#0;class#Main#0" expanded="false" />
-            <element signature="e#9675#9694#0" expanded="false" />
-            <element signature="e#10652#10680#0" expanded="false" />
+            <element signature="e#10187#10206#0" expanded="false" />
+            <element signature="e#11119#11147#0" expanded="false" />
             <element signature="docComment;method#pushNewEstimates#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#estimateFromSquareSet#0;class#Main#0" expanded="false" />
-            <element signature="e#11704#11730#0" expanded="false" />
-            <element signature="e#11935#11962#0" expanded="false" />
+            <element signature="e#12275#12301#0" expanded="false" />
+            <element signature="e#12506#12533#0" expanded="false" />
+            <element signature="docComment;method#resubstitute#0;class#Main#0" expanded="false" />
+            <element signature="method#resubstitute#0;class#Main#0" expanded="true" />
+            <marker date="1496488799807" expanded="false" signature="4093:4560" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -787,10 +775,6 @@
           <caret line="54" column="72" lean-forward="false" selection-start-line="54" selection-start-column="72" selection-end-line="54" selection-end-column="72" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#Shipment#0;class#Shipment#0" expanded="false" />
-            <element signature="method#addPart#0;class#Shipment#0" expanded="false" />
-            <element signature="method#extractSInequality#0;class#Shipment#0" expanded="false" />
-            <element signature="method#toString#0;class#Shipment#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -805,10 +789,6 @@
           <caret line="42" column="4" lean-forward="true" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#Shipment#0;class#Shipment#0" expanded="false" />
-            <element signature="method#addPart#0;class#Shipment#0" expanded="false" />
-            <element signature="method#extractSInequality#0;class#Shipment#0" expanded="false" />
-            <element signature="method#toString#0;class#Shipment#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -822,10 +802,6 @@
           <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#Shipment#0;class#Shipment#0" expanded="false" />
-            <element signature="method#addPart#0;class#Shipment#0" expanded="false" />
-            <element signature="method#extractSInequality#0;class#Shipment#0" expanded="false" />
-            <element signature="method#toString#0;class#Shipment#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -976,32 +952,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/out2" />
-    <entry file="jar://$PROJECT_DIR$/lib/jlinalg/jlinalg.jar!/org/jlinalg/LinSysSolver.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="98" column="59" lean-forward="false" selection-start-line="98" selection-start-column="59" selection-end-line="98" selection-end-column="59" />
-          <folding>
-            <element signature="method#solve#0;class#LinSysSolver#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/Solver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jlinalg/jlinalg.jar!/org/jlinalg/LinSysSolver.class" />
+    <entry file="file://$PROJECT_DIR$/src/Abstract/Solver.java" />
     <entry file="jar://$PROJECT_DIR$/lib/jama.jar!/Jama/Matrix.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="479">
           <caret line="630" column="30" lean-forward="false" selection-start-line="630" selection-start-column="30" selection-end-line="630" selection-end-column="30" />
-          <folding>
-            <element signature="e#17607#17608#0" expanded="true" />
-            <element signature="e#17680#17681#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1027,18 +983,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-546">
           <caret line="9" column="25" lean-forward="false" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Demo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Demo.java" />
     <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="103">
@@ -1049,10 +997,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Makefile" />
+    <entry file="file://$PROJECT_DIR$/src/PartEstimates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="702">
+          <caret line="46" column="49" lean-forward="false" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="initializer##0;class#PartEstimates#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="107" column="26" lean-forward="false" selection-start-line="107" selection-start-column="26" selection-end-line="107" selection-end-column="26" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="docComment;class#SInequality#0" expanded="false" />
             <element signature="docComment;field#terms#0;class#SInequality#0" expanded="false" />
@@ -1070,50 +1030,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="6" lean-forward="true" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PartEstimates.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="20" column="47" lean-forward="false" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;field#id_estimate_map#0;class#PartEstimates#0" expanded="false" />
-            <element signature="initializer##0;class#PartEstimates#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="701">
-          <caret line="314" column="73" lean-forward="true" selection-start-line="314" selection-start-column="73" selection-end-line="314" selection-end-column="73" />
+        <state relative-caret-position="420">
+          <caret line="413" column="37" lean-forward="false" selection-start-line="413" selection-start-column="37" selection-end-line="413" selection-end-column="37" />
           <folding>
             <element signature="docComment;class#Main#0" expanded="false" />
             <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-            <element signature="e#1154#1163#0" expanded="false" />
-            <element signature="e#2225#2234#0" expanded="false" />
-            <element signature="e#2490#2499#0" expanded="false" />
-            <element signature="docComment;method#extractAll#0;class#Main#0" expanded="false" />
-            <element signature="e#3908#3919#0" expanded="false" />
+            <element signature="docComment;method#fillAllBuffer#0;class#Main#0" expanded="false" />
+            <element signature="e#4154#4165#0" expanded="false" />
             <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#extractAllSimilarSets#0;class#Main#0" expanded="false" />
-            <element signature="e#6062#6085#0" expanded="false" />
-            <element signature="e#7080#7131#0" expanded="false" />
+            <element signature="e#6407#6430#0" expanded="false" />
+            <element signature="e#7425#7476#0" expanded="false" />
             <element signature="docComment;method#extractSquaresFromSimilar#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#extractAllSquareSets#0;class#Main#0" expanded="false" />
-            <element signature="e#9675#9694#0" expanded="false" />
-            <element signature="e#10652#10680#0" expanded="false" />
+            <element signature="e#10187#10206#0" expanded="false" />
+            <element signature="e#11119#11147#0" expanded="false" />
             <element signature="docComment;method#pushNewEstimates#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#estimateFromSquareSet#0;class#Main#0" expanded="false" />
-            <element signature="e#11704#11730#0" expanded="false" />
-            <element signature="e#11935#11962#0" expanded="false" />
+            <element signature="e#12275#12301#0" expanded="false" />
+            <element signature="e#12506#12533#0" expanded="false" />
+            <element signature="docComment;method#resubstitute#0;class#Main#0" expanded="false" />
+            <element signature="method#resubstitute#0;class#Main#0" expanded="true" />
+            <marker date="1496488799807" expanded="false" signature="4093:4560" ph="{...}" />
           </folding>
         </state>
       </provider>

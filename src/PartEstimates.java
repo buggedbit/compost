@@ -44,6 +44,10 @@ public class PartEstimates {
         }
     }
 
+    public static double[] getEstimate(String id) {
+        return id_estimate_map.get(id);
+    }
+
     public static void printAllEstimates() {
         System.out.println("Part_sku : l b h w");
         for (Map.Entry<String, double[]> id_estimate : id_estimate_map.entrySet()) {
