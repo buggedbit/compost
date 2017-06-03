@@ -1,5 +1,7 @@
 package Abstract;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -33,7 +35,7 @@ public class SInequality {
     /**
      * Map : Variable -> Constant
      */
-    Map<String, Integer> terms = new HashMap<>();
+    private Map<String, Integer> terms = new HashMap<>();
     /**
      * Upper limits
      * 0 : length
@@ -41,17 +43,46 @@ public class SInequality {
      * 2 : height
      * 3 : weight
      */
-    double[] upper_limits = new double[4];
+    private double[] upper_limits = new double[4];
 
     /**
      * Assert params > 0
-     * Assert length >= breadth >= height
      */
     public SInequality(double length, double breadth, double height, double weight) {
-        this.upper_limits[0] = length;
-        this.upper_limits[1] = breadth;
-        this.upper_limits[2] = height;
+        double hbl[] = {
+                height,
+                breadth,
+                length
+        };
+        Arrays.sort(hbl);
+
+        this.upper_limits[0] = hbl[2];
+        this.upper_limits[1] = hbl[1];
+        this.upper_limits[2] = hbl[0];
+
         this.upper_limits[3] = weight;
+    }
+
+    /**
+     * Parse constructor
+     * The format contract happens here
+     */
+    public SInequality(BufferedReader br) throws IOException {
+        // Number of terms
+        int no_of_terms = Integer.parseInt(br.readLine());
+        // Adding each term
+        String variable;
+        int co_efficient;
+        for (int i = 0; i < no_of_terms; i++) {
+            variable = br.readLine();
+            co_efficient = Integer.parseInt(br.readLine());
+            this.terms.put(variable, co_efficient);
+        }
+        // Upper limits
+        this.upper_limits[0] = Double.parseDouble(br.readLine());
+        this.upper_limits[1] = Double.parseDouble(br.readLine());
+        this.upper_limits[2] = Double.parseDouble(br.readLine());
+        this.upper_limits[3] = Double.parseDouble(br.readLine());
     }
 
     /**
@@ -144,29 +175,18 @@ public class SInequality {
     }
 
     /**
-     * Assert the param estimate is in correspondence with upper_limits
+     * Returns a string representation of this SInequality
      */
-    public void substitute(String variable, double[] estimate) throws HugeEstimateException {
-        // If such a variable exists
-        if (this.terms.containsKey(variable)) {
-            // Substitute one by one
-            double term_value;
-
-            for (int i = 0; i < estimate.length; ++i) {
-
-                term_value = this.terms.get(variable) * estimate[i];
-                // May be a good estimate
-                if (term_value < this.upper_limits[i]) {
-                    this.terms.remove(variable);
-                    this.upper_limits[i] = this.upper_limits[i] - term_value;
-                }
-                // Huge estimate
-                else throw new HugeEstimateException();
-
-            }
-
+    public String format() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.terms.size()).append('\n');
+        for (Map.Entry<String, Integer> term : terms.entrySet()) {
+            sb.append(term.getKey()).append('\n').append(term.getValue()).append('\n');
         }
-
+        for (double upper_limit : this.upper_limits) {
+            sb.append(upper_limit).append('\n');
+        }
+        return sb.toString();
     }
 
     @Override

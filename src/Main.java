@@ -8,19 +8,18 @@ import java.util.*;
 
 /**
  * Main program
+ * todo : handle typos
  */
 public class Main {
 
     private static boolean LOG = false;
 
-    private static Vector<SInequality> all = new Vector<>();
-
     private static Vector<SInequality> left_overs = new Vector<>();
 
-    // -----------------------------------------------------------------------------------------------
+    // Read -----------------------------------------------------------------------------------------------
 
     /**
-     * Reads boxes and items in it
+     * Reads new shipments from the specified file
      * <br/>
      * The file path and format contract happens here
      * Assert all shipments are unique
@@ -30,6 +29,7 @@ public class Main {
      * Validates and cleans new data
      * 1. Empty Boxes - removes them from returning map
      * Returns a map : shipment id -> shipment
+     * fixme : if new data is entered between reading and clearing that data is lost
      */
     private static Map<String, Shipment> readNewShipments() throws IOException {
         final String boxes_path = "../db/raw/new/boxes.csv";
@@ -39,7 +39,7 @@ public class Main {
 
         CSVReader boxes_reader = new CSVReader(new FileReader(boxes_path));
         // Ignore CSV heading
-        String[] box_fields = boxes_reader.readNext();
+        String[] box_fields;
         // Reads boxes
         while ((box_fields = boxes_reader.readNext()) != null) {
 
@@ -67,9 +67,14 @@ public class Main {
         }
         if (LOG) System.out.println("Read boxes finished");
 
+        // Clear the file
+        PrintWriter boxes_writer = new PrintWriter(boxes_path);
+        boxes_writer.write("");
+        boxes_writer.close();
+
         CSVReader pc_map_reader = new CSVReader(new FileReader(part_clone_count_maps_path));
         // Ignore CSV heading
-        String[] pc_map_fields = pc_map_reader.readNext();
+        String[] pc_map_fields;
         // Reads part clone_count maps
         while ((pc_map_fields = pc_map_reader.readNext()) != null) {
 
@@ -91,6 +96,11 @@ public class Main {
             }
         }
         if (LOG) System.out.println("Read part clone count maps finished");
+
+        // Clear the file
+        PrintWriter pc_map_writer = new PrintWriter(part_clone_count_maps_path);
+        pc_map_writer.write("");
+        pc_map_writer.close();
 
         // Validate Bad Cases ///////////////////////////////////////////////////////////////////////////////////
 
@@ -116,13 +126,38 @@ public class Main {
     }
 
     /**
-     * Prepares and puts all SInequalities from both old and new data into the static field all
+     * Reads old sInequalities from the specified file
+     * <br/>
+     * The file path and format contract happens here
+     * Assert the file paths
+     * Assert the formats
      */
-    private static void fillAllBuffer() throws IOException {
+    private static Vector<SInequality> readOldSInequalities() throws IOException {
+        Vector<SInequality> old_sInequalities = new Vector<>();
+
+        final String old_sInequalities_path = "../db/raw/old/sInequalities";
+
+        BufferedReader br = new BufferedReader(new FileReader(old_sInequalities_path));
+
+        int no_of_old_sInequalities = Integer.parseInt(br.readLine());
+        for (int i = 0; i < no_of_old_sInequalities; i++) {
+
+            old_sInequalities.add(new SInequality(br));
+
+        }
+
+        return old_sInequalities;
+    }
+
+    /**
+     * Returns all SInequalities from both old and new data
+     */
+    private static Vector<SInequality> getAllSInequalities() throws IOException {
         Vector<SInequality> all = new Vector<>();
 
         // Old data
-        // todo implement this
+        Vector<SInequality> old = Main.readOldSInequalities();
+        all.addAll(old);
 
         // New data
         Map<String, Shipment> shipments = Main.readNewShipments();
@@ -134,10 +169,10 @@ public class Main {
 
         }
 
-        Main.all = all;
+        return all;
     }
 
-    // -----------------------------------------------------------------------------------------------
+    // Extract -----------------------------------------------------------------------------------------------
 
     /**
      * Prepares and returns all Full SInequality Sets, from all SInequalities
@@ -147,7 +182,7 @@ public class Main {
     private static Map<Integer, Vector<SInequality>> extractAllFullSets() throws IOException {
         Map<Integer, Vector<SInequality>> full_sets = new HashMap<>();
 
-        Vector<SInequality> all = Main.all;
+        Vector<SInequality> all = Main.getAllSInequalities();
         // For each shipment
         for (SInequality sInequality : all) {
 
@@ -172,7 +207,6 @@ public class Main {
     /**
      * Prepares and returns all Similar SInequality sets, from all Full SInequality Sets
      * Filters out the unsolvable similar sets i.e. when cardinality > # SInequalities in similar set
-     * todo : instead of removing unsolvable similar sets store them for future use
      * Similar set with a signature = Set of all n-SInequalities among available with given signature
      * All similar sets is a map : signature -> similar set
      */
@@ -302,7 +336,7 @@ public class Main {
         return square_sets;
     }
 
-    // -----------------------------------------------------------------------------------------------
+    // Estimate and Push -----------------------------------------------------------------------------------------------
 
     /**
      * Assert index of an id equals the index of its estimate in new_estimates
@@ -383,43 +417,51 @@ public class Main {
 
     }
 
-    // -----------------------------------------------------------------------------------------------
+    // Store -----------------------------------------------------------------------------------------------
 
     /**
-     * Takes all estimates estimated, substitutes them in left_overs recursively until no more substitution is possible
-     * Whenever a substitution results in the upper limit to reduce to non-positive number raises HugeEstimateException
+     * Writes all the left overs to specified file
+     * The file path and format contract happens here
+     * Assert the file paths
      */
-    private static void resubstitute() {
-        // Nothing to resubstitute
-        if (Main.left_overs.size() == 0) {
-            // Clear the all buffer
-            Main.all.clear();
+    private static void storeLeftOvers() throws IOException {
+        final String old_sInequalities_path = "../db/raw/old/sInequalities";
+
+        // Write to file
+        BufferedWriter bw = new BufferedWriter(new FileWriter(old_sInequalities_path));
+
+        bw.write(Main.left_overs.size() + "\n");
+        for (SInequality sInequality : Main.left_overs) {
+            bw.write(sInequality.format());
+            bw.flush();
         }
-
-
-
     }
 
+    /**
+     * Writes all the estimates to specified file
+     */
+    private static void storeEstimates() throws IOException {
+        PartEstimates.storeEstimates();
+    }
+
+    // -----------------------------------------------------------------------------------------------
+
     public static void main(String[] args) throws IOException {
-        // Initialize
-        // Fill the all buffer
-        Main.fillAllBuffer();
-        Map<Set<String>, Vector<Vector<SInequality>>> square_sets;
 
-        // Extract
-        square_sets = Main.extractAllSquareSets();
+        // Read and Extract
+        Map<Set<String>, Vector<Vector<SInequality>>> square_sets = Main.extractAllSquareSets();
 
-        // Estimate
+        // Estimate and Push
         for (Map.Entry<Set<String>, Vector<Vector<SInequality>>> square_sets_from_this : square_sets.entrySet()) {
             for (Vector<SInequality> square_set : square_sets_from_this.getValue()) {
                 Main.estimateFromSquareSet(square_set);
             }
         }
-        PartEstimates.printAllEstimates();
 
-        // Re-Substitute
-//        Main.resubstitute();
-
+        // Store Left Overs
+        Main.storeLeftOvers();
+        // Store Estimates
+        Main.storeEstimates();
     }
 
 }
