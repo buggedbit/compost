@@ -143,6 +143,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 	
 	@Override
 	public Order MainAlgo(Order new_order){
+//		Float initialVol = (float)new_order.getVol();
 		ArrayList<Order> rotatedOrders = genRotations(expandOrder(new_order), 0);
 		
 		Float acc = (float) 0;
@@ -159,16 +160,18 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 				tmp.fillBox(ord, key, new Vector(unFilled.get(key).x, tmp.b.dimension.y - key.y, unFilled.get(key).z));
 			}
 			if(tmp.calcAcc() > acc){
-				System.out.println("PREV :" + prev.toString());
+//				System.out.println("PREV :" + prev.toString());
 				this.b = tmp.b;
 				this.s = tmp.s;
 				this.unused = tmp.unused;
 				new_order = ord.copy();
 				acc = tmp.calcAcc();
-				System.out.println("CURR :" + tmp.calcAcc().toString());
+//				System.out.println("CURR :" + tmp.calcAcc().toString());
 			}
 		}
-		System.out.println("FINAL :" + acc.toString());
+//		System.out.println("FINAL BOX:" + b.dimension.toString() + " ACC:" + acc.toString());
+//		System.out.println("VOID:" + (100-acc)*b.getVol()/100);
+//		System.out.println("%COMPLETION:" + b.getPartsVol()*100.0/initialVol);
 		return new_order;
 	}
 	

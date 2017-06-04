@@ -76,38 +76,19 @@ public class FinalAlgortihmBaseClass {
 	}
 	
 	public Float calcAcc(){
-		Integer fillVol = 0;
-		for (Part p : b.parts) {
-			fillVol+= p.getVol();
-		}
-		return  (100* (fillVol /(float) (b.dimension.x*b.dimension.y*b.dimension.z)));
+		return (float)(b.getPartsVol()*100.0/b.getVol());
 	}
 	public Float prev_calcAcc(Order ord){
-		return  (100* (ord.getVol() /(float) (b.dimension.x*b.dimension.y*b.dimension.z)));
+		return (float)(ord.getVol() * 100.0/b.getVol());
 	}
 	
-	public static Order makeRandomOrder(Integer min,Integer max,Integer qty_min,Integer qty_max, Integer diffParts){
-		Random r = new Random();
-		//Integer min = 4, max = 20, qty_min = 1, qty_max = 3;
-		ArrayList<Part> ps = new ArrayList<>();
-		for (Integer i = 0; i < diffParts; i++) {
-			Integer x = r.nextInt((max - min) + 1) + min;
-			Integer y = r.nextInt((max - min) + 1) + min;
-			Integer z = r.nextInt((max - min) + 1) + min;
-			Integer q = r.nextInt((qty_max - qty_min) + 1) + qty_min;
-			Part p = new Part("Part" + i.toString(),x,y,z,10,q);
-			ps.add(p);
+	public void publish(String s) throws IOException{
+		File f = new File(s);
+		if(!f.exists()) { 
+			f.delete();
 		}
-		return new Order(ps);
-	}
-	
-	public void publish() throws IOException{
-		File f = new File("Packing.csv");
-		Boolean c = f.exists();
-		FileWriter fw = new FileWriter("Packing.csv", true);
-		if(!c) { 
-			fw.append("PartID,DimX,DimY,DimZ,PosX,PosY,PosZ,BoxID,Weight\n");
-		}
+		FileWriter fw = new FileWriter(s);
+		fw.append("PartID,DimX,DimY,DimZ,PosX,PosY,PosZ,BoxID,Weight\n");
 		for(Part part: b.parts){
         	fw.append(part.id + ",");
         	fw.append(part.dimension.x - 0.5 + ",");
@@ -122,7 +103,8 @@ public class FinalAlgortihmBaseClass {
         fw.flush();
         fw.close();
 	}
+
 	public Order MainAlgo(Order new_order) {
-	 return new_order;
+	 return null;
 	}
 }

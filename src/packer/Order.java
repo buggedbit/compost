@@ -29,13 +29,6 @@ public class Order {
 	        }
 	    });
 	}
-	public boolean isDone(){
-		for (Part part : order_list) {
-			if(part.quantity!=0)
-				return false;
-		}
-		return true;
-	}
 	public Integer numOfItems(){
 		Integer out =0;
 		for (Part part : order_list) {
@@ -59,8 +52,8 @@ public class Order {
 		}
 		return min;
 	}
-	public void publish() throws IOException{
-		FileWriter fw = new FileWriter("Order.csv");
+	public void publish(String s) throws IOException{
+		FileWriter fw = new FileWriter(s);
 		fw.append("PartID,DimX,DimY,DimZ,Quantity,Weight\n");
 		for(Part part: order_list){
         	fw.append(part.id + ",");

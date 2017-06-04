@@ -34,6 +34,13 @@ public class Box {
 		}
 		return sum;
 	}
+	public ArrayList<Part> copyParts(){
+		ArrayList<Part> copy = new ArrayList<>();
+		for (Part p : parts) {
+			copy.add(new Part(p, p.position, p.quantity));
+		}
+		return copy;
+	}
 	public String toString() {
 		return id + "-"+ num +":[" + dimension.toString() + "]\n" + parts.toString() + "\n";
 	}
