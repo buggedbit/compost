@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2d603a3-97d2-43fa-aac9-41eed199049a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/estimates/estimate_table" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/raw/old/sInequalities" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/db/estimates/estimates.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Abstract/HugeEstimateException.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/raw/new/boxes.csv" afterPath="$PROJECT_DIR$/db/raw/new/boxes.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/raw/new/part_clone_count_maps.csv" afterPath="$PROJECT_DIR$/db/raw/new/part_clone_count_maps.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Abstract/SInequality.java" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PartEstimates.java" afterPath="$PROJECT_DIR$/src/PartEstimates.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,51 +15,25 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="449" column="0" lean-forward="true" selection-start-line="449" selection-start-column="0" selection-end-line="449" selection-end-column="0" />
-              <folding>
-                <element signature="docComment;class#Main#0" expanded="false" />
-                <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-                <element signature="e#1430#1439#0" expanded="false" />
-                <element signature="e#2627#2636#0" expanded="false" />
-                <element signature="e#2892#2901#0" expanded="false" />
-                <element signature="docComment;method#readOldSInequalities#0;class#Main#0" expanded="false" />
-                <element signature="docComment;method#getAllSInequalities#0;class#Main#0" expanded="false" />
-                <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
-                <element signature="docComment;method#extractAllSimilarSets#0;class#Main#0" expanded="false" />
-                <element signature="e#7475#7498#0" expanded="false" />
-                <element signature="e#8493#8544#0" expanded="false" />
-                <element signature="docComment;method#extractSquaresFromSimilar#0;class#Main#0" expanded="false" />
-                <element signature="docComment;method#extractAllSquareSets#0;class#Main#0" expanded="false" />
-                <element signature="e#11255#11274#0" expanded="false" />
-                <element signature="e#12187#12215#0" expanded="false" />
-                <element signature="docComment;method#pushNewEstimates#0;class#Main#0" expanded="false" />
-                <element signature="docComment;method#estimateFromSquareSet#0;class#Main#0" expanded="false" />
-                <element signature="e#13361#13387#0" expanded="false" />
-                <element signature="e#13592#13619#0" expanded="false" />
-                <element signature="e#14758#14765#0" expanded="false" />
-                <element signature="docComment;method#storeLeftOvers#0;class#Main#0" expanded="false" />
-                <element signature="docComment;method#storeEstimates#0;class#Main#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PartEstimates.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/PartEstimates.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="494">
-              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state relative-caret-position="108">
+              <caret line="442" column="27" lean-forward="true" selection-start-line="442" selection-start-column="24" selection-end-line="442" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#storeEstimates#0;class#PartEstimates#0" expanded="true" />
-                <element signature="docComment;method#mergeEstimates#0;class#PartEstimates#0" expanded="false" />
-                <element signature="docComment;method#pushEstimate#0;class#PartEstimates#0" expanded="false" />
-                <element signature="e#3471#3472#0" expanded="true" />
-                <element signature="e#3517#3518#0" expanded="true" />
+                <element signature="method#readNewShipments#0;class#Main#0" expanded="true" />
+                <element signature="method#readOldSInequalities#0;class#Main#0" expanded="true" />
+                <element signature="method#getAllSInequalities#0;class#Main#0" expanded="true" />
+                <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+                <element signature="method#extractAllSimilarSets#0;class#Main#0" expanded="true" />
+                <element signature="method#extractSquaresFromSimilar#0;class#Main#0" expanded="true" />
+                <element signature="method#extractAllSquareSets#0;class#Main#0" expanded="true" />
+                <element signature="method#pushNewEstimates#0;class#Main#0" expanded="true" />
+                <element signature="method#estimateFromSquareSet#0;class#Main#0" expanded="true" />
+                <element signature="method#storeLeftOvers#0;class#Main#0" expanded="true" />
+                <element signature="method#storeEstimates#0;class#Main#0" expanded="true" />
+                <element signature="method#main#0;class#Main#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -189,8 +154,8 @@
         <option value="$PROJECT_DIR$/src/Estimates.java" />
         <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
         <option value="$PROJECT_DIR$/src/Makefile" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
   </component>
@@ -707,12 +672,12 @@
       <workItem from="1495458965422" duration="6095000" />
       <workItem from="1495637332962" duration="2228000" />
       <workItem from="1496302876970" duration="43952000" />
-      <workItem from="1496481998373" duration="17721000" />
+      <workItem from="1496481998373" duration="18386000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131854000" />
+    <option name="totallyTimeSpent" value="132519000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -774,28 +739,19 @@
         <state relative-caret-position="468">
           <caret line="18" column="45" lean-forward="false" selection-start-line="18" selection-start-column="45" selection-end-line="18" selection-end-column="45" />
           <folding>
-            <element signature="docComment;class#Main#0" expanded="false" />
-            <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-            <element signature="e#1430#1439#0" expanded="false" />
-            <element signature="e#2627#2636#0" expanded="false" />
-            <element signature="e#2892#2901#0" expanded="false" />
-            <element signature="docComment;method#readOldSInequalities#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#getAllSInequalities#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#extractAllSimilarSets#0;class#Main#0" expanded="false" />
-            <element signature="e#7475#7498#0" expanded="false" />
-            <element signature="e#8493#8544#0" expanded="false" />
-            <element signature="docComment;method#extractSquaresFromSimilar#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#extractAllSquareSets#0;class#Main#0" expanded="false" />
-            <element signature="e#11255#11274#0" expanded="false" />
-            <element signature="e#12187#12215#0" expanded="false" />
-            <element signature="docComment;method#pushNewEstimates#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#estimateFromSquareSet#0;class#Main#0" expanded="false" />
-            <element signature="e#13361#13387#0" expanded="false" />
-            <element signature="e#13592#13619#0" expanded="false" />
-            <element signature="e#14758#14765#0" expanded="false" />
-            <element signature="docComment;method#storeLeftOvers#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#storeEstimates#0;class#Main#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#readNewShipments#0;class#Main#0" expanded="true" />
+            <element signature="method#readOldSInequalities#0;class#Main#0" expanded="true" />
+            <element signature="method#getAllSInequalities#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllSimilarSets#0;class#Main#0" expanded="true" />
+            <element signature="method#extractSquaresFromSimilar#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllSquareSets#0;class#Main#0" expanded="true" />
+            <element signature="method#pushNewEstimates#0;class#Main#0" expanded="true" />
+            <element signature="method#estimateFromSquareSet#0;class#Main#0" expanded="true" />
+            <element signature="method#storeLeftOvers#0;class#Main#0" expanded="true" />
+            <element signature="method#storeEstimates#0;class#Main#0" expanded="true" />
+            <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1036,37 +992,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="449" column="0" lean-forward="true" selection-start-line="449" selection-start-column="0" selection-end-line="449" selection-end-column="0" />
-          <folding>
-            <element signature="docComment;class#Main#0" expanded="false" />
-            <element signature="docComment;method#readNewShipments#0;class#Main#0" expanded="false" />
-            <element signature="e#1430#1439#0" expanded="false" />
-            <element signature="e#2627#2636#0" expanded="false" />
-            <element signature="e#2892#2901#0" expanded="false" />
-            <element signature="docComment;method#readOldSInequalities#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#getAllSInequalities#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#extractAllFullSets#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#extractAllSimilarSets#0;class#Main#0" expanded="false" />
-            <element signature="e#7475#7498#0" expanded="false" />
-            <element signature="e#8493#8544#0" expanded="false" />
-            <element signature="docComment;method#extractSquaresFromSimilar#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#extractAllSquareSets#0;class#Main#0" expanded="false" />
-            <element signature="e#11255#11274#0" expanded="false" />
-            <element signature="e#12187#12215#0" expanded="false" />
-            <element signature="docComment;method#pushNewEstimates#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#estimateFromSquareSet#0;class#Main#0" expanded="false" />
-            <element signature="e#13361#13387#0" expanded="false" />
-            <element signature="e#13592#13619#0" expanded="false" />
-            <element signature="e#14758#14765#0" expanded="false" />
-            <element signature="docComment;method#storeLeftOvers#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#storeEstimates#0;class#Main#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3043">
@@ -1095,15 +1020,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PartEstimates.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state relative-caret-position="-1249">
+          <caret line="11" column="24" lean-forward="false" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="initializer##0;class#PartEstimates#0" expanded="true" />
             <element signature="method#storeEstimates#0;class#PartEstimates#0" expanded="true" />
             <element signature="docComment;method#mergeEstimates#0;class#PartEstimates#0" expanded="false" />
             <element signature="docComment;method#pushEstimate#0;class#PartEstimates#0" expanded="false" />
             <element signature="e#3471#3472#0" expanded="true" />
             <element signature="e#3517#3518#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="442" column="27" lean-forward="true" selection-start-line="442" selection-start-column="24" selection-end-line="442" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#readNewShipments#0;class#Main#0" expanded="true" />
+            <element signature="method#readOldSInequalities#0;class#Main#0" expanded="true" />
+            <element signature="method#getAllSInequalities#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllSimilarSets#0;class#Main#0" expanded="true" />
+            <element signature="method#extractSquaresFromSimilar#0;class#Main#0" expanded="true" />
+            <element signature="method#extractAllSquareSets#0;class#Main#0" expanded="true" />
+            <element signature="method#pushNewEstimates#0;class#Main#0" expanded="true" />
+            <element signature="method#estimateFromSquareSet#0;class#Main#0" expanded="true" />
+            <element signature="method#storeLeftOvers#0;class#Main#0" expanded="true" />
+            <element signature="method#storeEstimates#0;class#Main#0" expanded="true" />
+            <element signature="method#main#0;class#Main#0" expanded="true" />
           </folding>
         </state>
       </provider>
