@@ -264,7 +264,17 @@ public class Main {
     }
 
     /**
-     * Prepares and puts into param square_sets all possible Square SInequality sets, from a given Similar SInequality set
+     * Store the number of square sets formed in the present similar set
+     * */
+    private static int no_squares_formed_in_this_similar = 0;
+
+    /**
+     * The upper limit of the square sets formed for a similar set
+     * */
+    private static int squares_per_similar_limit = 100;
+
+    /**
+     * Prepares and puts into param square_sets min(all, squares_per_similar_limit) possible Square SInequality sets, from a given Similar SInequality set
      * Assert param similar_set to be a similar set
      * Reference : geeks for geeks
      * <br/>
@@ -274,13 +284,17 @@ public class Main {
      * ------------------------C
      * -------------------------cardinality
      * number of combinations
-     * <p>
-     * todo : put a limit to it
+     * Stops if the number of square sets formed equals squares_per_similar_limit
      */
     private static void extractSquaresFromSimilar(Vector<SInequality> similar_set, int cardinality, Vector<SInequality> buffer, int buffer_i, int input_i, Vector<Vector<SInequality>> square_sets) {
+        if (Main.no_squares_formed_in_this_similar >= squares_per_similar_limit) {
+            return;
+        }
+
         if (buffer_i == cardinality) {
             Vector<SInequality> square = new Vector<>(buffer);
             square_sets.add(square);
+            Main.no_squares_formed_in_this_similar++;
             return;
         }
 
@@ -325,6 +339,7 @@ public class Main {
             Vector<Vector<SInequality>> square_sets_from_this = new Vector<>();
 
             // Extract all square sets from this similar set
+            Main.no_squares_formed_in_this_similar = 0;
             Main.extractSquaresFromSimilar(similar_set, cardinality, buffer, 0, 0, square_sets_from_this);
 
             // Puts the signature as key

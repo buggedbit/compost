@@ -44,4 +44,5 @@ Use:
 
 1. Open the terminal in the src/ directory
 2. javac -cp ".:../lib/*" -d "../bin/" Main.java
-3. java -cp ".:../lib/*" Main
+3. Open the terminal in the bin/ directory
+4. java -cp ".:../lib/*" Main
