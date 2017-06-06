@@ -1,21 +1,18 @@
-import Coordinates.Latitude;
-import Coordinates.Longitude;
-
-/**
- * Represents position on earth
- */
 public class Address {
-    /**
-     * Latitude
-     */
-    Latitude latitude;
-    /**
-     * Longitude
-     */
-    Longitude longitude;
-
-    public Address(Latitude latitude, Longitude longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
+    String country, state, street;
+	public Address(String c) {
+		country = c;
+	}
+	public Address(String c,String s) {
+		country = c;
+		state = s;
+	}
+	public Address(String c, String s, String st) {
+		country = c;
+		state = s;
+		street = st;
+	}
+	public String toString() {
+		return street + ", " + state + ", " + country;
+	}
 }
