@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,15 +13,19 @@ public class Order {
      * Ordered parts and their clone counts
      * map : part id -> clone count
      */
-    Map<String, Integer> part_clone_count_map;
+    Map<String, Integer> part_clone_count_map = new HashMap<>();
 
     public Order(Address delivery_address) {
         this.delivery_address = delivery_address;
     }
 
+    public Order(Order order) {
+        this.delivery_address = new Address(order.delivery_address);
+        this.part_clone_count_map = new HashMap<>(order.part_clone_count_map);
+    }
+
     /**
-     * Adds the part to the order
-     * If the part already exists in the order, the clone count is sum of previous and present clone counts
+     * If the part already exists in the order, the final clone count is sum of previous and present clone counts
      * Else adds the part to the order with the given clone count
      */
     public void addPart(String part, int clone_count) {
