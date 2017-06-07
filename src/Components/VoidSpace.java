@@ -1,13 +1,13 @@
-package packer;
+package Components;
 
 import java.io.*;
 import java.util.*;
 
 public class VoidSpace {
-	Integer currStep, currVoid;
-	Double currCompletion, FinalAccuracy;
-	Order remaining;
-	ArrayList<Box> boxes;
+	public Integer currStep, currVoid;
+	public Double currCompletion, FinalAccuracy;
+	public Order remaining;
+	public ArrayList<Box> boxes;
 
 	public ArrayList<Box> copyBoxes(){
 		ArrayList<Box> copy = new ArrayList<>();
@@ -38,7 +38,7 @@ public class VoidSpace {
 
 	
 	public void publish(String s) throws IOException{
-		FileWriter fw = new FileWriter(s);
+		FileWriter fw = new FileWriter(".\\Outputs\\"+s);
 		fw.append("PartID,DimX,DimY,DimZ,PosX,PosY,PosZ,BoxID,Weight\n");
 		for(Box b: boxes){
 			for(Part part: b.parts){

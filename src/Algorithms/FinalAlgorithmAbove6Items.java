@@ -1,7 +1,7 @@
-package packer;
-import java.io.IOException;
+package Algorithms;
 import java.util.*;
-
+import Components.*;
+import Components.Vector;
 public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass{
 	
 	public FinalAlgorithmAbove6Items(Box b) {
@@ -90,22 +90,5 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass{
 //		System.out.println("WITHOUT VOID:" + (100-calcAcc())*b.getVol()/100);
 //		System.out.println("%COMPLETION:" + b.getPartsVol()*100/initialVol);
 		return new_order;
-	}
-	
-	public static void main(String[] args) throws IOException{//3 3 1 3 2
-		Part p1 = new Part("Part0",24,20,18,10,2);
-		Part p2 = new Part("part1",8,10,16,10,3);
-		Part p3 = new Part("Part2",25,6,40,10,3);
-		ArrayList<Part> p = new ArrayList<>();
-		p.add(p1);p.add(p2);p.add(p3);
-		
-		Order new_order = new Order(p);
-//		Order new_order = Helper.makeRandomOrder(5, 20, 1, 3, 5);
-//		new_order.publish();
-		System.out.println(new_order);
-		FinalAlgorithmAbove6Items tmp = new FinalAlgorithmAbove6Items(new Box(30,26,90,"Box1",1));
-		tmp.MainAlgo(new_order);
-		System.err.println(tmp.b);
-		tmp.publish("");
 	}
 }

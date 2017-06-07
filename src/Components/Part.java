@@ -1,10 +1,10 @@
-package packer;
+package Components;
 
 public class Part {
-	String id;
-	Integer weight;
-	Integer quantity;
-	Vector position, dimension;
+	public String id;
+	public Integer weight;
+	public Integer quantity;
+	public Vector position, dimension;
 	
 	public Part(String s, Integer l, Integer  w, Integer  h, Integer  wt, Integer qty) {
 		id = s;
@@ -26,7 +26,6 @@ public class Part {
 	}
 	
 	public Integer getVol(){
-//		return dimension.x*dimension.y*dimension.z*quantity;
 		return dimension.x*dimension.y*dimension.z;
 	}
 	public int volCompareTo(Part p) {

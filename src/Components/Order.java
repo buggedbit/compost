@@ -1,16 +1,16 @@
-package packer;
+package Components;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
 public class Order {
-	List<Part> order_list;
-	Order(List<Part> p){
+	public List<Part> order_list;
+	public Order(List<Part> p){
 		order_list = p;
 	}
 	
-	Order copy(){
+	public Order copy(){
 		List<Part> pList = new ArrayList<>(); 
 		for (Part p : order_list) {
 			pList.add(new Part(p.id, p.dimension.x, p.dimension.y, p.dimension.z, p.weight, p.quantity));
@@ -53,7 +53,7 @@ public class Order {
 		return min;
 	}
 	public void publish(String s) throws IOException{
-		FileWriter fw = new FileWriter(s);
+		FileWriter fw = new FileWriter(".\\Outputs\\"+s);
 		fw.append("PartID,DimX,DimY,DimZ,Quantity,Weight\n");
 		for(Part part: order_list){
         	fw.append(part.id + ",");

@@ -1,6 +1,7 @@
-package packer;
+package Algorithms;
 import java.util.*;
-
+import Components.*;
+import Components.Vector;
 public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 	
 	public FinalAlgorithmBelow6Items(Box b) {
@@ -153,7 +154,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 			}
 			ord.volSort();
 			FinalAlgorithmBelow6Items  tmp = new FinalAlgorithmBelow6Items(new Box(b.dimension.x,b.dimension.y,b.dimension.z,b.id,b.num));
-			Float prev = tmp.prev_calcAcc(ord);
+//			Float prev = tmp.prev_calcAcc(ord);
 			tmp.fillBox(ord,new Vector(0, 0, 0),tmp.b.dimension) ;		
 			HashMap<Vector, Vector> unFilled = tmp.combineUnused();
 			for (Vector key : unFilled.keySet()) {
@@ -174,18 +175,5 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass{
 //		System.out.println("%COMPLETION:" + b.getPartsVol()*100.0/initialVol);
 		return new_order;
 	}
-	
-	public static void main(String[] args) {
-		Part p1 = new Part("A",6,16,19,10,3);
-		Part p2 = new Part("D",18,11,9,10,4);
-//		Part p3 = new Part("E",24,9,9,10,1);
-		
-		ArrayList<Part> p = new ArrayList<>();
-		p.add(p1);p.add(p2);//p.add(p3);
-		
-		Order new_order = new Order(p);
-		FinalAlgorithmBelow6Items tmp = new FinalAlgorithmBelow6Items(new Box(40,20,20,"Box1",1));
-		tmp.MainAlgo(new_order);
-		System.out.println(tmp.b);
-	}
+
 }

@@ -1,10 +1,11 @@
-package packer;
+package Components;
 import java.util.*;
 
 public class Vector {
 	public Integer x, y, z;
-    @Override
-    public int hashCode() {
+    
+	@Override
+	public int hashCode() {
         return Objects.hash(x, y, z);
     }
     @Override
@@ -77,8 +78,8 @@ public class Vector {
 			return true;
 		else
 			return false;
-	}
-	
+	}	
+
 	public boolean checkIsEqualOrGreater(Part p){
 		if(x >= p.dimension.x && y >= p.dimension.y && z >= p.dimension.z )
 			return true;

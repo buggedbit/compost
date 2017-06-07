@@ -1,12 +1,15 @@
-package packer;
+package Algorithms;
 import java.io.*;
 import java.util.*;
+import Components.*;
+import Components.Vector;
 
 public class FinalAlgortihmBaseClass {
 	public Box b;
 	public Stack<Surface> s;
 	public HashMap<Vector, Vector> unused;
 	
+	@Override
 	public String toString(){
 		return b.toString() + "\n" + s.toString();
 	}
@@ -21,6 +24,7 @@ public class FinalAlgortihmBaseClass {
 		b.parts.clear();
 		unused.clear();
 	}
+	
 	@SuppressWarnings("serial")
 	public FinalAlgortihmBaseClass(Box b) {
 		this.b = b;
@@ -83,11 +87,7 @@ public class FinalAlgortihmBaseClass {
 	}
 	
 	public void publish(String s) throws IOException{
-		File f = new File(s);
-		if(!f.exists()) { 
-			f.delete();
-		}
-		FileWriter fw = new FileWriter(s);
+		FileWriter fw = new FileWriter(".\\Outputs\\"+s);
 		fw.append("PartID,DimX,DimY,DimZ,PosX,PosY,PosZ,BoxID,Weight\n");
 		for(Part part: b.parts){
         	fw.append(part.id + ",");

@@ -1,7 +1,8 @@
-package packer;
+package Algorithms;
 
 import java.util.*;
-import java.io.*;
+import Components.*;
+import Components.Vector;
 
 public class Helper {
 	public static Order makeRandomOrder(Integer min,Integer max,Integer qty_min,Integer qty_max, Integer diffParts){
@@ -36,22 +37,51 @@ public class Helper {
 			Integer y = r.nextInt((max - minn) + 1) + minn;
 			Integer z = r.nextInt((max - minn) + 1) + minn;			
 			out.add(new Box(x*aspect.x, y*aspect.y, z*aspect.z, "Box" + i.toString(), 1));
-//			min =  (int)(min*(1 + rate));
-//			rate = rate/(1 + 0.01*i);
 			min= (int)(min + alpha);
-//			alpha+= 0.2;
 		}
-		return out;
-	}
-	public static ArrayList<Box> readBoxes(String s) throws NumberFormatException, IOException{
-		ArrayList<Box> out = new ArrayList<>();
-		BufferedReader br= new BufferedReader(new FileReader(s));
-		String newLine=br.readLine();
-		while ((newLine = br.readLine()) != null) {
-		    String[] parts=newLine.split(",");
-		    out.add(new Box(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3]), parts[0], 1));
-		}
-		br.close();
 		return out;
 	}
 }
+/*
+		ArrayList<Box> b = new ArrayList<>();	
+		b.add(new Box(7, 9, 24,"Box1",1));
+		b.add(new Box(25, 30, 26,"Box2",1));
+		b.add(new Box(31, 33, 31,"Box3",1));
+		b.add(new Box(38, 40, 39,"Box4",1));
+		ArrayList<Box> b = Helper.makeBoxes(5, 20, 0.2);
+		
+		Part p1 = new Part("Part1",7,7,2,10,1);
+		Part p2 = new Part("part2",12,7,6,10,1);
+		Part p3 = new Part("Part3",9,8,4,10,3);
+		Part p4 = new Part("Part4",6,6,2,10,2);
+		ArrayList<Part> p = new ArrayList<>();
+		p.add(p1);p.add(p2);p.add(p3);p.add(p4);	
+		
+		Double avgAcc = 0.;
+		ArrayList<Double> lessAcc = new ArrayList<>();
+		
+		Integer count = 0, number  = 1;
+		long starttime = System.nanoTime();
+		for (int i = 0; i < number; i++) {
+			Order new_order = Helper.makeRandomOrder(6, 40, 1, 2, 4);
+			Order copy = new_order.copy();
+			copy.publish("Order.csv");
+			
+			VoidSpace vs = new VoidSpace(0,0, 0.,new_order);
+			vs = tmp.fill(vs, vs.remaining.getVol());
+			vs.publish("Packing.csv");
+			tmp.updateBoxStats(vs);
+			Double acc = vs.FinalAccuracy;
+			avgAcc+=acc;
+			if(acc < 65){
+				lessAcc.add(acc);
+				vs.publish("Packing"+count+".csv");
+				copy.publish("Order"+count+".csv");
+				count++;
+			}	
+		}
+		System.out.println("TIME:" + (System.nanoTime()-starttime)/1000000000);
+		System.out.println(lessAcc);
+		System.out.println("AVG :" + avgAcc/number);
+		System.out.println(tmp.boxUsage.toString());
+*/

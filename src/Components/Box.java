@@ -1,12 +1,13 @@
-package packer;
+package Components;
 
 import java.util.ArrayList;
 
+
 public class Box {
-	Vector dimension;
-	ArrayList<Part> parts;
-	String id;
-	Integer num;
+	public Vector dimension;
+	public ArrayList<Part> parts;
+	public String id;
+	public Integer num;
 	public Box(Integer  l, Integer  w, Integer h, String s,Integer n) {
 		dimension = new Vector(l, w, h);
 		parts = new ArrayList<>();

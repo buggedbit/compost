@@ -6,7 +6,7 @@ import matplotlib as mpl
 from matplotlib.backends.backend_pdf import PdfPages
 
 #Read the packing PARTS 
-df_parts = pd.read_csv("Packing1.csv")
+df_parts = pd.read_csv("..\Outputs\Packing.csv")
 dataset_parts = df_parts.values
 
 Component = {}
@@ -16,7 +16,7 @@ for row in dataset_parts:
     Component[row[7]].append([row[0], row[1:4].astype(np.float16), row[4:7].astype(np.float16)])
 
 #Read the BOX sizes 
-df_boxes = pd.read_csv("Boxes.csv")
+df_boxes = pd.read_csv("..\Inputs\Boxes.csv")
 dataset_boxes = df_boxes.values
     
 box_name = dataset_boxes[:,0].tolist()
@@ -30,7 +30,7 @@ unique_part_name = set()
 for p in part_name:
     unique_part_name.add(p)
     
-df = pd.read_csv("Colors.csv")
+df = pd.read_csv("..\Inputs\Colors.csv")
 dataset = df.values
 color = dataset[:,1].tolist()
 
@@ -113,20 +113,7 @@ def draw_legend(fig,color_coding, box_id):
         lst2.append(label)
     
     fig.legend(lst1, lst2, numpoints = 1,loc=4)
-    return fig
-
-#def save_pdf(axis, fig, pp,box):
-    #fig.suptitle(box + "Perspective View")
-    #pp.savefig(fig)
-    
-    #axis.view_init(elev=0., azim=0.)
-    #fig.suptitle(box + "Front View")
-    #pp.savefig(fig)
-    
-    #axis.view_init(elev=90., azim=0.)
-    #fig.suptitle(box + "Top View")
-    #pp.savefig(fig)
-    
+    return fig   
 
 mpl.rcParams.update({'font.size': 10})
 pp = PdfPages("Packing.pdf")    
@@ -142,13 +129,17 @@ for name in box_name:
             
             for part in Component[key]:
                 axis = draw_part(axis, part[2], part[1], color_coding[part[0]])
-            #save_pdf(axis, fig, pp, key)
+           
             axis.view_init(elev=Views[i][1], azim=Views[i][2])
             axis.set_title(Views[i][0])
+
         fig.suptitle(key)    
         fig = draw_legend(fig, color_coding, key)        
+        
         pp.savefig(fig)
         plt.gcf().clear()
+        
         num = num + 1
         key = name + "-" + str(num)
+
 pp.close()
