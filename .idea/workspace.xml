@@ -4,8 +4,6 @@
     <list default="true" id="75524074-450e-4417-a9d7-c8970b30dcd9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Order.java" afterPath="$PROJECT_DIR$/src/Order.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Warehouse.java" afterPath="$PROJECT_DIR$/src/Warehouse.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,53 +16,38 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+            <state relative-caret-position="26">
+              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding>
                 <element signature="docComment;class#Main#0" expanded="false" />
                 <element signature="docComment;method#allocateOptimizingCostPrice#0;class#Main#0" expanded="false" />
-                <element signature="method#compare#0;class#1130:2888" expanded="true" />
+                <element signature="method#compare#0;class#1179:2937" expanded="true" />
                 <element signature="docComment;method#allocateOptimizingDistance#0;class#Main#0" expanded="false" />
                 <element signature="docComment;method#allocateOptimizingDuration#0;class#Main#0" expanded="false" />
                 <element signature="docComment;method#getResponseWarehouseMap#0;class#Main#0" expanded="false" />
+                <element signature="method#getResponseWarehouseMap#0;class#Main#0" expanded="true" />
                 <element signature="docComment;method#allocateOrder#0;class#Main#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Warehouse.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Warehouse.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Warehouse.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="338">
-              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-              <folding>
-                <element signature="docComment;class#Warehouse#0" expanded="false" />
-                <element signature="docComment;field#address#0;class#Warehouse#0" expanded="false" />
-                <element signature="docComment;field#inventory#0;class#Warehouse#0" expanded="false" />
-                <element signature="docComment;class#PartInfo#0;class#Warehouse#0" expanded="false" />
-                <element signature="class#PartInfo#0;class#Warehouse#0" expanded="false" />
-                <element signature="docComment;method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="false" />
-                <element signature="method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="true" />
-                <element signature="docComment;method#insertNewPart#0;class#Warehouse#0" expanded="false" />
-                <element signature="docComment;method#pipeOrderGreedily#0;class#Warehouse#0" expanded="false" />
-                <element signature="docComment;method#pipePartGreedily#0;class#Warehouse#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Order.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Order.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="649">
-              <caret line="30" column="54" lean-forward="false" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
+            <state relative-caret-position="260">
+              <caret line="119" column="15" lean-forward="true" selection-start-line="119" selection-start-column="15" selection-end-line="119" selection-end-column="15" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#Order#1;class#Order#0" expanded="true" />
+                <element signature="method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="true" />
+                <element signature="e#921#922#0" expanded="true" />
+                <element signature="e#959#960#0" expanded="true" />
+                <element signature="method#insertNewPart#0;class#Warehouse#0" expanded="true" />
+                <element signature="method#pipeOrderGreedily#0;class#Warehouse#0" expanded="true" />
+                <element signature="method#pipePartGreedily#0;class#Warehouse#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -667,12 +650,12 @@
       <updated>1496743727043</updated>
       <workItem from="1496743728488" duration="13342000" />
       <workItem from="1496760773087" duration="10265000" />
-      <workItem from="1496819706083" duration="5640000" />
+      <workItem from="1496819706083" duration="6323000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29247000" />
+    <option name="totallyTimeSpent" value="29930000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -749,10 +732,11 @@
           <folding>
             <element signature="docComment;class#Main#0" expanded="false" />
             <element signature="docComment;method#allocateOptimizingCostPrice#0;class#Main#0" expanded="false" />
-            <element signature="method#compare#0;class#1130:2888" expanded="true" />
+            <element signature="method#compare#0;class#1179:2937" expanded="true" />
             <element signature="docComment;method#allocateOptimizingDistance#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#allocateOptimizingDuration#0;class#Main#0" expanded="false" />
             <element signature="docComment;method#getResponseWarehouseMap#0;class#Main#0" expanded="false" />
+            <element signature="method#getResponseWarehouseMap#0;class#Main#0" expanded="true" />
             <element signature="docComment;method#allocateOrder#0;class#Main#0" expanded="false" />
           </folding>
         </state>
@@ -838,28 +822,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-          <folding>
-            <element signature="docComment;class#Main#0" expanded="false" />
-            <element signature="docComment;method#allocateOptimizingCostPrice#0;class#Main#0" expanded="false" />
-            <element signature="method#compare#0;class#1130:2888" expanded="true" />
-            <element signature="docComment;method#allocateOptimizingDistance#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#allocateOptimizingDuration#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#getResponseWarehouseMap#0;class#Main#0" expanded="false" />
-            <element signature="docComment;method#allocateOrder#0;class#Main#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Order.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="649">
-          <caret line="30" column="54" lean-forward="false" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
+        <state relative-caret-position="337">
+          <caret line="32" column="37" lean-forward="true" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+            <element signature="e#418#419#0" expanded="true" />
             <element signature="method#Order#1;class#Order#0" expanded="true" />
           </folding>
         </state>
@@ -867,19 +837,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Warehouse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state relative-caret-position="260">
+          <caret line="119" column="15" lean-forward="true" selection-start-line="119" selection-start-column="15" selection-end-line="119" selection-end-column="15" />
           <folding>
-            <element signature="docComment;class#Warehouse#0" expanded="false" />
-            <element signature="docComment;field#address#0;class#Warehouse#0" expanded="false" />
-            <element signature="docComment;field#inventory#0;class#Warehouse#0" expanded="false" />
-            <element signature="docComment;class#PartInfo#0;class#Warehouse#0" expanded="false" />
-            <element signature="class#PartInfo#0;class#Warehouse#0" expanded="false" />
-            <element signature="docComment;method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="false" />
+            <element signature="imports" expanded="true" />
             <element signature="method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="true" />
-            <element signature="docComment;method#insertNewPart#0;class#Warehouse#0" expanded="false" />
-            <element signature="docComment;method#pipeOrderGreedily#0;class#Warehouse#0" expanded="false" />
-            <element signature="docComment;method#pipePartGreedily#0;class#Warehouse#0" expanded="false" />
+            <element signature="e#921#922#0" expanded="true" />
+            <element signature="e#959#960#0" expanded="true" />
+            <element signature="method#insertNewPart#0;class#Warehouse#0" expanded="true" />
+            <element signature="method#pipeOrderGreedily#0;class#Warehouse#0" expanded="true" />
+            <element signature="method#pipePartGreedily#0;class#Warehouse#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOptimizingCostPrice#0;class#Main#0" expanded="false" />
+            <element signature="method#compare#0;class#1179:2937" expanded="true" />
+            <element signature="docComment;method#allocateOptimizingDistance#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOptimizingDuration#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#getResponseWarehouseMap#0;class#Main#0" expanded="false" />
+            <element signature="method#getResponseWarehouseMap#0;class#Main#0" expanded="true" />
+            <element signature="docComment;method#allocateOrder#0;class#Main#0" expanded="false" />
           </folding>
         </state>
       </provider>

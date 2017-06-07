@@ -14,6 +14,7 @@ public class Main {
 
     /**
      * Allocates order among warehouses optimizing cost price
+     * Returns null if order cannot be fulfilled
      */
     private static Map<Warehouse, Map<String, Integer>> allocateOptimizingCostPrice(Order order, ArrayList<Warehouse> warehouses) {
         // Answer
@@ -96,6 +97,7 @@ public class Main {
 
     /**
      * Allocates order among warehouses optimizing distance
+     * Returns null if order cannot be fulfilled
      */
     private static Map<Warehouse, Map<String, Integer>> allocateOptimizingDistance(Order order, Map<Response, Warehouse> response_warehouse_map) {
         // Get all responses
@@ -143,6 +145,7 @@ public class Main {
 
     /**
      * Allocates order among warehouses optimizing duration of travel
+     * Returns null if order cannot be fulfilled
      */
     private static Map<Warehouse, Map<String, Integer>> allocateOptimizingDuration(Order order, Map<Response, Warehouse> response_warehouse_map) {
         // Get all responses
@@ -189,7 +192,7 @@ public class Main {
     }
 
     /**
-     * Assert map response order is preserved, i.e. given list of warehouses (and an order) the map responses list corresponds to former
+     * MapAPI response is preserved, i.e. given list of warehouses (and an order) the mapAPI responses list corresponds to former
      * Assert unique warehouses
      */
     private static Map<Response, Warehouse> getResponseWarehouseMap(Order order, ArrayList<Warehouse> warehouses) throws IOException, ParseException {
