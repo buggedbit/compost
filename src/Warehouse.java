@@ -1,3 +1,4 @@
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class Warehouse {
     /**
      * All the information about a part in the inventory of a warehouse
      */
-    private class PartInfo {
+    public class PartInfo {
         String id;
         double cost_price;
         int clone_count;
@@ -44,7 +45,7 @@ public class Warehouse {
      * If there is no such part in this warehouse's inventory add this part and its info
      * Else pass
      * Assert cost_price > 0
-     * Assert clone_count > 0
+     * Assert clone_count >= 0
      */
     public void insertNewPart(String id, double cost_price, int clone_count) {
 
@@ -59,9 +60,11 @@ public class Warehouse {
     /**
      * Returns order taken by the warehouse
      * <br/>
-     * Changes param order, by changing the clone counts
+     * Changes param order
+     * For each part in order
      * If part is fulfilled removes the part from order
      * Else decreases clone count by existing amount in warehouse
+     * order_taken is whatever removed or decreased from the param order
      * <br/>
      * Does not indicate the warehouse that order has been placed
      * Does not decrease in inventory
@@ -78,21 +81,65 @@ public class Warehouse {
                 int needed = part_clone_count.getValue();
                 int existing = this.inventory.get(part_id).clone_count;
 
-                // Part is fulfilled
-                if (needed <= existing) {
-                    order_taken.put(part_id, needed);
-                    order.part_clone_count_map.remove(part_id);
+                // If the clone_count of the part is > 0
+                if (existing > 0) {
+                    // Part is fulfilled
+                    if (needed <= existing) {
+                        order_taken.put(part_id, needed);
+                        order.part_clone_count_map.remove(part_id);
+                    }
+                    // Some more clones needed
+                    else {
+                        order_taken.put(part_id, existing);
+                        order.part_clone_count_map.put(part_id, needed - existing);
+                    }
                 }
-                // Some more clones needed
-                else {
-                    order_taken.put(part_id, existing);
-                    order.part_clone_count_map.put(part_id, needed - existing);
-                }
+
             }
 
         }
 
         return order_taken;
+    }
+
+    /**
+     * Returns part order taken by the warehouse
+     * <br/>
+     * Changes the part with param part_id in param order
+     * If part is fulfilled removes the part from order
+     * Else decreases clone count by existing amount in warehouse
+     * part_order_taken is whatever removed or decreased from the param order
+     * <br/>
+     * Return value 0 can mean
+     * 1.Warehouse does not contain the part (map has not such key)
+     * 2.Warehouse contains 0 copies of that part (map has key, clone_count in warehouse = 0)
+     * <br/>
+     * Does not indicate the warehouse that order has been placed
+     * Does not decrease in inventory
+     */
+    public int pipePartGreedily(Order order, String part_id) {
+        int part_order_taken;
+
+        // Warehouse has the part
+        if (this.inventory.containsKey(part_id)) {
+            int needed = order.part_clone_count_map.get(part_id);
+            int existing = this.inventory.get(part_id).clone_count;
+
+            // Part is fulfilled
+            if (needed <= existing) {
+                order.part_clone_count_map.remove(part_id);
+                part_order_taken = needed;
+            }
+            // Some more clones needed
+            else {
+                order.part_clone_count_map.put(part_id, needed - existing);
+                part_order_taken = existing;
+            }
+        }
+        // Ware does not have the part
+        else part_order_taken = 0;
+
+        return part_order_taken;
     }
 
 }

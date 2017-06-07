@@ -2,23 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75524074-450e-4417-a9d7-c8970b30dcd9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/pandu.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Main.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MapsAPI/Google/Exceptions/StatusNotOKException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MapsAPI/Google/GoogleMaps.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MapsAPI/Response.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Warehouse.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.classpath" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.project" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/simple-json.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Response.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Transport.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Allocator.iml" afterPath="$PROJECT_DIR$/Allocator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Address.java" afterPath="$PROJECT_DIR$/src/Address.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Order.java" afterPath="$PROJECT_DIR$/src/Order.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Warehouse.java" afterPath="$PROJECT_DIR$/src/Warehouse.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,28 +17,30 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+    <leaf>
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="780">
-              <caret line="141" column="8" lean-forward="false" selection-start-line="141" selection-start-column="8" selection-end-line="141" selection-end-column="8" />
+            <state relative-caret-position="156">
+              <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="class#889:1258" expanded="true" />
-                <element signature="method#compare#0;class#889:1258" expanded="true" />
-                <element signature="class#2663:3032" expanded="true" />
-                <element signature="method#compare#0;class#2663:3032" expanded="true" />
+                <element signature="docComment;class#Main#0" expanded="false" />
+                <element signature="docComment;method#allocateOptimizingCostPrice#0;class#Main#0" expanded="false" />
+                <element signature="method#compare#0;class#1130:2888" expanded="true" />
+                <element signature="docComment;method#allocateOptimizingDistance#0;class#Main#0" expanded="false" />
+                <element signature="docComment;method#allocateOptimizingDuration#0;class#Main#0" expanded="false" />
+                <element signature="docComment;method#getResponseWarehouseMap#0;class#Main#0" expanded="false" />
+                <element signature="docComment;method#allocateOrder#0;class#Main#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Warehouse.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Warehouse.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Warehouse.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="701">
-              <caret line="93" column="0" lean-forward="true" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+            <state relative-caret-position="338">
+              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
               <folding>
                 <element signature="docComment;class#Warehouse#0" expanded="false" />
                 <element signature="docComment;field#address#0;class#Warehouse#0" expanded="false" />
@@ -59,7 +48,10 @@
                 <element signature="docComment;class#PartInfo#0;class#Warehouse#0" expanded="false" />
                 <element signature="class#PartInfo#0;class#Warehouse#0" expanded="false" />
                 <element signature="docComment;method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="false" />
+                <element signature="method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="true" />
                 <element signature="docComment;method#insertNewPart#0;class#Warehouse#0" expanded="false" />
+                <element signature="docComment;method#pipeOrderGreedily#0;class#Warehouse#0" expanded="false" />
+                <element signature="docComment;method#pipePartGreedily#0;class#Warehouse#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -68,11 +60,11 @@
       <file leaf-file-name="Order.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Order.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="21" column="30" lean-forward="false" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
+            <state relative-caret-position="649">
+              <caret line="30" column="54" lean-forward="false" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="docComment;class#Order#0" expanded="false" />
+                <element signature="method#Order#1;class#Order#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -94,11 +86,13 @@
       <find>asad</find>
       <find>Long</find>
       <find>int</find>
+      <find>ordered_part.getKey()</find>
       <find>order</find>
     </findStrings>
     <replaceStrings>
       <replace>int</replace>
       <replace>long</replace>
+      <replace>part_id</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -128,9 +122,9 @@
         <option value="$PROJECT_DIR$/src/MapsAPI/Google/GoogleMaps.java" />
         <option value="$PROJECT_DIR$/src/MapsAPI/MapResponse.java" />
         <option value="$PROJECT_DIR$/src/MapsAPI/Response.java" />
-        <option value="$PROJECT_DIR$/src/Warehouse.java" />
-        <option value="$PROJECT_DIR$/src/Order.java" />
         <option value="$PROJECT_DIR$/src/Address.java" />
+        <option value="$PROJECT_DIR$/src/Order.java" />
+        <option value="$PROJECT_DIR$/src/Warehouse.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -165,8 +159,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -181,6 +173,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -209,6 +202,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -672,12 +666,13 @@
       <option name="presentableId" value="Default" />
       <updated>1496743727043</updated>
       <workItem from="1496743728488" duration="13342000" />
-      <workItem from="1496760773087" duration="9084000" />
+      <workItem from="1496760773087" duration="10265000" />
+      <workItem from="1496819706083" duration="5640000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22426000" />
+    <option name="totallyTimeSpent" value="29247000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -686,7 +681,6 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -710,6 +704,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -733,25 +728,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="43" column="10" lean-forward="false" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MapsAPI/Transport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="20" column="22" lean-forward="false" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MapsAPI/Transport.java" />
     <entry file="file://$PROJECT_DIR$/src/MapsAPI/Response.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="16" column="12" lean-forward="true" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
-          <folding />
+          <folding>
+            <element signature="method#toString#0;class#Response#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -760,11 +747,13 @@
         <state relative-caret-position="234">
           <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#889:1258" expanded="true" />
-            <element signature="method#compare#0;class#889:1258" expanded="true" />
-            <element signature="class#2663:3032" expanded="true" />
-            <element signature="method#compare#0;class#2663:3032" expanded="true" />
+            <element signature="docComment;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOptimizingCostPrice#0;class#Main#0" expanded="false" />
+            <element signature="method#compare#0;class#1130:2888" expanded="true" />
+            <element signature="docComment;method#allocateOptimizingDistance#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOptimizingDuration#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#getResponseWarehouseMap#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOrder#0;class#Main#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -787,7 +776,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="701">
           <caret line="29" column="20" lean-forward="true" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -801,65 +789,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.classpath">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="8" column="34" lean-forward="false" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/.classpath" />
     <entry file="file://$PROJECT_DIR$/src/GoogleMapsAPI/out.json" />
     <entry file="file://$PROJECT_DIR$/src/Coordinates/Latitude.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
           <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="7" />
-          <folding>
-            <element signature="method#Latitude#0;class#Latitude#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scratch.java" />
     <entry file="file://$PROJECT_DIR$/src/GoogleMapsAPI/Address.java" />
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore" />
     <entry file="file://$PROJECT_DIR$/src/MapsAPI/Google/Exceptions/StatusNotOKException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="130">
           <caret line="5" column="51" lean-forward="false" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MapsAPI/Transport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="51" column="20" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="51" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/out.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="65" column="8" lean-forward="true" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MapsAPI/Transport.java" />
+    <entry file="file://$PROJECT_DIR$/src/out.json" />
     <entry file="file://$PROJECT_DIR$/src/MapsAPI/Google/GoogleMaps.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="654">
           <caret line="102" column="0" lean-forward="true" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -884,21 +838,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
+          <folding>
+            <element signature="docComment;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOptimizingCostPrice#0;class#Main#0" expanded="false" />
+            <element signature="method#compare#0;class#1130:2888" expanded="true" />
+            <element signature="docComment;method#allocateOptimizingDistance#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOptimizingDuration#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#getResponseWarehouseMap#0;class#Main#0" expanded="false" />
+            <element signature="docComment;method#allocateOrder#0;class#Main#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Order.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="21" column="30" lean-forward="false" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
+        <state relative-caret-position="649">
+          <caret line="30" column="54" lean-forward="false" selection-start-line="30" selection-start-column="54" selection-end-line="30" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="docComment;class#Order#0" expanded="false" />
+            <element signature="method#Order#1;class#Order#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Warehouse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="701">
-          <caret line="93" column="0" lean-forward="true" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+        <state relative-caret-position="338">
+          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding>
             <element signature="docComment;class#Warehouse#0" expanded="false" />
             <element signature="docComment;field#address#0;class#Warehouse#0" expanded="false" />
@@ -906,21 +876,10 @@
             <element signature="docComment;class#PartInfo#0;class#Warehouse#0" expanded="false" />
             <element signature="class#PartInfo#0;class#Warehouse#0" expanded="false" />
             <element signature="docComment;method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="false" />
+            <element signature="method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="true" />
             <element signature="docComment;method#insertNewPart#0;class#Warehouse#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="141" column="8" lean-forward="false" selection-start-line="141" selection-start-column="8" selection-end-line="141" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#889:1258" expanded="true" />
-            <element signature="method#compare#0;class#889:1258" expanded="true" />
-            <element signature="class#2663:3032" expanded="true" />
-            <element signature="method#compare#0;class#2663:3032" expanded="true" />
+            <element signature="docComment;method#pipeOrderGreedily#0;class#Warehouse#0" expanded="false" />
+            <element signature="docComment;method#pipePartGreedily#0;class#Warehouse#0" expanded="false" />
           </folding>
         </state>
       </provider>

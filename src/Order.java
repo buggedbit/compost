@@ -30,6 +30,8 @@ public class Order {
      */
     public void addPart(String part, int clone_count) {
 
+        if (clone_count <= 0) return;
+
         // Part exists in the list
         if (this.part_clone_count_map.containsKey(part)) {
             int prev_clone_count = this.part_clone_count_map.get(part);
