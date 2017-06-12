@@ -9,7 +9,7 @@ Files and Formats:
 	=======
 	LineNumber1 contains Number of part estimates
 	For that many number of parts
-		sku of the part in ith line
+		id of the part in ith line
 		l, b, h, w of the part in that order in (i + 1)th line
 	
 	Initialize the file with 0 in line number 1
@@ -21,7 +21,7 @@ Files and Formats:
 		"email","order_id","shipment_id","warehouse_location","created_date","created_time","carrier","service","is_parts_avatar_generated","cost","length","width","height","weight","is_refunded"
 
 	part_clone_count_maps.csv : csv in the below format without this heading
-		"shipment_id","sku","part_description","manufacturer","part_number","price","quantity"
+		"shipment_id","id","part_description","manufacturer","part_number","price","quantity"
 	
 4. db/raw/old/ contains all old unused data
 	Format:

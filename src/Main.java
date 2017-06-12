@@ -1,6 +1,6 @@
-import Abstract.SInequality;
 import Jama.Matrix;
-import Physical.Shipment;
+import PartEstimates.PartEstimate;
+import PartEstimates.PartEstimatesTable;
 import com.opencsv.CSVReader;
 
 import java.io.*;
@@ -13,8 +13,6 @@ import java.util.*;
 public class Main {
 
     private static boolean LOG = false;
-
-    private static Vector<SInequality> left_overs = new Vector<>();
 
     // Read -----------------------------------------------------------------------------------------------
 
@@ -80,7 +78,7 @@ public class Main {
 
             // Format
             // 0 -> shipment id
-            // 1 -> sku
+            // 1 -> id
             // 6 -> quantity
             String shipment_id = pc_map_fields[0];
             String sku = pc_map_fields[1];
@@ -254,7 +252,7 @@ public class Main {
         for (Set<String> unsolvable_similar_set : unsolvable_similar_sets) {
 
             // Keep track of unsolvable similar set's sInequalities
-            Main.left_overs.addAll(similar_sets.get(unsolvable_similar_set));
+            LeftOvers.add(similar_sets.get(unsolvable_similar_set));
 
             similar_sets.remove(unsolvable_similar_set);
             if (LOG) System.out.println("Note : Unsolvable similar set removed " + unsolvable_similar_set);
@@ -265,12 +263,12 @@ public class Main {
 
     /**
      * Store the number of square sets formed in the present similar set
-     * */
+     */
     private static int no_squares_formed_in_this_similar = 0;
 
     /**
      * The upper limit of the square sets formed for a similar set
-     * */
+     */
     private static int squares_per_similar_limit = 100;
 
     /**
@@ -358,7 +356,13 @@ public class Main {
      */
     private static void pushNewEstimates(Vector<String> ids, double[][] new_estimates) {
         for (int i = 0; i < ids.size(); i++) {
-            PartEstimates.pushEstimate(ids.get(i), new_estimates[i]);
+            PartEstimate ith = new PartEstimate(ids.get(i),
+                    new_estimates[i][0],
+                    new_estimates[i][1],
+                    new_estimates[i][2],
+                    new_estimates[i][3]
+            );
+            PartEstimatesTable.pushEstimate(ith);
         }
     }
 
@@ -445,8 +449,8 @@ public class Main {
         // Write to file
         BufferedWriter bw = new BufferedWriter(new FileWriter(old_sInequalities_path));
 
-        bw.write(Main.left_overs.size() + "\n");
-        for (SInequality sInequality : Main.left_overs) {
+        bw.write(LeftOvers.size() + "\n");
+        for (SInequality sInequality : LeftOvers.getAll()) {
             bw.write(sInequality.format());
             bw.flush();
         }
@@ -456,7 +460,7 @@ public class Main {
      * Writes all the estimates to specified file
      */
     private static void storeEstimates() throws IOException {
-        PartEstimates.storeEstimates();
+        PartEstimatesTable.writeAllEstimates();
     }
 
     // -----------------------------------------------------------------------------------------------

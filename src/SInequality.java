@@ -1,5 +1,3 @@
-package Abstract;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
@@ -9,7 +7,7 @@ import java.util.*;
  * <br/>
  * constant     : integer
  * variable     : double
- * upper_limits  : double
+ * upper_limits : double
  * <br/>
  * Term : constant * variable
  * constant > 0
