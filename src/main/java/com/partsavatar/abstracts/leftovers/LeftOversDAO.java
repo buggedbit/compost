@@ -8,6 +8,6 @@ public interface LeftOversDAO {
 
     Vector<SInequality> getAll();
 
-    boolean clearTableAndInsert(Vector<SInequality> partEstimates);
+    boolean clearTableAndSave(final Vector<SInequality> partEstimates);
 
 }

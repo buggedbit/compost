@@ -7,18 +7,14 @@ import java.util.Vector;
 public class LeftOvers {
     private static Vector<SInequality> ALL = new Vector<>();
 
-    static {
-        readAllLeftOvers();
-    }
-
-    private static void readAllLeftOvers() {
+    private static Vector<SInequality> readAllLeftOvers() {
         LeftOversDAOImpl leftOversDAOImpl = new LeftOversDAOImpl();
-        ALL = leftOversDAOImpl.getAll();
+        return leftOversDAOImpl.getAll();
     }
 
     public static boolean saveAllLeftOvers() {
         LeftOversDAOImpl leftOversDAOImpl = new LeftOversDAOImpl();
-        return leftOversDAOImpl.clearTableAndInsert(ALL);
+        return leftOversDAOImpl.clearTableAndSave(ALL);
     }
 
     public static void add(SInequality sInequality) {
