@@ -1,16 +1,18 @@
-import Abstract.LeftOvers.LeftOvers;
-import Abstract.SInequality;
+package com.partsavatar;
+
+import com.partsavatar.abstracts.leftovers.LeftOvers;
+import com.partsavatar.abstracts.SInequality;
 import Jama.Matrix;
-import PartEstimates.PartEstimate;
-import PartEstimates.PartEstimatesTable;
-import Physical.Shipment;
+import com.partsavatar.productdimension.ProductDimension;
+import com.partsavatar.productdimension.ProductDimensionTable;
+import com.partsavatar.physicals.Shipment;
 import com.opencsv.CSVReader;
 
 import java.io.*;
 import java.util.*;
 
 /**
- * Main program
+ * com.partsavatar.Main program
  * todo : handle typos
  */
 public class Main {
@@ -248,13 +250,13 @@ public class Main {
 
     private static void pushNewEstimates(Vector<String> ids, double[][] new_estimates) {
         for (int i = 0; i < ids.size(); i++) {
-            PartEstimate ith = new PartEstimate(ids.get(i),
+            ProductDimension ith = new ProductDimension(ids.get(i),
                     new_estimates[i][0],
                     new_estimates[i][1],
                     new_estimates[i][2],
                     new_estimates[i][3]
             );
-            PartEstimatesTable.pushEstimate(ith);
+            ProductDimensionTable.pushEstimate(ith);
         }
     }
 
@@ -313,7 +315,7 @@ public class Main {
         }
 
         LeftOvers.saveAllLeftOvers();
-        PartEstimatesTable.saveAllEstimates();
+        ProductDimensionTable.saveAllEstimates();
     }
 
 }

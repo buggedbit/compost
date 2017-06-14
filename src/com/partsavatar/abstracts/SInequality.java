@@ -1,4 +1,4 @@
-package Abstract;
+package com.partsavatar.abstracts;
 
 import java.io.BufferedReader;
 import java.io.IOException;

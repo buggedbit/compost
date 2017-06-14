@@ -1,13 +1,13 @@
-package PartEstimates;
+package com.partsavatar.productdimension;
 
 import java.io.*;
 import java.util.ArrayList;
 
-public class PartEstimateDAOImpl implements PartEstimateDAO {
+public class ProductDimensionDAOImpl implements ProductDimensionDAO {
 
     @Override
-    public ArrayList<PartEstimate> getAll() {
-        ArrayList<PartEstimate> all = new ArrayList<>();
+    public ArrayList<ProductDimension> getAll() {
+        ArrayList<ProductDimension> all = new ArrayList<>();
         ;
 
         final String estimate_table_path = "../db/estimates/estimate_table";
@@ -25,7 +25,7 @@ public class PartEstimateDAOImpl implements PartEstimateDAO {
                 id = br.readLine();
                 estimate = br.readLine();
                 dimensions = estimate.split(" ");
-                all.add(new PartEstimate(id,
+                all.add(new ProductDimension(id,
                         Double.parseDouble(dimensions[0]),
                         Double.parseDouble(dimensions[1]),
                         Double.parseDouble(dimensions[2]),
@@ -44,17 +44,17 @@ public class PartEstimateDAOImpl implements PartEstimateDAO {
     }
 
     @Override
-    public boolean clearTableAndInsert(ArrayList<PartEstimate> partEstimates) {
+    public boolean clearTableAndInsert(ArrayList<ProductDimension> productDimensions) {
         final String estimate_table = "../db/estimates/estimate_table";
 
         try {
             // Write to file
             BufferedWriter bw = new BufferedWriter(new FileWriter(estimate_table));
             // Total number of estimates
-            bw.write(partEstimates.size() + "\n");
+            bw.write(productDimensions.size() + "\n");
             // Each estimate
-            for (PartEstimate partEstimate : partEstimates) {
-                bw.write(partEstimate.csvFormat());
+            for (ProductDimension productDimension : productDimensions) {
+                bw.write(productDimension.csvFormat());
                 bw.flush();
             }
             return true;

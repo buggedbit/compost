@@ -1,6 +1,6 @@
-package Physical;
+package com.partsavatar.physicals;
 
-import Abstract.SInequality;
+import com.partsavatar.abstracts.SInequality;
 
 import java.util.Arrays;
 import java.util.HashMap;

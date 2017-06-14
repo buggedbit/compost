@@ -1,15 +1,15 @@
-package PartEstimates;
+package com.partsavatar.productdimension;
 
 import java.util.Objects;
 
-public class PartEstimate {
+public class ProductDimension {
     public final String id;
     public double length;
     public double breadth;
     public double height;
     public double weight;
 
-    public PartEstimate(String id, double length, double breadth, double height, double weight) {
+    public ProductDimension(String id, double length, double breadth, double height, double weight) {
         this.id = id;
         this.length = length;
         this.breadth = breadth;
@@ -17,11 +17,11 @@ public class PartEstimate {
         this.weight = weight;
     }
 
-    public static PartEstimate getMergedEstimate(PartEstimate p1, PartEstimate p2) {
+    public static ProductDimension getMergedEstimate(ProductDimension p1, ProductDimension p2) {
         if (p1.id == null || p2.id == null) return null;
         if (!Objects.equals(p1.id, p2.id)) return null;
 
-        return new PartEstimate(p1.id,
+        return new ProductDimension(p1.id,
                 Math.min(p1.length, p2.length),
                 Math.min(p1.breadth, p2.breadth),
                 Math.min(p1.height, p2.height),

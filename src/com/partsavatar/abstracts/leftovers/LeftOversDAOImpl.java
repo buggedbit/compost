@@ -1,6 +1,6 @@
-package Abstract.LeftOvers;
+package com.partsavatar.abstracts.leftovers;
 
-import Abstract.SInequality;
+import com.partsavatar.abstracts.SInequality;
 
 import java.io.*;
 import java.util.Vector;
