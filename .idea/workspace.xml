@@ -2,21 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2d603a3-97d2-43fa-aac9-41eed199049a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOversDAO.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOversDAOImpl.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/LeftOvers.java" afterPath="$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOvers.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/PartEstimates/DAO/PartEstimateDAO.java" afterPath="$PROJECT_DIR$/src/PartEstimates/PartEstimateDAO.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/PartEstimates/DAO/PartEstimateDAOImpl.java" afterPath="$PROJECT_DIR$/src/PartEstimates/PartEstimateDAOImpl.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/SInequality.java" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Shipment.java" afterPath="$PROJECT_DIR$/src/Physical/Shipment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/raw/new/boxes.csv" afterPath="$PROJECT_DIR$/db/raw/new/boxes.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/raw/new/part_clone_count_maps.csv" afterPath="$PROJECT_DIR$/db/raw/new/part_clone_count_maps.csv" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/db/estimates/estimate_table" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/db/log/log.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/db/raw/new/boxes.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/db/raw/new/part_clone_count_maps.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/db/raw/old/sInequalities" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Readme" afterPath="$PROJECT_DIR$/Readme" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/estimates/estimate_table" afterPath="$PROJECT_DIR$/db/estimates/estimate_table" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/raw/old/sInequalities" afterPath="$PROJECT_DIR$/db/raw/old/sInequalities" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Abstract/SInequality.java" afterPath="$PROJECT_DIR$/src/Abstract/SInequality.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PartEstimates/PartEstimate.java" afterPath="$PROJECT_DIR$/src/PartEstimates/PartEstimate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PartEstimates/PartEstimatesTable.java" afterPath="$PROJECT_DIR$/src/PartEstimates/PartEstimatesTable.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Physical/Shipment.java" afterPath="$PROJECT_DIR$/src/Physical/Shipment.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,7 +37,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>1*3xzp9y6kkn + 1*ngb8z4dwr3 + &gt;&gt; UL1=18.0 UL2=18.0 UL3=11.0 UL4=20.0</find>
       <find>UL4</find>
       <find>[1*3xzp9y6kkn + 1*ngb8z4dwr3 + &gt;&gt; UL1=16.0 UL2=14.0 UL3=9.0 UL4=18.4</find>
       <find>[1*nya9b27p9n + 1*m39qozkbgn + 1*3962ovygp3 + &gt;&gt; UL1=9.0 UL2=7.0 UL3=7.0 UL4=1.0, 1*nya9b27p9n + 1*m39qozkbgn + 1*3962ovygp3 + &gt;&gt; UL1=10.0 UL2=9.0 UL3=2.0 UL4=2.0, 1*nya9b27p9n + 1*m39qozkbgn + 1*3962ovygp3 + &gt;&gt; UL1=8.0 UL2=6.0 UL3=4.0 UL4=1.0]</find>
@@ -70,6 +66,7 @@
       <find>LeftOvers.ALL</find>
       <find>if (LOG)</find>
       <find>//  Sy</find>
+      <find>//</find>
     </findStrings>
     <replaceStrings>
       <replace>\n</replace>
@@ -119,7 +116,6 @@
         <option value="$PROJECT_DIR$/src/Demo.java" />
         <option value="$PROJECT_DIR$/src/Estimates.java" />
         <option value="$PROJECT_DIR$/src/Makefile" />
-        <option value="$PROJECT_DIR$/Readme" />
         <option value="$PROJECT_DIR$/src/Write.java" />
         <option value="$PROJECT_DIR$/src/Read.java" />
         <option value="$PROJECT_DIR$/src/Input.java" />
@@ -140,7 +136,6 @@
         <option value="$PROJECT_DIR$/src/PartEstimate/PartEstimateTable.java" />
         <option value="$PROJECT_DIR$/src/PartEstimate/PartEstimateDAO.java" />
         <option value="$PROJECT_DIR$/src/PartEstimate/PartEstimateIO.java" />
-        <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimate.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates/PEIOImplemetation.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimateIO.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimateTable.java" />
@@ -149,17 +144,19 @@
         <option value="$PROJECT_DIR$/src/LeftOversDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/LeftOvers.java" />
         <option value="$PROJECT_DIR$/src/LeftOversDAO.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates/DAO/PartEstimateDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates/DAO/PartEstimateDAO.java" />
-        <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimatesTable.java" />
-        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
         <option value="$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOversDAOImpl.java" />
-        <option value="$PROJECT_DIR$/src/Physical/Shipment.java" />
         <option value="$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOversDAO.java" />
         <option value="$PROJECT_DIR$/src/Physical/NewShipments/NewShipments.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimateDAO.java" />
         <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimateDAOImpl.java" />
+        <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimatesTable.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/Physical/Shipment.java" />
+        <option value="$PROJECT_DIR$/src/PartEstimates/PartEstimate.java" />
+        <option value="$PROJECT_DIR$/src/Abstract/SInequality.java" />
+        <option value="$PROJECT_DIR$/Readme" />
       </list>
     </option>
   </component>
@@ -691,7 +688,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="154294000" />
+    <option name="totallyTimeSpent" value="154861000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -719,11 +716,33 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43638274" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20377359" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -940,27 +959,77 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Scratch.java" />
-    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimate.java">
+    <entry file="file://$PROJECT_DIR$/src/Physical/NewShipments/NewShipments.java" />
+    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimatesTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+        <state relative-caret-position="442">
+          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
           <folding>
-            <element signature="docComment;method#PartEstimate#0;class#PartEstimate#0" expanded="false" />
+            <element signature="e#1464#1506#0" expanded="false" />
+            <marker date="1497417615228" expanded="false" signature="1868:2015" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Readme">
+    <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="754">
-          <caret line="29" column="20" lean-forward="false" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+        <state relative-caret-position="442">
+          <caret line="36" column="0" lean-forward="false" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="194" column="0" lean-forward="true" selection-start-line="194" selection-start-column="0" selection-end-line="194" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#Main#0" expanded="false" />
+            <element signature="e#859#868#0" expanded="false" />
+            <element signature="e#1574#1620#0" expanded="false" />
+            <element signature="e#2051#2060#0" expanded="false" />
+            <element signature="e#2315#2324#0" expanded="false" />
+            <element signature="e#2637#2699#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimateDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimateDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOversDAOImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="46" lean-forward="false" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+        <state relative-caret-position="338">
+          <caret line="51" column="0" lean-forward="true" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -969,93 +1038,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOversDAO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state relative-caret-position="156">
+          <caret line="6" column="17" lean-forward="false" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Physical/NewShipments/NewShipments.java" />
-    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimatesTable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding>
-            <element signature="docComment;class#PartEstimatesTable#0" expanded="false" />
-            <element signature="docComment;field#TABLE#0;class#PartEstimatesTable#0" expanded="false" />
-            <element signature="docComment;method#readAllEstimates#0;class#PartEstimatesTable#0" expanded="false" />
-            <element signature="docComment;method#saveAllEstimates#0;class#PartEstimatesTable#0" expanded="false" />
-            <element signature="docComment;method#pushEstimate#0;class#PartEstimatesTable#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimateDAOImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/PartEstimates/PartEstimateDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="10" column="2" lean-forward="true" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9824">
-          <caret line="31" column="7" lean-forward="true" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#readNewShipments#0;class#Main#0" expanded="true" />
-            <element signature="method#getAllSInequalities#0;class#Main#0" expanded="true" />
-            <element signature="method#extractAllFullSets#0;class#Main#0" expanded="true" />
-            <element signature="method#extractAllSimilarSets#0;class#Main#0" expanded="true" />
-            <element signature="method#extractSquaresFromSimilar#0;class#Main#0" expanded="true" />
-            <element signature="method#extractAllSquareSets#0;class#Main#0" expanded="true" />
-            <element signature="method#pushNewEstimates#0;class#Main#0" expanded="true" />
-            <element signature="method#estimateFromSquareSet#0;class#Main#0" expanded="true" />
-            <element signature="method#main#0;class#Main#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Abstract/SInequality.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1041">
-          <caret line="64" column="0" lean-forward="true" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Abstract/LeftOvers/LeftOvers.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+        <state relative-caret-position="156">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Physical/Shipment.java">
+    <entry file="file://$PROJECT_DIR$/Readme">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1587">
-          <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#Shipment#0;class#Shipment#0" expanded="true" />
-            <element signature="method#addPart#0;class#Shipment#0" expanded="true" />
-            <element signature="method#extractSInequality#0;class#Shipment#0" expanded="true" />
-            <element signature="method#toString#0;class#Shipment#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

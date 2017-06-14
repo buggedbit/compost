@@ -4,45 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
-/**
- * Physical.Shipment Inequality
- * <br/>
- * constant     : integer
- * variable     : double
- * upper_limits : double
- * <br/>
- * Term : constant * variable
- * constant > 0
- * variable > 0
- * <br/>
- * A Abstract.SInequality has following props
- * 1. SUMMATION(term_i) <= upper_limit_i
- * 2. term_i      > 0 (for all i)
- * 3. upper_limit_i > 0
- * <br/>
- * There are four upper limits length, breadth, height, weight for now (can be any number > 0)
- * For each upper limit, variable for term changes but not constant
- * <br/>
- * Ex:
- * ===
- * 4*x + 5*y <= U
- * 4*xl + 5*yl <= Ul
- * 4*xb + 5*yb <= Ub
- * 4*xh + 5*yh <= Uh
- * 4*xw + 5*yw <= Uw
- */
 public class SInequality {
-    /**
-     * Map : Variable -> Constant
-     */
     private Map<String, Integer> terms = new HashMap<>();
-    /**
-     * Upper limits
-     * 0 : length
-     * 1 : breadth
-     * 2 : height
-     * 3 : weight
-     */
     private double[] upper_limits = new double[4];
 
     /**
@@ -63,10 +26,6 @@ public class SInequality {
         this.upper_limits[3] = weight;
     }
 
-    /**
-     * Parse constructor
-     * The format contract happens here
-     */
     public SInequality(BufferedReader br) throws IOException {
         // Number of terms
         int no_of_terms = Integer.parseInt(br.readLine());
@@ -100,23 +59,14 @@ public class SInequality {
         }
     }
 
-    /**
-     * Returns the number of variables in the Abstract.SInequality
-     */
     public int getVariableCount() {
         return this.terms.size();
     }
 
-    /**
-     * Cardinality = variable count
-     */
     public int getCardinality() {
         return this.getVariableCount();
     }
 
-    /**
-     * Returns set of variables in the Abstract.SInequality
-     */
     public Set<String> getVariableSet() {
         Set<String> variableSet = new HashSet<>();
         for (Map.Entry<String, Integer> entry : this.terms.entrySet()) {
@@ -125,17 +75,10 @@ public class SInequality {
         return variableSet;
     }
 
-    /**
-     * Signature = variable set
-     */
     public Set<String> getSignature() {
         return this.getVariableSet();
     }
 
-    /**
-     * Returns the coefficient row
-     * Coefficient Row: [each term's coefficient] for all terms sorted w.r.t variable in lexicographic way
-     */
     public double[] getCoefficientRow() {
         // Sort the terms according to variable
         Map<String, Integer> sorted_terms = new TreeMap<>(this.terms);
@@ -150,10 +93,6 @@ public class SInequality {
         return coefficient_row;
     }
 
-    /**
-     * Returns the variable row
-     * Variable Row: Vector of [each term's variable] for all terms sorted w.r.t variable in lexicographic way
-     */
     public Vector<String> getVariableRow() {
         // Sort the terms according to variable
         Map<String, Integer> sorted_terms = new TreeMap<>(this.terms);
@@ -166,17 +105,10 @@ public class SInequality {
         return variable_row;
     }
 
-    /**
-     * Returns the constant row
-     * Constant Row : the upper limits array
-     */
     public double[] getConstantRow() {
         return this.upper_limits;
     }
 
-    /**
-     * Returns a string representation of this Abstract.SInequality
-     */
     public String format() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.terms.size()).append('\n');

@@ -2,14 +2,8 @@ package PartEstimates;
 
 import java.util.*;
 
-/**
- * Manages estimates of parts
- */
 public class PartEstimatesTable {
 
-    /**
-     * Map : id of the part -> its part estimate instance
-     */
     private static Map<String, PartEstimate> TABLE = new HashMap<>();
 
     private static Set<String> NEW_ROWS = new HashSet<>();
@@ -20,11 +14,6 @@ public class PartEstimatesTable {
         readAllEstimates();
     }
 
-    /**
-     * Reads all the estimates from specified file
-     * The file path and format contract happens here
-     * Assert the file paths
-     */
     private static void readAllEstimates() {
         PartEstimateDAOImpl partEstimateDAOImpl = new PartEstimateDAOImpl();
         ArrayList<PartEstimate> all = partEstimateDAOImpl.getAll();
@@ -34,11 +23,6 @@ public class PartEstimatesTable {
         }
     }
 
-    /**
-     * Writes all the estimates to specified file
-     * The file path and format contract happens here
-     * Assert the file paths
-     */
     public static boolean saveAllEstimates() {
         ArrayList<PartEstimate> partEstimates = new ArrayList<>();
 
@@ -50,9 +34,6 @@ public class PartEstimatesTable {
         return partEstimateDAOImpl.clearTableAndInsert(partEstimates);
     }
 
-    /**
-     * Updates or inserts the estimate of the part
-     */
     public static void pushEstimate(PartEstimate new_estimate) {
         final String id = new_estimate.id;
 

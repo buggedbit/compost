@@ -9,10 +9,6 @@ public class PartEstimate {
     public double height;
     public double weight;
 
-    /**
-     * Assert length >= breadth >= height > 0
-     * Assert weight > 0
-     */
     public PartEstimate(String id, double length, double breadth, double height, double weight) {
         this.id = id;
         this.length = length;
@@ -35,11 +31,11 @@ public class PartEstimate {
 
     public String csvFormat() {
         StringBuilder sb = new StringBuilder();
-                sb.append(this.id).append('\n')
-                        .append(this.length).append(' ')
-                        .append(this.breadth).append(' ')
-                        .append(this.height).append(' ')
-                        .append(this.weight).append('\n');
+        sb.append(this.id).append('\n')
+                .append(this.length).append(' ')
+                .append(this.breadth).append(' ')
+                .append(this.height).append(' ')
+                .append(this.weight).append('\n');
         return sb.toString();
     }
 
