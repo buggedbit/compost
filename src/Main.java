@@ -1,6 +1,9 @@
+import Abstract.LeftOvers.LeftOvers;
+import Abstract.SInequality;
 import Jama.Matrix;
 import PartEstimates.PartEstimate;
 import PartEstimates.PartEstimatesTable;
+import Physical.Shipment;
 import com.opencsv.CSVReader;
 
 import java.io.*;
@@ -11,8 +14,6 @@ import java.util.*;
  * todo : handle typos
  */
 public class Main {
-
-    private static boolean LOG = false;
 
     // Read -----------------------------------------------------------------------------------------------
 
@@ -63,7 +64,7 @@ public class Main {
                             Double.parseDouble((box_fields[13]))
                     ));
         }
-        if (LOG) System.out.println("Read boxes finished");
+        //  System.out.println("Read boxes finished");
 
         // Clear the file
         PrintWriter boxes_writer = new PrintWriter(boxes_path);
@@ -88,12 +89,12 @@ public class Main {
             // quantity > 0
             Shipment shipment = shipments.get(shipment_id);
             if (shipment == null) {
-                if (LOG) System.out.println("Warning : Unknown box found " + shipment_id);
+                //  System.out.println("Warning : Unknown box found " + shipment_id);
             } else {
                 shipment.addPart(sku, quantity);
             }
         }
-        if (LOG) System.out.println("Read part clone count maps finished");
+        //  System.out.println("Read part clone count maps finished");
 
         // Clear the file
         PrintWriter pc_map_writer = new PrintWriter(part_clone_count_maps_path);
@@ -110,41 +111,17 @@ public class Main {
             // Keep track of Empty Shipments
             if (shipment.getValue().part_clone_count_map.size() == 0) {
                 empty_boxes.add(shipment.getKey());
-                if (LOG) System.out.println("Warning : Empty box found " + shipment.getKey());
+                //  System.out.println("Warning : Empty box found " + shipment.getKey());
             }
         }
 
         // Removing Empty box
         for (String empty_box : empty_boxes) {
             shipments.remove(empty_box);
-            if (LOG) System.out.println("Note : Empty box ignored " + empty_box);
+            //  System.out.println("Note : Empty box ignored " + empty_box);
         }
 
         return shipments;
-    }
-
-    /**
-     * Reads old sInequalities from the specified file
-     * <br/>
-     * The file path and format contract happens here
-     * Assert the file paths
-     * Assert the formats
-     */
-    private static Vector<SInequality> readOldSInequalities() throws IOException {
-        Vector<SInequality> old_sInequalities = new Vector<>();
-
-        final String old_sInequalities_path = "../db/raw/old/sInequalities";
-
-        BufferedReader br = new BufferedReader(new FileReader(old_sInequalities_path));
-
-        int no_of_old_sInequalities = Integer.parseInt(br.readLine());
-        for (int i = 0; i < no_of_old_sInequalities; i++) {
-
-            old_sInequalities.add(new SInequality(br));
-
-        }
-
-        return old_sInequalities;
     }
 
     /**
@@ -154,7 +131,7 @@ public class Main {
         Vector<SInequality> all = new Vector<>();
 
         // Old data
-        Vector<SInequality> old = Main.readOldSInequalities();
+        Vector<SInequality> old = LeftOvers.getAll();
         all.addAll(old);
 
         // New data
@@ -173,7 +150,7 @@ public class Main {
     // Extract -----------------------------------------------------------------------------------------------
 
     /**
-     * Prepares and returns all Full SInequality Sets, from all SInequalities
+     * Prepares and returns all Full Abstract.SInequality Sets, from all SInequalities
      * Full set = Set of all n-SInequalities among available
      * All full sets is a map : cardinality -> full set
      */
@@ -203,7 +180,7 @@ public class Main {
     }
 
     /**
-     * Prepares and returns all Similar SInequality sets, from all Full SInequality Sets
+     * Prepares and returns all Similar Abstract.SInequality sets, from all Full Abstract.SInequality Sets
      * Filters out the unsolvable similar sets i.e. when cardinality > # SInequalities in similar set
      * Similar set with a signature = Set of all n-SInequalities among available with given signature
      * All similar sets is a map : signature -> similar set
@@ -244,7 +221,7 @@ public class Main {
             // Keep track of such sets
             if (similar_set.getKey().size() > similar_set.getValue().size()) {
                 unsolvable_similar_sets.add(similar_set.getKey());
-                if (LOG) System.out.println("Note : Unsolvable similar set found " + similar_set.getKey());
+                //  System.out.println("Note : Unsolvable similar set found " + similar_set.getKey());
             }
         }
 
@@ -255,7 +232,7 @@ public class Main {
             LeftOvers.add(similar_sets.get(unsolvable_similar_set));
 
             similar_sets.remove(unsolvable_similar_set);
-            if (LOG) System.out.println("Note : Unsolvable similar set removed " + unsolvable_similar_set);
+            //  System.out.println("Note : Unsolvable similar set removed " + unsolvable_similar_set);
         }
 
         return similar_sets;
@@ -272,7 +249,7 @@ public class Main {
     private static int squares_per_similar_limit = 100;
 
     /**
-     * Prepares and puts into param square_sets min(all, squares_per_similar_limit) possible Square SInequality sets, from a given Similar SInequality set
+     * Prepares and puts into param square_sets min(all, squares_per_similar_limit) possible Square Abstract.SInequality sets, from a given Similar Abstract.SInequality set
      * Assert param similar_set to be a similar set
      * Reference : geeks for geeks
      * <br/>
@@ -284,7 +261,11 @@ public class Main {
      * number of combinations
      * Stops if the number of square sets formed equals squares_per_similar_limit
      */
-    private static void extractSquaresFromSimilar(Vector<SInequality> similar_set, int cardinality, Vector<SInequality> buffer, int buffer_i, int input_i, Vector<Vector<SInequality>> square_sets) {
+    private static void extractSquaresFromSimilar(Vector<SInequality> similar_set,
+                                                  int cardinality, Vector<SInequality> buffer,
+                                                  int buffer_i,
+                                                  int input_i,
+                                                  Vector<Vector<SInequality>> square_sets) {
         if (Main.no_squares_formed_in_this_similar >= squares_per_similar_limit) {
             return;
         }
@@ -312,7 +293,7 @@ public class Main {
     }
 
     /**
-     * Prepares and returns all Square SInequality sets, from all Similar SInequality sets
+     * Prepares and returns all Square Abstract.SInequality sets, from all Similar Abstract.SInequality sets
      * Square set = A set of “n” n-sInequalities, in which all sInequalities have the same signature
      */
     private static Map<Set<String>, Vector<Vector<SInequality>>> extractAllSquareSets() throws IOException {
@@ -431,36 +412,9 @@ public class Main {
         }
         // Singular coefficient matrix
         else {
-            if (LOG) System.out.println("Note : Singular matrix found");
+            //  System.out.println("Note : Singular matrix found");
         }
 
-    }
-
-    // Store -----------------------------------------------------------------------------------------------
-
-    /**
-     * Writes all the left overs to specified file
-     * The file path and format contract happens here
-     * Assert the file paths
-     */
-    private static void storeLeftOvers() throws IOException {
-        final String old_sInequalities_path = "../db/raw/old/sInequalities";
-
-        // Write to file
-        BufferedWriter bw = new BufferedWriter(new FileWriter(old_sInequalities_path));
-
-        bw.write(LeftOvers.size() + "\n");
-        for (SInequality sInequality : LeftOvers.getAll()) {
-            bw.write(sInequality.format());
-            bw.flush();
-        }
-    }
-
-    /**
-     * Writes all the estimates to specified file
-     */
-    private static void storeEstimates() throws IOException {
-        PartEstimatesTable.writeAllEstimates();
     }
 
     // -----------------------------------------------------------------------------------------------
@@ -477,10 +431,10 @@ public class Main {
             }
         }
 
-        // Store Left Overs
-        Main.storeLeftOvers();
-        // Store Estimates
-        Main.storeEstimates();
+        // Save Left Overs
+        LeftOvers.saveAllLeftOvers();
+        // Save Estimates
+        PartEstimatesTable.saveAllEstimates();
     }
 
 }

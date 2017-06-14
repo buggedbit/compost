@@ -27,7 +27,7 @@ Files and Formats:
 	Format:
 	=======
 	First line : number of SInequalities
-	For each SInequality :
+	For each Abstract.SInequality :
 		i  . number of terms
 				For each term
 				j  . variable name

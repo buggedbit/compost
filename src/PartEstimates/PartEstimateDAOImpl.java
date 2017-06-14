@@ -1,6 +1,4 @@
-package PartEstimates.DAO;
-
-import PartEstimates.PartEstimate;
+package PartEstimates;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,15 +7,14 @@ public class PartEstimateDAOImpl implements PartEstimateDAO {
 
     @Override
     public ArrayList<PartEstimate> getAll() {
-        ArrayList<PartEstimate> all = null;
+        ArrayList<PartEstimate> all = new ArrayList<>();
+        ;
 
         final String estimate_table_path = "../db/estimates/estimate_table";
 
         try {
             FileReader fr = new FileReader(estimate_table_path);
             BufferedReader br = new BufferedReader(fr);
-
-            all = new ArrayList<>();
 
             int no_of_estimates = Integer.parseInt(br.readLine());
             String id;
@@ -35,29 +32,19 @@ public class PartEstimateDAOImpl implements PartEstimateDAO {
                         Double.parseDouble(dimensions[3])
                 ));
             }
-
             br.close();
             fr.close();
+            return all;
 
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 
-        return all;
     }
 
     @Override
-    public boolean update(PartEstimate partEstimate) {
-        return false;
-    }
-
-    @Override
-    public boolean insertOrUpdate(PartEstimate partEstimate) {
-        return false;
-    }
-
-    @Override
-    public boolean clearAndInsert(ArrayList<PartEstimate> partEstimates) {
+    public boolean clearTableAndInsert(ArrayList<PartEstimate> partEstimates) {
         final String estimate_table = "../db/estimates/estimate_table";
 
         try {
@@ -77,12 +64,6 @@ public class PartEstimateDAOImpl implements PartEstimateDAO {
             return false;
         }
 
-    }
-
-
-    @Override
-    public boolean insert(PartEstimate partEstimate) {
-        return false;
     }
 
 }

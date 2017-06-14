@@ -1,10 +1,6 @@
 package PartEstimates;
 
-import PartEstimates.DAO.PartEstimateDAOImpl;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Manages estimates of parts
@@ -15,6 +11,10 @@ public class PartEstimatesTable {
      * Map : id of the part -> its part estimate instance
      */
     private static Map<String, PartEstimate> TABLE = new HashMap<>();
+
+    private static Set<String> NEW_ROWS = new HashSet<>();
+
+    private static Set<String> UPDATED_ROWS = new HashSet<>();
 
     static {
         readAllEstimates();
@@ -39,7 +39,7 @@ public class PartEstimatesTable {
      * The file path and format contract happens here
      * Assert the file paths
      */
-    public static void writeAllEstimates() {
+    public static boolean saveAllEstimates() {
         ArrayList<PartEstimate> partEstimates = new ArrayList<>();
 
         for (Map.Entry<String, PartEstimate> row : TABLE.entrySet()) {
@@ -47,7 +47,7 @@ public class PartEstimatesTable {
         }
 
         PartEstimateDAOImpl partEstimateDAOImpl = new PartEstimateDAOImpl();
-        partEstimateDAOImpl.clearAndInsert(partEstimates);
+        return partEstimateDAOImpl.clearTableAndInsert(partEstimates);
     }
 
     /**
@@ -62,10 +62,15 @@ public class PartEstimatesTable {
             // Store merged estimate
             PartEstimate merged_estimate = PartEstimate.getMergedEstimate(old_estimate, new_estimate);
             TABLE.put(id, merged_estimate);
+            // Keep track of this updated PartEstimate
+            // Even if this is updated many times as set is being used adding will do
+            UPDATED_ROWS.add(id);
         }
         // No estimate previously
         else {
             TABLE.put(id, new_estimate);
+            // Keep track of this new PartEstimate
+            NEW_ROWS.add(id);
         }
     }
 

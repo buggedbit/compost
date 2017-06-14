@@ -1,9 +1,11 @@
+package Abstract;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
 /**
- * Shipment Inequality
+ * Physical.Shipment Inequality
  * <br/>
  * constant     : integer
  * variable     : double
@@ -13,7 +15,7 @@ import java.util.*;
  * constant > 0
  * variable > 0
  * <br/>
- * A SInequality has following props
+ * A Abstract.SInequality has following props
  * 1. SUMMATION(term_i) <= upper_limit_i
  * 2. term_i      > 0 (for all i)
  * 3. upper_limit_i > 0
@@ -99,7 +101,7 @@ public class SInequality {
     }
 
     /**
-     * Returns the number of variables in the SInequality
+     * Returns the number of variables in the Abstract.SInequality
      */
     public int getVariableCount() {
         return this.terms.size();
@@ -113,7 +115,7 @@ public class SInequality {
     }
 
     /**
-     * Returns set of variables in the SInequality
+     * Returns set of variables in the Abstract.SInequality
      */
     public Set<String> getVariableSet() {
         Set<String> variableSet = new HashSet<>();
@@ -173,7 +175,7 @@ public class SInequality {
     }
 
     /**
-     * Returns a string representation of this SInequality
+     * Returns a string representation of this Abstract.SInequality
      */
     public String format() {
         StringBuilder sb = new StringBuilder();
