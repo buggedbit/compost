@@ -1,9 +1,12 @@
-package com.partsavatar;
+package com.partsavatar.components;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+@AllArgsConstructor
 public class Part {
     @NonNull
     String sku;
@@ -15,7 +18,7 @@ public class Part {
     Dimension dimension;
 
     @Data
-    public class Dimension {
+    private class Dimension {
         @NonNull
         int x;
         @NonNull

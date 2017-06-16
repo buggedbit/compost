@@ -1,6 +1,7 @@
-package com.partsavatar;
+package com.partsavatar.components;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,16 +9,17 @@ import java.util.Map;
 @Getter
 public class Warehouse {
 
+    @NonNull
     private Address address;
     private Map<String, PartInfo> inventory = new HashMap<>();
 
     @Getter
-    private class PartInfo {
+    public class PartInfo {
         private String sku;
         private double costPrice;
         private int cloneCount;
 
-        private PartInfo(final String sku, final double costPrice, final int cloneCount) {
+        private PartInfo(@NonNull final String sku, final double costPrice, final int cloneCount) {
             if (costPrice <= 0) throw new IllegalArgumentException();
             if (cloneCount < 0) throw new IllegalArgumentException();
             this.sku = sku;
@@ -26,7 +28,7 @@ public class Warehouse {
         }
     }
 
-    public Warehouse(final Address address) {
+    public Warehouse(@NonNull final Address address) {
         this.address = new Address(address);
     }
 
@@ -36,7 +38,7 @@ public class Warehouse {
      * Assert costPrice > 0
      * Assert cloneCount >= 0
      */
-    public void insertNewPart(final String id, final double cost_price, final int clone_count) {
+    public void insertNewPart(@NonNull final String id, final double cost_price, final int clone_count) {
 
         // If no such part in inventory
         if (!this.inventory.containsKey(id)) {
@@ -58,11 +60,11 @@ public class Warehouse {
      * Does not indicate the warehouse that order has been placed
      * Does not decrease in inventory
      */
-    public Map<String, Integer> pipeOrderGreedily(Order order) {
+    public Map<String, Integer> pipeOrderGreedily(@NonNull Order order) {
         Map<String, Integer> order_taken = new HashMap<>();
 
         // For every part in the order
-        for (Map.Entry<String, Integer> part_clone_count : order.partCloneCountMap.entrySet()) {
+        for (Map.Entry<String, Integer> part_clone_count : order.getPartCloneCountMap().entrySet()) {
             String part_id = part_clone_count.getKey();
 
             // This warehouse has the part
@@ -75,12 +77,12 @@ public class Warehouse {
                     // Part is fulfilled
                     if (needed <= existing) {
                         order_taken.put(part_id, needed);
-                        order.partCloneCountMap.remove(part_id);
+                        order.getPartCloneCountMap().remove(part_id);
                     }
                     // Some more clones needed
                     else {
                         order_taken.put(part_id, existing);
-                        order.partCloneCountMap.put(part_id, needed - existing);
+                        order.getPartCloneCountMap().put(part_id, needed - existing);
                     }
                 }
 
@@ -106,22 +108,22 @@ public class Warehouse {
      * Does not indicate the warehouse that order has been placed
      * Does not decrease in inventory
      */
-    public int pipePartGreedily(Order order,final String partId) {
+    public int pipePartGreedily(@NonNull Order order, @NonNull final String partId) {
         int part_order_taken;
 
         // Warehouse has the part
         if (this.inventory.containsKey(partId)) {
-            int needed = order.partCloneCountMap.get(partId);
+            int needed = order.getPartCloneCountMap().get(partId);
             int existing = this.inventory.get(partId).cloneCount;
 
             // Part is fulfilled
             if (needed <= existing) {
-                order.partCloneCountMap.remove(partId);
+                order.getPartCloneCountMap().remove(partId);
                 part_order_taken = needed;
             }
             // Some more clones needed
             else {
-                order.partCloneCountMap.put(partId, needed - existing);
+                order.getPartCloneCountMap().put(partId, needed - existing);
                 part_order_taken = existing;
             }
         }

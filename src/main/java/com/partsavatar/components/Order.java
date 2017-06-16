@@ -1,24 +1,27 @@
-package com.partsavatar;
+package com.partsavatar.components;
+
+import lombok.Getter;
+import lombok.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class Order {
+    @NonNull
+    private Address deliveryAddress;
+    private Map<String, Integer> partCloneCountMap = new HashMap<>();
 
-    Address deliveryAddress;
-
-    Map<String, Integer> partCloneCountMap = new HashMap<>();
-
-    public Order(final Address deliveryAddress) {
+    public Order(@NonNull final Address deliveryAddress) {
         this.deliveryAddress = new Address(deliveryAddress);
     }
 
-    public Order(final Order order) {
+    public Order(@NonNull final Order order) {
         this.deliveryAddress = new Address(order.deliveryAddress);
         this.partCloneCountMap = new HashMap<>(order.partCloneCountMap);
     }
 
-    public void addPart(final String part, final int cloneCount) {
+    public void addPart(@NonNull final String part, final int cloneCount) {
         if (cloneCount < 0) throw new IllegalArgumentException();
 
         if (this.partCloneCountMap.containsKey(part)) {

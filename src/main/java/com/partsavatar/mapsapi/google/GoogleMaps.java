@@ -2,6 +2,7 @@ package com.partsavatar.mapsapi.google;
 
 import com.partsavatar.mapsapi.Response;
 import com.partsavatar.mapsapi.google.exceptions.StatusNotOKException;
+import lombok.NonNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,13 +21,13 @@ public class GoogleMaps {
 
     private static final String API_KEY = "AIzaSyBBX4EhjaQrGzz7l6cnOf2e8zvrgPGas9E";
 
-    private static String getRequestURL(final String[] origins, final String[] destinations) throws UnsupportedEncodingException {
+    private static String getRequestURL(@NonNull final String[] origins, @NonNull final String[] destinations) throws UnsupportedEncodingException {
         String org = String.join("|", origins);
         String dst = String.join("|", destinations);
         return ("https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + URLEncoder.encode(org, "UTF-8") + "&destinations=" + URLEncoder.encode(dst, "UTF-8") + "&key=" + API_KEY);
     }
 
-    private static String performGETRequest(final String URLString) throws IOException {
+    private static String performGETRequest(@NonNull final String URLString) throws IOException {
         // Prepare and open connection
         URL url = new URL(URLString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -48,7 +49,7 @@ public class GoogleMaps {
         return result.toString();
     }
 
-    private static ArrayList<Response> parseJSON(final String jsonString) throws ParseException, StatusNotOKException {
+    private static ArrayList<Response> parseJSON(@NonNull final String jsonString) throws ParseException, StatusNotOKException {
 
         JSONObject json_response = (JSONObject) new JSONParser().parse(jsonString);
 
@@ -93,7 +94,7 @@ public class GoogleMaps {
 
     }
 
-    public static ArrayList<Response> getDistancesAndTimes(final String[] origins, final String[] destinations) throws IOException, ParseException, StatusNotOKException {
+    public static ArrayList<Response> getDistancesAndTimes(@NonNull final String[] origins, @NonNull final String[] destinations) throws IOException, ParseException, StatusNotOKException {
         String url_s = getRequestURL(origins, destinations);
         String json_string = performGETRequest(url_s);
         ArrayList<Response> parsed_response = parseJSON(json_string);

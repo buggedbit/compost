@@ -1,5 +1,7 @@
 package com.partsavatar;
 
+import com.partsavatar.components.Order;
+import com.partsavatar.components.Warehouse;
 import com.partsavatar.mapsapi.Response;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class AllocatorUsingPacker {
         allResponses.addAll(responseWarehouseMap.keySet());
 
         // Sort all responses w.r.t distance, in turn sorting the warehouses
-        allResponses.sort(Response::distanceCompare);
+        allResponses.sort(Response::compareDistance);
 
         // Sorting warehouses w.r.t distance
         ArrayList<Warehouse> sortedWarehouses = new ArrayList<>();
