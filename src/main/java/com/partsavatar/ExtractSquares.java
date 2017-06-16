@@ -1,9 +1,9 @@
 package com.partsavatar;
 
-import com.partsavatar.abstracts.SInequality;
-import com.partsavatar.abstracts.leftovers.LeftOvers;
-import com.partsavatar.physicals.Shipment;
-import com.partsavatar.physicals.ShipmentDAOImpl;
+import com.partsavatar.sinequality.SInequality;
+import com.partsavatar.sinequality.leftovers.LeftOvers;
+import com.partsavatar.shipment.Shipment;
+import com.partsavatar.shipment.ShipmentDAOImpl;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,15 +11,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-class SquaresExtractor {
+class ExtractSquares {
 
     private static Vector<SInequality> getAllSInequalities() throws IOException {
         Vector<SInequality> all = new Vector<>();
 
-        Vector<SInequality> old = LeftOvers.getAll();
+        Vector<SInequality> old = LeftOvers.readAllLeftOvers();
         all.addAll(old);
 
-        Vector<Shipment> newShipments = new ShipmentDAOImpl().getAllAfter(null);
+        Vector<Shipment> newShipments = new ShipmentDAOImpl().getShipmentsByCreatedDate(null);
         for (Shipment shipment : newShipments) {
             SInequality newSInequality = new SInequality(shipment);
             all.add(newSInequality);
@@ -94,12 +94,10 @@ class SquaresExtractor {
 
     private static int squaresPerSimilarLimit = 100;
 
-    private static void extractSquaresFromSimilar(final Vector<SInequality> similarSet,
-                                                  final int cardinality,
-                                                  Vector<SInequality> buffer,
-                                                  int buffer_i,
-                                                  int input_i,
-                                                  Vector<Vector<SInequality>> squareSets) {
+    private static void
+    extractSquaresFromSimilar(final Vector<SInequality> similarSet, final int cardinality,
+                              Vector<SInequality> buffer, int buffer_i, int input_i,
+                              Vector<Vector<SInequality>> squareSets) {
         if (noSquaresFormedInThisSimilar >= squaresPerSimilarLimit) {
             return;
         }
@@ -123,7 +121,8 @@ class SquaresExtractor {
     }
 
     private static Map<Set<String>, Vector<Vector<SInequality>>>
-    extractSquareSets(final Map<Set<String>, Vector<SInequality>> similarSets) throws IOException {
+    extractSquareSets(final Map<Set<String>, Vector<SInequality>> similarSets)
+            throws IOException {
         Map<Set<String>, Vector<Vector<SInequality>>> square_sets = new HashMap<>();
 
         for (Map.Entry<Set<String>, Vector<SInequality>> similar_set_m : similarSets.entrySet()) {
@@ -147,8 +146,8 @@ class SquaresExtractor {
         return square_sets;
     }
 
-    static Map<Set<String>, Vector<Vector<SInequality>>>
-    getAllSquaresSets() throws IOException {
+    static Map<Set<String>, Vector<Vector<SInequality>>> getAllSquaresSets()
+            throws IOException {
         Vector<SInequality> all = getAllSInequalities();
         Map<Integer, Vector<SInequality>> full_sets = extractFullSets(all);
         Map<Set<String>, Vector<SInequality>> similar_sets = extractSimilarSets(full_sets);

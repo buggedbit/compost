@@ -1,6 +1,7 @@
-package com.partsavatar.abstracts;
+package com.partsavatar.sinequality;
 
-import com.partsavatar.physicals.Shipment;
+import com.partsavatar.shipment.Shipment;
+import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.*;
@@ -10,7 +11,8 @@ public class SInequality {
     private Map<String, Integer> terms = new HashMap<>();
     private double[] upperLimits = new double[4];
 
-    public SInequality(final double length, final double breadth, final double height, final double weight) {
+    public SInequality(final double length, final double breadth,
+                       final double height, final double weight) {
         if (length <= 0
                 || breadth <= 0
                 || height <= 0
@@ -30,15 +32,15 @@ public class SInequality {
         this.upperLimits[3] = weight;
     }
 
-    public SInequality(final Shipment shipment) {
+    public SInequality(@NonNull final Shipment shipment) {
         this(shipment.getLength(), shipment.getBreadth(), shipment.getHeight(), shipment.getWeight());
         for (Map.Entry<String, Integer> skuCloneCountMap : shipment.getPartCloneCountMap().entrySet()) {
             this.addTerm(skuCloneCountMap.getValue(), skuCloneCountMap.getKey());
         }
     }
 
-    public void addTerm(final int constant, final String variable) {
-        if (constant <= 0) throw new IllegalArgumentException();
+    public void addTerm(final int constant, @NonNull final String variable) {
+        if (constant < 0) throw new IllegalArgumentException();
 
         if (this.terms.containsKey(variable)) {
             int prev_constant = this.terms.get(variable);

@@ -2,9 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f2d603a3-97d2-43fa-aac9-41eed199049a" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOvers.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOvers.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/EstimateFromSquares.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/Main.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/SquaresExtractor.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/ExtractSquares.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/SInequality.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/SInequality.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOversDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOversDAO.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOversDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOversDAOImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/Shipment.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/shipment/Shipment.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/shipment/ShipmentDAO.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/shipment/ShipmentDAOImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/Main.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimension.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimension.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -17,22 +28,22 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/Main.java">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+      <file leaf-file-name="Estimator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+            <state relative-caret-position="442">
+              <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Estimator.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java">
+      <file leaf-file-name="LeftOvers.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOvers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="86" column="50" lean-forward="false" selection-start-line="86" selection-start-column="50" selection-end-line="86" selection-end-column="50" />
+            <state relative-caret-position="234">
+              <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -119,9 +130,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/PartEstimate/PartEstimates.java" />
-        <option value="$PROJECT_DIR$/src/PartEstimate/PartEstimate.java" />
-        <option value="$PROJECT_DIR$/src/IO/PartEstimateIO.java" />
         <option value="$PROJECT_DIR$/src/PartEstimateIO.java" />
         <option value="$PROJECT_DIR$/src/PartEstimate/PartEstimateTable.java" />
         <option value="$PROJECT_DIR$/src/PartEstimate/PartEstimateDAO.java" />
@@ -154,22 +162,25 @@
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/Extractor.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimensionDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimensionTable.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOvers.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentsDAO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/SquareExtractor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/SquaresExtractor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimension.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/Shipment.java" />
         <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOversDAO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimensionDAO.java" />
+        <option value="$PROJECT_DIR$/.idea/.name" />
         <option value="$PROJECT_DIR$/Estimator.iml" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/SInequality.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOversDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimensionDAO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAOImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/Shipment.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/SquaresExtractor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimension.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOvers.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/EstimateFromSquares.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOvers.java" />
       </list>
     </option>
   </component>
@@ -203,14 +214,11 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemId" value="Estimator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -220,7 +228,7 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemId" value="Estimator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -246,6 +254,9 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -719,15 +730,19 @@
       <workItem from="1497604634467" duration="678000" />
       <workItem from="1497605333135" duration="2213000" />
       <workItem from="1497609200908" duration="66000" />
+      <workItem from="1497616541157" duration="468000" />
+      <workItem from="1497617014738" duration="24000" />
+      <workItem from="1497617041509" duration="4000" />
+      <workItem from="1497624672546" duration="45000" />
+      <workItem from="1497624739614" duration="2274000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="173183000" />
+    <option name="totallyTimeSpent" value="175998000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -743,7 +758,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43638274" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22533692" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22533692" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -821,11 +836,10 @@
     <entry file="file://$PROJECT_DIR$/src/Makefile" />
     <entry file="file://$PROJECT_DIR$/src/Output.java" />
     <entry file="file://$PROJECT_DIR$/src/Input.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/SInequality.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/SInequality.java" />
     <entry file="file://$PROJECT_DIR$/src/Extractor.java" />
     <entry file="file://$PROJECT_DIR$/src/Estimator.java" />
     <entry file="file://$PROJECT_DIR$/.idea/Estimator.iml" />
-    <entry file="file://$PROJECT_DIR$/.idea/.name" />
     <entry file="file://$PROJECT_DIR$/src/SInequalityDAO.java" />
     <entry file="file://$PROJECT_DIR$/src/Part.java" />
     <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/String.java">
@@ -838,7 +852,7 @@
     <entry file="file://$PROJECT_DIR$/src/Scratch.java" />
     <entry file="file://$PROJECT_DIR$/src/Physical/NewShipments/NewShipments.java" />
     <entry file="file://$PROJECT_DIR$/Readme" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAO.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/shipment/ShipmentDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
           <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
@@ -846,36 +860,11 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimensionTable.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOvers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="19" column="17" lean-forward="false" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
           <caret line="1" column="4" lean-forward="false" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimension.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="12" column="13" lean-forward="true" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="1057" column="5" lean-forward="false" selection-start-line="1057" selection-start-column="5" selection-end-line="1057" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -886,62 +875,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Estimator.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="9" column="34" lean-forward="false" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/Shipment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="21" lean-forward="true" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/SInequality.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="10" column="29" lean-forward="true" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOversDAOImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOversDAOImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
           <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/abstracts/leftovers/LeftOversDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="10" column="11" lean-forward="false" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimensionDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/physicals/ShipmentDAOImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -952,26 +889,112 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/SquaresExtractor.java">
+    <entry file="file://$PROJECT_DIR$/.idea/.name" />
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="151" column="34" lean-forward="false" selection-start-line="151" selection-start-column="34" selection-end-line="151" selection-end-column="34" />
+        <state relative-caret-position="2746">
+          <caret line="915" column="14" lean-forward="false" selection-start-line="915" selection-start-column="14" selection-end-line="915" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/Main.java">
+    <entry file="file://$PROJECT_DIR$/Estimator.iml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+        <state relative-caret-position="52">
+          <caret line="2" column="39" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/shipment/ShipmentDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="10" column="5" lean-forward="true" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
+          <folding>
+            <element signature="e#228#229#0" expanded="true" />
+            <element signature="e#255#256#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/SInequality.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="11" column="11" lean-forward="true" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/shipment/ShipmentDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimensionDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/ExtractSquares.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="18" column="60" lean-forward="true" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/EstimateFromSquares.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/Estimator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="86" column="50" lean-forward="false" selection-start-line="86" selection-start-column="50" selection-end-line="86" selection-end-column="50" />
+        <state relative-caret-position="442">
+          <caret line="23" column="25" lean-forward="true" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/shipment/Shipment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/productdimension/ProductDimension.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOversDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/sinequality/leftovers/LeftOvers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
           <folding />
         </state>
       </provider>

@@ -1,6 +1,7 @@
-package com.partsavatar.physicals;
+package com.partsavatar.shipment;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.Arrays;
@@ -11,7 +12,9 @@ import java.util.Map;
 @ToString(exclude = {"partCloneCountMap"})
 public class Shipment {
 
+    @NonNull
     private String sku;
+    @NonNull
     private String orderId;
     private Map<String, Integer> partCloneCountMap = new HashMap<>();
 
@@ -20,7 +23,13 @@ public class Shipment {
     private double height;
     private double weight;
 
-    public Shipment(final String orderId, final String sku, final double length, final double breadth, final double height, final double weight) {
+    public Shipment(@NonNull final String orderId, @NonNull final String sku, final double length,
+                    final double breadth, final double height, final double weight) {
+        if (length <= 0
+                || breadth <= 0
+                || height <= 0
+                || weight <= 0) throw new IllegalArgumentException();
+
         this.orderId = orderId;
         this.sku = sku;
 
@@ -37,7 +46,9 @@ public class Shipment {
         this.weight = weight;
     }
 
-    public void addPart(final String part, final int quantity) {
+    public void addPart(@NonNull final String part, final int quantity) {
+        if (quantity < 0) throw new IllegalArgumentException();
+
         if (this.partCloneCountMap.containsKey(part)) {
             int prev_quantity = this.partCloneCountMap.get(part);
             this.partCloneCountMap.put(part, quantity + prev_quantity);
