@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
+ * todo : store the latest new data fetch date
  * todo : validate the DAO return values
  * todo : handle typos
  */

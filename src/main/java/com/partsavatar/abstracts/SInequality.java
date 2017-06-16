@@ -1,9 +1,11 @@
 package com.partsavatar.abstracts;
 
 import com.partsavatar.physicals.Shipment;
+import lombok.ToString;
 
 import java.util.*;
 
+@ToString()
 public class SInequality {
     private Map<String, Integer> terms = new HashMap<>();
     private double[] upperLimits = new double[4];
@@ -82,19 +84,6 @@ public class SInequality {
 
     public double[] getConstantRow() {
         return this.upperLimits;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Integer> entry : this.terms.entrySet()) {
-            sb.append(entry.getValue()).append("*").append(entry.getKey()).append(" + ");
-        }
-        sb.append("<=");
-        for (int i = 0; i < this.upperLimits.length; ++i) {
-            sb.append(" UL").append(i + 1).append("=").append(this.upperLimits[i]);
-        }
-        return sb.toString();
     }
 
 }

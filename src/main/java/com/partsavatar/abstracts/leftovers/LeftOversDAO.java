@@ -6,8 +6,8 @@ import java.util.Vector;
 
 public interface LeftOversDAO {
 
-    Vector<SInequality> getAll();
+    public Vector<SInequality> getAll();
 
-    boolean clearTableAndSave(final Vector<SInequality> partEstimates);
+    public boolean clearTableAndSave(final Vector<SInequality> partEstimates);
 
 }

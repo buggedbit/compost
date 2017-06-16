@@ -1,9 +1,14 @@
 package com.partsavatar.physicals;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
+@ToString(exclude = {"partCloneCountMap"})
 public class Shipment {
 
     private String sku;
@@ -41,41 +46,4 @@ public class Shipment {
         }
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("length = ")
-                .append(this.length)
-                .append(" breadth = ")
-                .append(this.breadth)
-                .append(" height = ")
-                .append(this.height)
-                .append(" weight = ")
-                .append(this.weight);
-        for (Map.Entry<String, Integer> entry : this.partCloneCountMap.entrySet()) {
-            sb.append("\n").append(entry.getKey()).append(" -> ").append(entry.getValue());
-        }
-        sb.append("\n");
-        return sb.toString();
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public double getBreadth() {
-        return breadth;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public Map<String, Integer> getPartCloneCountMap() {
-        return partCloneCountMap;
-    }
 }
