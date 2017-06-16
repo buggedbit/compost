@@ -15,6 +15,7 @@ public class Warehouse {
 
     @Getter
     public class PartInfo {
+        @NonNull
         private String sku;
         private double costPrice;
         private int cloneCount;

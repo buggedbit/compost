@@ -1,5 +1,8 @@
 package com.partsavatar;
 
+import com.partsavatar.allocationtypes.OptimizeCostPrice;
+import com.partsavatar.allocationtypes.OptimizeShippingDuration;
+import com.partsavatar.allocationtypes.OptimizeShippingPrice;
 import com.partsavatar.components.Order;
 import com.partsavatar.components.Warehouse;
 import com.partsavatar.exceptions.OrderCannotBeFullfilledException;
@@ -16,7 +19,7 @@ import java.util.Map;
 /**
  * todo : implement satellite stores
  */
-public class Main {
+public class Allocator {
 
 
     /**

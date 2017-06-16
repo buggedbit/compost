@@ -1,4 +1,4 @@
-package com.partsavatar;
+package com.partsavatar.allocationtypes;
 
 import com.partsavatar.components.Order;
 import com.partsavatar.components.Warehouse;
