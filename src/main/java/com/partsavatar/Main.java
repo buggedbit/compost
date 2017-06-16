@@ -1,13 +1,12 @@
-import org.json.simple.parser.ParseException;
+package com.partsavatar;
 
-import MapsAPI.Response;
-import MapsAPI.Google.GoogleMaps;
+import main.java.com.partsavatar.mapsapi.google.GoogleMaps;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.*;
 
 /**
- * Main
  * todo : implement satellite stores
  */
 public class Main {
@@ -29,7 +28,7 @@ public class Main {
         }
 
         // For each ordered part
-        for (Map.Entry<String, Integer> ordered_part : cost_price_copy.part_clone_count_map.entrySet()) {
+        for (Map.Entry<String, Integer> ordered_part : cost_price_copy.partCloneCountMap.entrySet()) {
             String part_id = ordered_part.getKey();
 
             // Sort warehouses according to cost price of this part
@@ -85,7 +84,7 @@ public class Main {
             }
 
             // If still this part remains in the cost_price_copy -> order cannot be fulfilled
-            if (cost_price_copy.part_clone_count_map.containsKey(part_id)) {
+            if (cost_price_copy.partCloneCountMap.containsKey(part_id)) {
                 System.out.println("Order cannot be fulfilled");
                 return null;
             }
@@ -122,7 +121,7 @@ public class Main {
         }
 
         // Order not fulfilled
-        if (!distance_copy.part_clone_count_map.isEmpty()) {
+        if (!distance_copy.partCloneCountMap.isEmpty()) {
             System.out.println("Order cannot be fulfilled");
             return null;
         }
@@ -159,7 +158,7 @@ public class Main {
         }
 
         // Order not fulfilled
-        if (!duration_copy.part_clone_count_map.isEmpty()) {
+        if (!duration_copy.partCloneCountMap.isEmpty()) {
             System.out.println("Order cannot be fulfilled");
             return null;
         }
@@ -173,10 +172,10 @@ public class Main {
      * MapAPI response is preserved, i.e. given list of warehouses (and an order) the mapAPI responses list corresponds to former
      * Assert unique warehouses
      */
-    static Map<Response, Warehouse> getResponseWarehouseMap(Order order, ArrayList<Warehouse> warehouses) throws IOException, ParseException {
+    private static Map<Response, Warehouse> getResponseWarehouseMap(Order order, ArrayList<Warehouse> warehouses) throws IOException, ParseException {
         Map<Response, Warehouse> ans = new HashMap<>();
 
-        String[] destinations = {order.delivery_address.raw};
+        String[] destinations = {order.deliveryAddress.raw};
         String[] origins = new String[warehouses.size()];
         for (int i = 0; i < warehouses.size(); i++) {
             origins[i] = warehouses.get(i).address.raw;

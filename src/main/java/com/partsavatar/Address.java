@@ -1,10 +1,6 @@
-/**
- * Address on earth
- */
+package com.partsavatar;
+
 public class Address {
-    /**
-     * Raw verbal form of an address
-     */
     String raw;
 
     public Address(String raw) {

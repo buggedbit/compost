@@ -1,7 +1,7 @@
-package MapsAPI.Google;
+package com.partsavatar.mapsapi.google;
 
-import MapsAPI.Google.Exceptions.StatusNotOKException;
-import MapsAPI.Response;
+import com.partsavatar.mapsapi.Response;
+import com.partsavatar.mapsapi.google.exceptions.StatusNotOKException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,25 +11,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
-/**
- * Google Maps API manager
- */
 public class GoogleMaps {
 
     private static final String API_KEY = "AIzaSyBBX4EhjaQrGzz7l6cnOf2e8zvrgPGas9E";
 
-    private static String getRequestURL(String[] origins, String[] destinations) throws UnsupportedEncodingException {
+    private static String getRequestURL(final String[] origins, final String[] destinations) throws UnsupportedEncodingException {
         String org = String.join("|", origins);
         String dst = String.join("|", destinations);
         return ("https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + URLEncoder.encode(org, "UTF-8") + "&destinations=" + URLEncoder.encode(dst, "UTF-8") + "&key=" + API_KEY);
     }
 
-    private static String performGETRequest(String url_s) throws IOException {
+    private static String performGETRequest(final String URLString) throws IOException {
         // Prepare and open connection
-        URL url = new URL(url_s);
+        URL url = new URL(URLString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
 
@@ -49,9 +48,9 @@ public class GoogleMaps {
         return result.toString();
     }
 
-    private static ArrayList<Response> parseJSON(String json_string) throws ParseException, StatusNotOKException {
+    private static ArrayList<Response> parseJSON(final String jsonString) throws ParseException, StatusNotOKException {
 
-        JSONObject json_response = (JSONObject) new JSONParser().parse(json_string);
+        JSONObject json_response = (JSONObject) new JSONParser().parse(jsonString);
 
         if (json_response.get("status").equals("OK")) {
             ArrayList<String> origins = new ArrayList<>();
@@ -94,7 +93,7 @@ public class GoogleMaps {
 
     }
 
-    public static ArrayList<Response> getDistancesAndTimes(String[] origins, String[] destinations) throws IOException, ParseException, StatusNotOKException {
+    public static ArrayList<Response> getDistancesAndTimes(final String[] origins, final String[] destinations) throws IOException, ParseException, StatusNotOKException {
         String url_s = getRequestURL(origins, destinations);
         String json_string = performGETRequest(url_s);
         ArrayList<Response> parsed_response = parseJSON(json_string);
