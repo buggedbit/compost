@@ -84,7 +84,7 @@ class Estimator {
             }
 
         } else {
-            //  System.out.println("Note : Singular matrix found");
+            //  todo : throw these into left overs
         }
 
     }

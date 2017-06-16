@@ -9,8 +9,10 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
+ * todo : change double to int
  * todo : store the latest new data fetch date
  * todo : validate the DAO return values
+ * todo : improve pom
  * todo : handle typos
  */
 public class Main {
