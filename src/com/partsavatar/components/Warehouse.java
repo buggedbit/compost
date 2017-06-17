@@ -4,7 +4,16 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Collections;
+
+import com.partsavatar.estimates.Estimate;
+
+import components.Part;
+
 
 @Getter
 public class Warehouse {
@@ -12,6 +21,7 @@ public class Warehouse {
     @NonNull
     Address address;
     Map<String, PartInfo> inventory = new HashMap<>();
+    List<String> available = new ArrayList<>();
 
     @Getter
     public class PartInfo {
@@ -134,4 +144,30 @@ public class Warehouse {
         return part_order_taken;
     }
 
+    public void addToAvailable(String s) {
+    	available.add(s);
+    }
+    public void removeFromAvailable(String s) {
+    	available.remove(s);
+    }
+    public void descendingSort() {
+    	Collections.sort(available, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				Part p1 = Estimate.estimatePart(o1, 1);
+				Part p2 = Estimate.estimatePart(o2, 1);
+				return p2.volCompareTo(p1);
+			}
+    	});
+    }
+    public void ascendingSort() {
+    	Collections.sort(available, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				Part p1 = Estimate.estimatePart(o1, 1);
+				Part p2 = Estimate.estimatePart(o2, 1);
+				return p1.volCompareTo(p2);
+			}
+    	});
+    }
 }

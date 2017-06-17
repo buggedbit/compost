@@ -38,16 +38,10 @@ public class EasyPostAPI {
 	}
     public static void main(String[] args) throws EasyPostException {
      	EasyPost.apiKey = "MBeHR0wTmyvsqxabxbCNFA"; //PartsAvatar
-//    	EasyPost.apiKey = "O6JFoCWqQHBR32We6FfOnw"; //Rishabh.Test
-//    	EasyPost.apiKey = "k51nSOHibTPFc82J8fh6eQ";	//Rishabh.Production
 
      	Address warehouseAddress = getAddress("McKesson", "71 Glacier St", "Coquitlam","BC","V3K5Z1");
         Address deliveryAddress = getAddress("RECEIVER", "11754 170 St NW","Edmonton", "AB", "T5S1J7");
         Parcel parcel = getParcel(22.9, 12.1, 19.8, 8.0);
-        
-       
-//        Address verified = warehouseAddress.verify();
-//        System.out.println(verified.prettyPrint());
         
         Shipment shipment = getShipment(warehouseAddress, deliveryAddress, parcel);
         System.out.println(shipment.prettyPrint());
