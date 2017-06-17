@@ -1,6 +1,6 @@
 package com.partsavatar.allocator.allocationtypes;
 
-import com.partsavatar.allocator.components.Order;
+import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.Warehouse;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import lombok.NonNull;
@@ -12,14 +12,14 @@ import java.util.Map;
 
 public class OptimizeCostPrice {
 
-    public static Map<Warehouse, Map<String, Integer>> allocate(@NonNull final Order order, @NonNull final ArrayList<Warehouse> warehouses) throws OrderCannotBeFullfilledException {
+    public static Map<Warehouse, Map<String, Integer>> allocate(@NonNull final CustomerOrder customerOrder, @NonNull final ArrayList<Warehouse> warehouses) throws OrderCannotBeFullfilledException {
         // Answer
         Map<Warehouse, Map<String, Integer>> allocation = new HashMap<>();
 
-        // Make a copy of the order
-        Order cost_price_copy = new Order(order);
+        // Make a copy of the customerOrder
+        CustomerOrder cost_price_copy = new CustomerOrder(customerOrder);
 
-        // Initialize order in all warehouses
+        // Initialize customerOrder in all warehouses
         for (Warehouse warehouse : warehouses) {
             allocation.put(warehouse, new HashMap<>());
         }
@@ -74,19 +74,19 @@ public class OptimizeCostPrice {
                 int part_order_taken = warehouse.pipePartGreedily(cost_price_copy, part_id);
                 if (part_order_taken != 0) {
                     Map<String, Integer> wh_allocation = allocation.get(warehouse);
-                    // As all parts in an order are unique
+                    // As all parts in an customerOrder are unique
                     // wh_allocation will not previously have a key == part_id
                     wh_allocation.put(part_id, part_order_taken);
                 }
             }
 
-            // If still this part remains in the cost_price_copy -> order cannot be fulfilled
+            // If still this part remains in the cost_price_copy -> customerOrder cannot be fulfilled
             if (cost_price_copy.getPartCloneCountMap().containsKey(part_id)) {
                 throw new OrderCannotBeFullfilledException();
             }
         }
 
-        // At this point order can definitely be fulfilled
+        // At this point customerOrder can definitely be fulfilled
         return allocation;
     }
 

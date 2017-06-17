@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
 
-    private static void upwardFill(Stack<Surface> s, Box b, Order ord, Vector leftBottom, Vector sliceDim, HashMap<Vector, Vector> unused) {
+    private static void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Vector leftBottom, Vector sliceDim, HashMap<Vector, Vector> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.getMinPartSize(), ord.getOrderList().get(i)))) {
@@ -36,7 +36,7 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
         }
     }
 
-    private static void backwardFill(Stack<Surface> s, Box b, Order ord, Surface surf, HashMap<Vector, Vector> unused) {
+    private static void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Surface surf, HashMap<Vector, Vector> unused) {
         while (s.peek() != surf) {
             Surface top = s.pop();
             Surface bottom = s.peek();
@@ -54,7 +54,7 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
         s.pop();
     }
 
-    private static void fillBox(Stack<Surface> s, Box b, Order ord, Vector leftBottom, Vector sliceDim, HashMap<Vector, Vector> unused) {
+    private static void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, Vector leftBottom, Vector sliceDim, HashMap<Vector, Vector> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.getMinPartSize(), ord.getOrderList().get(i)))) {
@@ -85,20 +85,20 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
         }
     }
 
-    static Order MainAlgo(Box b, Order newOrder) {
-        newOrder.volSort();
+    static WarehouseOrder MainAlgorithm(Box b, WarehouseOrder newWarehouseOrder) {
+        newWarehouseOrder.volSort();
 //		Float initialVol = (float)new_order.getVol();
 //		System.out.println("WITHOUT PREV :" + prev_calcAcc(new_order).toString());
         HashMap<Vector, Vector> tmpUnused = new HashMap<>();
-        fillBox(new Stack<Surface>(), b, newOrder, new Vector(0, 0, 0), b.getDimension(), tmpUnused);
+        fillBox(new Stack<Surface>(), b, newWarehouseOrder, new Vector(0, 0, 0), b.getDimension(), tmpUnused);
 
         HashMap<Vector, Vector> unFilled = combineUnused(tmpUnused);
         for (Vector key : unFilled.keySet()) {
-            fillBox(new Stack<Surface>(), b, newOrder, key, new Vector(unFilled.get(key).getX(), b.getDimension().getY() - key.getY(), unFilled.get(key).getZ()), tmpUnused);
+            fillBox(new Stack<Surface>(), b, newWarehouseOrder, key, new Vector(unFilled.get(key).getX(), b.getDimension().getY() - key.getY(), unFilled.get(key).getZ()), tmpUnused);
         }
 //		System.out.println("WITHOUT FINAL BOX:" + b.getDimension().toString() + " ACC:" + calcAcc().toString());
 //		System.out.println("WITHOUT VOID:" + (100-calcAcc())*b.getVol()/100);
 //		System.out.println("%COMPLETION:" + b.getPartsVol()*100/initialVol);
-        return newOrder;
+        return newWarehouseOrder;
     }
 }

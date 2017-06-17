@@ -7,18 +7,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class Order {
+public class CustomerOrder {
     @NonNull
     private Address deliveryAddress;
     private Map<String, Integer> partCloneCountMap = new HashMap<>();
 
-    public Order(@NonNull final Address deliveryAddress) {
+    public CustomerOrder(@NonNull final Address deliveryAddress) {
         this.deliveryAddress = new Address(deliveryAddress);
     }
 
-    public Order(@NonNull final Order order) {
-        this.deliveryAddress = new Address(order.deliveryAddress);
-        this.partCloneCountMap = new HashMap<>(order.partCloneCountMap);
+    public CustomerOrder(@NonNull final CustomerOrder customerOrder) {
+        this.deliveryAddress = new Address(customerOrder.deliveryAddress);
+        this.partCloneCountMap = new HashMap<>(customerOrder.partCloneCountMap);
     }
 
     public void addPart(@NonNull final String part, final int cloneCount) {
@@ -32,13 +32,13 @@ public class Order {
         }
 
     }
-    
+
     public void updatePart(@NonNull final String part, final int finalCloneCount) {
         if (finalCloneCount < 0) throw new IllegalArgumentException();
-        else if(finalCloneCount > 0)
-        	this.partCloneCountMap.put(part,finalCloneCount);
-        else{
-        	this.partCloneCountMap.remove(part);
-    	} 
+        else if (finalCloneCount > 0)
+            this.partCloneCountMap.put(part, finalCloneCount);
+        else {
+            this.partCloneCountMap.remove(part);
+        }
     }
 }

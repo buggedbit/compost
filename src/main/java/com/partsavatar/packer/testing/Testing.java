@@ -2,15 +2,15 @@ package com.partsavatar.packer.testing;
 
 
 import com.partsavatar.packer.components.Box;
-import com.partsavatar.packer.components.Order;
 import com.partsavatar.packer.components.Part;
 import com.partsavatar.packer.components.Vector;
+import com.partsavatar.packer.components.WarehouseOrder;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Testing {
-    public static Order makeRandomOrder(Integer min, Integer max, Integer qty_min, Integer qty_max, Integer diffParts) {
+    public static WarehouseOrder makeRandomOrder(Integer min, Integer max, Integer qty_min, Integer qty_max, Integer diffParts) {
         Random r = new Random();
         ArrayList<Part> ps = new ArrayList<Part>();
         for (Integer i = 0; i < diffParts; i++) {
@@ -21,7 +21,7 @@ public class Testing {
             Part p = new Part("Part" + i.toString(), new Vector(x, y, z), 10, q);
             ps.add(p);
         }
-        return new Order(ps);
+        return new WarehouseOrder(ps);
     }
 
     public static ArrayList<Box> makeRandomBoxes(Integer min, Integer num, Double rate) {
@@ -54,8 +54,8 @@ public static void main(String[] args) throws IOException {
 
 	ArrayList<Box> availableBoxes = Testing.readBoxes("Boxes.csv");
 	
-	Order newOrder = Testing.makeRandomOrder(6, 40, 1, 2, 4);
-	Testing(newOrder, "Order.csv");
+	CustomerOrder newOrder = Testing.makeRandomOrder(6, 40, 1, 2, 4);
+	Testing(newOrder, "CustomerOrder.csv");
 	
 	ArrayList<Box> FilledBoxes = pack(availableBoxes, newOrder);
 	Testing(FilledBoxes, "Packing.csv");
@@ -74,8 +74,8 @@ public static void main(String[] args) throws IOException {
 	
 	Integer count = 0, number  = 50;
 	for (int i = 0; i < number; i++) {
-		Order new_order = Extra.makeRandomOrder(6, 40, 1, 2, 4);
-		Order copy = new_order.copy();
+		CustomerOrder new_order = Extra.makeRandomOrder(6, 40, 1, 2, 4);
+		CustomerOrder copy = new_order.copy();
 		
 		VoidSpace vs = FillMultipleBoxes.pack(availableBoxes,copy);
 		

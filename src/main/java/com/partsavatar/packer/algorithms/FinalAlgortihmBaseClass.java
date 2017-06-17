@@ -1,8 +1,8 @@
 package com.partsavatar.packer.algorithms;
 
 import com.partsavatar.packer.components.Box;
-import com.partsavatar.packer.components.Order;
 import com.partsavatar.packer.components.Vector;
+import com.partsavatar.packer.components.WarehouseOrder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,11 +49,11 @@ public class FinalAlgortihmBaseClass {
         return (float) (b.getPartsVol() * 100.0 / b.getVol());
     }
 
-    static Float prev_calcAcc(Order ord, Box b) {
+    static Float prev_calcAcc(WarehouseOrder ord, Box b) {
         return (float) (ord.getVol() * 100.0 / b.getVol());
     }
 
-    static Order MainAlgo(Box b, Order new_order) {
+    static WarehouseOrder MainAlgo(Box b, WarehouseOrder new_Warehouse_order) {
         return null;
     }
 }

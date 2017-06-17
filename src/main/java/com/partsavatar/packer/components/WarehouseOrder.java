@@ -8,18 +8,17 @@ import java.util.List;
 
 
 public @Data
-class Order {
+class WarehouseOrder {
     @NonNull
     List<Part> orderList;
 
-    public Order copy() {
+    public WarehouseOrder copy() {
         List<Part> pList = new ArrayList<Part>();
         for (Part p : orderList) {
             pList.add(new Part(p.id, p.dimension, p.weight, p.quantity));
         }
-        return new Order(pList);
+        return new WarehouseOrder(pList);
     }
-
 
     public void volSort() {
         orderList.sort(Part::volCompareTo);

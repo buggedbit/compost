@@ -53,22 +53,22 @@ public class Warehouse {
     }
 
     /**
-     * Returns order taken by the warehouse
+     * Returns customerOrder taken by the warehouse
      * <br/>
-     * Changes param order
-     * For each part in order
-     * If part is fulfilled removes the part from order
+     * Changes param customerOrder
+     * For each part in customerOrder
+     * If part is fulfilled removes the part from customerOrder
      * Else decreases clone count by existing amount in warehouse
-     * order_taken is whatever removed or decreased from the param order
+     * order_taken is whatever removed or decreased from the param customerOrder
      * <br/>
-     * Does not indicate the warehouse that order has been placed
+     * Does not indicate the warehouse that customerOrder has been placed
      * Does not decrease in inventory
      */
-    public Map<String, Integer> pipeOrderGreedily(@NonNull Order order) {
+    public Map<String, Integer> pipeOrderGreedily(@NonNull CustomerOrder customerOrder) {
         Map<String, Integer> order_taken = new HashMap<>();
 
-        // For every part in the order
-        for (Map.Entry<String, Integer> part_clone_count : order.getPartCloneCountMap().entrySet()) {
+        // For every part in the customerOrder
+        for (Map.Entry<String, Integer> part_clone_count : customerOrder.getPartCloneCountMap().entrySet()) {
             String part_id = part_clone_count.getKey();
 
             // This warehouse has the part
@@ -81,12 +81,12 @@ public class Warehouse {
                     // Part is fulfilled
                     if (needed <= existing) {
                         order_taken.put(part_id, needed);
-                        order.getPartCloneCountMap().remove(part_id);
+                        customerOrder.getPartCloneCountMap().remove(part_id);
                     }
                     // Some more clones needed
                     else {
                         order_taken.put(part_id, existing);
-                        order.getPartCloneCountMap().put(part_id, needed - existing);
+                        customerOrder.getPartCloneCountMap().put(part_id, needed - existing);
                     }
                 }
 
@@ -98,36 +98,36 @@ public class Warehouse {
     }
 
     /**
-     * Returns part order taken by the warehouse
+     * Returns part customerOrder taken by the warehouse
      * <br/>
-     * Changes the part with param partId in param order
-     * If part is fulfilled removes the part from order
+     * Changes the part with param partId in param customerOrder
+     * If part is fulfilled removes the part from customerOrder
      * Else decreases clone count by existing amount in warehouse
-     * part_order_taken is whatever removed or decreased from the param order
+     * part_order_taken is whatever removed or decreased from the param customerOrder
      * <br/>
      * Return value 0 can mean
      * 1.Warehouse does not contain the part (map has not such key)
      * 2.Warehouse contains 0 copies of that part (map has key, cloneCount in warehouse = 0)
      * <br/>
-     * Does not indicate the warehouse that order has been placed
+     * Does not indicate the warehouse that customerOrder has been placed
      * Does not decrease in inventory
      */
-    public int pipePartGreedily(@NonNull Order order, @NonNull final String partId) {
+    public int pipePartGreedily(@NonNull CustomerOrder customerOrder, @NonNull final String partId) {
         int part_order_taken;
 
         // Warehouse has the part
         if (this.inventory.containsKey(partId)) {
-            int needed = order.getPartCloneCountMap().get(partId);
+            int needed = customerOrder.getPartCloneCountMap().get(partId);
             int existing = this.inventory.get(partId).cloneCount;
 
             // Part is fulfilled
             if (needed <= existing) {
-                order.getPartCloneCountMap().remove(partId);
+                customerOrder.getPartCloneCountMap().remove(partId);
                 part_order_taken = needed;
             }
             // Some more clones needed
             else {
-                order.getPartCloneCountMap().put(partId, needed - existing);
+                customerOrder.getPartCloneCountMap().put(partId, needed - existing);
                 part_order_taken = existing;
             }
         }

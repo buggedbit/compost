@@ -9,12 +9,16 @@ import com.partsavatar.packer.components.Vector;
 public class Estimate {
     private static ProductDimensionDAO estimator = new ProductDimensionDAOImpl();
 
-    public static Part estimatePart(String sku, Integer qty) {
+    public static Part estimatePart(String sku, Integer quantity) {
         ProductDimension estimate = estimator.getBySku(sku);
         return new Part(
                 estimate.getSku(),
-                new Vector((int) estimate.getLength(), (int) estimate.getBreadth(), (int) estimate.getHeight()),
+                new Vector(
+                        (int) estimate.getLength(),
+                        (int) estimate.getBreadth(),
+                        (int) estimate.getHeight()
+                ),
                 (int) estimate.getWeight(),
-                qty);
+                quantity);
     }
 }

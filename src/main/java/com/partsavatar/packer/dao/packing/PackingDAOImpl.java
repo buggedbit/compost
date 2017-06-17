@@ -2,9 +2,9 @@ package com.partsavatar.packer.dao.packing;
 
 import com.partsavatar.packer.algorithms.FillMultipleBoxes;
 import com.partsavatar.packer.components.Box;
-import com.partsavatar.packer.components.Order;
 import com.partsavatar.packer.components.Part;
 import com.partsavatar.packer.components.Vector;
+import com.partsavatar.packer.components.WarehouseOrder;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,9 +17,9 @@ import java.util.List;
 public class PackingDAOImpl implements PackingDAO {
 
     @Override
-    public List<Box> getPacking(List<Box> availableBoxes, Order order) {
+    public List<Box> getPacking(List<Box> availableBoxes, WarehouseOrder warehouseOrder) {
         ArrayList<Box> boxes = (ArrayList<Box>) availableBoxes;
-        return FillMultipleBoxes.pack(boxes, order);
+        return FillMultipleBoxes.pack(boxes, warehouseOrder);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class PackingDAOImpl implements PackingDAO {
     }
 
     @Override
-    public Order getNewOrder() {
-        /**(Temporary) Fixed Manual Order*/
+    public WarehouseOrder getNewOrder() {
+        /**(Temporary) Fixed Manual CustomerOrder*/
         Part p1 = new Part("Part1", new Vector(7, 7, 2), 10, 1);
         Part p2 = new Part("part2", new Vector(12, 7, 6), 10, 1);
         Part p3 = new Part("Part3", new Vector(9, 8, 4), 10, 3);
@@ -51,7 +51,7 @@ public class PackingDAOImpl implements PackingDAO {
         p.add(p3);
         p.add(p4);
 
-        return new Order(p);
+        return new WarehouseOrder(p);
     }
 
     @Override
