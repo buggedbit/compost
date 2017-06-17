@@ -32,5 +32,13 @@ public class Order {
         }
 
     }
-
+    
+    public void updatePart(@NonNull final String part, final int finalCloneCount) {
+        if (finalCloneCount < 0) throw new IllegalArgumentException();
+        else if(finalCloneCount > 0)
+        	this.partCloneCountMap.put(part,finalCloneCount);
+        else{
+        	this.partCloneCountMap.remove(part);
+    	} 
+    }
 }
