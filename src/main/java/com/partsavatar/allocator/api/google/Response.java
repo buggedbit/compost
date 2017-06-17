@@ -1,4 +1,4 @@
-package com.partsavatar.api.google;
+package com.partsavatar.allocator.api.google;
 
 import lombok.Getter;
 import lombok.NonNull;

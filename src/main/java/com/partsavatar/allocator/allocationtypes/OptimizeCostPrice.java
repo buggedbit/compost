@@ -1,8 +1,8 @@
-package com.partsavatar.allocationtypes;
+package com.partsavatar.allocator.allocationtypes;
 
-import com.partsavatar.components.Order;
-import com.partsavatar.components.Warehouse;
-import com.partsavatar.exceptions.OrderCannotBeFullfilledException;
+import com.partsavatar.allocator.components.Order;
+import com.partsavatar.allocator.components.Warehouse;
+import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import lombok.NonNull;
 
 import java.util.ArrayList;

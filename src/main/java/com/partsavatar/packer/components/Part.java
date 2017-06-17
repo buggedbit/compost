@@ -1,4 +1,4 @@
-package components;
+package com.partsavatar.packer.components;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -14,7 +14,7 @@ public @Data class Part {
 		return dimension.getX()*dimension.getY()*dimension.getZ();
 	}
 	
-	int volCompareTo(Part p) {
+	public int volCompareTo(Part p) {
 	    Integer lessThan = 1;
 	    Integer greaterThan = -1;
 	    

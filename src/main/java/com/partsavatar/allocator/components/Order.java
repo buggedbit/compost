@@ -1,4 +1,4 @@
-package com.partsavatar.components;
+package com.partsavatar.allocator.components;
 
 import lombok.Getter;
 import lombok.NonNull;

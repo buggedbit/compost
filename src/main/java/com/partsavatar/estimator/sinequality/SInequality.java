@@ -1,6 +1,6 @@
-package com.partsavatar.sinequality;
+package com.partsavatar.estimator.sinequality;
 
-import com.partsavatar.shipment.Shipment;
+import com.partsavatar.estimator.shipment.Shipment;
 import lombok.NonNull;
 import lombok.ToString;
 

@@ -1,16 +1,19 @@
-package com.partsavatar.dao.packing;
+package com.partsavatar.packer.dao.packing;
 
-import java.util.List;
+import com.partsavatar.packer.components.Box;
+import com.partsavatar.packer.components.Order;
+
 import java.io.IOException;
+import java.util.List;
 
-import components.Box;
-import components.Order;
 
 public interface PackingDAO {
-	
-	public List<Box> getPacking(List<Box> availableBoxes, Order order);
-	public List<Box> getAvailableBoxes()  throws NumberFormatException, IOException;
-	public Order getNewOrder();
-	
-	public void storePacking(List<Box> filledBoxes);
+
+    public List<Box> getPacking(List<Box> availableBoxes, Order order);
+
+    public List<Box> getAvailableBoxes() throws NumberFormatException, IOException;
+
+    public Order getNewOrder();
+
+    public void storePacking(List<Box> filledBoxes);
 }

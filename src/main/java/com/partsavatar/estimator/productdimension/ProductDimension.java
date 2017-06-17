@@ -1,4 +1,4 @@
-package com.partsavatar.productdimension;
+package com.partsavatar.estimator.productdimension;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.partsavatar.shipment;
+package com.partsavatar.estimator.shipment;
 
 import lombok.Getter;
 import lombok.NonNull;

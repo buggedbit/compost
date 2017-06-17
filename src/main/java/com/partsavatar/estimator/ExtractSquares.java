@@ -1,9 +1,9 @@
-package com.partsavatar;
+package com.partsavatar.estimator;
 
-import com.partsavatar.sinequality.SInequality;
-import com.partsavatar.sinequality.leftovers.LeftOvers;
-import com.partsavatar.shipment.Shipment;
-import com.partsavatar.shipment.ShipmentDAOImpl;
+import com.partsavatar.estimator.shipment.Shipment;
+import com.partsavatar.estimator.shipment.ShipmentDAOImpl;
+import com.partsavatar.estimator.sinequality.SInequality;
+import com.partsavatar.estimator.sinequality.leftovers.LeftOvers;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
-package com.partsavatar.sinequality.leftovers;
+package com.partsavatar.estimator.sinequality.leftovers;
 
-import com.partsavatar.sinequality.SInequality;
+import com.partsavatar.estimator.sinequality.SInequality;
 import lombok.NonNull;
 
 import java.util.Vector;

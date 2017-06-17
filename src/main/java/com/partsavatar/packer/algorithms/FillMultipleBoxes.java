@@ -1,15 +1,14 @@
-package algorithms;
+package com.partsavatar.packer.algorithms;
+
+import com.partsavatar.packer.components.Box;
+import com.partsavatar.packer.components.Order;
+import com.partsavatar.packer.components.PackingComponent;
+import com.partsavatar.packer.dao.packing.PackingDAOImpl;
+import com.partsavatar.packer.testing.Testing;
 
 import java.io.IOException;
 import java.util.*;
 
-import com.partsavatar.dao.packing.*;
-
-import components.Box;
-import components.Order;
-import components.PackingComponent;
-
-import testing.Testing;
 
 public class FillMultipleBoxes {
 	
@@ -24,7 +23,7 @@ public class FillMultipleBoxes {
 		}	
 	}	
 	
-	private static PackingComponent fill(PriorityQueue<PackingComponent> heap, ArrayList<Box> availableBoxes, PackingComponent v,Integer volInitalItems){
+	private static PackingComponent fill(PriorityQueue<PackingComponent> heap, ArrayList<Box> availableBoxes, PackingComponent v, Integer volInitalItems){
      	calcBoxNumbers(v.getBoxes(), availableBoxes);
      	Collections.sort(availableBoxes, (Box b1, Box b2) -> b1.volCompareTo(b2));
 

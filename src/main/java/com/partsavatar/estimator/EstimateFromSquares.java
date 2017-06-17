@@ -1,9 +1,9 @@
-package com.partsavatar;
+package com.partsavatar.estimator;
 
 import Jama.Matrix;
-import com.partsavatar.sinequality.SInequality;
-import com.partsavatar.productdimension.ProductDimension;
-import com.partsavatar.productdimension.ProductDimensionDAOImpl;
+import com.partsavatar.estimator.productdimension.ProductDimension;
+import com.partsavatar.estimator.productdimension.ProductDimensionDAOImpl;
+import com.partsavatar.estimator.sinequality.SInequality;
 
 import java.util.Map;
 import java.util.Objects;

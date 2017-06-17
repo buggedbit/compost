@@ -1,4 +1,4 @@
-package com.partsavatar.shipment;
+package com.partsavatar.estimator.shipment;
 
 import java.time.LocalDate;
 import java.util.Vector;

@@ -1,4 +1,4 @@
-package components;
+package com.partsavatar.packer.components;
 import java.util.*;
 
 import lombok.Data;
