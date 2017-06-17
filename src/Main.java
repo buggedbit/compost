@@ -1,7 +1,7 @@
-import MapsAPI.Google.GoogleMaps;
-import MapsAPI.Response;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.json.simple.parser.ParseException;
+
+import MapsAPI.Response;
+import MapsAPI.Google.GoogleMaps;
 
 import java.io.IOException;
 import java.util.*;
@@ -107,18 +107,7 @@ public class Main {
         }
 
         // Sort all responses wrt distance, in turn sorting the warehouses
-        all_responses.sort(new Comparator<Response>() {
-            @Override
-            public int compare(Response o1, Response o2) {
-                if (o1.distance < o2.distance) {
-                    return -1;
-                } else if (o1.distance == o2.distance) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        });
+        Collections.sort(all_responses, (Response r1, Response r2) -> r1.distanceCompare(r2));
 
         // Answer
         Map<Warehouse, Map<String, Integer>> allocation = new HashMap<>();
@@ -155,18 +144,7 @@ public class Main {
         }
 
         // Sort all responses wrt distance, in turn sorting the warehouses
-        all_responses.sort(new Comparator<Response>() {
-            @Override
-            public int compare(Response o1, Response o2) {
-                if (o1.duration < o2.duration) {
-                    return -1;
-                } else if (o1.duration == o2.duration) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            }
-        });
+        Collections.sort(all_responses, (Response r1, Response r2) -> r1.durationCompare(r2));
 
         // Answer
         Map<Warehouse, Map<String, Integer>> allocation = new HashMap<>();
@@ -195,7 +173,7 @@ public class Main {
      * MapAPI response is preserved, i.e. given list of warehouses (and an order) the mapAPI responses list corresponds to former
      * Assert unique warehouses
      */
-    private static Map<Response, Warehouse> getResponseWarehouseMap(Order order, ArrayList<Warehouse> warehouses) throws IOException, ParseException {
+    static Map<Response, Warehouse> getResponseWarehouseMap(Order order, ArrayList<Warehouse> warehouses) throws IOException, ParseException {
         Map<Response, Warehouse> ans = new HashMap<>();
 
         String[] destinations = {order.delivery_address.raw};
