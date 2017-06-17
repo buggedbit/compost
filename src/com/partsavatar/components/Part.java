@@ -1,3 +1,4 @@
+package com.partsavatar.components;
 import java.util.Set;
 
 import lombok.Data;
@@ -8,7 +9,7 @@ public @Data class Part {
 	@NonNull Integer quantity;
 	@NonNull Integer weight;
 	@NonNull Dimension dimesnion;
-	Set<Integer> availability;
+	public Set<Integer> availability;
 	
 	public @Data class Dimension{
 		@NonNull Integer x, y, z;	

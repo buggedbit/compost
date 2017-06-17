@@ -1,4 +1,4 @@
-package com.partsavatar.mapsapi.google.exceptions;
+package com.partsavatar.api.google.exceptions;
 
 
 public class StatusNotOKException extends RuntimeException {

@@ -1,12 +1,12 @@
-package com.partsavatar.mapsapi.google;
+package com.partsavatar.api.google;
 
-import com.partsavatar.mapsapi.Response;
-import com.partsavatar.mapsapi.google.exceptions.StatusNotOKException;
 import lombok.NonNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.partsavatar.api.google.exceptions.StatusNotOKException;
 
 import java.io.BufferedReader;
 import java.io.IOException;

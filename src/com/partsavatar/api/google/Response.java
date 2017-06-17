@@ -1,4 +1,4 @@
-package com.partsavatar.mapsapi;
+package com.partsavatar.api.google;
 
 import lombok.Getter;
 import lombok.NonNull;

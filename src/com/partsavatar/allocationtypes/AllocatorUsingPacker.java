@@ -1,12 +1,15 @@
+package com.partsavatar.allocationtypes;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-
-import main.java.com.partsavatar.mapsapi.Response;
+import com.partsavatar.api.google.Response;
+import com.partsavatar.components.Order;
+import com.partsavatar.components.Part;
+import com.partsavatar.components.Warehouse;
 
 public class AllocatorUsingPacker {
 	static void  Algo(Order order, Map<Response, Warehouse> responseWarehouseMap){
@@ -16,8 +19,8 @@ public class AllocatorUsingPacker {
 	    	allResponses.add(r);
 
 	    // Sort all responses w.r.t distance, in turn sorting the warehouses
-	    Collections.sort(allResponses, (Response r1, Response r2) -> r1.distanceCompare(r2));
-	    
+	    Collections.sort(allResponses, (Response r1, Response r2) -> r1.compareDistance(r2));
+	  
 	    // Sorting warehouses w.r.t distance 
 	    ArrayList<Warehouse> sortedWarehouses = new ArrayList<>();
 	    for (Response r : allResponses)
@@ -33,7 +36,7 @@ public class AllocatorUsingPacker {
 	    	part.availability = new HashSet<>();
 			
 	    	for (Integer i = 0; i < sortedWarehouses.size(); i++) {
-				if(sortedWarehouses.get(i).inventory.containsKey(part.id))
+				if(sortedWarehouses.get(i).getInventory().containsKey(part.getId()))
 					part.availability.add(i);
 			}
 	    	if(part.availability.size() == 1){

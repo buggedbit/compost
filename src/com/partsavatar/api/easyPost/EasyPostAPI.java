@@ -1,4 +1,4 @@
-package MapsAPI;
+package com.partsavatar.api.easyPost;
 
 import java.util.HashMap;
 import java.util.Map;

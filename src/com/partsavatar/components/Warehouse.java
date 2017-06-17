@@ -10,8 +10,8 @@ import java.util.Map;
 public class Warehouse {
 
     @NonNull
-    private Address address;
-    private Map<String, PartInfo> inventory = new HashMap<>();
+    Address address;
+    Map<String, PartInfo> inventory = new HashMap<>();
 
     @Getter
     public class PartInfo {

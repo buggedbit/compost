@@ -3,11 +3,12 @@ package com.partsavatar;
 import com.partsavatar.allocationtypes.OptimizeCostPrice;
 import com.partsavatar.allocationtypes.OptimizeShippingDuration;
 import com.partsavatar.allocationtypes.OptimizeShippingPrice;
+import com.partsavatar.api.google.GoogleMaps;
+import com.partsavatar.api.google.Response;
 import com.partsavatar.components.Order;
 import com.partsavatar.components.Warehouse;
 import com.partsavatar.exceptions.OrderCannotBeFullfilledException;
-import com.partsavatar.mapsapi.Response;
-import com.partsavatar.mapsapi.google.GoogleMaps;
+
 import lombok.NonNull;
 import org.json.simple.parser.ParseException;
 
