@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d4598808-8338-4af2-a0da-33d592e55658" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/compiler.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/kotlinc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/libraries/Maven__junit_junit_4_10.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/libraries/Maven__org_projectlombok_lombok_1_16_16.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/.idea/workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Allocator/pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/.idea/dictionaries/pandu.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/.idea/kotlinc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/.idea/uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/.idea/workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/Estimator.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/lib/lombok.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Estimator/pom.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/.classpath" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/.project" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/.settings/org.eclipse.jdt.core.prefs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/.settings/org.eclipse.m2e.core.prefs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/Boxes.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Packer/pom.xml" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/Allocator.iml" afterPath="$PROJECT_DIR$/TakeItEasy.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/lib/lombok.jar" afterPath="$PROJECT_DIR$/lib/lombok.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/lib/simplejson.jar" afterPath="$PROJECT_DIR$/lib/simplejson.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/Allocator.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/allocationtypes/AllocatorUsingPacker.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/allocationtypes/OptimizeCostPrice.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/allocationtypes/OptimizeShippingDuration.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDuration.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/allocationtypes/OptimizeShippingPrice.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/api/easyPost/EasyPostAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/easyPost/EasyPostAPI.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/api/google/GoogleMaps.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/GoogleMaps.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/api/google/Response.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/api/google/exceptions/StatusNotOKException.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/exceptions/StatusNotOKException.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/components/Address.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Address.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/components/Order.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Order.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/components/Warehouse.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Warehouse.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/estimates/Estimate.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/estimates/Estimate.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Allocator/src/com/partsavatar/exceptions/OrderCannotBeFullfilledException.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/exceptions/OrderCannotBeFullfilledException.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/lib/jama.jar" afterPath="$PROJECT_DIR$/lib/jama.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/lib/opencsv.jar" afterPath="$PROJECT_DIR$/lib/opencsv.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/EstimateFromSquares.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/EstimateFromSquares.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/Estimator.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/Estimator.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/ExtractSquares.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/ExtractSquares.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/productdimension/ProductDimension.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/productdimension/ProductDimension.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/productdimension/ProductDimensionDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/productdimension/ProductDimensionDAO.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/productdimension/ProductDimensionDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/productdimension/ProductDimensionDAOImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/shipment/Shipment.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/shipment/Shipment.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/shipment/ShipmentDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/shipment/ShipmentDAO.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/shipment/ShipmentDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/shipment/ShipmentDAOImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/sinequality/SInequality.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/sinequality/SInequality.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/sinequality/leftovers/LeftOvers.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/sinequality/leftovers/LeftOvers.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/sinequality/leftovers/LeftOversDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/sinequality/leftovers/LeftOversDAO.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Estimator/src/main/java/com/partsavatar/sinequality/leftovers/LeftOversDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/sinequality/leftovers/LeftOversDAOImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/algorithms/FillMultipleBoxes.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FillMultipleBoxes.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/algorithms/FinalAlgorithmAbove6Items.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmAbove6Items.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/algorithms/FinalAlgorithmBelow6Items.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmBelow6Items.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/algorithms/FinalAlgortihmBaseClass.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgortihmBaseClass.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/algorithms/InitialAttemptAlgo.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/InitialAttemptAlgo.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/com/partsavatar/dao/packing/PackingDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAO.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/com/partsavatar/dao/packing/PackingDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAOImpl.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/components/Box.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Box.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/components/Direction.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Direction.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/components/Order.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Order.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/components/PackingComponent.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/PackingComponent.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/components/Part.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Part.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/components/Surface.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Surface.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/components/Vector.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Packer/src/testing/Testing.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java" />
+    </list>
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1855" />
+    <option name="height" value="1084" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Unknown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/.gitignore" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file id="idea.log" enabled="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d4598808-8338-4af2-a0da-33d592e55658" name="Default" comment="" />
+      <created>1497696297830</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1497696297830</updated>
+      <workItem from="1497696299406" duration="187000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="187000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21886793" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/TakeItEasy.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="2" column="24" lean-forward="false" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
