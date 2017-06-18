@@ -40,7 +40,7 @@ public class AllocatorUsingPacker {
             availability.put(partId, new ArrayList<>());
 
             for (Integer i = 0; i < sortedWarehouses.size(); i++) {
-                if (sortedWarehouses.get(i).getInventory().containsKey(partId)) {
+                if (sortedWarehouses.get(i).containsProduct(partId)) {
                     availability.get(partId).add(i);
                     sortedWarehouses.get(i).addToAvailable(partId);
                 }

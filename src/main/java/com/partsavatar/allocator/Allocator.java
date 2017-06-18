@@ -1,8 +1,8 @@
 package com.partsavatar.allocator;
 
 import com.partsavatar.allocator.allocationtypes.OptimizeCostPrice;
-import com.partsavatar.allocator.allocationtypes.OptimizeShippingDuration;
 import com.partsavatar.allocator.allocationtypes.OptimizeShippingDistance;
+import com.partsavatar.allocator.allocationtypes.OptimizeShippingDuration;
 import com.partsavatar.allocator.api.google.GoogleMaps;
 import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
@@ -51,7 +51,7 @@ public class Allocator {
         Map<Warehouse, Map<String, Integer>> duration_allocation = OptimizeShippingDuration.allocate(customerOrder, response_warehouse_map);
     }
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) {
 
     }
 }

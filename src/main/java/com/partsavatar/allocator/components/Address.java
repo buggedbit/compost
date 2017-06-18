@@ -1,11 +1,11 @@
 package com.partsavatar.allocator.components;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode(of = {"raw"})
+@ToString(of = {"raw"})
 public class Address {
     @NonNull
     private String raw;

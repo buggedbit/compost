@@ -1,0 +1,9 @@
+id,address,inventory_file
+"uni1","71 Glacier St, Coquitlam, BC - V3K 5Z1","uni1.csv"
+"uni2","11754 170 St NW, Edmonton, AB - T5S 1J7","uni2.csv"
+"uni3","115 Walker Dr Brampton, ON - L6T 5P5","uni3.csv"
+"uni4","200 Boulevard Industriel, Boucherville, QC - J4B 2X3","uni4.csv"
+"apt1","7342 Winston St, Burnaby, BC - V5A 2G9","apt1.csv"
+"g2s1","1895 ch Saint-François, Dorval, QC - H9P 1K3","g2s1.csv"
+"key1","8221 McIntyre Edmonton, AB T6E 5J7","key1.csv"
+"key2","1545 Rue Marie-Victorin, Saint-Bruno-de-Montarville, QC - J3V 6B7","key2.csv"

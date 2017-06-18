@@ -63,10 +63,10 @@ public static void main(String[] args) throws IOException {
 	System.out.println("TIME:" + (System.nanoTime()-starttime)/1000000000.0);
 	
 	ArrayList<Box> b = new ArrayList<>();	
-	b.add(new Box(7, 9, 24,"Box1",1));
-	b.add(new Box(25, 30, 26,"Box2",1));
-	b.add(new Box(31, 33, 31,"Box3",1));
-	b.add(new Box(38, 40, 39,"Box4",1));
+	b.set(new Box(7, 9, 24,"Box1",1));
+	b.set(new Box(25, 30, 26,"Box2",1));
+	b.set(new Box(31, 33, 31,"Box3",1));
+	b.set(new Box(38, 40, 39,"Box4",1));
 	ArrayList<Box> b = Helper.makeBoxes(5, 20, 0.2);	
 	
 	Double avgAcc = 0.;
@@ -82,7 +82,7 @@ public static void main(String[] args) throws IOException {
 		Double acc = vs.finalAccuracy;
 		avgAcc+=acc;
 		if(acc < 65){
-			lessAcc.add(acc);
+			lessAcc.set(acc);
 			count++;
 		}	
 	}

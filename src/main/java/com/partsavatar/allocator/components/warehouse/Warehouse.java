@@ -4,7 +4,10 @@ import com.partsavatar.allocator.components.Address;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.estimates.Estimate;
 import com.partsavatar.packer.components.Part;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.*;
 
@@ -12,7 +15,8 @@ import java.util.*;
  * Assert if warehouse has a product it definitely contains that product's cost price and clone count
  */
 @Getter
-@AllArgsConstructor
+@EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id", "address"})
 public class Warehouse {
 
     @NonNull
@@ -20,23 +24,9 @@ public class Warehouse {
     @NonNull
     private Address address;
 
-    @Getter
-    @ToString
-    @EqualsAndHashCode
-    public class ProductInfo {
-        @NonNull
-        private String sku;
-        private double costPrice;
-        private int cloneCount;
-
-        public ProductInfo(@NonNull final String sku, final double costPrice, final int cloneCount) {
-            if (costPrice <= 0) throw new IllegalArgumentException();
-            if (cloneCount < 0) throw new IllegalArgumentException();
-            this.sku = sku;
-            this.costPrice = costPrice;
-            this.cloneCount = cloneCount;
-        }
-
+    public Warehouse(@NonNull final String id, @NonNull final Address address) {
+        this.id = id;
+        this.address = address;
     }
 
     public static Vector<Warehouse> getAll() {
@@ -44,7 +34,7 @@ public class Warehouse {
     }
 
     public ProductInfo getProductInfo(@NonNull final String sku) {
-        return new WarehouseDAOImpl().getProductInfo(sku);
+        return new WarehouseDAOImpl().getProductInfo(this.id, sku);
     }
 
     public boolean containsProduct(@NonNull final String sku) {
@@ -64,9 +54,9 @@ public class Warehouse {
             // This warehouse has the product
             if (productInfo != null) {
                 int needed = productCloneCount.getValue();
-                int existing = productInfo.cloneCount;
+                int existing = productInfo.getCloneCount();
 
-                // If the cloneCount of the product is > 0
+                // If the skuCloneCount of the product is > 0
                 if (existing > 0) {
                     // order is fulfilled
                     if (needed <= existing) {
@@ -98,7 +88,7 @@ public class Warehouse {
         // Warehouse has the product
         if (productInfo != null) {
             int needed = customerOrder.getProductCloneCountMap().get(productSku);
-            int existing = productInfo.cloneCount;
+            int existing = productInfo.getCloneCount();
 
             // order is fulfilled
             if (needed <= existing) {
