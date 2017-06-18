@@ -10,7 +10,7 @@ import java.util.Map;
 public class CustomerOrder {
     @NonNull
     private Address deliveryAddress;
-    private Map<String, Integer> partCloneCountMap = new HashMap<>();
+    private Map<String, Integer> productCloneCountMap = new HashMap<>();
 
     public CustomerOrder(@NonNull final Address deliveryAddress) {
         this.deliveryAddress = new Address(deliveryAddress);
@@ -18,17 +18,17 @@ public class CustomerOrder {
 
     public CustomerOrder(@NonNull final CustomerOrder customerOrder) {
         this.deliveryAddress = new Address(customerOrder.deliveryAddress);
-        this.partCloneCountMap = new HashMap<>(customerOrder.partCloneCountMap);
+        this.productCloneCountMap = new HashMap<>(customerOrder.productCloneCountMap);
     }
 
     public void addPart(@NonNull final String part, final int cloneCount) {
         if (cloneCount < 0) throw new IllegalArgumentException();
 
-        if (this.partCloneCountMap.containsKey(part)) {
-            int prev_clone_count = this.partCloneCountMap.get(part);
-            this.partCloneCountMap.put(part, prev_clone_count + cloneCount);
+        if (this.productCloneCountMap.containsKey(part)) {
+            int prev_clone_count = this.productCloneCountMap.get(part);
+            this.productCloneCountMap.put(part, prev_clone_count + cloneCount);
         } else {
-            this.partCloneCountMap.put(part, cloneCount);
+            this.productCloneCountMap.put(part, cloneCount);
         }
 
     }
@@ -36,9 +36,9 @@ public class CustomerOrder {
     public void updatePart(@NonNull final String part, final int finalCloneCount) {
         if (finalCloneCount < 0) throw new IllegalArgumentException();
         else if (finalCloneCount > 0)
-            this.partCloneCountMap.put(part, finalCloneCount);
+            this.productCloneCountMap.put(part, finalCloneCount);
         else {
-            this.partCloneCountMap.remove(part);
+            this.productCloneCountMap.remove(part);
         }
     }
 }

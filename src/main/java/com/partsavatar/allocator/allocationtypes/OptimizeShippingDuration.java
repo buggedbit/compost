@@ -2,7 +2,7 @@ package com.partsavatar.allocator.allocationtypes;
 
 import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
-import com.partsavatar.allocator.components.Warehouse;
+import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import lombok.NonNull;
 
@@ -35,7 +35,7 @@ public class OptimizeShippingDuration {
         }
 
         // CustomerOrder not fulfilled
-        if (!duration_copy.getPartCloneCountMap().isEmpty()) {
+        if (!duration_copy.getProductCloneCountMap().isEmpty()) {
             throw new OrderCannotBeFullfilledException();
         }
         // CustomerOrder fulfilled

@@ -2,7 +2,7 @@ package com.partsavatar.allocator.allocationtypes;
 
 import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
-import com.partsavatar.allocator.components.Warehouse;
+import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import lombok.NonNull;
 
@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OptimizeShippingPrice {
+public class OptimizeShippingDistance {
 
     public static Map<Warehouse, Map<String, Integer>> allocate(@NonNull final CustomerOrder customerOrder, @NonNull final Map<Response, Warehouse> responseWarehouseMap) throws OrderCannotBeFullfilledException {
         // Get all responses
@@ -21,7 +21,7 @@ public class OptimizeShippingPrice {
         }
 
         // Sort all responses wrt distance, in turn sorting the warehouses
-        Collections.sort(all_responses, Response::compareDistance);
+        all_responses.sort(Response::compareDistance);
 
         // Answer
         Map<Warehouse, Map<String, Integer>> allocation = new HashMap<>();
@@ -36,7 +36,7 @@ public class OptimizeShippingPrice {
         }
 
         // CustomerOrder not fulfilled
-        if (!distance_copy.getPartCloneCountMap().isEmpty()) {
+        if (!distance_copy.getProductCloneCountMap().isEmpty()) {
             throw new OrderCannotBeFullfilledException();
         }
         // CustomerOrder fulfilled

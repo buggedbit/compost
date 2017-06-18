@@ -7,12 +7,12 @@ import lombok.ToString;
 @ToString()
 public class Surface {
     @Getter
-    Vector leftUpperBehind;
+    Vector3D leftUpperBehind;
     @Getter
-    Vector surface;
+    Vector3D surface;
 
-    public Surface(Vector leftBottomBehind, Vector partDim) {
-        leftUpperBehind = new Vector(leftBottomBehind.getX(), leftBottomBehind.getY() + partDim.getY(), leftBottomBehind.getZ());
-        surface = new Vector(partDim.getX(), 0, partDim.getZ());
+    public Surface(Vector3D leftBottomBehind, Vector3D partDim) {
+        leftUpperBehind = new Vector3D(leftBottomBehind.getX(), leftBottomBehind.getY() + partDim.getY(), leftBottomBehind.getZ());
+        surface = new Vector3D(partDim.getX(), 0, partDim.getZ());
     }
 }

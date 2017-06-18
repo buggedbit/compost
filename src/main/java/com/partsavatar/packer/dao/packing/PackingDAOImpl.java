@@ -3,7 +3,7 @@ package com.partsavatar.packer.dao.packing;
 import com.partsavatar.packer.algorithms.FillMultipleBoxes;
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.Part;
-import com.partsavatar.packer.components.Vector;
+import com.partsavatar.packer.components.Vector3D;
 import com.partsavatar.packer.components.WarehouseOrder;
 
 import java.io.BufferedReader;
@@ -29,7 +29,7 @@ public class PackingDAOImpl implements PackingDAO {
         String newLine = br.readLine();
         while ((newLine = br.readLine()) != null) {
             String[] parts = newLine.split(",");
-            Box box = new Box(new Vector(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3])), parts[0]);
+            Box box = new Box(new Vector3D(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3])), parts[0]);
             box.setNum(1);
             box.setParts(new ArrayList<>());
             boxes.add(box);
@@ -41,10 +41,10 @@ public class PackingDAOImpl implements PackingDAO {
     @Override
     public WarehouseOrder getNewOrder() {
         /**(Temporary) Fixed Manual CustomerOrder*/
-        Part p1 = new Part("Part1", new Vector(7, 7, 2), 10, 1);
-        Part p2 = new Part("part2", new Vector(12, 7, 6), 10, 1);
-        Part p3 = new Part("Part3", new Vector(9, 8, 4), 10, 3);
-        Part p4 = new Part("Part4", new Vector(6, 6, 2), 10, 2);
+        Part p1 = new Part("Part1", new Vector3D(7, 7, 2), 10, 1);
+        Part p2 = new Part("part2", new Vector3D(12, 7, 6), 10, 1);
+        Part p3 = new Part("Part3", new Vector3D(9, 8, 4), 10, 3);
+        Part p4 = new Part("Part4", new Vector3D(6, 6, 2), 10, 2);
         ArrayList<Part> p = new ArrayList<>();
         p.add(p1);
         p.add(p2);

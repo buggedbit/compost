@@ -8,13 +8,13 @@ class Part {
     @NonNull
     String id;
     @NonNull
-    Vector dimension;
+    Vector3D dimension;
     @NonNull
     Integer weight;
     @NonNull
     Integer quantity;
 
-    Vector position;
+    Vector3D position;
 
     Integer getVol() {
         return dimension.getX() * dimension.getY() * dimension.getZ();

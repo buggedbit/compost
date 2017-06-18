@@ -10,7 +10,7 @@ import java.util.Stack;
 
 public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
 
-    private static void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Vector leftBottom, Vector sliceDim, HashMap<Vector, Vector> unused) {
+    private static void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Vector3D leftBottom, Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.checkIsEqualOrGreater(ord.getOrderList().get(i)))) {
@@ -18,7 +18,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         }
         if (i == ord.getOrderList().size()) {//No fit found
             if (!(sliceDim.getX() == 0 || sliceDim.getY() == 0 || sliceDim.getZ() == 0)) {
-                unused.put(leftBottom, new Vector(sliceDim.getX(), 0, sliceDim.getZ()));
+                unused.put(leftBottom, new Vector3D(sliceDim.getX(), 0, sliceDim.getZ()));
             }
             return;
         } else {
@@ -32,30 +32,30 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
 
             s.push(new Surface(leftBottom, p.getDimension())); // top surface of part
 
-            upwardFill(s, b, ord, new Vector(leftBottom.getX(), leftBottom.getY() + p.getDimension().getY(), leftBottom.getZ()),
-                    new Vector(p.getDimension().getX(), sliceDim.getY() - p.getDimension().getY(), p.getDimension().getZ()), unused);
+            upwardFill(s, b, ord, new Vector3D(leftBottom.getX(), leftBottom.getY() + p.getDimension().getY(), leftBottom.getZ()),
+                    new Vector3D(p.getDimension().getX(), sliceDim.getY() - p.getDimension().getY(), p.getDimension().getZ()), unused);
         }
     }
 
-    private static void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Surface surf, HashMap<Vector, Vector> unused) {
+    private static void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Surface surf, HashMap<Vector3D, Vector3D> unused) {
         while (s.peek() != surf) {
             Surface top = s.pop();
             Surface bottom = s.peek();
 
             //try to fill front portion BIGGER
-            Vector frontSliceDim = new Vector(bottom.getSurface().getX(), b.getDimension().getY() - bottom.getLeftUpperBehind().getY(), bottom.getSurface().getZ() - top.getSurface().getZ());
-            Vector frontSlicelbb = new Vector(bottom.getLeftUpperBehind().getX(), bottom.getLeftUpperBehind().getY(), bottom.getLeftUpperBehind().getZ() + top.getSurface().getZ());
+            Vector3D frontSliceDim = new Vector3D(bottom.getSurface().getX(), b.getDimension().getY() - bottom.getLeftUpperBehind().getY(), bottom.getSurface().getZ() - top.getSurface().getZ());
+            Vector3D frontSlicelbb = new Vector3D(bottom.getLeftUpperBehind().getX(), bottom.getLeftUpperBehind().getY(), bottom.getLeftUpperBehind().getZ() + top.getSurface().getZ());
             fillBox(s, b, ord, frontSlicelbb, frontSliceDim, unused);
 
             //try to fill front portion SMALLER
-            Vector sideSliceDim = new Vector(bottom.getSurface().getX() - top.getSurface().getX(), b.getDimension().getY() - bottom.getLeftUpperBehind().getY(), top.getSurface().getZ());
-            Vector sideSlicelbb = new Vector(bottom.getLeftUpperBehind().getX() + top.getSurface().getX(), bottom.getLeftUpperBehind().getY(), bottom.getLeftUpperBehind().getZ());
+            Vector3D sideSliceDim = new Vector3D(bottom.getSurface().getX() - top.getSurface().getX(), b.getDimension().getY() - bottom.getLeftUpperBehind().getY(), top.getSurface().getZ());
+            Vector3D sideSlicelbb = new Vector3D(bottom.getLeftUpperBehind().getX() + top.getSurface().getX(), bottom.getLeftUpperBehind().getY(), bottom.getLeftUpperBehind().getZ());
             fillBox(s, b, ord, sideSlicelbb, sideSliceDim, unused);
         }
         s.pop();
     }
 
-    private static void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, Vector leftBottom, Vector sliceDim, HashMap<Vector, Vector> unused) {
+    private static void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, Vector3D leftBottom, Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.checkIsEqualOrGreater(ord.getOrderList().get(i)))) {
@@ -63,14 +63,14 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         }
         if (i == ord.getOrderList().size()) { // No fit found
             if (!(sliceDim.getX() == 0 || sliceDim.getY() == 0 || sliceDim.getZ() == 0))
-                unused.put(leftBottom, new Vector(sliceDim.getX(), 0, sliceDim.getZ()));
+                unused.put(leftBottom, new Vector3D(sliceDim.getX(), 0, sliceDim.getZ()));
             return;
         } else {
             Integer currQty = ord.getOrderList().get(i).getQuantity();
             ord.getOrderList().get(i).setQuantity(currQty - 1);
 
 
-            Surface partBottom = new Surface(leftBottom, new Vector(sliceDim.getX(), 0, sliceDim.getZ()));
+            Surface partBottom = new Surface(leftBottom, new Vector3D(sliceDim.getX(), 0, sliceDim.getZ()));
             s.push(partBottom);// bottom surface of box
 
             Part p = ord.getOrderList().get(i).copy();
@@ -80,8 +80,8 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
 
             s.push(new Surface(leftBottom, p.getDimension())); // top surface of part
 
-            upwardFill(s, b, ord, new Vector(leftBottom.getX(), leftBottom.getY() + p.getDimension().getY(), leftBottom.getZ()),
-                    new Vector(p.getDimension().getX(), sliceDim.getY() - p.getDimension().getY(), p.getDimension().getZ()), unused);
+            upwardFill(s, b, ord, new Vector3D(leftBottom.getX(), leftBottom.getY() + p.getDimension().getY(), leftBottom.getZ()),
+                    new Vector3D(p.getDimension().getX(), sliceDim.getY() - p.getDimension().getY(), p.getDimension().getZ()), unused);
             backwardFill(s, b, ord, partBottom, unused); // Fill completely only the column with bottom surface as bottom of box
         }
     }
@@ -91,7 +91,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         for (Part p : ord.getOrderList()) {
             Integer qty = p.getQuantity();
             for (int i = 0; i < qty; i++) {
-                expList.add(new Part(p.getId(), new Vector(p.getDimension().getX(), p.getDimension().getY(), p.getDimension().getZ()), p.getWeight(), 1));
+                expList.add(new Part(p.getId(), new Vector3D(p.getDimension().getX(), p.getDimension().getY(), p.getDimension().getZ()), p.getWeight(), 1));
             }
         }
         return new WarehouseOrder(expList);
@@ -102,26 +102,26 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         ArrayList<Part> out = new ArrayList<Part>();
         Integer x = p.getDimension().getX(), y = p.getDimension().getY(), z = p.getDimension().getZ();
         if (x != y && y != z && z != x) {
-            out.add(new Part(p.getId(), new Vector(x, y, z), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(x, z, y), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(y, x, z), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(y, z, x), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(z, x, y), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(z, y, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, y, z), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, z, y), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(y, x, z), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(y, z, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(z, x, y), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(z, y, x), p.getWeight(), 1));
         } else if (x == y && y == z) {
-            out.add(new Part(p.getId(), new Vector(x, x, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, x, x), p.getWeight(), 1));
         } else if (x == y) {
-            out.add(new Part(p.getId(), new Vector(x, x, z), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(x, z, x), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(z, x, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, x, z), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, z, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(z, x, x), p.getWeight(), 1));
         } else if (y == z) {
-            out.add(new Part(p.getId(), new Vector(x, z, z), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(z, x, z), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(z, z, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, z, z), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(z, x, z), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(z, z, x), p.getWeight(), 1));
         } else if (x == z) {
-            out.add(new Part(p.getId(), new Vector(x, x, y), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(x, y, x), p.getWeight(), 1));
-            out.add(new Part(p.getId(), new Vector(y, x, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, x, y), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(x, y, x), p.getWeight(), 1));
+            out.add(new Part(p.getId(), new Vector3D(y, x, x), p.getWeight(), 1));
         }
         return out;
     }
@@ -135,7 +135,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
                 for (WarehouseOrder t : tmp) {
                     ArrayList<Part> tmpOrderList = new ArrayList<Part>();
                     for (Part s : t.getOrderList()) {
-                        tmpOrderList.add(new Part(s.getId(), new Vector(s.getDimension().getX(), s.getDimension().getY(), s.getDimension().getZ()), s.getWeight(), 1));
+                        tmpOrderList.add(new Part(s.getId(), new Vector3D(s.getDimension().getX(), s.getDimension().getY(), s.getDimension().getZ()), s.getWeight(), 1));
                     }
                     out.add(new WarehouseOrder(tmpOrderList));
                     out.get(out.size() - 1).getOrderList().add(p);
@@ -164,13 +164,13 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
 
 
             Box tmpBox = bCopy.copy();
-            HashMap<Vector, Vector> tmpUnused = new HashMap<>();
-            fillBox(new Stack<Surface>(), tmpBox, ord, new Vector(0, 0, 0), tmpBox.getDimension(), tmpUnused);
+            HashMap<Vector3D, Vector3D> tmpUnused = new HashMap<>();
+            fillBox(new Stack<Surface>(), tmpBox, ord, new Vector3D(0, 0, 0), tmpBox.getDimension(), tmpUnused);
 
-            HashMap<Vector, Vector> unFilled = combineUnused(tmpUnused);
+            HashMap<Vector3D, Vector3D> unFilled = combineUnused(tmpUnused);
             tmpUnused.clear();
-            for (Vector key : unFilled.keySet()) {
-                fillBox(new Stack<Surface>(), tmpBox, ord, key, new Vector(unFilled.get(key).getX(),
+            for (Vector3D key : unFilled.keySet()) {
+                fillBox(new Stack<Surface>(), tmpBox, ord, key, new Vector3D(unFilled.get(key).getX(),
                         tmpBox.getDimension().getY() - key.getY(), unFilled.get(key).getZ()), tmpUnused);
             }
 

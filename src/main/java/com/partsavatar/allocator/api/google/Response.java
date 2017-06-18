@@ -14,7 +14,7 @@ public class Response {
     private long distance;
     private long duration;
 
-    public Response(@NonNull String origin, @NonNull String destination, long distance, long duration) {
+    public Response(@NonNull final String origin, @NonNull final String destination, final long distance, final long duration) {
         if (distance < 0 || duration < 0) throw new IllegalArgumentException();
         this.origin = origin;
         this.destination = destination;
@@ -22,7 +22,7 @@ public class Response {
         this.duration = duration;
     }
 
-    public int compareDuration(@NonNull Response r) {
+    public int compareDuration(@NonNull final Response r) {
         if (duration < r.duration) {
             return -1;
         } else if (duration == r.duration) {
@@ -32,7 +32,7 @@ public class Response {
         }
     }
 
-    public int compareDistance(@NonNull Response r) {
+    public int compareDistance(@NonNull final Response r) {
         if (distance < r.distance) {
             return -1;
         } else if (distance == r.distance) {

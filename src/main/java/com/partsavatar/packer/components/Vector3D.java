@@ -5,10 +5,9 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public @Data
-class Vector {
+class Vector3D {
     @NonNull
     Integer x, y, z;
 
@@ -20,7 +19,7 @@ class Vector {
         tmp.add(new Direction(middle, 'y'));
         tmp.add(new Direction(min, 'z'));
 
-        Collections.sort(tmp, (Direction d1, Direction d2) -> d1.compareTo(d2));
+        tmp.sort(Direction::compareTo);
         return tmp;
     }
 
@@ -55,7 +54,7 @@ class Vector {
             else if (tmpBox.get(2).c.equals('z'))
                 dimZ = tmpPart.get(2).val;
 
-            p.dimension = new Vector(dimX, dimY, dimZ);
+            p.dimension = new Vector3D(dimX, dimY, dimZ);
 
             return true;
         }
@@ -151,7 +150,7 @@ class Vector {
         else if (req.get(2).c.equals('z'))
             dimZ = req.get(5).val;
 
-        p.dimension = new Vector(dimX, dimY, dimZ);
+        p.dimension = new Vector3D(dimX, dimY, dimZ);
 
         return true;
     }

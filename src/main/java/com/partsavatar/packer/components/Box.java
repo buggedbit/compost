@@ -10,7 +10,7 @@ import java.util.List;
 public @Data
 class Box {
     @NonNull
-    Vector dimension;
+    Vector3D dimension;
     @Setter
     List<Part> parts;
     @NonNull

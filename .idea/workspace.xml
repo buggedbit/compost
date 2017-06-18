@@ -2,39 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4598808-8338-4af2-a0da-33d592e55658" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/easypostapiclient.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_easypost_easypost_api_client_3_3_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_7.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_16_16.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Order.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Order.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/WarehouseOrder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAO.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Warehouse.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDistance.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector3D.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TakeItEasy.iml" afterPath="$PROJECT_DIR$/TakeItEasy.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDuration.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDuration.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/easyPost/EasyPostAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/easyPost/EasyPostAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Warehouse.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Warehouse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/estimates/Estimate.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/estimates/Estimate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FillMultipleBoxes.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FillMultipleBoxes.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmAbove6Items.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmAbove6Items.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmBelow6Items.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmBelow6Items.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgortihmBaseClass.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgortihmBaseClass.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/InitialAttemptAlgo.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/InitialAttemptAlgo.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Box.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Box.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Direction.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Direction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/PackingComponent.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/PackingComponent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Part.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Part.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Surface.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Surface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAOImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java" />
     </list>
@@ -48,7 +37,69 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
+      <file leaf-file-name="Allocator.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="53" column="4" lean-forward="true" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
+              <folding>
+                <element signature="docComment;class#Allocator#0" expanded="false" />
+                <element signature="docComment;method#getResponseWarehouseMap#0;class#Allocator#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Warehouse.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+              <folding>
+                <element signature="docComment;class#Warehouse#0" expanded="false" />
+                <element signature="e#418#425#0" expanded="false" />
+                <element signature="e#555#562#0" expanded="false" />
+                <element signature="class#ProductInfo#0;class#Warehouse#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WarehouseDAO.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WarehouseDAOImpl.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="338">
+              <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+              <folding>
+                <element signature="e#192#193#0" expanded="true" />
+                <element signature="e#219#220#0" expanded="true" />
+                <element signature="e#296#297#0" expanded="true" />
+                <element signature="e#323#324#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -57,10 +108,17 @@
       <find>Order</find>
       <find>CustomerOrder</find>
       <find>WarehouseOrder</find>
+      <find>CustomerOrder customerOrder</find>
+      <find>id</find>
+      <find>partId</find>
+      <find>part</find>
+      <find>getInventory().containsKey</find>
     </findStrings>
     <replaceStrings>
       <replace>partsavatar.allocator.</replace>
       <replace>WarehouseOrder</replace>
+      <replace>product</replace>
+      <replace>containsProduct</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -74,7 +132,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Address.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmBelow6Items.java" />
@@ -91,26 +148,20 @@
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/ExtractSquares.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/EstimateFromSquares.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/Estimator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Warehouse.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/exceptions/StatusNotOKException.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/GoogleMaps.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/exceptions/OrderCannotBeFullFilledException.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/exceptions/OrderCannotBeFullfilledException.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDuration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java" />
         <option value="$PROJECT_DIR$/TakeItEasy.iml" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/easyPost/EasyPostAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Order.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Order.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/estimates/Estimate.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Part.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/PackingComponent.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Surface.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Direction.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Box.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java" />
@@ -120,6 +171,18 @@
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/algorithms/FinalAlgorithmAbove6Items.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAOImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Warehouse.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector3D.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDistance.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java" />
       </list>
     </option>
   </component>
@@ -153,9 +216,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -191,6 +254,104 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="partsavatar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Unknown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="partsavatar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="allocator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Unknown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="partsavatar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="allocator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Unknown" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TakeItEasy" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="partsavatar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="allocator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="allocationtypes" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -459,6 +620,7 @@
       <setting name="passParentEnv" value="true" />
       <setting name="launchBrowser" value="true" />
       <setting name="launchBrowserUrl" value="" />
+      <setting name="depsClasspath" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -587,6 +749,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -617,12 +785,14 @@
       <option name="presentableId" value="Default" />
       <updated>1497696297830</updated>
       <workItem from="1497696299406" duration="1269000" />
-      <workItem from="1497698084426" duration="5084000" />
+      <workItem from="1497698084426" duration="5701000" />
+      <workItem from="1497768178327" duration="2021000" />
+      <workItem from="1497785694103" duration="3260000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6353000" />
+    <option name="totallyTimeSpent" value="12251000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -641,9 +811,8 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29272237" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26469004" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -655,6 +824,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -672,14 +842,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/estimates/Estimate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="9" column="23" lean-forward="false" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDuration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -688,7 +850,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDistance.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
           <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
@@ -700,7 +862,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="23" column="51" lean-forward="false" selection-start-line="23" selection-start-column="51" selection-end-line="23" selection-end-column="51" />
-          <folding />
+          <folding>
+            <element signature="e#3392#3438#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -708,7 +872,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
           <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -716,7 +879,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="22" lean-forward="true" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -724,17 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="42" lean-forward="false" selection-start-line="0" selection-start-column="42" selection-end-line="0" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/shipment/ShipmentDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="17" lean-forward="true" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -742,7 +893,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -750,9 +900,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -760,9 +907,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
           <caret line="20" column="40" lean-forward="false" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -770,9 +914,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
           <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -780,9 +921,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
           <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -790,14 +928,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
           <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="method#extractFullSets#0;class#ExtractSquares#0" expanded="false" />
-            <element signature="method#extractSimilarSets#0;class#ExtractSquares#0" expanded="false" />
-            <element signature="method#extractSquaresFromSimilar#0;class#ExtractSquares#0" expanded="false" />
-            <element signature="method#extractSquareSets#0;class#ExtractSquares#0" expanded="false" />
-            <element signature="method#getAllSquaresSets#0;class#ExtractSquares#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -805,10 +935,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="650">
           <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="method#main#0;class#Estimator#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -816,45 +942,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="831">
           <caret line="100" column="0" lean-forward="true" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="method#getMergedEstimate#0;class#EstimateFromSquares#0" expanded="false" />
-            <element signature="method#pushEstimate#0;class#EstimateFromSquares#0" expanded="false" />
-            <element signature="method#pushNewDimensions#0;class#EstimateFromSquares#0" expanded="false" />
-            <element signature="method#estimateFromSquareSet#0;class#EstimateFromSquares#0" expanded="false" />
-            <element signature="method#estimateFromAllSquareSets#0;class#EstimateFromSquares#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Warehouse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="153" column="29" lean-forward="true" selection-start-line="153" selection-start-column="29" selection-end-line="153" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="method#PartInfo#0;class#PartInfo#0;class#Warehouse#0" expanded="false" />
-            <element signature="e#959#960#0" expanded="false" />
-            <element signature="e#1010#1011#0" expanded="false" />
-            <element signature="method#insertNewPart#0;class#Warehouse#0" expanded="false" />
-            <element signature="method#pipeOrderGreedily#0;class#Warehouse#0" expanded="false" />
-            <element signature="method#pipePartGreedily#0;class#Warehouse#0" expanded="false" />
-            <element signature="e#4874#4875#0" expanded="false" />
-            <element signature="e#4906#4907#0" expanded="false" />
-            <element signature="e#4955#4956#0" expanded="false" />
-            <element signature="e#4990#4991#0" expanded="false" />
-            <element signature="method#ascendingSort#0;class#Warehouse#0" expanded="false" />
-            <element signature="class#5431:5710" expanded="false" />
-            <element signature="method#compare#0;class#5431:5710" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="21" lean-forward="false" selection-start-line="0" selection-start-column="21" selection-end-line="0" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -862,7 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="18" lean-forward="false" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -880,41 +966,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="84" column="37" lean-forward="false" selection-start-line="84" selection-start-column="37" selection-end-line="84" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/exceptions/OrderCannotBeFullfilledException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52">
           <caret line="2" column="31" lean-forward="true" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="32" column="23" lean-forward="true" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -943,15 +998,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
           <caret line="49" column="26" lean-forward="false" selection-start-line="49" selection-start-column="26" selection-end-line="49" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -959,7 +1005,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="78">
           <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -967,15 +1012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="4" column="22" lean-forward="false" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -984,25 +1020,7 @@
         <state relative-caret-position="156">
           <caret line="6" column="48" lean-forward="true" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="16" column="8" lean-forward="false" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
-          <folding>
-            <element signature="e#2479#2556#0" expanded="false" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1019,9 +1037,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="130">
           <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding>
-            <element signature="method#MainAlgo#0;class#FinalAlgorithmBelow6Items#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1029,13 +1044,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
           <caret line="92" column="0" lean-forward="true" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#calcBoxNumbers#0;class#FillMultipleBoxes#0" expanded="true" />
-            <element signature="method#pack#0;class#FillMultipleBoxes#0" expanded="true" />
-            <element signature="e#4812#4830#0" expanded="true" />
-            <element signature="method#main#0;class#FillMultipleBoxes#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1043,10 +1051,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="87" column="81" lean-forward="false" selection-start-line="87" selection-start-column="81" selection-end-line="87" selection-end-column="81" />
-          <folding>
-            <element signature="e#4736#4785#0" expanded="false" />
-            <element signature="e#5347#5455#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1054,7 +1058,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="37" column="32" lean-forward="false" selection-start-line="37" selection-start-column="32" selection-end-line="37" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1062,22 +1065,175 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="572">
           <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/PackingComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Direction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Box.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="25" column="53" lean-forward="false" selection-start-line="25" selection-start-column="53" selection-end-line="25" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="26" column="88" lean-forward="false" selection-start-line="26" selection-start-column="88" selection-end-line="26" selection-end-column="88" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+        <state relative-caret-position="307">
+          <caret line="44" column="51" lean-forward="true" selection-start-line="44" selection-start-column="51" selection-end-line="44" selection-end-column="51" />
+          <folding>
+            <element signature="e#2492#2569#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector3D.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="10" column="12" lean-forward="false" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/estimator/shipment/ShipmentDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+          <folding>
+            <element signature="e#192#193#0" expanded="true" />
+            <element signature="e#219#220#0" expanded="true" />
+            <element signature="e#296#297#0" expanded="true" />
+            <element signature="e#323#324#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="43" column="1" lean-forward="true" selection-start-line="43" selection-start-column="1" selection-end-line="43" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+          <folding>
+            <element signature="docComment;class#Warehouse#0" expanded="false" />
+            <element signature="e#418#425#0" expanded="false" />
+            <element signature="e#555#562#0" expanded="false" />
+            <element signature="class#ProductInfo#0;class#Warehouse#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/util/Comparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="149" column="8" lean-forward="false" selection-start-line="149" selection-start-column="8" selection-end-line="149" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDuration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="14" column="212" lean-forward="false" selection-start-line="14" selection-start-column="212" selection-end-line="14" selection-end-column="212" />
+          <folding>
+            <element signature="method#allocate#0;class#OptimizeShippingDuration#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDistance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="92" column="1" lean-forward="true" selection-start-line="92" selection-start-column="1" selection-end-line="92" selection-end-column="1" />
+          <folding>
+            <element signature="e#3392#3438#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Surface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        <state relative-caret-position="338">
+          <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -1090,56 +1246,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/PackingComponent.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Direction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Box.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAOImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="25" column="53" lean-forward="false" selection-start-line="25" selection-start-column="53" selection-end-line="25" selection-end-column="53" />
+        <state relative-caret-position="312">
+          <caret line="53" column="4" lean-forward="true" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#getPacking#0;class#PackingDAOImpl#0" expanded="true" />
+            <element signature="docComment;class#Allocator#0" expanded="false" />
+            <element signature="docComment;method#getResponseWarehouseMap#0;class#Allocator#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/dao/packing/PackingDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="26" column="88" lean-forward="false" selection-start-line="26" selection-start-column="88" selection-end-line="26" selection-end-column="88" />
-          <folding />
         </state>
       </provider>
     </entry>

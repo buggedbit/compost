@@ -2,7 +2,7 @@ package com.partsavatar.allocator.allocationtypes;
 
 import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
-import com.partsavatar.allocator.components.Warehouse;
+import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.estimates.Estimate;
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.Part;
@@ -35,7 +35,7 @@ public class AllocatorUsingPacker {
         //Store availability of parts and find the rare items.
         Map<Integer, ArrayList<String>> priorityMap = new HashMap<>();
         Map<String, ArrayList<Integer>> availability = new HashMap<>();
-        for (String partId : customerOrder.getPartCloneCountMap().keySet()) {
+        for (String partId : customerOrder.getProductCloneCountMap().keySet()) {
 
             availability.put(partId, new ArrayList<>());
 
@@ -126,7 +126,7 @@ public class AllocatorUsingPacker {
 
         ArrayList<Part> orderList = new ArrayList<>();
         for (String partId : priorityPartList) {
-            Integer qty = warehouse.pipePartGreedily(customerOrder, partId);
+            Integer qty = warehouse.pipeProductGreedily(customerOrder, partId);
             orderList.add(Estimate.estimatePart(partId, qty));
             orderCompleted.get(warehouse).put(partId, qty);
         }
@@ -138,7 +138,7 @@ public class AllocatorUsingPacker {
         warehouse.descendingSort();
         for (String partId : warehouse.getAvailable()) {
 
-            Integer maxQty = warehouse.pipePartGreedily(customerOrder, partId);
+            Integer maxQty = warehouse.pipeProductGreedily(customerOrder, partId);
             orderList.add(Estimate.estimatePart(partId, maxQty));
 
             filledBoxes = packer.getPacking(packer.getAvailableBoxes(), new WarehouseOrder(orderList));

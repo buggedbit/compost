@@ -3,7 +3,7 @@ package com.partsavatar.packer.testing;
 
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.Part;
-import com.partsavatar.packer.components.Vector;
+import com.partsavatar.packer.components.Vector3D;
 import com.partsavatar.packer.components.WarehouseOrder;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Testing {
             Integer y = r.nextInt((max - min) + 1) + min;
             Integer z = r.nextInt((max - min) + 1) + min;
             Integer q = r.nextInt((qty_max - qty_min) + 1) + qty_min;
-            Part p = new Part("Part" + i.toString(), new Vector(x, y, z), 10, q);
+            Part p = new Part("Part" + i.toString(), new Vector3D(x, y, z), 10, q);
             ps.add(p);
         }
         return new WarehouseOrder(ps);
@@ -26,23 +26,23 @@ public class Testing {
 
     public static ArrayList<Box> makeRandomBoxes(Integer min, Integer num, Double rate) {
         Random r = new Random();
-        ArrayList<Vector> aspectRatios = new ArrayList<Vector>();
-        aspectRatios.add(new Vector(1, 1, 1));
-        aspectRatios.add(new Vector(1, 2, 3));
-        aspectRatios.add(new Vector(2, 2, 1));
-        aspectRatios.add(new Vector(1, 1, 2));
-        aspectRatios.add(new Vector(1, 1, 3));
+        ArrayList<Vector3D> aspectRatios = new ArrayList<Vector3D>();
+        aspectRatios.add(new Vector3D(1, 1, 1));
+        aspectRatios.add(new Vector3D(1, 2, 3));
+        aspectRatios.add(new Vector3D(2, 2, 1));
+        aspectRatios.add(new Vector3D(1, 1, 2));
+        aspectRatios.add(new Vector3D(1, 1, 3));
 
         ArrayList<Box> out = new ArrayList<Box>();
         Double alpha = 2.0;
         for (Integer i = 0; i < num; i++) {
             Integer max = min + 5;
             Integer minn = min - 3;
-            Vector aspect = aspectRatios.get(r.nextInt((4 - 0) + 1) + 0);
+            Vector3D aspect = aspectRatios.get(r.nextInt((4 - 0) + 1) + 0);
             Integer x = r.nextInt((max - minn) + 1) + minn;
             Integer y = r.nextInt((max - minn) + 1) + minn;
             Integer z = r.nextInt((max - minn) + 1) + minn;
-            out.add(new Box(new Vector(x * aspect.getX(), y * aspect.getY(), z * aspect.getZ()), "Box" + i.toString()));
+            out.add(new Box(new Vector3D(x * aspect.getX(), y * aspect.getY(), z * aspect.getZ()), "Box" + i.toString()));
             min = (int) (min + alpha);
         }
         return out;
