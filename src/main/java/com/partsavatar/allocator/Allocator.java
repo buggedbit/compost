@@ -1,6 +1,8 @@
 package com.partsavatar.allocator;
 
 import com.partsavatar.allocator.allocationtypes.OptimizeCostPrice;
+import com.partsavatar.allocator.allocationtypes.OptimizeShippingDistance;
+import com.partsavatar.allocator.allocationtypes.OptimizeShippingDuration;
 import com.partsavatar.allocator.api.google.GoogleMaps;
 import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.Address;
@@ -46,16 +48,19 @@ public class Allocator {
     }
 
     private static void allocateOrder(@NonNull final CustomerOrder customerOrder, @NonNull final Vector<Warehouse> warehouses) throws IOException, ParseException, OrderCannotBeFullfilledException {
-        Map<Warehouse, Map<String, Integer>> cost_price_allocation = OptimizeCostPrice.allocate(customerOrder, warehouses);
-        System.out.println(cost_price_allocation);
-//        Map<Response, Warehouse> response_warehouse_map = getResponseWarehouseMap(customerOrder, warehouses);
-//        Map<Warehouse, Map<String, Integer>> distance_allocation = OptimizeShippingDistance.allocate(customerOrder, response_warehouse_map);
-//        Map<Warehouse, Map<String, Integer>> duration_allocation = OptimizeShippingDuration.allocate(customerOrder, response_warehouse_map);
+        Map<Warehouse, Map<String, Integer>> costPriceAllocation = OptimizeCostPrice.allocate(customerOrder, warehouses);
+        System.out.println(costPriceAllocation);
+        Map<Response, Warehouse> responseWarehouseMap = getResponseWarehouseMap(customerOrder, warehouses);
+        Map<Warehouse, Map<String, Integer>> distanceAllocation = OptimizeShippingDistance.allocate(customerOrder, responseWarehouseMap);
+        System.out.println(distanceAllocation);
+        Map<Warehouse, Map<String, Integer>> durationAllocation = OptimizeShippingDuration.allocate(customerOrder, responseWarehouseMap);
+        System.out.println(durationAllocation);
+
     }
 
     public static void main(String[] args) throws ParseException, OrderCannotBeFullfilledException, IOException {
-        CustomerOrder customerOrder = new CustomerOrder(new Address(""));
-        customerOrder.addPart("e2vzypowd3", 12);
+        CustomerOrder customerOrder = new CustomerOrder(new Address("800 Boulevard René-Lévesque O, Montréal, QC H3B, Canada"));
+        customerOrder.addPart("e2vzypowd3", 5);
 
         WarehouseDAO warehouseDAO = new WarehouseDAOImpl();
         Vector<Warehouse> warehouses = warehouseDAO.getAll();
