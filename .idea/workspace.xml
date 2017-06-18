@@ -2,25 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4598808-8338-4af2-a0da-33d592e55658" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/all.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/apt1.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/g2s1.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/key1.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/key2.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/uni1.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/uni2.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/uni3.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/uni4.csv" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/ProductInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Address.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Address.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java" afterPath="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/testing/Testing.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,26 +19,40 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="Allocator.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Allocator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="53" column="43" lean-forward="false" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+            <state relative-caret-position="520">
+              <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding>
                 <element signature="docComment;class#Allocator#0" expanded="false" />
                 <element signature="docComment;method#getResponseWarehouseMap#0;class#Allocator#0" expanded="false" />
+                <element signature="method#allocateOrder#0;class#Allocator#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WarehouseDAOImpl.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java">
+      <file leaf-file-name="Warehouse.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="29" column="28" lean-forward="false" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
+            <state relative-caret-position="727">
+              <caret line="102" column="9" lean-forward="true" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
               <folding>
-                <element signature="class#Inventory#0;class#WarehouseDAOImpl#0" expanded="false" />
+                <element signature="docComment;class#Warehouse#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OptimizeCostPrice.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="572">
+              <caret line="75" column="36" lean-forward="true" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#compare#0;class#1296:3028" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -84,6 +84,7 @@
       <find>getCloneCount()</find>
       <find>inventory</find>
       <find>this.</find>
+      <find>pipeProductGreedily</find>
     </findStrings>
     <replaceStrings>
       <replace>partsavatar.allocator.</replace>
@@ -142,17 +143,17 @@
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/packer/components/Vector3D.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingPrice.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeShippingDistance.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/api/google/Response.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/AllocatorUsingPacker.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/Address.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/ProductInfo.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAO.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java" />
       </list>
     </option>
@@ -288,45 +289,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Unknown" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TakeItEasy" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="partsavatar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="allocator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="warehouse" />
+              <option name="myItemId" value="allocationtypes" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -812,12 +775,12 @@
       <workItem from="1497696299406" duration="1269000" />
       <workItem from="1497698084426" duration="5701000" />
       <workItem from="1497768178327" duration="2021000" />
-      <workItem from="1497785694103" duration="14287000" />
+      <workItem from="1497785694103" duration="16349000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23278000" />
+    <option name="totallyTimeSpent" value="25340000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -838,7 +801,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21132076" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25498652" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32912722" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -884,7 +847,7 @@
         <state relative-caret-position="390">
           <caret line="23" column="51" lean-forward="false" selection-start-line="23" selection-start-column="51" selection-end-line="23" selection-end-column="51" />
           <folding>
-            <element signature="e#3392#3438#0" expanded="false" />
+            <element signature="e#3390#3436#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1125,14 +1088,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="43" column="1" lean-forward="true" selection-start-line="43" selection-start-column="1" selection-end-line="43" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/util/Comparator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="307">
@@ -1164,16 +1119,6 @@
         <state relative-caret-position="364">
           <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="92" column="1" lean-forward="true" selection-start-line="92" selection-start-column="1" selection-end-line="92" selection-end-column="1" />
-          <folding>
-            <element signature="e#3392#3438#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1253,34 +1198,59 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="25" column="55" lean-forward="true" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="55" />
+          <folding>
+            <element signature="class#Inventory#0;class#WarehouseDAOImpl#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/CustomerOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#CustomerOrder#0;class#CustomerOrder#0" expanded="true" />
+            <element signature="method#CustomerOrder#1;class#CustomerOrder#0" expanded="true" />
+            <element signature="method#addPart#0;class#CustomerOrder#0" expanded="true" />
+            <element signature="method#updatePart#0;class#CustomerOrder#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/allocationtypes/OptimizeCostPrice.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="572">
+          <caret line="75" column="36" lean-forward="true" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#compare#0;class#1296:3028" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/Warehouse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="24" column="21" lean-forward="false" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+        <state relative-caret-position="727">
+          <caret line="102" column="9" lean-forward="true" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
           <folding>
             <element signature="docComment;class#Warehouse#0" expanded="false" />
-            <element signature="e#503#510#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/Allocator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="53" column="43" lean-forward="false" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+        <state relative-caret-position="520">
+          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
           <folding>
             <element signature="docComment;class#Allocator#0" expanded="false" />
             <element signature="docComment;method#getResponseWarehouseMap#0;class#Allocator#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/partsavatar/allocator/components/warehouse/WarehouseDAOImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="29" column="28" lean-forward="false" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
-          <folding>
-            <element signature="class#Inventory#0;class#WarehouseDAOImpl#0" expanded="false" />
+            <element signature="method#allocateOrder#0;class#Allocator#0" expanded="true" />
           </folding>
         </state>
       </provider>

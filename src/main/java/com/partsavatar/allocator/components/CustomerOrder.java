@@ -2,11 +2,13 @@ package com.partsavatar.allocator.components;
 
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
+@ToString
 public class CustomerOrder {
     @NonNull
     private Address deliveryAddress;

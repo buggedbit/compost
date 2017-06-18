@@ -16,7 +16,7 @@ import java.util.*;
  */
 @Getter
 @EqualsAndHashCode(of = {"id"})
-@ToString(of = {"id", "address"})
+@ToString(of = {"id"})
 public class Warehouse {
 
     @NonNull
@@ -79,7 +79,7 @@ public class Warehouse {
 
     // DO NOT finalize param customerOrder
     public int pipeProductGreedily(@NonNull CustomerOrder customerOrder, @NonNull final String productSku) {
-        if (customerOrder.getProductCloneCountMap().get(productSku) == null) throw new IllegalArgumentException();
+        if (customerOrder.getProductCloneCountMap().get(productSku) == null) return -1;
 
         int productOrderTaken;
 

@@ -17,7 +17,7 @@ public class OptimizeCostPrice {
         Map<Warehouse, Map<String, Integer>> allocation = new HashMap<>();
 
         // Make a copy of the customerOrder
-        CustomerOrder cost_price_copy = new CustomerOrder(customerOrder);
+        CustomerOrder costPriceCopy = new CustomerOrder(customerOrder);
 
         // Initialize customerOrder in all warehouses
         for (Warehouse warehouse : warehouses) {
@@ -25,8 +25,8 @@ public class OptimizeCostPrice {
         }
 
         // For each ordered part
-        for (Map.Entry<String, Integer> ordered_part : cost_price_copy.getProductCloneCountMap().entrySet()) {
-            String part_id = ordered_part.getKey();
+        for (Map.Entry<String, Integer> productCloneCount : costPriceCopy.getProductCloneCountMap().entrySet()) {
+            String partSku = productCloneCount.getKey();
 
             // Sort warehouses according to cost price of this part
             warehouses.sort(new Comparator<Warehouse>() {
@@ -39,27 +39,27 @@ public class OptimizeCostPrice {
                 public int compare(Warehouse w1, Warehouse w2) {
 
                     // If both warehouses do not contain
-                    if (!w1.containsProduct(part_id) &&
-                            !w2.containsProduct(part_id)) {
+                    if (!w1.containsProduct(partSku) &&
+                            !w2.containsProduct(partSku)) {
                         // w1 == w2
                         return 0;
                     }
                     // w1 contains the part and w2 does not contain
-                    else if (w1.containsProduct(part_id) &&
-                            !w2.containsProduct(part_id)) {
+                    else if (w1.containsProduct(partSku) &&
+                            !w2.containsProduct(partSku)) {
                         // w1 < w2 -> return -1
                         return -1;
                     }
                     // w2 contains the part and w1 does not contain
-                    else if (!w1.containsProduct(part_id) &&
-                            w2.containsProduct(part_id)) {
+                    else if (!w1.containsProduct(partSku) &&
+                            w2.containsProduct(partSku)) {
                         // w1 > w2 -> return 1
                         return 1;
                     }
                     // Both contain the part
                     else {
-                        double w1_cost_price = w1.getProductInfo(part_id).getCostPrice();
-                        double w2_cost_price = w2.getProductInfo(part_id).getCostPrice();
+                        double w1_cost_price = w1.getProductInfo(partSku).getCostPrice();
+                        double w2_cost_price = w2.getProductInfo(partSku).getCostPrice();
 
                         if (w1_cost_price < w2_cost_price) return -1;
                         else if (w1_cost_price == w2_cost_price) return 0;
@@ -71,17 +71,19 @@ public class OptimizeCostPrice {
 
             // Pipe the part through the sorted warehouses greedily
             for (Warehouse warehouse : warehouses) {
-                int part_order_taken = warehouse.pipeProductGreedily(cost_price_copy, part_id);
-                if (part_order_taken != 0) {
-                    Map<String, Integer> wh_allocation = allocation.get(warehouse);
+                int partOrderTaken = warehouse.pipeProductGreedily(costPriceCopy, partSku);
+                if (partOrderTaken > 0) {
+                    Map<String, Integer> whAllocation = allocation.get(warehouse);
                     // As all parts in an customerOrder are unique
-                    // wh_allocation will not previously have a key == part_id
-                    wh_allocation.put(part_id, part_order_taken);
+                    // whAllocation will not previously have a key == partSku
+                    whAllocation.put(partSku, partOrderTaken);
+                } else if (partOrderTaken == -1) {
+                    break;
                 }
             }
 
-            // If still this part remains in the cost_price_copy -> customerOrder cannot be fulfilled
-            if (cost_price_copy.getProductCloneCountMap().containsKey(part_id)) {
+            // If still this part remains in the costPriceCopy -> customerOrder cannot be fulfilled
+            if (costPriceCopy.getProductCloneCountMap().containsKey(partSku)) {
                 throw new OrderCannotBeFullfilledException();
             }
         }
