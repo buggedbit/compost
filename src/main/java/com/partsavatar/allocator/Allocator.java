@@ -47,6 +47,7 @@ public class Allocator {
 
     private static void allocateOrder(@NonNull final CustomerOrder customerOrder, @NonNull final Vector<Warehouse> warehouses) throws IOException, ParseException, OrderCannotBeFullfilledException {
         Map<Warehouse, Map<String, Integer>> cost_price_allocation = OptimizeCostPrice.allocate(customerOrder, warehouses);
+        System.out.println(cost_price_allocation);
 //        Map<Response, Warehouse> response_warehouse_map = getResponseWarehouseMap(customerOrder, warehouses);
 //        Map<Warehouse, Map<String, Integer>> distance_allocation = OptimizeShippingDistance.allocate(customerOrder, response_warehouse_map);
 //        Map<Warehouse, Map<String, Integer>> duration_allocation = OptimizeShippingDuration.allocate(customerOrder, response_warehouse_map);

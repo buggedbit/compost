@@ -3,6 +3,7 @@ package com.partsavatar.allocator.allocationtypes;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
+import com.partsavatar.allocator.operations.Pipe;
 import lombok.NonNull;
 
 import java.util.Comparator;
@@ -71,7 +72,7 @@ public class OptimizeCostPrice {
 
             // Pipe the part through the sorted warehouses greedily
             for (Warehouse warehouse : warehouses) {
-                int partOrderTaken = warehouse.pipeProductGreedily(costPriceCopy, partSku);
+                int partOrderTaken = Pipe.pipeProductGreedily(warehouse, costPriceCopy, partSku);
                 if (partOrderTaken > 0) {
                     Map<String, Integer> whAllocation = allocation.get(warehouse);
                     // As all parts in an customerOrder are unique

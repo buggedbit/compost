@@ -4,10 +4,10 @@ import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
+import com.partsavatar.allocator.operations.Pipe;
 import lombok.NonNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class OptimizeShippingDistance {
         // Pipe through the sorted warehouses greedily
         for (Response response : all_responses) {
             Warehouse warehouse = responseWarehouseMap.get(response);
-            Map<String, Integer> order_taken = warehouse.pipeOrderGreedily(distance_copy);
+            Map<String, Integer> order_taken = Pipe.pipeOrderGreedily(warehouse, distance_copy);
             allocation.put(warehouse, order_taken);
         }
 

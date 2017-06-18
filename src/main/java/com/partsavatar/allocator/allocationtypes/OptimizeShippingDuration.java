@@ -4,6 +4,7 @@ import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
+import com.partsavatar.allocator.operations.Pipe;
 import lombok.NonNull;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class OptimizeShippingDuration {
         // Pipe through the sorted warehouses greedily
         for (Response response : all_responses) {
             Warehouse warehouse = response_warehouse_map.get(response);
-            Map<String, Integer> order_taken = warehouse.pipeOrderGreedily(duration_copy);
+            Map<String, Integer> order_taken = Pipe.pipeOrderGreedily(warehouse, duration_copy);
             allocation.put(warehouse, order_taken);
         }
 

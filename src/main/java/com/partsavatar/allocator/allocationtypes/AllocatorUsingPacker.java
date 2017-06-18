@@ -4,6 +4,7 @@ import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.estimates.Estimate;
+import com.partsavatar.allocator.operations.Pipe;
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.Part;
 import com.partsavatar.packer.components.WarehouseOrder;
@@ -82,7 +83,7 @@ public class AllocatorUsingPacker {
 
         ArrayList<Part> orderList = new ArrayList<>();
 
-        Map<String, Integer> tmpOrder = warehouse.pipeOrderGreedily(customerOrder);
+        Map<String, Integer> tmpOrder = Pipe.pipeOrderGreedily(warehouse, customerOrder);
         for (String partId : tmpOrder.keySet()) {
             orderList.add(Estimate.estimatePart(partId, tmpOrder.get(partId)));
             orderCompleted.get(warehouse).put(partId, tmpOrder.get(partId));
@@ -126,7 +127,7 @@ public class AllocatorUsingPacker {
 
         ArrayList<Part> orderList = new ArrayList<>();
         for (String partId : priorityPartList) {
-            Integer qty = warehouse.pipeProductGreedily(customerOrder, partId);
+            Integer qty = Pipe.pipeProductGreedily(warehouse, customerOrder, partId);
             orderList.add(Estimate.estimatePart(partId, qty));
             orderCompleted.get(warehouse).put(partId, qty);
         }
@@ -138,7 +139,7 @@ public class AllocatorUsingPacker {
         warehouse.descendingSort();
         for (String partId : warehouse.getAvailable()) {
 
-            Integer maxQty = warehouse.pipeProductGreedily(customerOrder, partId);
+            Integer maxQty = Pipe.pipeProductGreedily(warehouse, customerOrder, partId);
             orderList.add(Estimate.estimatePart(partId, maxQty));
 
             filledBoxes = packer.getPacking(packer.getAvailableBoxes(), new WarehouseOrder(orderList));
