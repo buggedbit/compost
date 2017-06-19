@@ -1,7 +1,6 @@
 package com.partsavatar.allocator.operations;
 
 import com.partsavatar.allocator.components.CustomerOrder;
-import com.partsavatar.allocator.components.warehouse.ProductInfo;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
 import lombok.NonNull;
 
@@ -18,12 +17,11 @@ public class Pipe {
         for (Map.Entry<String, Integer> productCloneCount : customerOrder.getProductCloneCountMap().entrySet()) {
             String productSku = productCloneCount.getKey();
 
-            ProductInfo productInfo = warehouse.getProductInfo(productSku);
 
             // This warehouse has the product
-            if (productInfo != null) {
+            if (warehouse.containsProduct(productSku)) {
                 int needed = productCloneCount.getValue();
-                int existing = productInfo.getCloneCount();
+                int existing = warehouse.getCloneCount(productSku);
 
                 // If the skuCloneCount of the product is > 0
                 if (existing > 0) {
@@ -52,12 +50,10 @@ public class Pipe {
 
         int productOrderTaken;
 
-        ProductInfo productInfo = warehouse.getProductInfo(productSku);
-
         // Warehouse has the product
-        if (productInfo != null) {
+        if (warehouse.containsProduct(productSku)) {
             int needed = customerOrder.getProductCloneCountMap().get(productSku);
-            int existing = productInfo.getCloneCount();
+            int existing = warehouse.getCloneCount(productSku);
 
             // order is fulfilled
             if (needed <= existing) {
