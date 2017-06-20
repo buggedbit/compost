@@ -30,7 +30,8 @@ public @Data class Vector3D {
     }
     
     public boolean rotateAndCheckIsEqualOrGreater(final Part p) {
-        List<Direction> tmpPart = p.getDimension().sort();
+        //Place longest part dimension along longest box dimension.  
+    	List<Direction> tmpPart = p.getDimension().sort();
         List<Direction> tmpBox = this.sort();
 
         Integer dimX = p.getDimension().getX();
@@ -71,6 +72,7 @@ public @Data class Vector3D {
     }
 
     public boolean checkIsEqualOrGreater(final Part p) {
+    	// Check if part fits in box without rotating the part
         Integer dimX = p.getDimension().getX();
         Integer dimY = p.getDimension().getY();
         Integer dimZ = p.getDimension().getZ();
@@ -82,7 +84,7 @@ public @Data class Vector3D {
     }
     
     public boolean bestRotateAndCheckIsEqualOrGreater(final Integer minPart, final Part p) {
-        List<Direction> req = getBestOrientation(minPart, p);
+    	List<Direction> req = getBestOrientation(minPart, p);
         if (req == null)
             return false;
 
@@ -129,7 +131,8 @@ public @Data class Vector3D {
     }
     
     private static Integer getContribution(final Integer box, final Integer part, final Integer minPart) {
-        Integer cost = 0;
+        // Heuristic values for cost of part so as to determine its best rotation
+    	Integer cost = 0;
         if (box - part > minPart && box - part < 2 * minPart)
             cost += 25;
         else if (box - part > 2 * minPart && box - part < 5 * minPart)

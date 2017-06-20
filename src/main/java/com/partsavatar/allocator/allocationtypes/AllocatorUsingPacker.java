@@ -17,17 +17,16 @@ import java.util.*;
 
 // TODO : Preferential Treatment for some items.
 public class AllocatorUsingPacker {
-    private static Double THRESHOLD = 75.0;
-    private static PackingDAO PACKER = new PackingDAOImpl();
+    private static final Double THRESHOLD = 75.0;
+    private static final PackingDAO PACKER = new PackingDAOImpl();
 
     public static Map<Warehouse, Map<String, Integer>> allocateWarhouseOrderUsingPacker
     	(final CustomerOrder customerOrder, final Map<Response, Warehouse> responseWarehouseMap)
     		throws NumberFormatException, IOException {
-        // Get all responses
-        ArrayList<Response> allResponses = new ArrayList<>();
+        
+    	ArrayList<Response> allResponses = new ArrayList<>();
         allResponses.addAll(responseWarehouseMap.keySet());
 
-        // Sort all responses w.r.t distance, in turn sorting the warehouses
         allResponses.sort(Response::compareDistance);
         ArrayList<Warehouse> sortedWarehouses = new ArrayList<>();
         for (Response r : allResponses)
@@ -46,16 +45,18 @@ public class AllocatorUsingPacker {
             for (Integer i = 0; i < sortedWarehouses.size(); i++) {
                 if (sortedWarehouses.get(i).containsProduct(partId)) {
                     partAvailability.get(partId).add(i);
-                    if(!warehouseAvailability.containsKey(i))
+                    if(!warehouseAvailability.containsKey(i)) {
                     	warehouseAvailability.put(i, new ArrayList<>());
+                    }
                     warehouseAvailability.get(i).add(partId);
                 }
             }
             if (partAvailability.get(partId).size() == 1) {
                 Integer whIndex = partAvailability.get(partId).get(0);
                 warehouseAvailability.get(whIndex).remove(partId);
-                if (!priorityMap.containsKey(whIndex))
+                if (!priorityMap.containsKey(whIndex)) {
                     priorityMap.put(whIndex, new ArrayList<>());
+                }
                 priorityMap.get(whIndex).add(partId);
                 customerOrder.updatePart(partId, 0);
             }
@@ -78,10 +79,12 @@ public class AllocatorUsingPacker {
 
         //Fill Remaining items in remaining warehouses (nearest warehouse first)
         for (int i = 0; i < sortedWarehouses.size(); i++) {
-    	   if (!orderCompleted.containsKey(sortedWarehouses.get(i)))
+    	   if (!orderCompleted.containsKey(sortedWarehouses.get(i))) {
                orderCompleted.put(sortedWarehouses.get(i), new HashMap<>());
-           else
+    	   }
+    	   else {
                continue;
+    	   }
     	   List<String> filledParts = fillSecondaryItems(orderCompleted, sortedWarehouses.get(i), customerOrder, warehouseAvailability.get(i));    
            updateAvailability(filledParts, warehouseAvailability);
         }
@@ -93,7 +96,7 @@ public class AllocatorUsingPacker {
     		throws NumberFormatException, IOException {
 
     	//update order completed list and convert customerOrder to warehouseOrder for rare parts in this warehouse
-    	ArrayList<Part> orderList = new ArrayList<>();
+    	List<Part> orderList = new ArrayList<>();
     	List<String> filledParts = new ArrayList<>();
         Map<String, Integer> tmpOrder = Pipe.pipeOrderGreedily(warehouse, customerOrder);
         for (String partId : tmpOrder.keySet()) {
@@ -135,8 +138,10 @@ public class AllocatorUsingPacker {
                     orderCompleted.get(warehouse).put(partId, qty);
                     filledParts.remove(partId);
                     return filledParts;
-                } else
+                } 
+                else {
                     continue;
+                }
             }
             
             //If reached here means removing this part completely also doesn't increase accuracy
@@ -150,9 +155,9 @@ public class AllocatorUsingPacker {
     		final Warehouse warehouse, final CustomerOrder customerOrder, final List<String> priorityPartList, 
     		final List<String> warehouseAvailability) throws NumberFormatException, IOException {
     	
-    	//new warehouse allocated
-        if (!orderCompleted.containsKey(warehouse))
+        if (!orderCompleted.containsKey(warehouse)) {
             orderCompleted.put(warehouse, new HashMap<>());
+        }
         
         //update order completed list and convert customerOrder to warehouseOrder for rare parts in this warehouse
         ArrayList<Part> orderList = new ArrayList<>();
@@ -198,8 +203,9 @@ public class AllocatorUsingPacker {
                         break;
                     }
                 }
-                if (orderUpdated)
+                if (orderUpdated) {
                     break;
+                }
             }
         }
         return filledParts;
@@ -207,15 +213,17 @@ public class AllocatorUsingPacker {
 
     private static Integer getBoxVol(final List<Box> filledBoxes) {
         Integer boxVol = 0;
-        for (Box box : filledBoxes)
+        for (Box box : filledBoxes) {
             boxVol += box.getVol();
+        }
         return boxVol;
     }
 
     private static Double getAcc(final List<Box> filledBoxes) {
         Double partVol = 0.0;
-        for (Box box : filledBoxes)
+        for (Box box : filledBoxes) {
             partVol += box.getVol();
+        }
         return 100.0 * partVol / getBoxVol(filledBoxes);
     }
 

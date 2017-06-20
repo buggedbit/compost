@@ -16,7 +16,8 @@ public class EasyPostAPI {
 	private static String[] carriers = {"ExpeditedParcel","PurolatorGround"};
 	
     public static Address getAddress(String name, String street, String city, String state, String zip) throws EasyPostException {
-        Map<String, Object> addressMap = new HashMap<String, Object>();
+    	EasyPost.apiKey = productionKey; 
+    	Map<String, Object> addressMap = new HashMap<String, Object>();
         addressMap.put("name", name);
         addressMap.put("street1", street);
         addressMap.put("city", city);
@@ -27,7 +28,8 @@ public class EasyPostAPI {
     }
 
     public static Parcel getParcel(Double weight, Double height, Double length, Double width) throws EasyPostException {
-        Map<String, Object> parcelMap = new HashMap<String, Object>();
+    	EasyPost.apiKey = productionKey; 
+    	Map<String, Object> parcelMap = new HashMap<String, Object>();
         parcelMap.put("weight", 22.9);
         parcelMap.put("height", 12.1);
         parcelMap.put("width", 8);
@@ -36,7 +38,8 @@ public class EasyPostAPI {
     }
 
     public static Shipment getShipment(Address toAddress, Address fromAddress, Parcel parcel) throws EasyPostException {
-        Map<String, Object> shipmentMap = new HashMap<>();
+    	EasyPost.apiKey = productionKey; 
+    	Map<String, Object> shipmentMap = new HashMap<>();
         shipmentMap.put("to_address", toAddress);
         shipmentMap.put("from_address", fromAddress);
         shipmentMap.put("parcel", parcel);
@@ -55,7 +58,7 @@ public class EasyPostAPI {
     }
     
     public static void main(String[] args) throws EasyPostException {
-        EasyPost.apiKey = productionKey; 
+        
 
         Address warehouseAddress = getAddress("McKesson", "71 Glacier St", "Coquitlam", "BC", "V3K5Z1");
         Address deliveryAddress = getAddress("RECEIVER", "11754 170 St NW", "Edmonton", "AB", "T5S1J7");

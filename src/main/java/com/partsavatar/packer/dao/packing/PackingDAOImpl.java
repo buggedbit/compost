@@ -17,7 +17,7 @@ import java.util.List;
 public class PackingDAOImpl implements PackingDAO {
 
     @Override
-    public List<Box> getPacking(List<Box> availableBoxes, WarehouseOrder warehouseOrder) {
+    public List<Box> getPacking(final List<Box> availableBoxes, final WarehouseOrder warehouseOrder) {
         ArrayList<Box> boxes = (ArrayList<Box>) availableBoxes;
         return FillMultipleBoxes.packOrder(boxes, warehouseOrder);
     }
@@ -40,7 +40,7 @@ public class PackingDAOImpl implements PackingDAO {
 
     @Override
     public WarehouseOrder getNewOrder() {
-        /**(Temporary) Fixed Manual CustomerOrder*/
+        //(Temporary) Fixed Manual CustomerOrder
         Part p1 = new Part("Part1", new Vector3D(7, 7, 2), 10, 1);
         Part p2 = new Part("part2", new Vector3D(12, 7, 6), 10, 1);
         Part p3 = new Part("Part3", new Vector3D(9, 8, 4), 10, 3);
@@ -55,7 +55,7 @@ public class PackingDAOImpl implements PackingDAO {
     }
 
     @Override
-    public void storePacking(List<Box> filledBoxes) {
+    public void storePacking(final List<Box> filledBoxes) {
         try {
             FileWriter fw = new FileWriter("Packing.csv");
             fw.append("PartID,DimX,DimY,DimZ,PosX,PosY,PosZ,BoxID,Weight\n");
