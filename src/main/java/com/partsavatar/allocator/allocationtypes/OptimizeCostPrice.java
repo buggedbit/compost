@@ -27,7 +27,7 @@ public class OptimizeCostPrice {
 
         // For each ordered part
         for (Map.Entry<String, Integer> productCloneCount : costPriceCopy.getProductCloneCountMap().entrySet()) {
-            String partSku = productCloneCount.getKey();
+            String productSku = productCloneCount.getKey();
 
             // Sort warehouses according to cost price of this part
             warehouses.sort(new Comparator<Warehouse>() {
@@ -38,29 +38,29 @@ public class OptimizeCostPrice {
                  */
                 @Override
                 public int compare(Warehouse w1, Warehouse w2) {
-
+                    boolean w1ContainsProduct = w1.containsProduct(productSku);
+                    boolean w2ContainsProduct = w2.containsProduct(productSku);
                     // If both warehouses do not contain
-                    if (!w1.containsProduct(partSku) &&
-                            !w2.containsProduct(partSku)) {
+                    if (!w1ContainsProduct &&
+                            !w2ContainsProduct) {
                         // w1 == w2
                         return 0;
                     }
                     // w1 contains the part and w2 does not contain
-                    else if (w1.containsProduct(partSku) &&
-                            !w2.containsProduct(partSku)) {
+                    else if (w1ContainsProduct &&
+                            !w2ContainsProduct) {
                         // w1 < w2 -> return -1
                         return -1;
                     }
                     // w2 contains the part and w1 does not contain
-                    else if (!w1.containsProduct(partSku) &&
-                            w2.containsProduct(partSku)) {
+                    else if (!w1ContainsProduct) {
                         // w1 > w2 -> return 1
                         return 1;
                     }
                     // Both contain the part
                     else {
-                        double w1_cost_price = w1.getProductInfo(partSku).getCostPrice();
-                        double w2_cost_price = w2.getProductInfo(partSku).getCostPrice();
+                        double w1_cost_price = w1.getCostPrice(productSku);
+                        double w2_cost_price = w2.getCostPrice(productSku);
 
                         if (w1_cost_price < w2_cost_price) return -1;
                         else if (w1_cost_price == w2_cost_price) return 0;
@@ -72,19 +72,19 @@ public class OptimizeCostPrice {
 
             // Pipe the part through the sorted warehouses greedily
             for (Warehouse warehouse : warehouses) {
-                int partOrderTaken = Pipe.pipeProductGreedily(warehouse, costPriceCopy, partSku);
+                int partOrderTaken = Pipe.pipeProductGreedily(warehouse, costPriceCopy, productSku);
                 if (partOrderTaken > 0) {
                     Map<String, Integer> whAllocation = allocation.get(warehouse);
                     // As all parts in an customerOrder are unique
-                    // whAllocation will not previously have a key == partSku
-                    whAllocation.put(partSku, partOrderTaken);
+                    // whAllocation will not previously have a key == productSku
+                    whAllocation.put(productSku, partOrderTaken);
                 } else if (partOrderTaken == -1) {
                     break;
                 }
             }
 
             // If still this part remains in the costPriceCopy -> customerOrder cannot be fulfilled
-            if (costPriceCopy.getProductCloneCountMap().containsKey(partSku)) {
+            if (costPriceCopy.getProductCloneCountMap().containsKey(productSku)) {
                 throw new OrderCannotBeFullfilledException();
             }
         }

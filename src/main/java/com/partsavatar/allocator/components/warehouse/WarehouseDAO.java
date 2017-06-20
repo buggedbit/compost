@@ -10,8 +10,14 @@ public interface WarehouseDAO {
     public Vector<Warehouse> getAll();
 
     /**
-     * Return null if there is no such part or some problem
+     * Return -1 if there is no such part or some problem
      */
-    public ProductInfo getProductInfo(final String warehouseId, final String sku);
+    public int getCloneCount(final String warehouseId, final String productSku);
 
+    /**
+     * Return -1 if there is no such part or some problem
+     */
+    public double getCostPrice(final String warehouseId, final String productSku);
+
+    public boolean containsProduct(final String warehouseId, final String productSku);
 }

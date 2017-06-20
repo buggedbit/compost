@@ -30,11 +30,15 @@ public class Warehouse {
         return new WarehouseDAOImpl().getAll();
     }
 
-    public ProductInfo getProductInfo(@NonNull final String sku) {
-        return new WarehouseDAOImpl().getProductInfo(this.id, sku);
+    public double getCostPrice(@NonNull final String sku) {
+        return new WarehouseDAOImpl().getCostPrice(this.id, sku);
+    }
+
+    public int getCloneCount(@NonNull final String sku) {
+        return new WarehouseDAOImpl().getCloneCount(this.id, sku);
     }
 
     public boolean containsProduct(@NonNull final String sku) {
-        return this.getProductInfo(sku) != null;
+        return new WarehouseDAOImpl().containsProduct(this.id, sku);
     }
 }

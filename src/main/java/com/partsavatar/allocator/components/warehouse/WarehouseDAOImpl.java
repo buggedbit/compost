@@ -89,22 +89,62 @@ public class WarehouseDAOImpl implements WarehouseDAO {
     }
 
     @Override
-    public ProductInfo getProductInfo(String warehouseId, String sku) {
+    public int getCloneCount(String warehouseId, String productSku) {
         if (ensureCachingIsComplete()) {
             for (Map.Entry<Warehouse, Inventory> warehouseInventory : cachedData.entrySet()) {
                 if (warehouseId.equals(warehouseInventory.getKey().getId())) {
                     Inventory inventory = warehouseInventory.getValue();
 
-                    if (inventory.skuCloneCount.containsKey(sku) && inventory.skuCostPriceMap.containsKey(sku)) {
-                        return new ProductInfo(sku, inventory.skuCostPriceMap.get(sku), inventory.skuCloneCount.get(sku));
+                    if (inventory.skuCloneCount.containsKey(productSku) && inventory.skuCostPriceMap.containsKey(productSku)) {
+                        return inventory.skuCloneCount.get(productSku);
                     } else {
-                        return null;
+                        return -1;
                     }
                 }
             }
-            return null;
+            return -1;
         } else {
-            return null;
+            return -1;
+        }
+    }
+
+    @Override
+    public double getCostPrice(String warehouseId, String productSku) {
+        if (ensureCachingIsComplete()) {
+            for (Map.Entry<Warehouse, Inventory> warehouseInventory : cachedData.entrySet()) {
+                if (warehouseId.equals(warehouseInventory.getKey().getId())) {
+                    Inventory inventory = warehouseInventory.getValue();
+
+                    if (inventory.skuCloneCount.containsKey(productSku) && inventory.skuCostPriceMap.containsKey(productSku)) {
+                        return inventory.skuCostPriceMap.get(productSku);
+                    } else {
+                        return -1;
+                    }
+                }
+            }
+            return -1;
+        } else {
+            return -1;
+        }
+    }
+
+    @Override
+    public boolean containsProduct(String warehouseId, String productSku) {
+        if (ensureCachingIsComplete()) {
+            for (Map.Entry<Warehouse, Inventory> warehouseInventory : cachedData.entrySet()) {
+                if (warehouseId.equals(warehouseInventory.getKey().getId())) {
+                    Inventory inventory = warehouseInventory.getValue();
+
+                    if (inventory.skuCloneCount.containsKey(productSku) && inventory.skuCostPriceMap.containsKey(productSku)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return false;
+        } else {
+            return false;
         }
     }
 
