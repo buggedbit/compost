@@ -6,44 +6,44 @@ import com.partsavatar.packer.components.Part;
 import com.partsavatar.packer.components.Vector3D;
 import com.partsavatar.packer.components.WarehouseOrder;
 
-public class InitialAttemptAlgo extends FinalAlgortihmBaseClass {
+public class ExponentialAlgorithm extends BacktrackAlgortihmBaseClass {
 
-    private static void fillSectionC(Box b, WarehouseOrder newWarehouseOrder, Vector3D partDim, Vector3D boxDim, Vector3D origLeftBottom, Integer i) {
+    private static void fillSectionC(final Box b, final WarehouseOrder newWarehouseOrder, final Vector3D partDim, final Vector3D boxDim, final Vector3D origLeftBottom, final Integer i) {
         Vector3D newBoxDim = new Vector3D(partDim.getX(), boxDim.getY() - partDim.getY(), partDim.getZ());
         Vector3D newLeftBottom = new Vector3D(origLeftBottom.getX(), origLeftBottom.getY() + partDim.getY(), origLeftBottom.getZ());
 
         b.setDimension(newBoxDim);
-        fill(b, newWarehouseOrder, newLeftBottom, i);
+        fillBox(b, newWarehouseOrder, newLeftBottom, i);
         b.setDimension(boxDim);
     }
 
-    private static void fillSectionB(Box b, WarehouseOrder newWarehouseOrder, Vector3D partDim, Vector3D boxDim, Vector3D origLeftBottom, Integer i) {
+    private static void fillSectionB(final Box b, final WarehouseOrder newWarehouseOrder, final Vector3D partDim, final Vector3D boxDim, final Vector3D origLeftBottom, final Integer i) {
         Vector3D newBoxDim = new Vector3D(partDim.getX(), boxDim.getY(), boxDim.getZ() - partDim.getZ());
         Vector3D newLeftBottom = new Vector3D(origLeftBottom.getX(), origLeftBottom.getY(), origLeftBottom.getZ() + partDim.getZ());
 
         b.setDimension(newBoxDim);
-        fill(b, newWarehouseOrder, newLeftBottom, i);
+        fillBox(b, newWarehouseOrder, newLeftBottom, i);
         b.setDimension(boxDim);
     }
 
-    private static void fillSectionA(Box b, WarehouseOrder newWarehouseOrder, Vector3D partDim, Vector3D boxDim, Vector3D origLeftBottom, Integer i) {
+    private static void fillSectionA(final Box b, final WarehouseOrder newWarehouseOrder, final Vector3D partDim, final Vector3D boxDim, final Vector3D origLeftBottom, final Integer i) {
         Vector3D newBoxDim = new Vector3D(boxDim.getX() - partDim.getX(), boxDim.getY(), boxDim.getZ());
         Vector3D newLeftBottom = new Vector3D(origLeftBottom.getX() + partDim.getX(), origLeftBottom.getY(), origLeftBottom.getZ());
 
         b.setDimension(newBoxDim);
-        fill(b, newWarehouseOrder, newLeftBottom, i);
+        fillBox(b, newWarehouseOrder, newLeftBottom, i);
         b.setDimension(boxDim);
     }
 
-    private static void fill(Box b, WarehouseOrder ord, Vector3D leftBottom, Integer i) {
-        // check for parts in order. check next while qty = 0 or that part is bigger than box size
-        while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
+    private static void fillBox(final Box b, final WarehouseOrder ord, final Vector3D leftBottom, final Integer i) {
+        Integer iCopy = i;
+    	while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !b.getDimension().rotateAndCheckIsEqualOrGreater(ord.getOrderList().get(i)))) {
-            i++;
+            iCopy++;
         }
-        if (i == ord.getOrderList().size())//No other item in order fits the box
+        if (i == ord.getOrderList().size())
             return;
-        else {//update order, box, left bottom for section c
+        else {
             Integer currQty = ord.getOrderList().get(i).getQuantity();
             ord.getOrderList().get(i).setQuantity(currQty - 1);
 
@@ -52,15 +52,15 @@ public class InitialAttemptAlgo extends FinalAlgortihmBaseClass {
             p.setQuantity(1);
             b.addPart(p);
 
-            fillSectionC(b, ord, p.getDimension(), b.getDimension(), leftBottom, i);
-            fillSectionB(b, ord, p.getDimension(), b.getDimension(), leftBottom, i);
-            fillSectionA(b, ord, p.getDimension(), b.getDimension(), leftBottom, i);
+            fillSectionC(b, ord, p.getDimension(), b.getDimension(), leftBottom, iCopy);
+            fillSectionB(b, ord, p.getDimension(), b.getDimension(), leftBottom, iCopy);
+            fillSectionA(b, ord, p.getDimension(), b.getDimension(), leftBottom, iCopy);
         }
 
     }
 
-    static WarehouseOrder MainAlgo(Box b, WarehouseOrder newWarehouseOrder) {
-        fill(b, newWarehouseOrder, new Vector3D(0, 0, 0), 0);
+    static WarehouseOrder exponentialAlgortihm(final Box b, final WarehouseOrder newWarehouseOrder) {
+        fillBox(b, newWarehouseOrder, new Vector3D(0, 0, 0), 0);
         return newWarehouseOrder;
     }
 }

@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Stack;
 
 
-public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
+public class BacktrackAlgorithmAbove6Items extends BacktrackAlgortihmBaseClass {
 
-    private static void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Vector3D leftBottom, Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
+    private static void upwardFill(final Stack<Surface> s, final Box b, final WarehouseOrder ord, final Vector3D leftBottom, final Vector3D sliceDim, final HashMap<Vector3D, Vector3D> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.getMinPartSize(), ord.getOrderList().get(i)))) {
@@ -36,7 +36,7 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
         }
     }
 
-    private static void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Surface surf, HashMap<Vector3D, Vector3D> unused) {
+    private static void backwardFill(final Stack<Surface> s, final Box b, final WarehouseOrder ord, final Surface surf, final HashMap<Vector3D, Vector3D> unused) {
         while (s.peek() != surf) {
             Surface top = s.pop();
             Surface bottom = s.peek();
@@ -54,11 +54,11 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
         s.pop();
     }
 
-    private static void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, Vector3D leftBottom, Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
+    private static void fillBox(final Stack<Surface> s, final Box b, final WarehouseOrder ord, final Vector3D leftBottom, final Vector3D sliceDim, final HashMap<Vector3D, Vector3D> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.getMinPartSize(), ord.getOrderList().get(i)))) {
-//		!sliceDim.rotateAndCheckIsEqualOrGreater(ord.order_list.get(i)))){		
+        	//	!sliceDim.rotateAndCheckIsEqualOrGreater(ord.order_list.get(i)))){		
             i++;
         }
         if (i == ord.getOrderList().size()) { // No fit found
@@ -85,7 +85,7 @@ public class FinalAlgorithmAbove6Items extends FinalAlgortihmBaseClass {
         }
     }
 
-    static WarehouseOrder MainAlgorithm(Box b, WarehouseOrder newWarehouseOrder) {
+    static WarehouseOrder backtrackAlgorithm(final Box b, final WarehouseOrder newWarehouseOrder) {
         newWarehouseOrder.volSort();
 //		Float initialVol = (float)new_order.getVol();
 //		System.out.println("WITHOUT PREV :" + prev_calcAcc(new_order).toString());

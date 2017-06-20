@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
+public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmBaseClass {
 
-    private static void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Vector3D leftBottom, Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
+    private static void upwardFill(final Stack<Surface> s, final Box b, final WarehouseOrder ord, final Vector3D leftBottom, final Vector3D sliceDim, final HashMap<Vector3D, Vector3D> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.checkIsEqualOrGreater(ord.getOrderList().get(i)))) {
@@ -37,7 +37,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         }
     }
 
-    private static void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, Surface surf, HashMap<Vector3D, Vector3D> unused) {
+    private static void backwardFill(final Stack<Surface> s, final Box b, final WarehouseOrder ord, final Surface surf, final HashMap<Vector3D, Vector3D> unused) {
         while (s.peek() != surf) {
             Surface top = s.pop();
             Surface bottom = s.peek();
@@ -55,7 +55,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         s.pop();
     }
 
-    private static void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, Vector3D leftBottom, Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
+    private static void fillBox(final Stack<Surface> s, final Box b, final WarehouseOrder ord, final Vector3D leftBottom, final Vector3D sliceDim, final HashMap<Vector3D, Vector3D> unused) {
         Integer i = 0;
         while (ord.getOrderList().size() > i && (ord.getOrderList().get(i).getQuantity() == 0 ||
                 !sliceDim.checkIsEqualOrGreater(ord.getOrderList().get(i)))) {
@@ -86,7 +86,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         }
     }
 
-    private static WarehouseOrder expandOrder(WarehouseOrder ord) {
+    private static WarehouseOrder expandOrder(final WarehouseOrder ord) {
         List<Part> expList = new ArrayList<Part>();
         for (Part p : ord.getOrderList()) {
             Integer qty = p.getQuantity();
@@ -98,8 +98,8 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
 
     }
 
-    private static ArrayList<Part> rotate(Part p) {
-        ArrayList<Part> out = new ArrayList<Part>();
+    private static List<Part> rotate(final Part p) {
+        List<Part> out = new ArrayList<Part>();
         Integer x = p.getDimension().getX(), y = p.getDimension().getY(), z = p.getDimension().getZ();
         if (x != y && y != z && z != x) {
             out.add(new Part(p.getId(), new Vector3D(x, y, z), p.getWeight(), 1));
@@ -126,11 +126,11 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         return out;
     }
 
-    private static ArrayList<WarehouseOrder> genRotations(WarehouseOrder ord, Integer start) {
-        ArrayList<WarehouseOrder> out = new ArrayList<WarehouseOrder>();
-        ArrayList<Part> startRotations = rotate(ord.getOrderList().get(start));
+    private static List<WarehouseOrder> genRotations(final WarehouseOrder ord, final Integer start) {
+        List<WarehouseOrder> out = new ArrayList<WarehouseOrder>();
+        List<Part> startRotations = rotate(ord.getOrderList().get(start));
         if (start != ord.getOrderList().size() - 1) {
-            ArrayList<WarehouseOrder> tmp = genRotations(ord, start + 1);
+            List<WarehouseOrder> tmp = genRotations(ord, start + 1);
             for (Part p : startRotations) {
                 for (WarehouseOrder t : tmp) {
                     ArrayList<Part> tmpOrderList = new ArrayList<Part>();
@@ -150,10 +150,12 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
         }
         return out;
     }
-
-    static WarehouseOrder MainAlgo(Box b, WarehouseOrder new_Warehouse_order) {
+    
+    static WarehouseOrder backtrackAlgorithm(final Box b, final WarehouseOrder newWarehouseOrder) {
 //		Float initialVol = (float)new_order.getVol();
-        ArrayList<WarehouseOrder> rotatedWarehouseOrders = genRotations(expandOrder(new_Warehouse_order), 0);
+        WarehouseOrder copyWarehouseOrder = newWarehouseOrder.copy();
+    	
+    	List<WarehouseOrder> rotatedWarehouseOrders = genRotations(expandOrder(copyWarehouseOrder), 0);
         Box bCopy = b.copy();
         Float acc = (float) 0;
         for (WarehouseOrder ord : rotatedWarehouseOrders) {
@@ -177,7 +179,7 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
             if (calcAcc(tmpBox) > acc) {
 //				System.out.println("PREV :" + 100*initialVol/b.getVol());
                 b.setParts(tmpBox.copyParts());
-                new_Warehouse_order = ord.copy();
+                copyWarehouseOrder = ord.copy();
                 acc = calcAcc(tmpBox);
 //				System.out.println("CURR :" + calcAcc(b));
 //				System.out.println("%COMPLETION:" + b.getPartsVol()*100.0/initialVol);
@@ -186,6 +188,6 @@ public class FinalAlgorithmBelow6Items extends FinalAlgortihmBaseClass {
 //		System.out.println("FINAL BOX:" + b.getDimension().toString() + " ACC:" + acc);
 //		System.out.println("VOID:" + (100-acc)*b.getVol()/100);
 //		System.out.println("%COMPLETION:" + b.getPartsVol()*100.0/initialVol);
-        return new_Warehouse_order;
+        return copyWarehouseOrder;
     }
 }

@@ -6,21 +6,21 @@ import lombok.NonNull;
 public @Data
 class Part {
     @NonNull
-    String id;
+    private String id;
     @NonNull
-    Vector3D dimension;
+    private Vector3D dimension;
     @NonNull
-    Integer weight;
+    private Integer weight;
     @NonNull
-    Integer quantity;
+    private Integer quantity;
 
-    Vector3D position;
+    private Vector3D position;
 
     Integer getVol() {
         return dimension.getX() * dimension.getY() * dimension.getZ();
     }
 
-    public int volCompareTo(Part p) {
+    public int volCompareTo(final Part p) {
         Integer lessThan = 1;
         Integer greaterThan = -1;
 

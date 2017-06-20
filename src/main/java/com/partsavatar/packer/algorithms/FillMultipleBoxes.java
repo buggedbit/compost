@@ -2,19 +2,22 @@ package com.partsavatar.packer.algorithms;
 
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.PackingComponent;
+import com.partsavatar.packer.components.Part;
+import com.partsavatar.packer.components.Vector3D;
 import com.partsavatar.packer.components.WarehouseOrder;
 import com.partsavatar.packer.dao.packing.PackingDAOImpl;
-import com.partsavatar.packer.testing.Testing;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 
 public class FillMultipleBoxes {
-
-    private static void calcBoxNumbers(ArrayList<Box> filledBoxes, ArrayList<Box> availableBoxes) {
+	private static Integer SWITCH_BW_2_ALGO = 4;
+	
+    private static void calcBoxNumbers(final List<Box> filledBoxes, final List<Box> availableBoxes) {
         for (Box b : availableBoxes) {
             Integer maxIndex = 0;
             for (Box box : filledBoxes) {
@@ -25,7 +28,7 @@ public class FillMultipleBoxes {
         }
     }
 
-    private static PackingComponent fill(PriorityQueue<PackingComponent> heap, ArrayList<Box> availableBoxes, PackingComponent v, Integer volInitialItems) {
+    private static PackingComponent fillBoxes(final PriorityQueue<PackingComponent> heap, final List<Box> availableBoxes, final PackingComponent v, final Integer volInitialItems) {
         calcBoxNumbers(v.getBoxes(), availableBoxes);
         availableBoxes.sort(Box::volCompareTo);
 
@@ -37,10 +40,10 @@ public class FillMultipleBoxes {
 
                 WarehouseOrder tmpWarehouseOrder = v.getRemainingWarehouseOrder().copy();
                 Box tmpBox = availableBoxes.get(i).copy();
-                if (v.getRemainingWarehouseOrder().numOfItems() <= 6)
-                    tmpWarehouseOrder = FinalAlgorithmBelow6Items.MainAlgo(tmpBox, tmpWarehouseOrder);
+                if (v.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO)
+                    tmpWarehouseOrder = BruteForceBacktrackAlgorithmBelow6Items.backtrackAlgorithm(tmpBox, tmpWarehouseOrder);
                 else
-                    tmpWarehouseOrder = FinalAlgorithmAbove6Items.MainAlgorithm(tmpBox, tmpWarehouseOrder);
+                    tmpWarehouseOrder = BacktrackAlgorithmAbove6Items.backtrackAlgorithm(tmpBox, tmpWarehouseOrder);
 
                 Integer tmpVoid = tmpBox.getVol() - tmpBox.getPartsVol();
                 Double tmpCompletion = tmpBox.getPartsVol() * 100.0 / volInitialItems;
@@ -84,37 +87,52 @@ public class FillMultipleBoxes {
             Integer tmpNum = availableBoxes.get(leastVoidSpaceBoxLoc).getNum();
             availableBoxes.get(leastVoidSpaceBoxLoc).setNum(tmpNum + 1);
 
-            if (v.getRemainingWarehouseOrder().numOfItems() <= 6)
-                v.setRemainingWarehouseOrder(FinalAlgorithmBelow6Items.MainAlgo(box, v.getRemainingWarehouseOrder()));
+            if (v.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO)
+                v.setRemainingWarehouseOrder(BruteForceBacktrackAlgorithmBelow6Items.backtrackAlgorithm(box, v.getRemainingWarehouseOrder()));
             else
-                v.setRemainingWarehouseOrder(FinalAlgorithmAbove6Items.MainAlgorithm(box, v.getRemainingWarehouseOrder()));
+                v.setRemainingWarehouseOrder(BacktrackAlgorithmAbove6Items.backtrackAlgorithm(box, v.getRemainingWarehouseOrder()));
             v.addBox(box.copy());
         }
 
         v.setFinalAccuracy(volInitialItems * 100.0 / (v.getCurrVoid() + volInitialItems));
-
+        
+        PackingComponent finalStage = v.copy();
         while (!heap.isEmpty()) {
             PackingComponent vs = heap.remove();
-            vs = fill(heap, availableBoxes, vs, volInitialItems);
-            if (vs.getFinalAccuracy() >= v.getFinalAccuracy()) {
-                v = vs.copy();
+            vs = fillBoxes(heap, availableBoxes, vs, volInitialItems);
+            if (vs.getFinalAccuracy() >= finalStage.getFinalAccuracy()) {
+                finalStage = vs.copy();
             }
         }
-        return v;
+        return finalStage;
     }
 
-    public static ArrayList<Box> pack(ArrayList<Box> availableBoxes, WarehouseOrder newWarehouseOrder) {
+    public static ArrayList<Box> packOrder(final ArrayList<Box> availableBoxes, final WarehouseOrder newWarehouseOrder) {
         PriorityQueue<PackingComponent> heap = new PriorityQueue<PackingComponent>(PackingComponent::compareTo);
 
         PackingComponent initialVoidSpace = new PackingComponent(0, 0, 0., newWarehouseOrder);
         initialVoidSpace.setBoxes(new ArrayList<Box>());
 
-        PackingComponent vs = FillMultipleBoxes.fill(heap, availableBoxes, initialVoidSpace, newWarehouseOrder.getVol());
+        PackingComponent vs = FillMultipleBoxes.fillBoxes(heap, availableBoxes, initialVoidSpace, newWarehouseOrder.getVol());
         System.out.println("ACC:" + vs.getFinalAccuracy());
 
         return vs.getBoxes();
     }
-
+    
+    public static WarehouseOrder makeRandomOrder(Integer min, Integer max, Integer qty_min, Integer qty_max, Integer diffParts) {
+        Random r = new Random();
+        ArrayList<Part> ps = new ArrayList<Part>();
+        for (Integer i = 0; i < diffParts; i++) {
+            Integer x = r.nextInt((max - min) + 1) + min;
+            Integer y = r.nextInt((max - min) + 1) + min;
+            Integer z = r.nextInt((max - min) + 1) + min;
+            Integer q = r.nextInt((qty_max - qty_min) + 1) + qty_min;
+            Part p = new Part("Part" + i.toString(), new Vector3D(x, y, z), 10, q);
+            ps.add(p);
+        }
+        return new WarehouseOrder(ps);
+    }
+    
     public static void main(String[] args) throws NumberFormatException, IOException {
         long startTime = System.nanoTime();
 
@@ -122,7 +140,7 @@ public class FillMultipleBoxes {
 
         List<Box> availableBoxes = tmp.getAvailableBoxes();
 
-        WarehouseOrder newWarehouseOrder = Testing.makeRandomOrder(6, 40, 1, 2, 4);
+        WarehouseOrder newWarehouseOrder = makeRandomOrder(6, 40, 1, 2, 4);
 
         List<Box> filledBoxes = tmp.getPacking(availableBoxes, newWarehouseOrder);
         tmp.storePacking(filledBoxes);

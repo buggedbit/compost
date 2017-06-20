@@ -56,7 +56,9 @@ public class WarehouseDAOImpl implements WarehouseDAO {
                         warehouse,
                         inventory
                 );
+                ithReader.close();
             }
+            allReader.close();
             return true;
         } catch (IOException e) {
             e.printStackTrace();

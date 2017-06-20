@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class FinalAlgortihmBaseClass {
+public class BacktrackAlgortihmBaseClass {
 
-    static HashMap<Vector3D, Vector3D> combineUnused(HashMap<Vector3D, Vector3D> unused) {
+    static HashMap<Vector3D, Vector3D> combineUnused(final HashMap<Vector3D, Vector3D> unused) {
         HashMap<Vector3D, Vector3D> unusedRemaining = new HashMap<Vector3D, Vector3D>();
         HashMap<Vector3D, ArrayList<Vector3D>> sameXYSurface = new HashMap<Vector3D, ArrayList<Vector3D>>();
 
@@ -45,15 +45,15 @@ public class FinalAlgortihmBaseClass {
         return unusedRemaining;
     }
 
-    static Float calcAcc(Box b) {
+    static Float calcAcc(final Box b) {
         return (float) (b.getPartsVol() * 100.0 / b.getVol());
     }
 
-    static Float prev_calcAcc(WarehouseOrder ord, Box b) {
+    static Float prevCalcAcc(final WarehouseOrder ord, final Box b) {
         return (float) (ord.getVol() * 100.0 / b.getVol());
     }
 
-    static WarehouseOrder MainAlgo(Box b, WarehouseOrder new_Warehouse_order) {
+    static WarehouseOrder backtrackAlgorithm(final Box b, final WarehouseOrder new_Warehouse_order) {
         return null;
     }
 }

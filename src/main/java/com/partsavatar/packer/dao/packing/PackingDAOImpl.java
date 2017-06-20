@@ -19,7 +19,7 @@ public class PackingDAOImpl implements PackingDAO {
     @Override
     public List<Box> getPacking(List<Box> availableBoxes, WarehouseOrder warehouseOrder) {
         ArrayList<Box> boxes = (ArrayList<Box>) availableBoxes;
-        return FillMultipleBoxes.pack(boxes, warehouseOrder);
+        return FillMultipleBoxes.packOrder(boxes, warehouseOrder);
     }
 
     @Override
