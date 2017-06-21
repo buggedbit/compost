@@ -6,9 +6,8 @@ import lombok.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public @Data
-class WarehouseOrder {
+@Data
+public class WarehouseOrder {
     @NonNull
     private List<Part> orderList;
 

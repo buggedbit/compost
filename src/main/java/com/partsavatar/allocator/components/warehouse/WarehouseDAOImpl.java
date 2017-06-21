@@ -1,7 +1,7 @@
 package com.partsavatar.allocator.components.warehouse;
 
 import com.opencsv.CSVReader;
-import com.partsavatar.allocator.components.Address;
+import com.partsavatar.allocator.components.AddressInfo;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class WarehouseDAOImpl implements WarehouseDAO {
             String[] wFields = allReader.readNext();
             // Reads Warehouse
             while ((wFields = allReader.readNext()) != null) {
-                Warehouse warehouse = new Warehouse(wFields[0], new Address(wFields[1]));
+                Warehouse warehouse = new Warehouse(wFields[0], new AddressInfo(wFields[1]));
                 Inventory inventory = new Inventory();
 
                 final String warehousesInventoryPath = dbDir + wFields[2];

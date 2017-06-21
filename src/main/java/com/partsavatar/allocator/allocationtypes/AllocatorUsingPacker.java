@@ -1,5 +1,8 @@
 package com.partsavatar.allocator.allocationtypes;
 
+import com.easypost.model.Address;
+import com.easypost.model.Parcel;
+import com.partsavatar.allocator.api.easyPost.EasyPostAPI;
 import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
@@ -13,7 +16,6 @@ import com.partsavatar.packer.dao.packing.PackingDAOImpl;
 
 import java.io.IOException;
 import java.util.*;
-
 
 // TODO : Preferential Treatment for some items.
 public class AllocatorUsingPacker {
@@ -169,7 +171,8 @@ public class AllocatorUsingPacker {
         
         List<Box> filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
 
-        Integer currBoxVol = getBoxVol(filledBoxes);
+        Float currBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasypostAddress(),
+        			warehouse.getAddress().getEasypostAddress());
 
         //Sort secondary parts available in warehouse according to decreasing volume
         warehouseAvailability.sort((o1, o2) -> {
@@ -186,8 +189,10 @@ public class AllocatorUsingPacker {
             orderList.add(Estimate.estimatePart(partId, maxQty));
 
             filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
-
-            if (currBoxVol <= getBoxVol(filledBoxes)) { // TODO change condition according to prices
+            Float tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasypostAddress(),
+        			warehouse.getAddress().getEasypostAddress());
+            
+            if (currBoxCost <= tmpBoxCost) { // TODO change condition according to prices
                 orderCompleted.get(warehouse).put(partId, maxQty);
                 filledParts.add(partId);
             }
@@ -197,7 +202,9 @@ public class AllocatorUsingPacker {
                     orderList.get(orderList.size() - 1).setQuantity(qty);
 
                     filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
-                    if (currBoxVol <= getBoxVol(filledBoxes)) { // TODO change condition according to prices
+                    tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasypostAddress(),
+                			warehouse.getAddress().getEasypostAddress());
+                    if (currBoxCost <= tmpBoxCost) { // TODO change condition according to prices
                         orderCompleted.get(warehouse).put(partId, qty);
                         orderUpdated = true;
                         break;
@@ -211,22 +218,26 @@ public class AllocatorUsingPacker {
         return filledParts;
     }
 
-    private static Integer getBoxVol(final List<Box> filledBoxes) {
-        Integer boxVol = 0;
-        for (Box box : filledBoxes) {
-            boxVol += box.getVol();
-        }
-        return boxVol;
+    private static Float getCost(final List<Box> filledBoxes, Address warehouseAddress, Address customerAddress) {
+        Float cost = 0f;
+    	for (Box box : filledBoxes) {
+    		Parcel parcel = EasyPostAPI.getParcel(box.getWeight(), box.getDimension().getY(), box.getDimension().getZ(), box.getDimension().getX());
+    		Map<String, Float> rateMap = EasyPostAPI.getRate(EasyPostAPI.getShipment(warehouseAddress, customerAddress, parcel));
+    		cost+= rateMap.get(EasyPostAPI.getCARRIERS()[0]);
+    	}
+        return cost;
     }
-
+    
     private static Double getAcc(final List<Box> filledBoxes) {
-        Double partVol = 0.0;
-        for (Box box : filledBoxes) {
-            partVol += box.getVol();
-        }
-        return 100.0 * partVol / getBoxVol(filledBoxes);
+        Double boxVol = 0.;
+        Double partVol = 0.;
+    	for (Box box : filledBoxes) {
+    		boxVol += box.getVol();
+    		partVol += box.getPartsVol();
+    	}
+        return 100 * boxVol / partVol;
     }
-
+    
     private static void updateAvailability(final List<String> filledParts, 
     		final Map<Integer, List<String>> warehouseAvailability) {
     	for (String partId : filledParts) {

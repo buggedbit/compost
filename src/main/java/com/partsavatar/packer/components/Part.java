@@ -2,8 +2,10 @@ package com.partsavatar.packer.components;
 
 import lombok.Data;
 import lombok.NonNull;
+import lombok.ToString;
 
 public @Data
+@ToString(exclude= {"position","weight"})
 class Part {
     @NonNull
     private String id;

@@ -30,13 +30,21 @@ public class Box {
     }
 
     public void addPart(final Part p) {
+    	if(parts == null)
+    		parts = new ArrayList<>();
         parts.add(p);
     }
 
     public Integer getVol() {
         return dimension.getX() * dimension.getY() * dimension.getZ();
     }
-
+    public Double getWeight() {
+    	Double wt = 0.;
+    	for (Part part : parts) {
+			wt+= part.getWeight();
+		}
+    	return wt;
+    }
     public Integer getPartsVol() {
         Integer sum = 0;
         for (Part part : parts) {

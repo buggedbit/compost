@@ -5,7 +5,7 @@ import com.partsavatar.allocator.allocationtypes.OptimizeShippingDistance;
 import com.partsavatar.allocator.allocationtypes.OptimizeShippingDuration;
 import com.partsavatar.allocator.api.google.GoogleMaps;
 import com.partsavatar.allocator.api.google.Response;
-import com.partsavatar.allocator.components.Address;
+import com.partsavatar.allocator.components.AddressInfo;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.components.warehouse.WarehouseDAO;
@@ -59,7 +59,7 @@ public class Allocator {
     }
 
     public static void main(String[] args) throws ParseException, OrderCannotBeFullfilledException, IOException {
-        CustomerOrder customerOrder = new CustomerOrder(new Address("800 Boulevard René-Lévesque O, Montréal, QC H3B, Canada"));
+        CustomerOrder customerOrder = new CustomerOrder(new AddressInfo("800 Boulevard René-Lévesque O, Montréal, QC H3B, Canada"));
         customerOrder.addPart("e2vzypowd3", 5);
 
         WarehouseDAO warehouseDAO = new WarehouseDAOImpl();
