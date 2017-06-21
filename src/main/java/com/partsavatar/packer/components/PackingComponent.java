@@ -4,24 +4,24 @@ import lombok.*;
 
 import java.util.ArrayList;
 
-@ToString(exclude = "remainingOrder")
+@ToString(exclude = "remainingWarehouseOrder")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public @Data
-class PackingComponent {
+@Data
+public class PackingComponent {
     @NonNull
-    Integer currStep, currVoid;
+    private Integer currStep, currVoid;
     @NonNull
-    Double currCompletion;
+    private Double currCompletion;
     @NonNull
-    WarehouseOrder remainingWarehouseOrder;
-    ArrayList<Box> boxes;
-    Double finalAccuracy;
+    private WarehouseOrder remainingWarehouseOrder;
+    private ArrayList<Box> boxes;
+    private Double finalAccuracy;
 
     public ArrayList<Box> copyBoxes() {
         ArrayList<Box> copy = new ArrayList<Box>();
         for (Box box : boxes) {
-            Box b = new Box(box.dimension, box.id);
-            b.num = box.num;
+            Box b = new Box(box.getDimension(), box.getId());
+            b.setNum(box.getNum());
             copy.add(b);
             copy.get(copy.size() - 1).setParts(box.copyParts());
         }
@@ -35,7 +35,7 @@ class PackingComponent {
         return vs;
     }
 
-    public int compareTo(PackingComponent v) {
+    public int compareTo(final PackingComponent v) {
         Integer lessThan = 1;
         Integer greaterThan = -1;
         if (v.currStep < currStep)
@@ -52,7 +52,7 @@ class PackingComponent {
         }
     }
 
-    public void addBox(Box box) {
+    public void addBox(final Box box) {
         boxes.add(box);
     }
 }

@@ -1,15 +1,11 @@
 package com.partsavatar.allocator.components.warehouse;
 
-import com.partsavatar.allocator.components.Address;
-import com.partsavatar.allocator.estimates.Estimate;
-import com.partsavatar.packer.components.Part;
+import com.partsavatar.allocator.components.AddressInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -23,11 +19,13 @@ public class Warehouse {
     @NonNull
     private String id;
     @NonNull
-    private Address address;
-
-    public Warehouse(@NonNull final String id, @NonNull final Address address) {
+    private AddressInfo address;
+    
+    
+    public Warehouse(@NonNull final String id, @NonNull final AddressInfo address) {
         this.id = id;
         this.address = address;
+        this.address.initEasyPostAddress(id);
     }
 
     public static Vector<Warehouse> getAll() {
@@ -44,31 +42,5 @@ public class Warehouse {
 
     public boolean containsProduct(@NonNull final String sku) {
         return new WarehouseDAOImpl().containsProduct(this.id, sku);
-    }
-
-    List<String> available = new ArrayList<>();
-
-    public void addToAvailable(String s) {
-        available.add(s);
-    }
-
-    public void removeFromAvailable(String s) {
-        available.remove(s);
-    }
-
-    public void descendingSort() {
-        available.sort((o1, o2) -> {
-            Part p1 = Estimate.estimatePart(o1, 1);
-            Part p2 = Estimate.estimatePart(o2, 1);
-            return p2.volCompareTo(p1);
-        });
-    }
-
-    public void ascendingSort() {
-        available.sort((o1, o2) -> {
-            Part p1 = Estimate.estimatePart(o1, 1);
-            Part p2 = Estimate.estimatePart(o2, 1);
-            return p1.volCompareTo(p2);
-        });
     }
 }

@@ -11,15 +11,15 @@ import java.util.Map;
 @ToString
 public class CustomerOrder {
     @NonNull
-    private Address deliveryAddress;
+    private AddressInfo deliveryAddress;
     private Map<String, Integer> productCloneCountMap = new HashMap<>();
 
-    public CustomerOrder(@NonNull final Address deliveryAddress) {
-        this.deliveryAddress = new Address(deliveryAddress);
+    public CustomerOrder(@NonNull final AddressInfo deliveryAddress) {
+        this.deliveryAddress = new AddressInfo(deliveryAddress);
     }
 
     public CustomerOrder(@NonNull final CustomerOrder customerOrder) {
-        this.deliveryAddress = new Address(customerOrder.deliveryAddress);
+        this.deliveryAddress = new AddressInfo(customerOrder.deliveryAddress);
         this.productCloneCountMap = new HashMap<>(customerOrder.productCloneCountMap);
     }
 

@@ -3,131 +3,126 @@ package com.partsavatar.packer.algorithms;
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.PackingComponent;
 import com.partsavatar.packer.components.WarehouseOrder;
-import com.partsavatar.packer.dao.packing.PackingDAOImpl;
-import com.partsavatar.packer.testing.Testing;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
 
 public class FillMultipleBoxes {
+	private static Integer SWITCH_BW_2_ALGO = 4;
+	
+	public static ArrayList<Box> packOrder(final ArrayList<Box> availableBoxes, final WarehouseOrder newWarehouseOrder) {
+        PriorityQueue<PackingComponent> heap = new PriorityQueue<PackingComponent>(PackingComponent::compareTo);
 
-    private static void calcBoxNumbers(ArrayList<Box> filledBoxes, ArrayList<Box> availableBoxes) {
+        PackingComponent initialVoidSpace = new PackingComponent(0, 0, 0., newWarehouseOrder.copy());
+        initialVoidSpace.setBoxes(new ArrayList<Box>());
+
+        PackingComponent vs = FillMultipleBoxes.fillBoxes(heap, availableBoxes, initialVoidSpace, newWarehouseOrder.getVol());
+        //System.out.println("ACC:" + vs.getFinalAccuracy());
+
+        return vs.getBoxes();
+    }
+	
+	private static void calcBoxNumbers(final List<Box> filledBoxes, final List<Box> availableBoxes) {
         for (Box b : availableBoxes) {
             Integer maxIndex = 0;
             for (Box box : filledBoxes) {
-                if (box.getId().equals(b.getId()) && box.getNum() > maxIndex)
+                if (box.getId().equals(b.getId()) && box.getNum() > maxIndex) {
                     maxIndex = box.getNum();
+                }
             }
             b.setNum(maxIndex + 1);
         }
     }
-
-    private static PackingComponent fill(PriorityQueue<PackingComponent> heap, ArrayList<Box> availableBoxes, PackingComponent v, Integer volInitialItems) {
-        calcBoxNumbers(v.getBoxes(), availableBoxes);
+    
+    private static PackingComponent fillBoxes(final PriorityQueue<PackingComponent> heap, final List<Box> availableBoxes, final PackingComponent initialPacking, final Integer volInitialItems) {
+        calcBoxNumbers(initialPacking.getBoxes(), availableBoxes);
+        
         availableBoxes.sort(Box::volCompareTo);
-
-        while (v.getRemainingWarehouseOrder().numOfItems() != 0) {
+        
+        //Forward Propagation in one direction towards completing the order (storing important alternatives in the way)
+        while (initialPacking.getRemainingWarehouseOrder().numOfItems() != 0) {
             Integer thisStepVoid = availableBoxes.get(0).getVol(), leastVoidSpaceBoxLoc = 0;
             Double thisStepCompletion = 0.;
 
             for (int i = 0; i < availableBoxes.size(); i++) {
 
-                WarehouseOrder tmpWarehouseOrder = v.getRemainingWarehouseOrder().copy();
+                WarehouseOrder tmpWarehouseOrder = initialPacking.getRemainingWarehouseOrder().copy();
                 Box tmpBox = availableBoxes.get(i).copy();
-                if (v.getRemainingWarehouseOrder().numOfItems() <= 6)
-                    tmpWarehouseOrder = FinalAlgorithmBelow6Items.MainAlgo(tmpBox, tmpWarehouseOrder);
-                else
-                    tmpWarehouseOrder = FinalAlgorithmAbove6Items.MainAlgorithm(tmpBox, tmpWarehouseOrder);
-
+                if (initialPacking.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO) {
+                    tmpWarehouseOrder = BruteForceBacktrackAlgorithmBelow6Items.backtrackAlgorithm(tmpBox, tmpWarehouseOrder);
+                }
+                else {
+                    tmpWarehouseOrder = BacktrackAlgorithmAbove6Items.backtrackAlgorithm(tmpBox, tmpWarehouseOrder);
+                }
+                
                 Integer tmpVoid = tmpBox.getVol() - tmpBox.getPartsVol();
                 Double tmpCompletion = tmpBox.getPartsVol() * 100.0 / volInitialItems;
-
+                
+                //Find the box with least voidSpace (after packing order in that) 
                 if (thisStepVoid > tmpVoid && tmpBox.getPartsVol() > 0) {
                     thisStepVoid = tmpVoid;
                     thisStepCompletion = tmpCompletion;
                     leastVoidSpaceBoxLoc = i;
                 }
+                
+                //Insert packing stages, that can potentially lead to better accuracy later
                 if (tmpBox.getPartsVol() > 0) {
                     Boolean shouldBeAdded = true;
                     for (PackingComponent vs : heap) {
-                        if (tmpVoid + v.getCurrVoid() >= vs.getCurrVoid() && v.getCurrCompletion() + tmpCompletion <= vs.getCurrCompletion()) {
+                        if (tmpVoid + initialPacking.getCurrVoid() >= vs.getCurrVoid() && initialPacking.getCurrCompletion() + tmpCompletion <= vs.getCurrCompletion()) {
                             shouldBeAdded = false;
                             break;
                         }
                     }
                     if (shouldBeAdded) {
-                        PackingComponent tmp1 = new PackingComponent(v.getCurrStep() + 1, tmpVoid + v.getCurrVoid(), v.getCurrCompletion() + tmpCompletion, tmpWarehouseOrder);
-                        tmp1.setBoxes(v.copyBoxes());
+                        PackingComponent tmp1 = new PackingComponent(initialPacking.getCurrStep() + 1, tmpVoid + initialPacking.getCurrVoid(), initialPacking.getCurrCompletion() + tmpCompletion, tmpWarehouseOrder);
+                        tmp1.setBoxes(initialPacking.copyBoxes());
                         tmp1.addBox(tmpBox.copy());
                         heap.add(tmp1);
                     }
                 }
             }
-            v.setCurrVoid(v.getCurrVoid() + thisStepVoid);
-            v.setCurrCompletion(v.getCurrCompletion() + thisStepCompletion);
-            v.setCurrStep(v.getCurrStep() + 1);
+            //update the packing by chosen box from above
+            initialPacking.setCurrVoid(initialPacking.getCurrVoid() + thisStepVoid);
+            initialPacking.setCurrCompletion(initialPacking.getCurrCompletion() + thisStepCompletion);
+            initialPacking.setCurrStep(initialPacking.getCurrStep() + 1);
 
-            if (!heap.isEmpty() && heap.peek().getCurrStep() == v.getCurrStep() && v.getCurrCompletion() < 100)
+            //remove this updated stage from packing
+            if (!heap.isEmpty() && heap.peek().getCurrStep() == initialPacking.getCurrStep() && initialPacking.getCurrCompletion() < 100) {
                 heap.remove();
-            else {
-                if (heap.isEmpty())
-                    System.err.println("WTF");
-                while (!heap.isEmpty() && heap.peek().getCurrStep() == v.getCurrStep())
-                    heap.remove();
             }
-
+            else {
+               while (!heap.isEmpty() && heap.peek().getCurrStep() == initialPacking.getCurrStep()) {
+            	   heap.remove();
+               }
+            }
+            
             Box box = availableBoxes.get(leastVoidSpaceBoxLoc).copy();
 
             Integer tmpNum = availableBoxes.get(leastVoidSpaceBoxLoc).getNum();
             availableBoxes.get(leastVoidSpaceBoxLoc).setNum(tmpNum + 1);
 
-            if (v.getRemainingWarehouseOrder().numOfItems() <= 6)
-                v.setRemainingWarehouseOrder(FinalAlgorithmBelow6Items.MainAlgo(box, v.getRemainingWarehouseOrder()));
-            else
-                v.setRemainingWarehouseOrder(FinalAlgorithmAbove6Items.MainAlgorithm(box, v.getRemainingWarehouseOrder()));
-            v.addBox(box.copy());
+            if (initialPacking.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO) {
+                initialPacking.setRemainingWarehouseOrder(BruteForceBacktrackAlgorithmBelow6Items.backtrackAlgorithm(box, initialPacking.getRemainingWarehouseOrder()));
+            }else {
+                initialPacking.setRemainingWarehouseOrder(BacktrackAlgorithmAbove6Items.backtrackAlgorithm(box, initialPacking.getRemainingWarehouseOrder()));
+            }
+            initialPacking.addBox(box.copy());
         }
-
-        v.setFinalAccuracy(volInitialItems * 100.0 / (v.getCurrVoid() + volInitialItems));
-
+        
+        initialPacking.setFinalAccuracy(volInitialItems * 100.0 / (initialPacking.getCurrVoid() + volInitialItems));
+        
+        //Iterating over alternative stages of Packing in heap to check for better possibility
+        PackingComponent finalStage = initialPacking.copy();
         while (!heap.isEmpty()) {
             PackingComponent vs = heap.remove();
-            vs = fill(heap, availableBoxes, vs, volInitialItems);
-            if (vs.getFinalAccuracy() >= v.getFinalAccuracy()) {
-                v = vs.copy();
+            vs = fillBoxes(heap, availableBoxes, vs, volInitialItems);
+            if (vs.getFinalAccuracy() >= finalStage.getFinalAccuracy()) {
+                finalStage = vs.copy();
             }
         }
-        return v;
-    }
-
-    public static ArrayList<Box> pack(ArrayList<Box> availableBoxes, WarehouseOrder newWarehouseOrder) {
-        PriorityQueue<PackingComponent> heap = new PriorityQueue<PackingComponent>(PackingComponent::compareTo);
-
-        PackingComponent initialVoidSpace = new PackingComponent(0, 0, 0., newWarehouseOrder);
-        initialVoidSpace.setBoxes(new ArrayList<Box>());
-
-        PackingComponent vs = FillMultipleBoxes.fill(heap, availableBoxes, initialVoidSpace, newWarehouseOrder.getVol());
-        System.out.println("ACC:" + vs.getFinalAccuracy());
-
-        return vs.getBoxes();
-    }
-
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        long startTime = System.nanoTime();
-
-        PackingDAOImpl tmp = new PackingDAOImpl();
-
-        List<Box> availableBoxes = tmp.getAvailableBoxes();
-
-        WarehouseOrder newWarehouseOrder = Testing.makeRandomOrder(6, 40, 1, 2, 4);
-
-        List<Box> filledBoxes = tmp.getPacking(availableBoxes, newWarehouseOrder);
-        tmp.storePacking(filledBoxes);
-
-        System.out.println("TIME:" + (System.nanoTime() - startTime) / 1000000000.0);
-
+        return finalStage;
     }
 }

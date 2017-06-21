@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface PackingDAO {
 
-    public List<Box> getPacking(List<Box> availableBoxes, WarehouseOrder warehouseOrder);
+    public List<Box> getPacking(final List<Box> availableBoxes, final WarehouseOrder warehouseOrder);
 
     public List<Box> getAvailableBoxes() throws NumberFormatException, IOException;
 
     public WarehouseOrder getNewOrder();
 
-    public void storePacking(List<Box> filledBoxes);
+    public void storePacking(final List<Box> filledBoxes);
 }

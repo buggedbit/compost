@@ -7,17 +7,17 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-public @Data
-class Box {
+@Data
+public class Box {
     @NonNull
-    Vector3D dimension;
+    private Vector3D dimension;
     @Setter
-    List<Part> parts;
+    private List<Part> parts;
     @NonNull
-    String id;
-    Integer num;
+    private String id;
+    private Integer num;
 
-    public Integer volCompareTo(Box b) {
+    public Integer volCompareTo(final Box b) {
         Integer lessThan = 1;
         Integer greaterThan = -1;
 
@@ -29,14 +29,22 @@ class Box {
             return 0;
     }
 
-    public void addPart(Part p) {
+    public void addPart(final Part p) {
+    	if(parts == null)
+    		parts = new ArrayList<>();
         parts.add(p);
     }
 
     public Integer getVol() {
         return dimension.getX() * dimension.getY() * dimension.getZ();
     }
-
+    public Double getWeight() {
+    	Double wt = 0.;
+    	for (Part part : parts) {
+			wt+= part.getWeight();
+		}
+    	return wt;
+    }
     public Integer getPartsVol() {
         Integer sum = 0;
         for (Part part : parts) {
@@ -52,13 +60,13 @@ class Box {
         return b;
     }
 
-    public ArrayList<Part> copyParts() {
+    public List<Part> copyParts() {
         if (parts == null)
             return null;
-        ArrayList<Part> copy = new ArrayList<Part>();
+        List<Part> copy = new ArrayList<Part>();
         for (Part p : parts) {
             Part copyOfP = p.copy();
-            copyOfP.position = p.position;
+            copyOfP.setPosition(p.getPosition());
             copy.add(copyOfP);
         }
         return copy;
