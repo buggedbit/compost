@@ -10,13 +10,14 @@ import java.util.Map;
 public class Pipe {
 
     // DO NOT finalize param customerOrder
+    // todo : fix simultaneous change exception
+    // todo : make params final
     public static Map<String, Integer> pipeOrderGreedily(@NonNull final Warehouse warehouse, @NonNull CustomerOrder customerOrder) {
         Map<String, Integer> order_taken = new HashMap<>();
 
         // For every product in the customerOrder
         for (Map.Entry<String, Integer> productCloneCount : customerOrder.getProductCloneCountMap().entrySet()) {
             String productSku = productCloneCount.getKey();
-
 
             // This warehouse has the product
             if (warehouse.containsProduct(productSku)) {
@@ -45,6 +46,8 @@ public class Pipe {
     }
 
     // DO NOT finalize param customerOrder
+    // todo : fix simultaneous change exception
+    // todo : make params final
     public static int pipeProductGreedily(@NonNull final Warehouse warehouse, @NonNull CustomerOrder customerOrder, @NonNull final String productSku) {
         if (customerOrder.getProductCloneCountMap().get(productSku) == null) return -1;
 

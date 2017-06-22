@@ -23,12 +23,12 @@ public class Warehouse {
     private AddressInfo address;
     
     
-    public Warehouse(@NonNull final String id, @NonNull final AddressInfo address, final String satelliteStatus) {
+    public Warehouse(@NonNull final String id, @NonNull final AddressInfo address, final String satelliteStore) {
         this.id = id;
         this.address = address;
         this.address.initEasyPostAddress(id);
-        if(!satelliteStatus.equals("NULL"))
-        	this.satelliteStore = satelliteStatus;
+        if(!satelliteStore.equals("NULL"))
+        	this.satelliteStore = satelliteStore;
     }
 
     public static Vector<Warehouse> getAll() {

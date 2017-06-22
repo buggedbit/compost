@@ -238,8 +238,8 @@ public class AllocatorUsingPacker {
         
         List<Box> filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
 
-        Float currBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasypostAddress(),
-        		warehouseList.get(0).getAddress().getEasypostAddress());
+        Float currBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasyPostAddress(),
+        		warehouseList.get(0).getAddress().getEasyPostAddress());
 
         //Sort secondary parts available in warehouse according to decreasing volume
         warehouseAvailability.sort((o1, o2) -> {
@@ -259,8 +259,8 @@ public class AllocatorUsingPacker {
             orderList.put(pEstimate, maxQty);
 
             filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
-            Float tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasypostAddress(),
-            		warehouseList.get(0).getAddress().getEasypostAddress());
+            Float tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasyPostAddress(),
+            		warehouseList.get(0).getAddress().getEasyPostAddress());
             
             if (currBoxCost <= tmpBoxCost) { // TODO change condition according to prices
                 orderCompleted.get(whId).put(partId, maxQty);
@@ -274,8 +274,8 @@ public class AllocatorUsingPacker {
 					customerOrder.addPart(partId, 1);
 
                     filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
-                    tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasypostAddress(),
-                    		warehouseList.get(0).getAddress().getEasypostAddress());
+                    tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasyPostAddress(),
+                    		warehouseList.get(0).getAddress().getEasyPostAddress());
                     if (currBoxCost <= tmpBoxCost) { // TODO change condition according to prices
                         orderCompleted.get(whId).put(partId, qty);
                         orderUpdated = true;

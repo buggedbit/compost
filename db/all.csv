@@ -1,9 +1,13 @@
-id,address,inventory_file,satellite_store
-uni1,"71 Glacier St, Coquitlam, BC - V3K 5Z1",uni1.csv,Sat1
-uni2,"11754 170 St NW, Edmonton, AB - T5S 1J7",uni2.csv,NULL
-uni3,"115 Walker Dr, Brampton, ON - L6T 5P5",uni3.csv,Sat2
-uni4,"200 Boulevard Industriel, Boucherville, QC - J4B 2X3",uni4.csv,NULL
-apt1,"7342 Winston St, Burnaby, BC - V5A 2G9",apt1.csv,Sat1
-g2s1,"1895 ch Saint-François, Dorval, QC - H9P 1K3",g2s1.csv,NULL
-key1,"8221 McIntyre, Edmonton, AB - T6E 5J7",key1.csv,NULL
-key2,"1545 Rue Marie-Victorin, Saint-Bruno-de-Montarville, QC - J3V 6B7",key2.csv,NULL
+"id","address","inventory_file","satellite_store"
+"uni1","71 Glacier St, Coquitlam, BC - V3K 5Z1",uni1.csv,Sat1
+"uni2","11754 170 St NW, Edmonton, AB - T5S 1J7",uni2.csv,NULL
+"uni3","115 Walker Dr, Brampton, ON - L6T 5P5",uni3.csv,Sat2
+"uni4","200 Boulevard Industriel, Boucherville, QC - J4B 2X3",uni4.csv,NULL
+"apt1","7342 Winston St, Burnaby, BC - V5A 2G9",apt1.csv,Sat1
+"g2s1","1895 ch Saint-François, Dorval, QC - H9P 1K3",g2s1.csv,NULL
+"key1","8221 McIntyre, Edmonton, AB - T6E 5J7",key1.csv,NULL
+"key2","1545 Rue Marie-Victorin, Saint-Bruno-de-Montarville, QC - J3V 6B7",key2.csv,NULL
+"crc1","8221 McIntyre Road, Edmonton, Alberta, - T6E 5J7",crc1.csv,NULL
+"crc2","100 Kennedy Road South, Brampton, Ontario, - L6W 3E8",crc2.csv,NULL
+"vas1","4840 Boulevard des Grandes-Prairies, Saint-Léonard, QC - H1R 1A1",vas1.csv,NULL
+"vas2","28 Topple Drive Dartmouth (Nova-Scotia) - B3B 1L6",vas2.csv,NULL

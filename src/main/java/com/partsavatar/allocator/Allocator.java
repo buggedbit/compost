@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * todo : implement satellite stores
- * todo : implement same day delivery
- */
+/**   
+ * todo : intimate cannot handle order allocation 
+ * todo : productionze code 
+ */ 
 public class Allocator {
 
     /**
@@ -56,7 +56,6 @@ public class Allocator {
         System.out.println(distanceAllocation);
         Map<Warehouse, Map<String, Integer>> durationAllocation = OptimizeShippingDuration.allocate(customerOrder, responseWarehouseMap);
         System.out.println(durationAllocation);
-
     }
 
     public static void main(String[] args) throws ParseException, OrderCannotBeFullfilledException, IOException {
