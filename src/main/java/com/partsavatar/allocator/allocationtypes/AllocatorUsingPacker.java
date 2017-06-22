@@ -11,6 +11,7 @@ import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.components.warehouse.WarehouseDAO;
 import com.partsavatar.allocator.components.warehouse.WarehouseDAOImpl;
 import com.partsavatar.allocator.estimates.Estimate;
+import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import com.partsavatar.allocator.operations.Pipe;
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.Part;
@@ -28,9 +29,9 @@ public class AllocatorUsingPacker {
     private static final Double THRESHOLD = 75.0;
     private static final PackingDAO PACKER = new PackingDAOImpl();
 
-    public Map<Warehouse, Map<String, Integer>> allocateWarhouseOrderUsingPacker
-    	(final CustomerOrder customerOrder, final Map<Response, Warehouse> responseWarehouseMap)
-    		throws NumberFormatException, IOException {
+    public Map<Warehouse, Map<String, Integer>> allocateWarhouseOrderUsingPacker(
+    		final CustomerOrder customerOrder, final Map<Response, Warehouse> responseWarehouseMap
+    		)throws NumberFormatException, IOException, OrderCannotBeFullfilledException {
         CustomerOrder copyCustomerOrder = new CustomerOrder(customerOrder);
     	
     	ArrayList<Response> allResponses = new ArrayList<>();
@@ -84,27 +85,42 @@ public class AllocatorUsingPacker {
             		copyCustomerOrder, priorityMap.get(whIndex), warehouseAvailability.get(whIndex));
         	updateAvailability(filledParts, warehouseAvailability);
         	if(isOrderComplete(filledParts, warehouseAvailability)) {
-        		return orderCompleted;
+	        	if(copyCustomerOrder.getProductCloneCountMap().size() == 0) {
+					return orderCompleted;
+				}
+				else {
+					throw new OrderCannotBeFullfilledException();
+				}
         	}
         }
 
         //Fill Remaining items in remaining warehouses (nearest warehouse first)
         for (int i = 0; i < sortedWarehouses.size(); i++) {
-    	   if(warehouseAvailability.containsKey(i) && warehouseAvailability.get(i).size() != 0) {
-    		   if (!orderCompleted.containsKey(sortedWarehouses.get(i))) {
-	               orderCompleted.put(sortedWarehouses.get(i), new HashMap<>());
-	    	   }
-	    	   else {
-	               continue;
-	    	   }
-	    	   List<String> filledParts = fillSecondaryItems(orderCompleted, sortedWarehouses.get(i), copyCustomerOrder, warehouseAvailability.get(i));    
-	           updateAvailability(filledParts, warehouseAvailability);
-	           if(isOrderComplete(filledParts, warehouseAvailability)) {
-	       			return orderCompleted;
-	       	   }
-    	   }
+        	if(warehouseAvailability.containsKey(i) && warehouseAvailability.get(i).size() != 0) {
+        		if (!orderCompleted.containsKey(sortedWarehouses.get(i))) {
+        			orderCompleted.put(sortedWarehouses.get(i), new HashMap<>());
+        		}
+        		else {
+        			continue;
+        		}
+        		List<String> filledParts = fillSecondaryItems(orderCompleted, sortedWarehouses.get(i), copyCustomerOrder, warehouseAvailability.get(i));    
+        		updateAvailability(filledParts, warehouseAvailability);
+        		if(isOrderComplete(filledParts, warehouseAvailability)) {
+        			if(copyCustomerOrder.getProductCloneCountMap().size() == 0) {
+        				return orderCompleted;
+        			}
+        			else {
+        				throw new OrderCannotBeFullfilledException();
+        			}
+        		}
+        	}	
         }
-        return orderCompleted;
+        if(copyCustomerOrder.getProductCloneCountMap().size() == 0) {
+			return orderCompleted;
+		}
+		else {
+			throw new OrderCannotBeFullfilledException();
+		}
     }
 
     private List<String> fillSecondaryItems(Map<Warehouse, Map<String, Integer>> orderCompleted, 
@@ -267,7 +283,7 @@ public class AllocatorUsingPacker {
     	return true;
     }
     
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException, NumberFormatException, OrderCannotBeFullfilledException {
     	long startTime = System.nanoTime();
     	CustomerOrder customerOrder = new CustomerOrder(new AddressInfo("11754 170 St NW, Edmonton, AB - T5S 1J7"));
         customerOrder.addPart("e2vzypowd3", 8);

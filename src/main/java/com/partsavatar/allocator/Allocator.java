@@ -42,7 +42,7 @@ public class Allocator {
         ArrayList<Response> map_responses = GoogleMaps.getDistancesAndTimes(origins, destinations);
 
         for (int i = 0; i < warehouses.size(); i++) {
-            ans.put(map_responses.get(i), warehouses.get(i));
+        	ans.put(map_responses.get(i), warehouses.get(i));
         }
 
         return ans;

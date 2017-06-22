@@ -12,7 +12,6 @@ import java.util.Vector;
 public class WarehouseDAOImpl implements WarehouseDAO {
 
     private static final String dbDir = "./db/";
-//    private static final String dbDir = "/home/pandu/Desktop/PartsAvatar/TakeItEasy/TakeItEasy/db/";
     private class Inventory {
         Map<String, Double> skuCostPriceMap = new HashMap<>();
         Map<String, Integer> skuCloneCount = new HashMap<>();
@@ -39,7 +38,7 @@ public class WarehouseDAOImpl implements WarehouseDAO {
             String[] wFields = allReader.readNext();
             // Reads Warehouse
             while ((wFields = allReader.readNext()) != null) {
-                Warehouse warehouse = new Warehouse(wFields[0], new AddressInfo(wFields[1]));
+                Warehouse warehouse = new Warehouse(wFields[0], new AddressInfo(wFields[1]), wFields[2]);
                 Inventory inventory = new Inventory();
 
                 final String warehousesInventoryPath = dbDir + wFields[2];

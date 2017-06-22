@@ -18,14 +18,17 @@ public class Warehouse {
 
     @NonNull
     private String id;
+    private String satelliteStore;
     @NonNull
     private AddressInfo address;
     
     
-    public Warehouse(@NonNull final String id, @NonNull final AddressInfo address) {
+    public Warehouse(@NonNull final String id, @NonNull final AddressInfo address, final String satelliteStatus) {
         this.id = id;
         this.address = address;
         this.address.initEasyPostAddress(id);
+        if(!satelliteStatus.equals("NULL"))
+        	this.satelliteStore = satelliteStatus;
     }
 
     public static Vector<Warehouse> getAll() {
