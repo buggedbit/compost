@@ -3,6 +3,9 @@ package com.partsavatar.packer.components;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ToString(exclude = "remainingWarehouseOrder")
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
@@ -14,16 +17,18 @@ public class PackingComponent {
     private Double currCompletion;
     @NonNull
     private WarehouseOrder remainingWarehouseOrder;
-    private ArrayList<Box> boxes;
+    private Map<Box, List<Box>> boxMap;
     private Double finalAccuracy;
 
-    public ArrayList<Box> copyBoxes() {
-        ArrayList<Box> copy = new ArrayList<Box>();
-        for (Box box : boxes) {
-            Box b = new Box(box.getDimension(), box.getId());
-            b.setNum(box.getNum());
-            copy.add(b);
-            copy.get(copy.size() - 1).setParts(box.copyParts());
+    public Map<Box, List<Box>> copyBoxMap() {
+    	Map<Box, List<Box>> copy = new HashMap<>();
+        for (Box box : boxMap.keySet()) {
+        	copy.put(box,new ArrayList<>());
+        	for (Box insideBox : boxMap.get(box)) {
+        		Box b = new Box(insideBox.getDimension(), insideBox.getId());
+                b.setPartPositionMap(insideBox.copyParts());
+                copy.get(box).add(insideBox);
+        	}
         }
         return copy;
     }
@@ -31,7 +36,7 @@ public class PackingComponent {
     public PackingComponent copy() {
         PackingComponent vs = new PackingComponent(currStep, currVoid, currCompletion, remainingWarehouseOrder);
         vs.finalAccuracy = finalAccuracy;
-        vs.boxes = copyBoxes();
+        vs.boxMap = copyBoxMap();
         return vs;
     }
 
@@ -53,6 +58,11 @@ public class PackingComponent {
     }
 
     public void addBox(final Box box) {
-        boxes.add(box);
+        Box tmpBox = new Box(box.getDimension(), box.getId());
+    	if(boxMap == null)
+    		boxMap = new HashMap<>();
+    	if(!boxMap.containsKey(tmpBox))
+    		boxMap.put(tmpBox, new ArrayList<>());
+        boxMap.get(tmpBox).add(box);
     }
 }

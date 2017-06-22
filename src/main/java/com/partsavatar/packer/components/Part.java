@@ -1,22 +1,20 @@
 package com.partsavatar.packer.components;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 
-public @Data
-@ToString(exclude= {"position","weight"})
-class Part {
+@Data
+@ToString(exclude= {"weight"})
+@EqualsAndHashCode(exclude="dimension")
+public class Part {
     @NonNull
     private String id;
     @NonNull
     private Vector3D dimension;
     @NonNull
-    private Integer weight;
-    @NonNull
-    private Integer quantity;
-
-    private Vector3D position;
+    private Double weight;
 
     Integer getVol() {
         return dimension.getX() * dimension.getY() * dimension.getZ();
@@ -35,8 +33,7 @@ class Part {
     }
 
     public Part copy() {
-        Part p = new Part(id, dimension, weight, quantity);
-        p.position = position;
+        Part p = new Part(id, dimension, weight);
         return p;
     }
 }

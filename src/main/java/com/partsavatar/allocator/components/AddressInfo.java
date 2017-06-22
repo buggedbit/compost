@@ -6,7 +6,6 @@ import com.partsavatar.allocator.api.easyPost.EasyPostAPI;
 import lombok.*;
 
 @Getter
-@RequiredArgsConstructor
 @EqualsAndHashCode(of = {"raw"})
 @ToString(of = {"raw"})
 public class AddressInfo {
@@ -14,11 +13,15 @@ public class AddressInfo {
     private String raw;
     private Address easypostAddress;
     
+    public AddressInfo(String raw) {
+    	this.raw = raw;
+    	this.initEasyPostAddress(null);
+    }
     public void initEasyPostAddress(String id) {
     	String[] address = raw.split(",");
     	String[] state = address[2].split("-");
     	try {
-    		easypostAddress = EasyPostAPI.getAddress(id, address[0], address[1], state[1], state[2] );
+    		easypostAddress = EasyPostAPI.getAddress(id, address[0], address[1], state[0], state[1] );
 		} 
     	catch (IndexOutOfBoundsException e) {
 			System.err.println("Wrong Syntax of address");

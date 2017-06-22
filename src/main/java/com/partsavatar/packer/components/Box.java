@@ -1,21 +1,22 @@
 package com.partsavatar.packer.components;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
+@EqualsAndHashCode(exclude="dimension")
 public class Box {
     @NonNull
     private Vector3D dimension;
     @Setter
-    private List<Part> parts;
+    private Map<Vector3D,Part> partPositionMap;
     @NonNull
     private String id;
-    private Integer num;
 
     public Integer volCompareTo(final Box b) {
         Integer lessThan = 1;
@@ -29,10 +30,10 @@ public class Box {
             return 0;
     }
 
-    public void addPart(final Part p) {
-    	if(parts == null)
-    		parts = new ArrayList<>();
-        parts.add(p);
+    public void addPart(final Part p,final Vector3D position) {
+    	if(partPositionMap == null)
+    		partPositionMap = new HashMap<>();
+		partPositionMap.put(position, p);
     }
 
     public Integer getVol() {
@@ -40,14 +41,14 @@ public class Box {
     }
     public Double getWeight() {
     	Double wt = 0.;
-    	for (Part part : parts) {
+    	for (Part part : partPositionMap.values()) {
 			wt+= part.getWeight();
 		}
     	return wt;
     }
     public Integer getPartsVol() {
         Integer sum = 0;
-        for (Part part : parts) {
+        for (Part part : partPositionMap.values()) {
             sum += part.getVol();
         }
         return sum;
@@ -55,19 +56,17 @@ public class Box {
 
     public Box copy() {
         Box b = new Box(dimension, id);
-        b.setParts(copyParts());
-        b.num = num;
+        b.setPartPositionMap(copyParts());
         return b;
     }
 
-    public List<Part> copyParts() {
-        if (parts == null)
+    public Map<Vector3D,Part> copyParts() {
+        if (partPositionMap == null)
             return null;
-        List<Part> copy = new ArrayList<Part>();
-        for (Part p : parts) {
-            Part copyOfP = p.copy();
-            copyOfP.setPosition(p.getPosition());
-            copy.add(copyOfP);
+        Map<Vector3D,Part> copy = new HashMap<>();
+        for (Vector3D pos : partPositionMap.keySet()) {
+            Part copyOfP = partPositionMap.get(pos).copy();
+            copy.put(pos,copyOfP);
         }
         return copy;
     }

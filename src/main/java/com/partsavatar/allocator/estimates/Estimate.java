@@ -9,7 +9,7 @@ import com.partsavatar.packer.components.Vector3D;
 public class Estimate {
     private static ProductDimensionDAO estimator = new ProductDimensionDAOImpl();
 
-    public static Part estimatePart(String sku, Integer quantity) {
+    public static Part estimatePart(String sku) {
         ProductDimension estimate = estimator.getBySku(sku);
         return new Part(
                 estimate.getSku(),
@@ -18,7 +18,7 @@ public class Estimate {
                         (int) estimate.getBreadth(),
                         (int) estimate.getHeight()
                 ),
-                (int) estimate.getWeight(),
-                quantity);
+                estimate.getWeight());
+//        return new Part(sku, new Vector3D(10, 10, 10), 10.);
     }
 }

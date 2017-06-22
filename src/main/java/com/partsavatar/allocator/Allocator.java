@@ -29,7 +29,7 @@ public class Allocator {
      * MapAPI response is preserved, i.e. given list of warehouses (and an customerOrder) the mapAPI responses list corresponds to former
      * Assert unique warehouses
      */
-    private static Map<Response, Warehouse> getResponseWarehouseMap(@NonNull final CustomerOrder customerOrder, @NonNull final Vector<Warehouse> warehouses) throws IOException, ParseException {
+    public static Map<Response, Warehouse> getResponseWarehouseMap(@NonNull final CustomerOrder customerOrder, @NonNull final Vector<Warehouse> warehouses) throws IOException, ParseException {
         Map<Response, Warehouse> ans = new HashMap<>();
 
         String[] destinations = {customerOrder.getDeliveryAddress().getRaw()};

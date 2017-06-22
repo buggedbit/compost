@@ -11,7 +11,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class PackingDAOImpl implements PackingDAO {
@@ -30,8 +33,7 @@ public class PackingDAOImpl implements PackingDAO {
         while ((newLine = br.readLine()) != null) {
             String[] parts = newLine.split(",");
             Box box = new Box(new Vector3D(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3])), parts[0]);
-            box.setNum(1);
-            box.setParts(new ArrayList<>());
+            box.setPartPositionMap(new HashMap<>());
             boxes.add(box);
         }
         br.close();
@@ -41,15 +43,15 @@ public class PackingDAOImpl implements PackingDAO {
     @Override
     public WarehouseOrder getNewOrder() {
         //(Temporary) Fixed Manual CustomerOrder
-        Part p1 = new Part("Part1", new Vector3D(7, 7, 2), 10, 1);
-        Part p2 = new Part("part2", new Vector3D(12, 7, 6), 10, 1);
-        Part p3 = new Part("Part3", new Vector3D(9, 8, 4), 10, 3);
-        Part p4 = new Part("Part4", new Vector3D(6, 6, 2), 10, 2);
-        ArrayList<Part> p = new ArrayList<>();
-        p.add(p1);
-        p.add(p2);
-        p.add(p3);
-        p.add(p4);
+        Part p1 = new Part("Part1", new Vector3D(7, 7, 2), 10.);
+        Part p2 = new Part("part2", new Vector3D(12, 7, 6), 10.);
+        Part p3 = new Part("Part3", new Vector3D(9, 8, 4), 10.);
+        Part p4 = new Part("Part4", new Vector3D(6, 6, 2), 10.);
+        Map<Part, Integer> p = new HashMap<>();
+        p.put(p1,1);
+        p.put(p2,1);
+        p.put(p3,3);
+        p.put(p4,2);
 
         return new WarehouseOrder(p);
     }
@@ -60,16 +62,16 @@ public class PackingDAOImpl implements PackingDAO {
             FileWriter fw = new FileWriter("Packing.csv");
             fw.append("PartID,DimX,DimY,DimZ,PosX,PosY,PosZ,BoxID,Weight\n");
             for (Box b : filledBoxes) {
-                for (Part part : b.getParts()) {
-                    fw.append(part.getId()).append(",");
-                    fw.append(String.valueOf(part.getDimension().getX() - 0.5)).append(",");
-                    fw.append(String.valueOf(part.getDimension().getY() - 0.5)).append(",");
-                    fw.append(String.valueOf(part.getDimension().getZ() - 0.5)).append(",");
-                    fw.append(String.valueOf(part.getPosition().getX())).append(",");
-                    fw.append(String.valueOf(part.getPosition().getY())).append(",");
-                    fw.append(String.valueOf(part.getPosition().getZ())).append(",");
-                    fw.append(b.getId()).append("-").append(String.valueOf(b.getNum())).append(",");
-                    fw.append(String.valueOf(part.getWeight())).append("\n");
+                for (Entry<Vector3D, Part> part : b.getPartPositionMap().entrySet()) {
+                    fw.append(part.getValue().getId()).append(",");
+                    fw.append(String.valueOf(part.getValue().getDimension().getX() - 0.5)).append(",");
+                    fw.append(String.valueOf(part.getValue().getDimension().getY() - 0.5)).append(",");
+                    fw.append(String.valueOf(part.getValue().getDimension().getZ() - 0.5)).append(",");
+                    fw.append(String.valueOf(part.getKey().getX())).append(",");
+                    fw.append(String.valueOf(part.getKey().getY())).append(",");
+                    fw.append(String.valueOf(part.getKey().getZ())).append(",");
+                    fw.append(b.getId()).append(",");
+                    fw.append(String.valueOf(part.getValue().getWeight())).append("\n");
                 }
             }
             fw.flush();

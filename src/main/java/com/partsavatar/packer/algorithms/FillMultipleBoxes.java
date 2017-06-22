@@ -2,55 +2,78 @@ package com.partsavatar.packer.algorithms;
 
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.PackingComponent;
+import com.partsavatar.packer.components.Part;
+import com.partsavatar.packer.components.Vector3D;
 import com.partsavatar.packer.components.WarehouseOrder;
+import com.partsavatar.packer.dao.packing.PackingDAOImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 
 public class FillMultipleBoxes {
 	private static Integer SWITCH_BW_2_ALGO = 4;
 	
-	public static ArrayList<Box> packOrder(final ArrayList<Box> availableBoxes, final WarehouseOrder newWarehouseOrder) {
+	public static List<Box> packOrder(final ArrayList<Box> availableBoxes, final WarehouseOrder newWarehouseOrder) {
         PriorityQueue<PackingComponent> heap = new PriorityQueue<PackingComponent>(PackingComponent::compareTo);
 
         PackingComponent initialVoidSpace = new PackingComponent(0, 0, 0., newWarehouseOrder.copy());
-        initialVoidSpace.setBoxes(new ArrayList<Box>());
-
-        PackingComponent vs = FillMultipleBoxes.fillBoxes(heap, availableBoxes, initialVoidSpace, newWarehouseOrder.getVol());
-        //System.out.println("ACC:" + vs.getFinalAccuracy());
-
-        return vs.getBoxes();
+        initialVoidSpace.setBoxMap(new HashMap<>());
+        
+        Map <Box,Integer> availableBoxMap = new HashMap<>(); 
+        for (Box box : availableBoxes) {
+			availableBoxMap.put(box, 1);
+		}
+        PackingComponent vs = FillMultipleBoxes.fillBoxes(heap, availableBoxMap, initialVoidSpace, newWarehouseOrder.getVol());
+        System.out.println("ACC:" + vs.getFinalAccuracy());
+        List<Box> filledBoxes = new ArrayList<>();
+        for (Box box : vs.getBoxMap().keySet()) {
+        	String id = box.getId();
+        	for (Integer i = 0; i < vs.getBoxMap().get(box).size(); i++) {
+        		vs.getBoxMap().get(box).get(i).setId(id + "-" + i.toString());
+				filledBoxes.add(vs.getBoxMap().get(box).get(i));
+			}
+        }
+        
+        return filledBoxes;
     }
 	
-	private static void calcBoxNumbers(final List<Box> filledBoxes, final List<Box> availableBoxes) {
-        for (Box b : availableBoxes) {
+	private static void calcBoxNumbers(final Map<Box, List<Box>> filledBoxes, Map<Box,Integer> availableBoxes) {
+        for (Box b : availableBoxes.keySet()) {
             Integer maxIndex = 0;
-            for (Box box : filledBoxes) {
-                if (box.getId().equals(b.getId()) && box.getNum() > maxIndex) {
-                    maxIndex = box.getNum();
+            for (Box box : filledBoxes.keySet()) {
+                if (box.getId().equals(b.getId()) && filledBoxes.get(box).size() > maxIndex) {
+                    maxIndex = filledBoxes.get(box).size();
                 }
             }
-            b.setNum(maxIndex + 1);
+            availableBoxes.get(maxIndex + 1);
         }
     }
     
-    private static PackingComponent fillBoxes(final PriorityQueue<PackingComponent> heap, final List<Box> availableBoxes, final PackingComponent initialPacking, final Integer volInitialItems) {
-        calcBoxNumbers(initialPacking.getBoxes(), availableBoxes);
+    private static PackingComponent fillBoxes(PriorityQueue<PackingComponent> heap, Map<Box,Integer> availableBoxMap,
+    		final PackingComponent initialPacking, final Integer volInitialItems) {
+        PackingComponent copyInitialPacking = initialPacking.copy();
+ 
+        calcBoxNumbers(copyInitialPacking.getBoxMap(), availableBoxMap);
         
+        List<Box> availableBoxes = new ArrayList<>(availableBoxMap.keySet());
         availableBoxes.sort(Box::volCompareTo);
         
         //Forward Propagation in one direction towards completing the order (storing important alternatives in the way)
-        while (initialPacking.getRemainingWarehouseOrder().numOfItems() != 0) {
+        while (copyInitialPacking.getRemainingWarehouseOrder().numOfItems() != 0) {
             Integer thisStepVoid = availableBoxes.get(0).getVol(), leastVoidSpaceBoxLoc = 0;
             Double thisStepCompletion = 0.;
 
             for (int i = 0; i < availableBoxes.size(); i++) {
 
-                WarehouseOrder tmpWarehouseOrder = initialPacking.getRemainingWarehouseOrder().copy();
+                WarehouseOrder tmpWarehouseOrder = copyInitialPacking.getRemainingWarehouseOrder().copy();
                 Box tmpBox = availableBoxes.get(i).copy();
-                if (initialPacking.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO) {
+                if (copyInitialPacking.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO) {
                     tmpWarehouseOrder = BruteForceBacktrackAlgorithmBelow6Items.backtrackAlgorithm(tmpBox, tmpWarehouseOrder);
                 }
                 else {
@@ -71,58 +94,91 @@ public class FillMultipleBoxes {
                 if (tmpBox.getPartsVol() > 0) {
                     Boolean shouldBeAdded = true;
                     for (PackingComponent vs : heap) {
-                        if (tmpVoid + initialPacking.getCurrVoid() >= vs.getCurrVoid() && initialPacking.getCurrCompletion() + tmpCompletion <= vs.getCurrCompletion()) {
+                        if (tmpVoid + copyInitialPacking.getCurrVoid() >= vs.getCurrVoid() && 
+                        		copyInitialPacking.getCurrCompletion() + tmpCompletion <= vs.getCurrCompletion()) {
                             shouldBeAdded = false;
                             break;
                         }
                     }
                     if (shouldBeAdded) {
-                        PackingComponent tmp1 = new PackingComponent(initialPacking.getCurrStep() + 1, tmpVoid + initialPacking.getCurrVoid(), initialPacking.getCurrCompletion() + tmpCompletion, tmpWarehouseOrder);
-                        tmp1.setBoxes(initialPacking.copyBoxes());
+                        PackingComponent tmp1 = new PackingComponent(copyInitialPacking.getCurrStep() + 1,
+                        		tmpVoid + copyInitialPacking.getCurrVoid(), copyInitialPacking.getCurrCompletion() + tmpCompletion, tmpWarehouseOrder);
+                        tmp1.setBoxMap(copyInitialPacking.copyBoxMap());
                         tmp1.addBox(tmpBox.copy());
                         heap.add(tmp1);
                     }
                 }
             }
             //update the packing by chosen box from above
-            initialPacking.setCurrVoid(initialPacking.getCurrVoid() + thisStepVoid);
-            initialPacking.setCurrCompletion(initialPacking.getCurrCompletion() + thisStepCompletion);
-            initialPacking.setCurrStep(initialPacking.getCurrStep() + 1);
+            copyInitialPacking.setCurrVoid(copyInitialPacking.getCurrVoid() + thisStepVoid);
+            copyInitialPacking.setCurrCompletion(copyInitialPacking.getCurrCompletion() + thisStepCompletion);
+            copyInitialPacking.setCurrStep(copyInitialPacking.getCurrStep() + 1);
 
             //remove this updated stage from packing
-            if (!heap.isEmpty() && heap.peek().getCurrStep() == initialPacking.getCurrStep() && initialPacking.getCurrCompletion() < 100) {
+            if (!heap.isEmpty() && heap.peek().getCurrStep() == copyInitialPacking.getCurrStep() && copyInitialPacking.getCurrCompletion() < 100) {
                 heap.remove();
             }
             else {
-               while (!heap.isEmpty() && heap.peek().getCurrStep() == initialPacking.getCurrStep()) {
+               while (!heap.isEmpty() && heap.peek().getCurrStep() == copyInitialPacking.getCurrStep()) {
             	   heap.remove();
                }
             }
             
             Box box = availableBoxes.get(leastVoidSpaceBoxLoc).copy();
-
-            Integer tmpNum = availableBoxes.get(leastVoidSpaceBoxLoc).getNum();
-            availableBoxes.get(leastVoidSpaceBoxLoc).setNum(tmpNum + 1);
-
-            if (initialPacking.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO) {
-                initialPacking.setRemainingWarehouseOrder(BruteForceBacktrackAlgorithmBelow6Items.backtrackAlgorithm(box, initialPacking.getRemainingWarehouseOrder()));
+            availableBoxMap.put(box, availableBoxMap.get(box) + 1);
+            
+            if (copyInitialPacking.getRemainingWarehouseOrder().numOfItems() <= SWITCH_BW_2_ALGO) {
+                copyInitialPacking.setRemainingWarehouseOrder(BruteForceBacktrackAlgorithmBelow6Items.
+                		backtrackAlgorithm(box, copyInitialPacking.getRemainingWarehouseOrder()));
             }else {
-                initialPacking.setRemainingWarehouseOrder(BacktrackAlgorithmAbove6Items.backtrackAlgorithm(box, initialPacking.getRemainingWarehouseOrder()));
+                copyInitialPacking.setRemainingWarehouseOrder(BacktrackAlgorithmAbove6Items.
+                		backtrackAlgorithm(box, copyInitialPacking.getRemainingWarehouseOrder()));
             }
-            initialPacking.addBox(box.copy());
+            copyInitialPacking.addBox(box.copy());
+            
         }
         
-        initialPacking.setFinalAccuracy(volInitialItems * 100.0 / (initialPacking.getCurrVoid() + volInitialItems));
+        copyInitialPacking.setFinalAccuracy(volInitialItems * 100.0 / (copyInitialPacking.getCurrVoid() + volInitialItems));
         
         //Iterating over alternative stages of Packing in heap to check for better possibility
-        PackingComponent finalStage = initialPacking.copy();
+        PackingComponent finalStage = copyInitialPacking.copy();
         while (!heap.isEmpty()) {
             PackingComponent vs = heap.remove();
-            vs = fillBoxes(heap, availableBoxes, vs, volInitialItems);
+            vs = fillBoxes(heap, availableBoxMap, vs, volInitialItems);
             if (vs.getFinalAccuracy() >= finalStage.getFinalAccuracy()) {
                 finalStage = vs.copy();
             }
         }
         return finalStage;
+    }
+    
+    public static WarehouseOrder makeRandomOrder(Integer min, Integer max, Integer qty_min, Integer qty_max, Integer diffParts) {
+        Random r = new Random();
+        Map<Part, Integer> ps = new HashMap<>();
+        for (Integer i = 0; i < diffParts; i++) {
+            Integer x = r.nextInt((max - min) + 1) + min;
+            Integer y = r.nextInt((max - min) + 1) + min;
+            Integer z = r.nextInt((max - min) + 1) + min;
+            Integer q = r.nextInt((qty_max - qty_min) + 1) + qty_min;
+            Part p = new Part("Part" + i.toString(), new Vector3D(x, y, z), 10.);
+            ps.put(p,q);
+        }
+        return new WarehouseOrder(ps);
+    }
+    
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        long startTime = System.nanoTime();
+
+        PackingDAOImpl tmp = new PackingDAOImpl();
+
+        List<Box> availableBoxes = tmp.getAvailableBoxes();
+
+        WarehouseOrder newWarehouseOrder = makeRandomOrder(6, 40, 1, 2, 4);
+
+        List<Box> filledBoxes = tmp.getPacking(availableBoxes, newWarehouseOrder);
+        tmp.storePacking(filledBoxes);
+
+        System.out.println("TIME:" + (System.nanoTime() - startTime) / 1000000000.0);
+
     }
 }
