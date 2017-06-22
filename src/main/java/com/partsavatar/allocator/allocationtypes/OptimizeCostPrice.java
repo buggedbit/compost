@@ -72,13 +72,13 @@ public class OptimizeCostPrice {
 
             // Pipe the part through the sorted warehouses greedily
             for (Warehouse warehouse : warehouses) {
-                Pipe.PipedPart pipedPart = Pipe.pipeProductGreedily(warehouse, order, productSku);
+                Pipe.PipedProduct pipedProduct = Pipe.pipeProductGreedily(warehouse, order, productSku);
 
-                if (pipedPart == null) {
+                if (pipedProduct == null) {
                     break;
-                } else if (pipedPart.getQuantityTaken() > 0) {
-                    int partOrderTaken = pipedPart.getQuantityTaken();
-                    order = pipedPart.getOrderRemaining();
+                } else if (pipedProduct.getQuantityTaken() > 0) {
+                    int partOrderTaken = pipedProduct.getQuantityTaken();
+                    order = pipedProduct.getOrderRemaining();
 
                     Map<String, Integer> whAllocation = allocation.get(warehouse);
                     // As all parts in an customerOrder are unique

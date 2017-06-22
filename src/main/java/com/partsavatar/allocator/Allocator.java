@@ -8,8 +8,6 @@ import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.AddressInfo;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
-import com.partsavatar.allocator.components.warehouse.WarehouseDAO;
-import com.partsavatar.allocator.components.warehouse.WarehouseDAOImpl;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import lombok.NonNull;
 import org.json.simple.parser.ParseException;
@@ -61,9 +59,11 @@ public class Allocator {
     public static void main(String[] args) throws ParseException, OrderCannotBeFullfilledException, IOException {
         CustomerOrder customerOrder = new CustomerOrder(new AddressInfo("800 Boulevard René-Lévesque O, Montréal, QC H3B, Canada"));
         customerOrder.addPart("e2vzypowd3", 5);
+        customerOrder.addPart("372gm82ope", 2);
+        customerOrder.addPart("edydggpwde", 1);
+        customerOrder.addPart("394bmdjxye", 2);
 
-        WarehouseDAO warehouseDAO = new WarehouseDAOImpl();
-        Vector<Warehouse> warehouses = warehouseDAO.getAll();
+        Vector<Warehouse> warehouses = Warehouse.getAll();
 
         allocateOrder(customerOrder, warehouses);
     }

@@ -14,7 +14,7 @@ public class WarehouseOrder {
     private Map<Part, Integer> orderMap;
 
     public WarehouseOrder copy() {
-    	Map<Part, Integer> pList = new HashMap<>();
+        Map<Part, Integer> pList = new HashMap<>();
         for (Part p : orderMap.keySet()) {
             pList.put(new Part(p.getId(), p.getDimension(), p.getWeight()), orderMap.get(p));
         }

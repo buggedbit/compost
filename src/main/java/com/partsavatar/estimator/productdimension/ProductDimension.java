@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 public class ProductDimension {
     @NonNull
-    private final String sku;
+    private String sku;
     private double length;
     private double breadth;
     private double height;

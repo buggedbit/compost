@@ -24,14 +24,14 @@ public class Pipe {
     }
 
     @Getter
-    public static class PipedPart {
+    public static class PipedProduct {
         @NonNull
         private CustomerOrder orderRemaining;
         @NonNull
         private String productSku;
         private int quantityTaken;
 
-        public PipedPart(@NonNull final CustomerOrder orderRemaining, @NonNull final String productSku, @NonNull final int productTaken) {
+        public PipedProduct(@NonNull final CustomerOrder orderRemaining, @NonNull final String productSku, @NonNull final int productTaken) {
             if (productTaken < 0) throw new IllegalArgumentException();
 
             this.orderRemaining = new CustomerOrder(orderRemaining);
@@ -41,9 +41,6 @@ public class Pipe {
 
     }
 
-    // DO NOT finalize param initial
-    // todo : fix simultaneous change exception
-    // todo : make params final
     public static PipedOrder pipeOrderGreedily(@NonNull final Warehouse warehouse, @NonNull final CustomerOrder initial) {
         CustomerOrder orderRemaining = new CustomerOrder(initial);
         Map<String, Integer> orderTaken = new HashMap<>();
@@ -78,10 +75,7 @@ public class Pipe {
         return new PipedOrder(orderRemaining, orderTaken);
     }
 
-    // DO NOT finalize param initial
-    // todo : fix simultaneous change exception
-    // todo : make params final
-    public static PipedPart pipeProductGreedily(@NonNull final Warehouse warehouse, @NonNull final CustomerOrder initial, @NonNull final String productSku) {
+    public static PipedProduct pipeProductGreedily(@NonNull final Warehouse warehouse, @NonNull final CustomerOrder initial, @NonNull final String productSku) {
         CustomerOrder orderRemaining = new CustomerOrder(initial);
         int productTaken;
 
@@ -111,12 +105,12 @@ public class Pipe {
             productTaken = 0;
         }
 
-        return new PipedPart(orderRemaining, productSku, productTaken);
+        return new PipedProduct(orderRemaining, productSku, productTaken);
     }
-    
+
     public static Map<String, Integer> pipeWareHouseGreedily(@NonNull final Warehouse warehouse, @NonNull Map<String, Integer> orderRemaining) {
-    	Map<String, Integer> order = new HashMap<>(orderRemaining);
-    	Map<String, Integer> orderTaken = new HashMap<>();
+        Map<String, Integer> order = new HashMap<>(orderRemaining);
+        Map<String, Integer> orderTaken = new HashMap<>();
         // For every product in the initial
         for (String partId : order.keySet()) {
             if (warehouse.containsProduct(partId)) {
@@ -127,8 +121,7 @@ public class Pipe {
                     if (needed <= existing) {
                         orderRemaining.remove(partId);
                         orderTaken.put(partId, needed);
-                    }
-                    else {
+                    } else {
                         orderRemaining.put(partId, needed - existing);
                         orderTaken.put(partId, existing);
                     }

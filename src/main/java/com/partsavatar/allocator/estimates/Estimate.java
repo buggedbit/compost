@@ -9,8 +9,8 @@ import com.partsavatar.packer.components.Vector3D;
 public class Estimate {
     private static ProductDimensionDAO estimator = new ProductDimensionDAOImpl();
 
-    public static Part estimatePart(String sku) {
-        ProductDimension estimate = estimator.getBySku(sku);
+    public static Part getEstimateForProduct(String productSku) {
+        ProductDimension estimate = estimator.getBySku(productSku);
         return new Part(
                 estimate.getSku(),
                 new Vector3D(
@@ -20,6 +20,6 @@ public class Estimate {
                 ),
                 estimate.getWeight());
         //Temporary Estimation for testing
-//        return new Part(sku, new Vector3D(10, 10, 10), 10.);
+//        return new Part(productSku, new Vector3D(10, 10, 10), 10.);
     }
 }

@@ -13,14 +13,15 @@ import lombok.ToString;
 public class AddressInfo {
     @NonNull
     private String raw;
+    @NonNull
     private Address easyPostAddress;
 
-    public AddressInfo(String raw) {
+    public AddressInfo(@NonNull final String raw) {
         this.raw = raw;
         this.initEasyPostAddress(null);
     }
 
-    public void initEasyPostAddress(String id) {
+    public void initEasyPostAddress(final String id) {
         String[] address = raw.split(",");
         String[] state = address[2].split("-");
         try {
@@ -30,12 +31,13 @@ public class AddressInfo {
         }
     }
 
-    public AddressInfo(AddressInfo address) {
+    public AddressInfo(@NonNull final AddressInfo address) {
         this.raw = address.raw;
-        if (address.easyPostAddress.equals(null))
+        if (address.easyPostAddress == null) {
             this.initEasyPostAddress(null);
-        else
-        	this.easyPostAddress = address.easyPostAddress;
+        } else {
+            this.easyPostAddress = address.easyPostAddress;
+        }
     }
 
 }

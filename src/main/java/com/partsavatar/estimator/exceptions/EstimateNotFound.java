@@ -1,5 +1,5 @@
 package com.partsavatar.estimator.exceptions;
 
-public class EstimateNotFound extends Exception{
+public class EstimateNotFound extends Exception {
 
 }
