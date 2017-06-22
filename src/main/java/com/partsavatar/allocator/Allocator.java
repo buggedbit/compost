@@ -22,6 +22,7 @@ import java.util.Vector;
 
 /**
  * todo : implement satellite stores
+ * todo : implement same day delivery
  */
 public class Allocator {
 

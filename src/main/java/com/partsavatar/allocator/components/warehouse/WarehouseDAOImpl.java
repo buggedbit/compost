@@ -135,11 +135,7 @@ public class WarehouseDAOImpl implements WarehouseDAO {
                 if (warehouseId.equals(warehouseInventory.getKey().getId())) {
                     Inventory inventory = warehouseInventory.getValue();
 
-                    if (inventory.skuCloneCount.containsKey(productSku) && inventory.skuCostPriceMap.containsKey(productSku)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return inventory.skuCloneCount.containsKey(productSku) && inventory.skuCostPriceMap.containsKey(productSku) && inventory.skuCloneCount.get(productSku) > 0;
                 }
             }
             return false;
