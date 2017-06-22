@@ -1,6 +1,5 @@
 package com.partsavatar.packer.algorithms;
 
-
 import com.partsavatar.packer.components.*;
 
 import java.util.ArrayList;
@@ -9,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmBaseClass {
-	
-	static WarehouseOrder backtrackAlgorithm(Box b, final WarehouseOrder newWarehouseOrder) {
+public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmBaseClass {	
+	@Override
+	WarehouseOrder backtrackAlgorithm(Box b, final WarehouseOrder newWarehouseOrder) {
         WarehouseOrder copyWarehouseOrder = newWarehouseOrder.copy();
     	
     	List<WarehouseOrder> rotatedWarehouseOrders = genRotations(expandOrder(copyWarehouseOrder), 0);
@@ -44,12 +43,12 @@ public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmB
         return copyWarehouseOrder;
     }
     
-	private static void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
+	private void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
     		final Vector3D leftBottom, final Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
     	//Fill a column by placing repeatedly boxes in left bottom behind corner
     	Integer i = 0;
         while (sortedOrderList.size() > i && (ord.getOrderMap().get(sortedOrderList.get(i)) == 0 ||
-                !sliceDim.checkIsEqualOrGreater(sortedOrderList.get(i)))) {
+                !ROTATE_CHECK.checkIsEqualOrGreater(sliceDim, sortedOrderList.get(i)))) {
             i++;
         }
         if (i == sortedOrderList.size()) {//No fit found
@@ -75,7 +74,7 @@ public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmB
         }
     }
 
-	private static void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
+	private void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
 		final Surface surf, HashMap<Vector3D, Vector3D> unused) {
     	//BackTrack from top of upward Filled column and fill the unused front and side surfaces generated in UpwardFill
     	while (s.peek() != surf) {
@@ -95,13 +94,13 @@ public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmB
         s.pop();
     }
 
-	private static void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
+	private void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
     	final Vector3D leftBottom, final Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
     	//Fill the box by combination of forward (upward Fill) and backward ( backward Fill) propagation
     	
     	Integer i = 0;
         while (sortedOrderList.size() > i && (ord.getOrderMap().get(sortedOrderList.get(i)) == 0 ||
-        		!sliceDim.checkIsEqualOrGreater(sortedOrderList.get(i)))) {
+        		!ROTATE_CHECK.checkIsEqualOrGreater(sliceDim, sortedOrderList.get(i)))) {
             i++;
         }
         if (i == sortedOrderList.size()) {//No fit found
@@ -133,7 +132,7 @@ public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmB
         }
     }
 
-    private static List<Part> expandOrder(final WarehouseOrder ord) {
+    private List<Part> expandOrder(final WarehouseOrder ord) {
     	//Return order with duplicate items s.t all items have quantity = 1
     	List<Part> expList = new ArrayList<>();
         for (Part p : ord.getOrderMap().keySet()) {
@@ -145,7 +144,7 @@ public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmB
 
     }
 
-    private static List<Part> rotate(final Part p) {
+    private List<Part> rotate(final Part p) {
     	//Return all possible rotations of the part
         List<Part> out = new ArrayList<Part>();
         Integer x = p.getDimension().getX(), y = p.getDimension().getY(), z = p.getDimension().getZ();
@@ -174,7 +173,7 @@ public class BruteForceBacktrackAlgorithmBelow6Items extends BacktrackAlgortihmB
         return out;
     }
 
-    private static List<WarehouseOrder> genRotations(final List<Part> ord, final Integer start) {
+    private List<WarehouseOrder> genRotations(final List<Part> ord, final Integer start) {
         //Generate orders with all possible permutation and combinations of possible rotations 
     	List<WarehouseOrder> listOfOrders = new ArrayList<WarehouseOrder>();
         List<Part> startRotations = rotate(ord.get(start));

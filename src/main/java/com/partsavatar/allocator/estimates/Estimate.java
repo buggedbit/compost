@@ -19,6 +19,7 @@ public class Estimate {
                         (int) estimate.getHeight()
                 ),
                 estimate.getWeight());
-//        return new Part(sku, new Vector3D(10, 10, 10), 10.);
+        //Temporary Estimation for testing
+        //return new Part(sku, new Vector3D(10, 10, 10), 10.);
     }
 }

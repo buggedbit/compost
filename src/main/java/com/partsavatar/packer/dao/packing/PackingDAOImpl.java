@@ -18,11 +18,11 @@ import java.util.Map.Entry;
 
 
 public class PackingDAOImpl implements PackingDAO {
-
+	private static final FillMultipleBoxes BOX_FILLER = new FillMultipleBoxes();
     @Override
     public List<Box> getPacking(final List<Box> availableBoxes, final WarehouseOrder warehouseOrder) {
         ArrayList<Box> boxes = (ArrayList<Box>) availableBoxes;
-        return FillMultipleBoxes.packOrder(boxes, warehouseOrder);
+        return BOX_FILLER.packOrder(boxes, warehouseOrder);
     }
 
     @Override

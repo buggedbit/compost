@@ -8,8 +8,8 @@ import java.util.Stack;
 
 
 public class BacktrackAlgorithmAbove6Items extends BacktrackAlgortihmBaseClass {
-
-	static WarehouseOrder backtrackAlgorithm(Box b, final WarehouseOrder newWarehouseOrder) {
+	@Override
+	WarehouseOrder backtrackAlgorithm(Box b, final WarehouseOrder newWarehouseOrder) {
         WarehouseOrder copyOrder = newWarehouseOrder.copy();
         HashMap<Vector3D, Vector3D> tmpUnused = new HashMap<>();
         fillBox(new Stack<Surface>(), b, copyOrder, copyOrder.volSort(), new Vector3D(0, 0, 0), b.getDimension(), tmpUnused);
@@ -23,12 +23,12 @@ public class BacktrackAlgorithmAbove6Items extends BacktrackAlgortihmBaseClass {
         return copyOrder;
     }
 	
-    private static void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
+    private void upwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
     		final Vector3D leftBottom, final Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
     	//Fill a column by placing repeatedly boxes in left bottom behind corner
     	Integer i = 0;
         while (sortedOrderList.size() > i && (ord.getOrderMap().get(sortedOrderList.get(i)) == 0 ||
-                !sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.getMinPartSize(), sortedOrderList.get(i)))) {
+                !ROTATE_CHECK.bestRotateAndCheckIsEqualOrGreater(sliceDim, ord.getMinPartSize(), sortedOrderList.get(i)))) {
             i++;
         }
         if (i == sortedOrderList.size()) {//No fit found
@@ -54,8 +54,7 @@ public class BacktrackAlgorithmAbove6Items extends BacktrackAlgortihmBaseClass {
         }
     }
     
-
-    private static void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
+    private void backwardFill(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
     	final Surface surf, HashMap<Vector3D, Vector3D> unused) {
     	//BackTrack from top of upward Filled column and fill the unused front and side surfaces generated in UpwardFill
     	while (s.peek() != surf) {
@@ -75,14 +74,13 @@ public class BacktrackAlgorithmAbove6Items extends BacktrackAlgortihmBaseClass {
         s.pop();
     }
 
-    
-    private static void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
+    private void fillBox(Stack<Surface> s, Box b, WarehouseOrder ord, final List<Part> sortedOrderList,
     	final Vector3D leftBottom, final Vector3D sliceDim, HashMap<Vector3D, Vector3D> unused) {
     	//Fill the box by combination of forward (upward Fill) and backward ( backward Fill) propagation
     	
     	Integer i = 0;
         while (sortedOrderList.size() > i && (ord.getOrderMap().get(sortedOrderList.get(i)) == 0 ||
-                !sliceDim.bestRotateAndCheckIsEqualOrGreater(ord.getMinPartSize(), sortedOrderList.get(i)))) {
+        		!ROTATE_CHECK.bestRotateAndCheckIsEqualOrGreater(sliceDim, ord.getMinPartSize(), sortedOrderList.get(i)))) {
             i++;
         }
         if (i == sortedOrderList.size()) {//No fit found

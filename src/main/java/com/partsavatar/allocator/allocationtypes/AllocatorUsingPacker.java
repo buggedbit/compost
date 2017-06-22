@@ -28,10 +28,11 @@ public class AllocatorUsingPacker {
     private static final Double THRESHOLD = 75.0;
     private static final PackingDAO PACKER = new PackingDAOImpl();
 
-    public static Map<Warehouse, Map<String, Integer>> allocateWarhouseOrderUsingPacker
+    public Map<Warehouse, Map<String, Integer>> allocateWarhouseOrderUsingPacker
     	(final CustomerOrder customerOrder, final Map<Response, Warehouse> responseWarehouseMap)
     		throws NumberFormatException, IOException {
-        
+        CustomerOrder copyCustomerOrder = new CustomerOrder(customerOrder);
+    	
     	ArrayList<Response> allResponses = new ArrayList<>();
         allResponses.addAll(responseWarehouseMap.keySet());
 
@@ -46,7 +47,7 @@ public class AllocatorUsingPacker {
         Map<String, List<Integer>> partAvailability = new HashMap<>(); 		//Multiple time use
         Map<Integer, List<String>> warehouseAvailability = new HashMap<>(); //One time use
         
-        for (String partId : customerOrder.getProductCloneCountMap().keySet()) {
+        for (String partId : copyCustomerOrder.getProductCloneCountMap().keySet()) {
 
             partAvailability.put(partId, new ArrayList<>());
 
@@ -66,7 +67,6 @@ public class AllocatorUsingPacker {
                     priorityMap.put(whIndex, new ArrayList<>());
                 }
                 priorityMap.get(whIndex).add(partId);
-                customerOrder.updatePart(partId, 0);
             }
         }
 
@@ -81,7 +81,7 @@ public class AllocatorUsingPacker {
         //Fill Priority items
         for (Integer whIndex : sortedPriorityWarehouseIndices) {
         	List<String> filledParts = fillPrimaryItems(orderCompleted, sortedWarehouses.get(whIndex), 
-            		customerOrder, priorityMap.get(whIndex), warehouseAvailability.get(whIndex));
+            		copyCustomerOrder, priorityMap.get(whIndex), warehouseAvailability.get(whIndex));
         	updateAvailability(filledParts, warehouseAvailability);
         	if(isOrderComplete(filledParts, warehouseAvailability)) {
         		return orderCompleted;
@@ -97,7 +97,7 @@ public class AllocatorUsingPacker {
 	    	   else {
 	               continue;
 	    	   }
-	    	   List<String> filledParts = fillSecondaryItems(orderCompleted, sortedWarehouses.get(i), customerOrder, warehouseAvailability.get(i));    
+	    	   List<String> filledParts = fillSecondaryItems(orderCompleted, sortedWarehouses.get(i), copyCustomerOrder, warehouseAvailability.get(i));    
 	           updateAvailability(filledParts, warehouseAvailability);
 	           if(isOrderComplete(filledParts, warehouseAvailability)) {
 	       			return orderCompleted;
@@ -107,8 +107,8 @@ public class AllocatorUsingPacker {
         return orderCompleted;
     }
 
-    private static List<String> fillSecondaryItems(final Map<Warehouse, Map<String, Integer>> orderCompleted, 
-    		final Warehouse warehouse, final CustomerOrder customerOrder, final List<String> warehouseAvailability) 
+    private List<String> fillSecondaryItems(Map<Warehouse, Map<String, Integer>> orderCompleted, 
+    		final Warehouse warehouse, CustomerOrder customerOrder, final List<String> warehouseAvailability) 
     		throws NumberFormatException, IOException {
 
     	//update order completed list and convert customerOrder to warehouseOrder for rare parts in this warehouse
@@ -161,8 +161,8 @@ public class AllocatorUsingPacker {
         return filledParts;
     }
 
-    private static List<String> fillPrimaryItems(final Map<Warehouse, Map<String, Integer>> orderCompleted,
-    		final Warehouse warehouse, final CustomerOrder customerOrder, final List<String> priorityPartList, 
+    private List<String> fillPrimaryItems(Map<Warehouse, Map<String, Integer>> orderCompleted,
+    		final Warehouse warehouse, CustomerOrder customerOrder, final List<String> priorityPartList, 
     		final List<String> warehouseAvailability) throws NumberFormatException, IOException {
     	
         if (!orderCompleted.containsKey(warehouse)) {
@@ -228,17 +228,17 @@ public class AllocatorUsingPacker {
         return filledParts;
     }
 
-    private static Float getCost(final List<Box> filledBoxes, Address warehouseAddress, Address customerAddress) {
+    private Float getCost(final List<Box> filledBoxes, final Address warehouseAddress, final Address customerAddress) {
         Float cost = 0f;
     	for (Box box : filledBoxes) {
     		Parcel parcel = EasyPostAPI.getParcel(box.getWeight(), box.getDimension().getY(), box.getDimension().getZ(), box.getDimension().getX());
     		Map<String, Float> rateMap = EasyPostAPI.getRate(EasyPostAPI.getShipment(warehouseAddress, customerAddress, parcel));
-    		cost+= rateMap.get(EasyPostAPI.getCARRIERS()[0]);
+    		cost+= rateMap.get(EasyPostAPI.getSERVICES()[0]);
     	}
         return cost;
     }
     
-    private static Double getAcc(final List<Box> filledBoxes) {
+    private Double getAcc(final List<Box> filledBoxes) {
         Double boxVol = 0.;
         Double partVol = 0.;
     	for (Box box : filledBoxes) {
@@ -248,8 +248,8 @@ public class AllocatorUsingPacker {
         return 100 * partVol/ boxVol;
     }
     
-    private static void updateAvailability(final List<String> filledParts, 
-    		final Map<Integer, List<String>> warehouseAvailability) {
+    private void updateAvailability(final List<String> filledParts, 
+    		Map<Integer, List<String>> warehouseAvailability) {
     	for (String partId : filledParts) {
 			for (Integer i : warehouseAvailability.keySet()) {
 				warehouseAvailability.get(i).remove(partId);
@@ -257,7 +257,7 @@ public class AllocatorUsingPacker {
 		}
     }
     
-    private static boolean isOrderComplete(final List<String> filledParts, 
+    private boolean isOrderComplete(final List<String> filledParts, 
 		final Map<Integer, List<String>> warehouseAvailability) {
     	for (Integer i : warehouseAvailability.keySet()) {
 			if(warehouseAvailability.get(i).size() != 0) {
@@ -266,19 +266,22 @@ public class AllocatorUsingPacker {
 		}
     	return true;
     }
+    
     public static void main(String[] args) throws IOException, ParseException {
     	long startTime = System.nanoTime();
     	CustomerOrder customerOrder = new CustomerOrder(new AddressInfo("11754 170 St NW, Edmonton, AB - T5S 1J7"));
-        customerOrder.addPart("e2vzypowd3", 5);
-        customerOrder.addPart("372gm82ope", 3);
+        customerOrder.addPart("e2vzypowd3", 8);
+        customerOrder.addPart("372gm82ope", 2);
+        customerOrder.addPart("edydggpwde", 1);	
+        customerOrder.addPart("394bmdjxye", 2);
         WarehouseDAO warehouseDAO = new WarehouseDAOImpl();
         Vector<Warehouse> warehouses = warehouseDAO.getAll();
         
         Map<Response, Warehouse> responseWarehouseMap = Allocator.getResponseWarehouseMap(customerOrder, warehouses);
-        Map<Warehouse, Map<String, Integer>> answer = allocateWarhouseOrderUsingPacker(customerOrder, responseWarehouseMap);
-        System.out.println(answer);
+        AllocatorUsingPacker allocatorUsingPacker  = new AllocatorUsingPacker();
+        Map<Warehouse, Map<String, Integer>> completedAllocation = allocatorUsingPacker.allocateWarhouseOrderUsingPacker(customerOrder, responseWarehouseMap);
+        System.out.println(completedAllocation);
         System.out.println("TIME:" + (System.nanoTime() - startTime) / 1000000000.0);
    }
-
 }
 

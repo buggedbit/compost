@@ -9,8 +9,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class BacktrackAlgortihmBaseClass {
-
-    static HashMap<Vector3D, Vector3D> combineUnused(final HashMap<Vector3D, Vector3D> unused) {
+	static final RotatingAlgorithm ROTATE_CHECK = new RotatingAlgorithm();
+	
+    HashMap<Vector3D, Vector3D> combineUnused(final HashMap<Vector3D, Vector3D> unused) {
         HashMap<Vector3D, Vector3D> unusedRemaining = new HashMap<Vector3D, Vector3D>();
         HashMap<Vector3D, ArrayList<Vector3D>> sameXYSurface = new HashMap<Vector3D, ArrayList<Vector3D>>();
         
@@ -46,12 +47,16 @@ public class BacktrackAlgortihmBaseClass {
         return unusedRemaining;
     }
 
-    static Float calcAcc(final Box b) {
+    Float calcAcc(final Box b) {
         return (float) (b.getPartsVol() * 100.0 / b.getVol());
     }
     
-    static Float prevCalcAcc(final WarehouseOrder ord, final Box b) {
+    Float prevCalcAcc(final WarehouseOrder ord, final Box b) {
         // Calculate possible achievable accuracy for given order and a box
     	return (float) (ord.getVol() * 100.0 / b.getVol());
+    }
+    
+    WarehouseOrder backtrackAlgorithm(Box b, final WarehouseOrder newWarehouseOrder) {
+    	return null;
     }
 }

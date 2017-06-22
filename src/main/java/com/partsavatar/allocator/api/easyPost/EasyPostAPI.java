@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EasyPostAPI {
-	@Getter private static final String[] CARRIERS = {"ExpeditedParcel","PurolatorGround"};
+	@Getter private static final String[] SERVICES = {"ExpeditedParcel","PurolatorGround"};
 	private static final String PRODUCTION_KEY = "MBeHR0wTmyvsqxabxbCNFA";
 	private static final String COUNTRY = "CANADA";
 	
@@ -69,9 +69,9 @@ public class EasyPostAPI {
     	Map<String, Float> rateMap = new HashMap<>(); 
     	List<Rate> rates = shipment.getRates();
     	for (Rate rate : rates) {
-    		for (String service : CARRIERS) {
+    		for (String service : SERVICES) {
 				if(rate.getService().equals(service))
-					rateMap.put(rate.getCarrier(), rate.getRate());
+					rateMap.put(service, rate.getRate());
     		}
 		}
     	return rateMap;
