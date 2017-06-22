@@ -6,7 +6,7 @@ import lombok.ToString;
 
 import java.util.*;
 
-@ToString()
+@ToString
 public class SInequality {
     private Map<String, Integer> terms = new HashMap<>();
     private double[] upperLimits = new double[4];

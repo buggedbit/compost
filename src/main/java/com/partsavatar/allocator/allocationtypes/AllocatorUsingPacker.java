@@ -9,8 +9,6 @@ import com.partsavatar.allocator.components.AddressInfo;
 import com.partsavatar.allocator.components.CustomerOrder;
 import com.partsavatar.allocator.components.SatelliteStore;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
-import com.partsavatar.allocator.components.warehouse.WarehouseDAO;
-import com.partsavatar.allocator.components.warehouse.WarehouseDAOImpl;
 import com.partsavatar.allocator.estimates.Estimate;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import com.partsavatar.allocator.operations.Pipe;
@@ -385,8 +383,7 @@ public class AllocatorUsingPacker {
         customerOrder.addPart("372gm82ope", 2);
         customerOrder.addPart("edydggpwde", 1);
         customerOrder.addPart("394bmdjxye", 2);
-        WarehouseDAO warehouseDAO = new WarehouseDAOImpl();
-        Vector<Warehouse> warehouses = warehouseDAO.getAll();
+        Vector<Warehouse> warehouses = Warehouse.getAll();
 
         Map<Response, Warehouse> responseWarehouseMap = Allocator.getResponseWarehouseMap(customerOrder, warehouses);
         System.out.println("TIME:" + (System.nanoTime() - startTime) / 1000000000.0);

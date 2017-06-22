@@ -19,8 +19,8 @@ import java.util.Vector;
 public class Estimator {
 
     public static void main(String[] args) throws IOException {
-        Map<Set<String>, Vector<Vector<SInequality>>> squareSets = ExtractSquares.getAllSquaresSets();
-        EstimateFromSquares.estimateFromAllSquareSets(squareSets);
+        Map<Set<String>, Vector<Vector<SInequality>>> squareSets = new ExtractSquares().getAllSquaresSets();
+        new EstimateFromSquares().estimateFromAllSquareSets(squareSets);
         LeftOvers.saveAllLeftOvers();
     }
 

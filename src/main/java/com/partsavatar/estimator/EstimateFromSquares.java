@@ -2,32 +2,35 @@ package com.partsavatar.estimator;
 
 import Jama.Matrix;
 import com.partsavatar.estimator.productdimension.ProductDimension;
+import com.partsavatar.estimator.productdimension.ProductDimensionDAO;
 import com.partsavatar.estimator.productdimension.ProductDimensionDAOImpl;
 import com.partsavatar.estimator.sinequality.SInequality;
+import lombok.NonNull;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Vector;
 
-class EstimateFromSquares {
+public class EstimateFromSquares {
 
-    private static ProductDimension getMergedEstimate(ProductDimension p1, ProductDimension p2) {
+    private ProductDimension getMergedEstimate(@NonNull final ProductDimension p1, @NonNull final ProductDimension p2) {
         if (p1.getSku() == null || p2.getSku() == null) throw new IllegalArgumentException();
         if (!Objects.equals(p1.getSku(), p2.getSku())) throw new IllegalArgumentException();
 
-        p1.setLength(Math.min(p1.getLength(), p2.getLength()));
-        p1.setBreadth(Math.min(p1.getBreadth(), p2.getBreadth()));
-        p1.setHeight(Math.min(p1.getHeight(), p2.getHeight()));
-        p1.setWeight(Math.min(p1.getWeight(), p2.getWeight()));
-
-        return p1;
+        return new ProductDimension(
+                p1.getSku(),
+                Math.min(p1.getLength(), p2.getLength()),
+                Math.min(p1.getBreadth(), p2.getBreadth()),
+                Math.min(p1.getHeight(), p2.getHeight()),
+                Math.min(p1.getWeight(), p2.getWeight())
+        );
     }
 
-    private static boolean pushEstimate(final ProductDimension newDimension) {
+    private boolean pushEstimate(@NonNull final ProductDimension newDimension) {
         String sku = newDimension.getSku();
 
-        ProductDimensionDAOImpl productDimensionDAO = new ProductDimensionDAOImpl();
+        ProductDimensionDAO productDimensionDAO = new ProductDimensionDAOImpl();
         ProductDimension oldDimension = productDimensionDAO.getBySku(sku);
 
         ProductDimension mergedEstimate = getMergedEstimate(newDimension, oldDimension);
@@ -35,7 +38,7 @@ class EstimateFromSquares {
         return productDimensionDAO.updateOrSave(mergedEstimate);
     }
 
-    private static void pushNewDimensions(final Vector<String> skus, final double[][] newDimensions) {
+    private void pushNewDimensions(@NonNull final Vector<String> skus, final double[][] newDimensions) {
         for (int i = 0; i < skus.size(); i++) {
             ProductDimension ith = new ProductDimension(skus.get(i),
                     newDimensions[i][0],
@@ -43,11 +46,11 @@ class EstimateFromSquares {
                     newDimensions[i][2],
                     newDimensions[i][3]
             );
-            EstimateFromSquares.pushEstimate(ith);
+            pushEstimate(ith);
         }
     }
 
-    private static void estimateFromSquareSet(final Vector<SInequality> squareSet) {
+    private void estimateFromSquareSet(@NonNull final Vector<SInequality> squareSet) {
 
         double[][] a = new double[squareSet.size()][squareSet.size()];
         double[][] b = new double[squareSet.size()][4];
@@ -89,10 +92,10 @@ class EstimateFromSquares {
 
     }
 
-    static void estimateFromAllSquareSets(final Map<Set<String>, Vector<Vector<SInequality>>> squareSets) {
+    void estimateFromAllSquareSets(@NonNull final Map<Set<String>, Vector<Vector<SInequality>>> squareSets) {
         for (Map.Entry<Set<String>, Vector<Vector<SInequality>>> squareSetsFromThis : squareSets.entrySet()) {
             for (Vector<SInequality> squareSet : squareSetsFromThis.getValue()) {
-                EstimateFromSquares.estimateFromSquareSet(squareSet);
+                estimateFromSquareSet(squareSet);
             }
         }
     }
