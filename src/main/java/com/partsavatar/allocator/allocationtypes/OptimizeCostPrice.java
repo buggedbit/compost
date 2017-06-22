@@ -18,7 +18,7 @@ public class OptimizeCostPrice {
         Map<Warehouse, Map<String, Integer>> allocation = new HashMap<>();
 
         // Make a copy of the customerOrder
-        CustomerOrder costPriceCopy = new CustomerOrder(customerOrder);
+        CustomerOrder order = new CustomerOrder(customerOrder);
 
         // Initialize customerOrder in all warehouses
         for (Warehouse warehouse : warehouses) {
@@ -26,7 +26,7 @@ public class OptimizeCostPrice {
         }
 
         // For each ordered part
-        for (Map.Entry<String, Integer> productCloneCount : costPriceCopy.getProductCloneCountMap().entrySet()) {
+        for (Map.Entry<String, Integer> productCloneCount : order.getProductCloneCountMap().entrySet()) {
             String productSku = productCloneCount.getKey();
 
             // Sort warehouses according to cost price of this part
@@ -72,19 +72,23 @@ public class OptimizeCostPrice {
 
             // Pipe the part through the sorted warehouses greedily
             for (Warehouse warehouse : warehouses) {
-                int partOrderTaken = Pipe.pipeProductGreedily(warehouse, costPriceCopy, productSku);
-                if (partOrderTaken > 0) {
+                Pipe.PipedPart pipedPart = Pipe.pipeProductGreedily(warehouse, order, productSku);
+
+                if (pipedPart == null) {
+                    break;
+                } else if (pipedPart.getProductTaken() > 0) {
+                    int partOrderTaken = pipedPart.getProductTaken();
+                    order = pipedPart.getOrderRemaining();
+
                     Map<String, Integer> whAllocation = allocation.get(warehouse);
                     // As all parts in an customerOrder are unique
                     // whAllocation will not previously have a key == productSku
                     whAllocation.put(productSku, partOrderTaken);
-                } else if (partOrderTaken == -1) {
-                    break;
                 }
             }
 
-            // If still this part remains in the costPriceCopy -> customerOrder cannot be fulfilled
-            if (costPriceCopy.getProductCloneCountMap().containsKey(productSku)) {
+            // If still this part remains in the order -> customerOrder cannot be fulfilled
+            if (order.getProductCloneCountMap().containsKey(productSku)) {
                 throw new OrderCannotBeFullfilledException();
             }
         }

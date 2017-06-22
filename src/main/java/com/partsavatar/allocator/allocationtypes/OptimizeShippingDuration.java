@@ -27,16 +27,19 @@ public class OptimizeShippingDuration {
         Map<Warehouse, Map<String, Integer>> allocation = new HashMap<>();
 
         // Make a copy of the customerOrder
-        CustomerOrder duration_copy = new CustomerOrder(customerOrder);
+        CustomerOrder order = new CustomerOrder(customerOrder);
         // Pipe through the sorted warehouses greedily
         for (Response response : all_responses) {
             Warehouse warehouse = response_warehouse_map.get(response);
-            Map<String, Integer> order_taken = Pipe.pipeOrderGreedily(warehouse, duration_copy);
+
+            Pipe.PipedOrder pipedOrder = Pipe.pipeOrderGreedily(warehouse, order);
+            Map<String, Integer> order_taken = pipedOrder.getOrderTaken();
+            order = pipedOrder.getOrderRemaining();
             allocation.put(warehouse, order_taken);
         }
 
         // CustomerOrder not fulfilled
-        if (!duration_copy.getProductCloneCountMap().isEmpty()) {
+        if (!order.getProductCloneCountMap().isEmpty()) {
             throw new OrderCannotBeFullfilledException();
         }
         // CustomerOrder fulfilled
