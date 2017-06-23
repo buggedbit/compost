@@ -10,9 +10,6 @@ import java.util.List;
 @Data
 public class SatelliteStore {
     private List<Warehouse> warehouses = new ArrayList<>();
-    @NonNull
-    private long distance;
-
     public void addWarehouse(Warehouse w) {
         warehouses.add(w);
     }

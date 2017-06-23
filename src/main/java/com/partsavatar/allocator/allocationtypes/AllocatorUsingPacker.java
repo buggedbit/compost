@@ -29,7 +29,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.*;
 
-// todo : Preferential Treatment for some items.
+//TODO: Preferential Treatment for some items.
 public class AllocatorUsingPacker {
     private static final Double THRESHOLD = 75.0;
     private static final PackingDAO PACKER = new PackingDAOImpl();
@@ -68,23 +68,26 @@ public class AllocatorUsingPacker {
         allResponses.sort(Response::compareDistance);
         List<String> sortedSatelliteStores = new ArrayList<>();
         Map<String, SatelliteStore> satelliteStoreMap = new HashMap<>();
+        Map<String, Long> satelliteDistanceMap = new HashMap<>();
         Set<String> satelliteStores = new HashSet<>();
         for (Response r : allResponses) {
             Warehouse warehouse = responseWarehouseMap.get(r);
             String sat = warehouse.getSatelliteStore();
             if (sat == null) {
                 String whId = warehouse.getId();
-                satelliteStoreMap.put(whId, new SatelliteStore(r.getDistance()));
+                satelliteStoreMap.put(whId, new SatelliteStore());
                 satelliteStoreMap.get(whId).addWarehouse(warehouse);
                 sortedSatelliteStores.add(whId);
+                satelliteDistanceMap.put(whId, r.getDistance());
             } else {
                 if (satelliteStores.contains(sat)) {
                     satelliteStoreMap.get(sat).addWarehouse(warehouse);
                 } else {
-                    satelliteStoreMap.put(sat, new SatelliteStore(r.getDistance()));
+                    satelliteStoreMap.put(sat, new SatelliteStore());
                     satelliteStoreMap.get(sat).addWarehouse(warehouse);
                     satelliteStores.add(sat);
                     sortedSatelliteStores.add(sat);
+                    satelliteDistanceMap.put(sat, r.getDistance());
                 }
             }
         }
@@ -129,7 +132,8 @@ public class AllocatorUsingPacker {
         //(So small items can fill without an extra box)
         List<String> sortedPriorityWarehouses = new ArrayList<>();
         sortedPriorityWarehouses.addAll(priorityMap.keySet());
-        sortedPriorityWarehouses.sort(Comparator.comparing(s -> satelliteStoreMap.get(s).getDistance()));
+        //TODO Reverse Sort
+        sortedPriorityWarehouses.sort(Comparator.comparing(s -> satelliteDistanceMap.get(s)));
 
         Map<String, Map<String, Integer>> orderCompleted = new HashMap<>();
         FilledOrder filledOrder = new FilledOrder(customerOrder);
