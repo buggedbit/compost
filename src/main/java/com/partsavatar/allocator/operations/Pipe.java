@@ -29,14 +29,14 @@ public class Pipe {
         private CustomerOrder orderRemaining;
         @NonNull
         private String productSku;
-        private int productTaken;
+        private int quantityTaken;
 
         public PipedPart(@NonNull final CustomerOrder orderRemaining, @NonNull final String productSku, @NonNull final int productTaken) {
             if (productTaken < 0) throw new IllegalArgumentException();
 
             this.orderRemaining = new CustomerOrder(orderRemaining);
             this.productSku = productSku;
-            this.productTaken = productTaken;
+            this.quantityTaken = productTaken;
         }
 
     }
@@ -112,6 +112,33 @@ public class Pipe {
         }
 
         return new PipedPart(orderRemaining, productSku, productTaken);
+    }
+    
+    public static Map<String, Integer> pipeWareHouseGreedily(@NonNull final Warehouse warehouse, @NonNull Map<String, Integer> orderRemaining) {
+    	Map<String, Integer> order = new HashMap<>(orderRemaining);
+    	Map<String, Integer> orderTaken = new HashMap<>();
+        // For every product in the initial
+        for (String partId : order.keySet()) {
+            if (warehouse.containsProduct(partId)) {
+                int needed = order.get(partId);
+                int existing = warehouse.getCloneCount(partId);
+
+                if (existing > 0) {
+                    if (needed <= existing) {
+                        orderRemaining.remove(partId);
+                        orderTaken.put(partId, needed);
+                    }
+                    else {
+                        orderRemaining.put(partId, needed - existing);
+                        orderTaken.put(partId, existing);
+                    }
+                }
+
+            }
+
+        }
+
+        return orderTaken;
     }
 
 }

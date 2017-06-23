@@ -76,8 +76,8 @@ public class OptimizeCostPrice {
 
                 if (pipedPart == null) {
                     break;
-                } else if (pipedPart.getProductTaken() > 0) {
-                    int partOrderTaken = pipedPart.getProductTaken();
+                } else if (pipedPart.getQuantityTaken() > 0) {
+                    int partOrderTaken = pipedPart.getQuantityTaken();
                     order = pipedPart.getOrderRemaining();
 
                     Map<String, Integer> whAllocation = allocation.get(warehouse);

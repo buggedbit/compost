@@ -38,7 +38,7 @@ public class WarehouseDAOImpl implements WarehouseDAO {
             String[] wFields = allReader.readNext();
             // Reads Warehouse
             while ((wFields = allReader.readNext()) != null) {
-                Warehouse warehouse = new Warehouse(wFields[0], new AddressInfo(wFields[1]), wFields[2]);
+                Warehouse warehouse = new Warehouse(wFields[0], new AddressInfo(wFields[1]), wFields[3]);
                 Inventory inventory = new Inventory();
 
                 final String warehousesInventoryPath = dbDir + wFields[2];

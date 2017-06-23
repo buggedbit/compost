@@ -20,6 +20,6 @@ public class Estimate {
                 ),
                 estimate.getWeight());
         //Temporary Estimation for testing
-        //return new Part(sku, new Vector3D(10, 10, 10), 10.);
+//        return new Part(sku, new Vector3D(10, 10, 10), 10.);
     }
 }

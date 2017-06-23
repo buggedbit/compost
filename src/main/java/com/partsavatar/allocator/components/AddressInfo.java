@@ -9,7 +9,7 @@ import lombok.ToString;
 
 @Getter
 @EqualsAndHashCode(of = {"raw"})
-@ToString(of = {"raw"})
+@ToString
 public class AddressInfo {
     @NonNull
     private String raw;
@@ -32,8 +32,10 @@ public class AddressInfo {
 
     public AddressInfo(AddressInfo address) {
         this.raw = address.raw;
-        if (address.easyPostAddress == null)
+        if (address.easyPostAddress.equals(null))
             this.initEasyPostAddress(null);
+        else
+        	this.easyPostAddress = address.easyPostAddress;
     }
 
 }

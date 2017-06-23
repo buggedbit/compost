@@ -7,17 +7,24 @@ import com.partsavatar.allocator.api.easyPost.EasyPostAPI;
 import com.partsavatar.allocator.api.google.Response;
 import com.partsavatar.allocator.components.AddressInfo;
 import com.partsavatar.allocator.components.CustomerOrder;
+import com.partsavatar.allocator.components.warehouse.SatelliteStore;
 import com.partsavatar.allocator.components.warehouse.Warehouse;
 import com.partsavatar.allocator.components.warehouse.WarehouseDAO;
 import com.partsavatar.allocator.components.warehouse.WarehouseDAOImpl;
 import com.partsavatar.allocator.estimates.Estimate;
 import com.partsavatar.allocator.exceptions.OrderCannotBeFullfilledException;
 import com.partsavatar.allocator.operations.Pipe;
+import com.partsavatar.allocator.operations.Pipe.PipedOrder;
+import com.partsavatar.allocator.operations.Pipe.PipedPart;
 import com.partsavatar.packer.components.Box;
 import com.partsavatar.packer.components.Part;
 import com.partsavatar.packer.components.WarehouseOrder;
 import com.partsavatar.packer.dao.packing.PackingDAO;
 import com.partsavatar.packer.dao.packing.PackingDAOImpl;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,36 +35,59 @@ import org.json.simple.parser.ParseException;
 public class AllocatorUsingPacker {
     private static final Double THRESHOLD = 75.0;
     private static final PackingDAO PACKER = new PackingDAOImpl();
-
-    public Map<	String, Map<String, Integer>> allocateWarhouseOrderUsingPacker(final CustomerOrder customerOrder, 
-    		final Map<Response, Warehouse> responseWarehouseMap)throws NumberFormatException, IOException, OrderCannotBeFullfilledException {
-        CustomerOrder copyCustomerOrder = new CustomerOrder(customerOrder);
+    
+    @Getter 
+    @Setter
+    @ToString
+    public class FilledOrder{
+    	private CustomerOrder remainingOrder;
+    	private List<String> filledParts;
     	
-    	ArrayList<Response> allResponses = new ArrayList<>();
+    	public FilledOrder(CustomerOrder currentOrder) {
+			remainingOrder = new CustomerOrder(currentOrder);
+			filledParts = new ArrayList<>();
+		}
+
+		public void addFilledPart(String partId) {
+			filledParts.add(partId);
+		}
+		public void removeFilledPart(String partId) {
+			filledParts.remove(partId);
+		}
+		
+		public void addOrderPart(String partId, Integer qty) {
+			remainingOrder.addPart(partId, qty);
+		}
+    }
+
+    public Map<Warehouse, Map<String, Integer>> allocateWarhouseOrderUsingPacker(final CustomerOrder customerOrder, 
+    		final Map<Response, Warehouse> responseWarehouseMap)throws NumberFormatException, IOException, OrderCannotBeFullfilledException {
+        ArrayList<Response> allResponses = new ArrayList<>();
         allResponses.addAll(responseWarehouseMap.keySet());
         
         //create satellite store categorization
         allResponses.sort(Response::compareDistance);
-        List<String> sortedWarehouses = new ArrayList<>();
-        Map<String, List<Warehouse>> warehouseMap = new HashMap<>();
+        List<String> sortedSatelliteStores = new ArrayList<>();
+        Map<String, SatelliteStore> satelliteStoreMap = new HashMap<>();
         Set<String> satelliteStores = new HashSet<>();
         for (Response r : allResponses) {
         	Warehouse warehouse = responseWarehouseMap.get(r);
         	String sat = warehouse.getSatelliteStore();
             if(sat == null) {
-            	warehouseMap.put(warehouse.getId(), new ArrayList<>());
-            	warehouseMap.get(warehouse.getId()).add(warehouse);
-            	sortedWarehouses.add(warehouse.getId());
+            	String whId = warehouse.getId();
+            	satelliteStoreMap.put(whId, new SatelliteStore(r.getDistance()));
+            	satelliteStoreMap.get(whId).addWarehouse(warehouse);
+            	sortedSatelliteStores.add(whId);
             }
             else {
             	if(satelliteStores.contains(sat)) {
-            		warehouseMap.get(sat).add(warehouse);
+            		satelliteStoreMap.get(sat).addWarehouse(warehouse);
             	}
             	else {
-            		warehouseMap.put(sat, new ArrayList<>());
-            		warehouseMap.get(sat).add(warehouse);
+            		satelliteStoreMap.put(sat, new SatelliteStore(r.getDistance()));
+            		satelliteStoreMap.get(sat).addWarehouse(warehouse);
             		satelliteStores.add(sat);
-            		sortedWarehouses.add(sat);
+            		sortedSatelliteStores.add(sat);
             	}
             }      
         }
@@ -69,13 +99,13 @@ public class AllocatorUsingPacker {
         Map<String, List<String>> partAvailability = new HashMap<>(); 		//part - list of warehouse
         Map<String, List<String>> warehouseAvailability = new HashMap<>();  //warehouse - list of parts
         
-        for (String partId : copyCustomerOrder.getProductCloneCountMap().keySet()) {
+        for (String partId : customerOrder.getProductCloneCountMap().keySet()) {
 
             partAvailability.put(partId, new ArrayList<>());
 
-            for (String satId : warehouseMap.keySet()) {
+            for (String satId : satelliteStoreMap.keySet()) {
             	
-            	for (Warehouse wh : warehouseMap.get(satId)) {
+            	for (Warehouse wh : satelliteStoreMap.get(satId).getWarehouses()) {
 					
             		if(wh.containsProduct(partId)) {
 						partAvailability.get(partId).add(satId);
@@ -102,28 +132,25 @@ public class AllocatorUsingPacker {
         //(So small items can fill without an extra box)
         List<String> sortedPriorityWarehouses = new ArrayList<>();
         sortedPriorityWarehouses.addAll(priorityMap.keySet());
-        //TODO sortedPriorityWarehouses.sort((s1, s2) ->;
-
+        sortedPriorityWarehouses.sort((s1, s2) -> 
+        	satelliteStoreMap.get(s1).getDistance().compareTo(satelliteStoreMap.get(s2).getDistance()));
+  
 
         Map<String, Map<String, Integer>> orderCompleted = new HashMap<>();
+        FilledOrder filledOrder = new FilledOrder(customerOrder);
         //Fill Priority items
         for (String whId : sortedPriorityWarehouses) {
-        	List<String> filledParts = fillPrimaryItems(orderCompleted, warehouseMap.get(whId), whId, 
-            		copyCustomerOrder, priorityMap.get(whId), warehouseAvailability.get(whId));
-        	updateAvailability(filledParts, warehouseAvailability);
+        	filledOrder = fillPrimaryItems(orderCompleted, satelliteStoreMap.get(whId).getWarehouses(), whId, 
+            		filledOrder.getRemainingOrder(), priorityMap.get(whId), warehouseAvailability.get(whId));
+        	updateAvailability(filledOrder.getFilledParts(), warehouseAvailability);
         	
-        	if(isOrderComplete(filledParts, warehouseAvailability)) {
-	        	if(copyCustomerOrder.getProductCloneCountMap().size() == 0) {
-					return orderCompleted;
-				}
-				else {
-					throw new OrderCannotBeFullfilledException();
-				}
-        	}
+    		if(filledOrder.getRemainingOrder().getProductCloneCountMap().size() == 0) {
+				return segregateIntoWarehouses(orderCompleted, satelliteStoreMap);
+			}
         }
 
         //Fill Remaining items in remaining warehouses (nearest warehouse first)
-        for (String whId : sortedWarehouses) {
+        for (String whId : sortedSatelliteStores) {
         	if(warehouseAvailability.containsKey(whId) && warehouseAvailability.get(whId).size() != 0) {
         		if (!orderCompleted.containsKey(whId)) {
         			orderCompleted.put(whId, new HashMap<>());
@@ -131,37 +158,44 @@ public class AllocatorUsingPacker {
         		else {
         			continue;
         		}
-        		List<String> filledParts = fillSecondaryItems(orderCompleted, warehouseMap.get(whId), whId, copyCustomerOrder, warehouseAvailability.get(whId));    
-        		updateAvailability(filledParts, warehouseAvailability);
+        		filledOrder = fillSecondaryItems(orderCompleted, satelliteStoreMap.get(whId).getWarehouses(), whId,
+        				filledOrder.getRemainingOrder(), warehouseAvailability.get(whId));    
+        		updateAvailability(filledOrder.getFilledParts(), warehouseAvailability);
         		
-        		if(isOrderComplete(filledParts, warehouseAvailability)) {
-        			if(copyCustomerOrder.getProductCloneCountMap().size() == 0) {
-        				return orderCompleted;
-        			}
-        			else {
-        				throw new OrderCannotBeFullfilledException();
-        			}
+        		if(isOrderComplete(filledOrder.getFilledParts(), warehouseAvailability)) {
+	        		if(filledOrder.getRemainingOrder().getProductCloneCountMap().size() == 0) {
+	    				return segregateIntoWarehouses(orderCompleted, satelliteStoreMap);
+	    			}
+	        		else {
+	        			throw new OrderCannotBeFullfilledException();
+	        		}
+	        			
         		}
         	}	
         }
-        if(copyCustomerOrder.getProductCloneCountMap().size() == 0) {
-			return orderCompleted;
+        if(filledOrder.getRemainingOrder().getProductCloneCountMap().size() == 0) {
+			return segregateIntoWarehouses(orderCompleted, satelliteStoreMap);
 		}
 		else {
 			throw new OrderCannotBeFullfilledException();
 		}
     }
 
-    private List<String> fillSecondaryItems(Map<String, Map<String, Integer>> orderCompleted, final List<Warehouse> warehouseList,
-    		String whId, CustomerOrder customerOrder, final List<String> warehouseAvailability) throws NumberFormatException, IOException {
-
+	private FilledOrder fillSecondaryItems(Map<String, Map<String, Integer>> orderCompleted, final List<Warehouse> warehouseList,
+    		String whId, final CustomerOrder customerOrder, final List<String> warehouseAvailability) throws NumberFormatException, IOException {
+    	
+    	FilledOrder filledOrder = new FilledOrder(customerOrder);
+    	
     	//update order completed list and convert customerOrder to warehouseOrder for rare parts in this warehouse
     	Map<Part,Integer> orderList = new HashMap<>();
-    	List<String> filledParts = new ArrayList<>();
     	Map<String, Integer> pipedOrder = new HashMap<>();
     	for (Warehouse warehouse : warehouseList) {
-        	Map<String, Integer> tmpOrder = Pipe.pipeOrderGreedily(warehouse, customerOrder);
-            for (String partId : tmpOrder.keySet()) {
+        	
+    		PipedOrder	tmpPipedOrder = Pipe.pipeOrderGreedily(warehouse, filledOrder.getRemainingOrder());
+			Map<String, Integer> tmpOrder = tmpPipedOrder.getOrderTaken();
+        	filledOrder.setRemainingOrder(tmpPipedOrder.getOrderRemaining());
+        	
+			for (String partId : tmpOrder.keySet()) {
             	Part part = Estimate.estimatePart(partId);
             	Integer initialQty = 0;
             	if(orderList.containsKey(part)) {
@@ -171,8 +205,8 @@ public class AllocatorUsingPacker {
         		orderCompleted.get(whId).put(partId, initialQty + tmpOrder.get(partId));
         		pipedOrder.put(partId, initialQty + tmpOrder.get(partId));
             	
-                if(!customerOrder.getProductCloneCountMap().containsKey(partId)) {
-                	filledParts.add(partId);
+                if(!filledOrder.getRemainingOrder().getProductCloneCountMap().containsKey(partId)) {
+                	filledOrder.addFilledPart(partId);
                 }
             }
 		}
@@ -183,7 +217,7 @@ public class AllocatorUsingPacker {
         
         if (currAcc > THRESHOLD || filledBoxes.size() == 1) {
         	System.out.println(currAcc);
-        	return filledParts;
+        	return filledOrder;
         }
         
         //Sort secondary parts available in warehouse according to increasing volume
@@ -199,12 +233,15 @@ public class AllocatorUsingPacker {
         	 
             for (int qty = pipedOrder.get(partId) - 1; qty >= 0; qty--) {
                 orderList.put(pEstimate,qty);
-                customerOrder.addPart(partId, 1);
+                
+                filledOrder.addOrderPart(partId, 1);
+                
                 filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
                 if (getAcc(filledBoxes) > THRESHOLD || filledBoxes.size() == 1) { //TODO change condition according to prices
                     orderCompleted.get(whId).put(partId, qty);
-                    filledParts.remove(partId);
-                    return filledParts;
+                    filledOrder.removeFilledPart(partId);
+                    System.out.println(getAcc(filledBoxes));
+                    return filledOrder;
                 } 
                 else {
                     continue;
@@ -213,25 +250,29 @@ public class AllocatorUsingPacker {
             
             //If reached here means removing this part completely also doesn't increase accuracy
             orderCompleted.get(whId).put(partId, 0);
-            filledParts.remove(partId);
+            filledOrder.removeFilledPart(partId);
         }
-        return filledParts;
+        return filledOrder;
     }
 
-    private List<String> fillPrimaryItems(Map<String, Map<String, Integer>> orderCompleted, final List<Warehouse> warehouseList, String whId,
-    		CustomerOrder customerOrder, final List<String> priorityPartList, final List<String> warehouseAvailability) throws NumberFormatException, IOException {
+    private FilledOrder fillPrimaryItems(Map<String, Map<String, Integer>> orderCompleted, final List<Warehouse> warehouseList, String whId,
+    		final CustomerOrder customerOrder, final List<String> priorityPartList, final List<String> warehouseAvailability) throws NumberFormatException, IOException {
     	
     	if (!orderCompleted.containsKey(whId)) {
             orderCompleted.put(whId, new HashMap<>());
         }
         
+    	FilledOrder filledOrder = new FilledOrder(customerOrder);
+    	
         //update order completed list and convert customerOrder to warehouseOrder for rare parts in this warehouse
         Map<Part,Integer> orderList = new HashMap<>();
         for (String partId : priorityPartList) {
         	Integer qty = 0;
         	for (Warehouse warehouse : warehouseList) {
-        		qty += Pipe.pipeProductGreedily(warehouse, customerOrder, partId);
-			}
+        		PipedPart	tmpPipedPart = Pipe.pipeProductGreedily(warehouse, filledOrder.getRemainingOrder(), partId);
+        		qty += tmpPipedPart.getQuantityTaken();
+        		filledOrder.setRemainingOrder(tmpPipedPart.getOrderRemaining());
+        	}
         	orderList.put(Estimate.estimatePart(partId), qty);
         	orderCompleted.get(whId).put(partId, qty);
         }
@@ -249,12 +290,13 @@ public class AllocatorUsingPacker {
         });
         
         // Fill all possible parts in same box (large items first)
-        List<String> filledParts = new ArrayList<>();
         for (String partId : warehouseAvailability) {
         	Integer maxQty = 0;
         	for (Warehouse warehouse : warehouseList) {
-        		 maxQty += Pipe.pipeProductGreedily(warehouse, customerOrder, partId);
-			}
+        		PipedPart	tmpPipedPart = Pipe.pipeProductGreedily(warehouse, filledOrder.getRemainingOrder(), partId);
+        		maxQty += tmpPipedPart.getQuantityTaken();
+        		filledOrder.setRemainingOrder(tmpPipedPart.getOrderRemaining());
+        	}
             Part pEstimate = Estimate.estimatePart(partId);
             orderList.put(pEstimate, maxQty);
 
@@ -262,21 +304,21 @@ public class AllocatorUsingPacker {
             Float tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasyPostAddress(),
             		warehouseList.get(0).getAddress().getEasyPostAddress());
             
-            if (currBoxCost <= tmpBoxCost) { // TODO change condition according to prices
+            if (currBoxCost <= tmpBoxCost) {
                 orderCompleted.get(whId).put(partId, maxQty);
-                if(!customerOrder.getProductCloneCountMap().containsKey(partId))
-                	filledParts.add(partId);
+                if(!filledOrder.getRemainingOrder().getProductCloneCountMap().containsKey(partId))
+                	filledOrder.addFilledPart(partId);
             }
             else {
                 Boolean orderUpdated = false;
                 for (int qty = maxQty - 1; qty >= 0; qty--) {
                     orderList.put(pEstimate,qty);
-					customerOrder.addPart(partId, 1);
+					filledOrder.addOrderPart(partId, 1);
 
                     filledBoxes = PACKER.getPacking(PACKER.getAvailableBoxes(), new WarehouseOrder(orderList));
                     tmpBoxCost = getCost(filledBoxes, customerOrder.getDeliveryAddress().getEasyPostAddress(),
                     		warehouseList.get(0).getAddress().getEasyPostAddress());
-                    if (currBoxCost <= tmpBoxCost) { // TODO change condition according to prices
+                    if (currBoxCost <= tmpBoxCost) {
                         orderCompleted.get(whId).put(partId, qty);
                         orderUpdated = true;
                         break;
@@ -287,10 +329,11 @@ public class AllocatorUsingPacker {
                 }
             }
         }
-        return filledParts;
+        System.out.println(getAcc(filledBoxes));
+        return filledOrder;
     }
 
-    private Float getCost(final List<Box> filledBoxes, final Address warehouseAddress, final Address customerAddress) {
+    private Float getCost(final List<Box> filledBoxes, final Address customerAddress, final Address warehouseAddress) {
         Float cost = 0f;
     	for (Box box : filledBoxes) {
     		Parcel parcel = EasyPostAPI.getParcel(box.getWeight(), box.getDimension().getY(), box.getDimension().getZ(), box.getDimension().getX());
@@ -320,14 +363,26 @@ public class AllocatorUsingPacker {
     }
     
     private boolean isOrderComplete(final List<String> filledParts, 
-		final Map<String, List<String>> warehouseAvailability) {
-    	for (String s : warehouseAvailability.keySet()) {
-			if(warehouseAvailability.get(s).size() != 0) {
-				return false;
-			}
+ 		final Map<String, List<String>> warehouseAvailability) {
+     	for (String s : warehouseAvailability.keySet()) {
+ 			if(warehouseAvailability.get(s).size() != 0) {
+ 				return false;
+ 			}
+ 		}
+     	return true;
+     }
+    
+    private Map<Warehouse, Map<String, Integer>> segregateIntoWarehouses(
+			Map<String, Map<String, Integer>> orderCompleted, Map<String, SatelliteStore> satelliteStoreMap) {
+    	Map<Warehouse, Map<String, Integer>> finalAllocation = new HashMap<>();
+    	for (String sat : orderCompleted.keySet()) {
+			for (Warehouse warehouse : satelliteStoreMap.get(sat).getWarehouses()) {
+				finalAllocation.put(warehouse, Pipe.pipeWareHouseGreedily(warehouse, orderCompleted.get(sat)));
+    		}	
 		}
-    	return true;
-    }
+    	
+    	return finalAllocation;
+	}
     
     public static void main(String[] args) throws IOException, ParseException, NumberFormatException, OrderCannotBeFullfilledException {
     	long startTime = System.nanoTime();
@@ -342,7 +397,7 @@ public class AllocatorUsingPacker {
         Map<Response, Warehouse> responseWarehouseMap = Allocator.getResponseWarehouseMap(customerOrder, warehouses);
         System.out.println("TIME:" + (System.nanoTime() - startTime) / 1000000000.0);
         AllocatorUsingPacker allocatorUsingPacker  = new AllocatorUsingPacker();
-        Map<String, Map<String, Integer>> completedAllocation = allocatorUsingPacker.allocateWarhouseOrderUsingPacker(customerOrder, responseWarehouseMap);
+        Map<Warehouse, Map<String, Integer>> completedAllocation = allocatorUsingPacker.allocateWarhouseOrderUsingPacker(customerOrder, responseWarehouseMap);
         System.out.println(completedAllocation);
         System.out.println("TIME:" + (System.nanoTime() - startTime) / 1000000000.0);
    }

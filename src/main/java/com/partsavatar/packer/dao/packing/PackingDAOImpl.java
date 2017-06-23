@@ -28,7 +28,7 @@ public class PackingDAOImpl implements PackingDAO {
     @Override
     public List<Box> getAvailableBoxes() throws NumberFormatException, IOException {
         ArrayList<Box> boxes = new ArrayList<Box>();
-        BufferedReader br = new BufferedReader(new FileReader("Boxes.csv"));
+        BufferedReader br = new BufferedReader(new FileReader("db/Boxes.csv"));
         String newLine = br.readLine();
         while ((newLine = br.readLine()) != null) {
             String[] parts = newLine.split(",");
