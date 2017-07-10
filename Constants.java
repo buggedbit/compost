@@ -1,8 +1,5 @@
 /**
- * Contains constants related to<br>
- * Time conversions,<br>
- * Date, Time, DateTime Classes<br>
- * Gregorian Calender<br>
+ * Contains constants related to, Time conversions, Date, Time, DateTime Classes, Gregorian Calender
  *
  * @author pandu
  * @version 1.0

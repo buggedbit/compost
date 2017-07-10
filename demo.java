@@ -8,4 +8,5 @@ public class demo {
 		System.out.println(d2.formal12Representation());
 		System.out.println(d2.dateTimeDifferenceFrom(d1).hourMinRepresentation());
 	}
+
 }

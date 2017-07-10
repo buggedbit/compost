@@ -1,6 +1,3 @@
-/* For getting log uncomment the comments starting with (android) */
-//(android) import android.util.Log;
-
 import java.util.Calendar;
 
 // by default it stores 24hr time
@@ -10,7 +7,7 @@ public class Time {
 
     private static final String SIMPLE_REPR_SEPARATOR = ":";
 
-    public int $HOUR = -1;     // 0 - 23
+    public int $HOUR = -1;      // 0 - 23
     public int $MINUTE = -1;    // 0 - 59
     public int $SECOND = -1;    // 0 - 59
 
@@ -39,8 +36,6 @@ public class Time {
     //if not in any of these then the default initialization
     public Time(String timeString, String separator) {
 
-        //(android) Log.i(Constants.TAG, timeString + "==>" + separator);
-
         String error = "Time: not a proper Time object initialization with string " + timeString + " and with separator " + separator;
 
         if (timeString != null && !timeString.matches("") && separator != null && !separator.matches("")) {
@@ -52,18 +47,15 @@ public class Time {
                     this.$HOUR = Integer.parseInt(timeComponents[0]);
                     if (!this.isValid()) {
                         this.unsetTime();
-                        //(android) Log.i(Constants.TAG, error);
+                        // Bad Input
                     }
                 } catch (Exception e) {
-                    //(android) Log.i(Constants.TAG, error);
                     unsetTime();
                 }
             } else {
-                //(android) Log.i(Constants.TAG, error);
                 unsetTime();
             }
         } else {
-            //(android) Log.i(Constants.TAG, error);
             unsetTime();
         }
     }
@@ -83,19 +75,15 @@ public class Time {
                     this.$MINUTE = Integer.parseInt(timeComponents[1]);
                     this.$HOUR = Integer.parseInt(timeComponents[0]);
                     if (!this.isValid()) {
-                        //(android) Log.i(Constants.TAG, error);
-                        this.unsetTime();
+                        unsetTime();
                     }
                 } catch (Exception e) {
-                    //(android) Log.i(Constants.TAG, error);
                     unsetTime();
                 }
             } else {
-                //(android) Log.i(Constants.TAG, error);
                 unsetTime();
             }
         } else {
-            //(android) Log.i(Constants.TAG, error);
             unsetTime();
         }
     }
@@ -108,7 +96,6 @@ public class Time {
         if (!this.isValid()) {
             String error = "Time: not a proper Time Object Initialization with reference object " + reference.getTimeString();
             unsetTime();
-            //(android) Log.i(Constants.TAG, error);
         }
     }
 
@@ -118,7 +105,6 @@ public class Time {
         this.$MINUTE = -1;
         this.$SECOND = -1;
     }
-    //
 
     // identifiers
     // 00:00:00 - 23:59:59 are supported
@@ -128,7 +114,6 @@ public class Time {
         if (this.$SECOND < 0 || this.$SECOND > 59) return false;
         return true;
     }
-    //
 
     // formatter
     public String get12HrFormat() {
@@ -211,7 +196,6 @@ public class Time {
     public String getTimeString() {
         return this.$HOUR + ":" + this.$MINUTE + ":" + this.$SECOND;
     }
-    //
 
     // comparisons
     // These functions compare without validity check
@@ -248,7 +232,6 @@ public class Time {
     public boolean isEqualTo(Time B) {
         return Time.isSame(this, B);
     }
-    //
 
     // difference
     // return A - B in seconds with sign
@@ -264,7 +247,6 @@ public class Time {
     public long timeDifferenceTo(Time A) {
         return Time.timeDifferenceSecondToFirst(A, this);
     }
-    //
 
     //modifiers
     public void toPresent() {
@@ -292,9 +274,6 @@ public class Time {
     private long add(long additional_seconds) {
         if (additional_seconds < 0) return 0;
 
-        //(android) Log.i(Constants.TAG, String.valueOf(additional_seconds));
-
-        //
         long days = (additional_seconds / Constants.SECONDS_IN_DAY);
         int _day = (int) (additional_seconds % Constants.SECONDS_IN_DAY);
         // _day [0,86399] therefore no extra days will come
@@ -358,12 +337,6 @@ public class Time {
         else if (seconds > 0) return this.add(seconds);
         else return this.subtract(-seconds);
     }
-    //
-
-
-//    public static void main(String[] args){
-//    }
-
 
 }
 

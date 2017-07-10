@@ -1,6 +1,3 @@
-/* For getting log uncomment the comments starting with (android) */
-//(android) import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -129,11 +126,7 @@ public class Date {
      * @see #unsetDate()
      * @see #isValid()
      */
-
     public Date(String dateString, String separator) {
-
-        //(android) Log.i(Constants.TAG, dateString + "==>" + separator);
-
         String error = "Date: not a proper Date object initialization with string " + dateString + " and with separator " + separator;
 
         if (dateString != null && !dateString.matches("") && separator != null && !separator.matches("")) {
@@ -145,18 +138,14 @@ public class Date {
                     this.$DAY = Integer.parseInt(dateComponents[0]);
                     if (!this.isValid()) {
                         this.unsetDate();
-                        //(android) Log.i(Constants.TAG, error);
                     }
                 } catch (Exception e) {
-                    //(android) Log.i(Constants.TAG, error);
                     unsetDate();
                 }
             } else {
-                //(android) Log.i(Constants.TAG, error);
                 unsetDate();
             }
         } else {
-            //(android) Log.i(Constants.TAG, error);
             unsetDate();
         }
     }
@@ -189,19 +178,15 @@ public class Date {
                     this.$MONTH = Integer.parseInt(dateComponents[1]);
                     this.$DAY = Integer.parseInt(dateComponents[0]);
                     if (!this.isValid()) {
-                        //(android) Log.i(Constants.TAG, error);
                         this.unsetDate();
                     }
                 } catch (Exception e) {
-                    //(android) Log.i(Constants.TAG, error);
                     unsetDate();
                 }
             } else {
-                //(android) Log.i(Constants.TAG, error);
                 unsetDate();
             }
         } else {
-            //(android) Log.i(Constants.TAG, error);
             unsetDate();
         }
     }
@@ -227,7 +212,6 @@ public class Date {
         if (!this.isValid()) {
             String error = "Date: not a proper Date Object Initialization with reference object DD/MM/YYYY " + reference.getDateString();
             unsetDate();
-            //(android) Log.i(Constants.TAG, error);
         }
     }
 
@@ -357,7 +341,6 @@ public class Date {
         String dayOfTheWeek = sdf.format(d);
         return dayOfTheWeek;
     }
-    //
 
     /**
      * Prints the date and StdForm in the System console <b>without Validation</b><br>
@@ -397,8 +380,6 @@ public class Date {
         System.out.print(this.$YEAR);
         System.out.print("\n");
     }
-
-    // comparisons
 
     /**
      * returns whether first date param is in future to second date param<br>
@@ -710,6 +691,4 @@ public class Date {
 //    public static void main(String[] args){
 //
 //    }
-
-
 }

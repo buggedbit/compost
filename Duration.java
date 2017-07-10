@@ -1,6 +1,3 @@
-/* For getting log uncomment the comments starting with (android) */
-//(android) import android.util.Log;
-
 import static java.lang.Integer.parseInt;
 
 
@@ -36,7 +33,7 @@ public class DateTimeDelta {
             this.$24hr = 0;
             this.$sec = hr * Constants.SECONDS_IN_HOUR + min * Constants.SECONDS_IN_MINUTE;
         } catch (Exception e) {
-            //(android) Log.i(Constants.TAG, "DateTimeDelta: not a proper DateTimeDelta object initialization with " + dateTimeDiffString);
+            // Bad Input
         }
     }
 
@@ -57,13 +54,13 @@ public class DateTimeDelta {
                     this.$24hr = Long.parseLong(day_sec[0]);
                     this.$sec = Long.parseLong(day_sec[1]);
                 } catch (Exception e) {
-                    //(android) Log.i(Constants.TAG, error);
+                    // Bad Input
                 }
             } else {
-                //(android) Log.i(Constants.TAG, error);
+                // Bad Input
             }
         } else {
-            //(android) Log.i(Constants.TAG, error);
+            // Bad Input
         }
     }
 
@@ -104,7 +101,7 @@ public class DateTimeDelta {
             Integer.parseInt(comp[0]);
             Integer.parseInt(comp[2]);
         } catch (Exception e) {
-            //(android) Log.i(Constants.TAG, "DateTimeDelta: not a proper DateTimeDelta object initialization with " + dateTimeDiffString);
+            // Bad Input
         }
         return false;
     }

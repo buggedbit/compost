@@ -1,8 +1,7 @@
 TicToc is a java package which manages date and time.
-It is specially made for android, though you can as well use it in any java application.
-It is rigourously tested, debugged and optimized. 
+It is rigorously tested, debugged and optimized. 
 
-Precision upto Seconds
+Precision up to seconds
 Range from 01/01/0001 00:00:00 to 31/12/2147483647 23:59:00
 
 How to Use ?

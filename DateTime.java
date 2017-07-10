@@ -1,6 +1,3 @@
-/* For getting log uncomment the comments starting with (android) */
-//(android) import android.util.Log;
-
 public class DateTime {
     /**
      * Separator for fields in simple representation
@@ -50,18 +47,14 @@ public class DateTime {
                     this.$TIME = new Time(date_time[1], timeSep);
                     if (!this.isValid()) {
                         this.unsetDateTime();
-                        //(android)Log.i(Constants.TAG, error);
                     }
                 } catch (Exception e) {
-                    //(android)Log.i(Constants.TAG, error);
                     unsetDateTime();
                 }
             } else {
-                //(android)Log.i(Constants.TAG, error);
                 unsetDateTime();
             }
         } else {
-            //(android)Log.i(Constants.TAG, error);
             unsetDateTime();
         }
     }
