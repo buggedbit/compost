@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from . import views
 
-app_name = 'paper'
+app_name = 'restapi'
 
 urlpatterns = [
     # host/paper/book/create/<POST name>
