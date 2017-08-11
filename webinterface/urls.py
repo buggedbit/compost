@@ -1,5 +1,9 @@
-from __future__ import unicode_literals
+from django.conf.urls import url
+from . import views
 
-from django.db import models
+app_name = 'webinterface'
 
-# Create your models here.
+urlpatterns = [
+    # host/cli/
+    url(r'^cli/$', views.cli, name='cli'),
+]

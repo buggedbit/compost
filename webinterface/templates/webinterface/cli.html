@@ -1,0 +1,41 @@
+{% extends 'webinterface/base.html' %}
+{% block title %}CLI{% endblock %}
+{% block css %}
+    <style>
+        #terminal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            z-index: 100;
+            padding: 20px;
+            font-family: 'Ubuntu Mono', monospace;
+            color: #64dd17;
+            font-size: x-large;
+        }
+
+        #cmd {
+            font-size: x-large;
+            border: none;
+            margin: 0;
+            width: 90%;
+            box-shadow: none;
+        }
+    </style>
+{% endblock %}
+{% load static %}
+{% block body %}
+    <script src="{% static 'webinterface/cli/yash.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            yaSH.bind('cmd', 'log', 'terminal');
+            yaSH.initShell();
+        });
+    </script>
+    <div id="terminal" class="row black">
+        <div id="log"></div>
+        <span>$: <input id="cmd" autofocus></span>
+    </div>
+{% endblock %}
