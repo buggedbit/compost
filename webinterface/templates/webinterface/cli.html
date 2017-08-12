@@ -29,13 +29,116 @@
 {% block body %}
     <script src="{% static 'webinterface/cli/yash.js' %}"></script>
     <script>
+        /**
+         * no book selected => book is ''
+         * when book is selected book is set to that book's name
+         * */
+        var Current = {
+            book: '',
+            resetBook: function () {
+                this.book = '';
+            }
+        };
+
+        // colors
+        yaSH.Config.color.book = 'blue';
+        yaSH.Config.color.page = 'green';
+
+        // about
+        yaSH.addCmd({
+            keywords: ["about", "whatisthis"],
+            desc: "brief description about school bag",
+            exec: function (tokens) {
+                yaSH.printPre('School Bag is a place where you keep all your knowledge', 'gold');
+            }
+        });
+        // cd
+        yaSH.addCmd({
+            keywords: ["cd"],
+            desc: "select or deselect a book. Usage cd <book name> or cd ..",
+            exec: function (tokens) {
+                var book = tokens.splice(1).join(' ');
+                if (book === '..') {
+                    Current.resetBook();
+                    yaSH.setPrefix('$: ');
+                } else {
+                    $.ajax({
+                        url: "{% url 'restapi:book_exists' %}",
+                        method: 'GET',
+                        data: {
+                            book_name: book
+                        },
+                        success: function (response) {
+                            var jsonedResponse = JSON.parse(response);
+                            if (jsonedResponse.status === 0) {
+                                Current.book = book;
+                                yaSH.setPrefix('$[' + book + ']:');
+                            } else if (jsonedResponse.status === -1) {
+                                yaSH.printErr(jsonedResponse.message, 2000);
+                            }
+                        },
+                        error: function (response) {
+                            yaSH.printErr('Error', 2000);
+                        }
+                    });
+                }
+            }
+        });
+        // ls
+        yaSH.addCmd({
+            keywords: ["ls"],
+            desc: "list all in current working place",
+            exec: function (tokens) {
+                $.ajax({
+                    url: "{% url 'restapi:ls' %}",
+                    method: 'GET',
+                    data: {
+                        book_name: Current.book
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            yaSH.print('------');
+                            yaSH.print('@book', yaSH.Config.color.book);
+                            yaSH.print('------');
+                            yaSH.print('@page', yaSH.Config.color.page);
+                            yaSH.print('------');
+                            yaSH.println('');
+                            var books = jsonedResponse.body.books;
+                            var pages = jsonedResponse.body.pages;
+                            for (var i = 0; i < books.length; ++i)
+                                yaSH.println(books[i], yaSH.Config.color.book);
+                            for (i = 0; i < pages.length; ++i)
+                                yaSH.println(pages[i], yaSH.Config.color.page);
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message, 2000);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Error', 2000);
+                    }
+                });
+            }
+        });
+        // pwd ()
+        // cd <book name> ()
+        // cd .. (deselect book)
+        // cat <page name>
+        // nano <page name>
+        // mkb <book name>
+        // mkc <page name>
+        // rmb <book name>
+        // rmc <page name>
+        // mvb
+        // mvc
+
         $(document).ready(function () {
-            yaSH.bind('cmd', 'log', 'terminal');
+            yaSH.bind('cmd', 'log', 'terminal', 'prefix');
             yaSH.initShell();
         });
     </script>
     <div id="terminal" class="row black">
         <div id="log"></div>
-        <span>$: <input id="cmd" autofocus></span>
+        <span id="prefix">$: </span><input id="cmd" autofocus>
     </div>
 {% endblock %}

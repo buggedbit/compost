@@ -1,7 +1,7 @@
 var yaSH = {
     Config: {
         color: {
-            default: 'chartreuse',
+            default: '#64dd17',
             pre: 'white',
             warning: 'yellow',
             error: 'red',
@@ -10,19 +10,22 @@ var yaSH = {
     _inputHId: undefined,
     _outputDivHId: undefined,
     _scrollDivHId: undefined,
+    _prefixSpanHId: undefined,
     /**
      * binds terminal to HTML DOM elements
      * inputId      -> whose val can be taken as input
      * outputDivId  -> div where any output is printed
      * _scrollDivHId -> div is scrolled to bottom every time something gets printed in output div, typically parent of output div
      * */
-    bind: function (inputId, outputDivId, scrollDivId) {
+    bind: function (inputId, outputDivId, scrollDivId, prefixSpanId) {
         this._inputHId = '#' + inputId;
         this._outputDivHId = '#' + outputDivId;
         this._scrollDivHId = '#' + scrollDivId;
         $(this._scrollDivHId).css({
             'overflow-y': 'auto'
-        })
+        });
+        this._prefixSpanHId = '#' + prefixSpanId;
+        this.setPrefix(this._prefix);
     },
     /**
      * Registers listeners, starts REPL
@@ -283,6 +286,10 @@ var yaSH = {
         }
     },
     _prefix: '$: ',
+    setPrefix: function (prefix) {
+        this._prefix = prefix;
+        $(this._prefixSpanHId).html(this._prefix);
+    },
     /**
      * Assert
      * All keywords are distinct
@@ -304,20 +311,13 @@ var yaSH = {
                 // Print
                 for (var i = 0; i < yaSH._cmdList.length; i++) {
                     var ithCmd = yaSH._cmdList[i];
-                    var tab = '  ------------  ';
-                    var desc = ithCmd.keywords[0] + tab + ithCmd.desc;
-                    yaSH.printPre(desc, 'white');
-                    var keywords = ithCmd.keywords.splice(1).join("\n");
-                    yaSH.printPre(keywords, 'white');
+                    if (ithCmd.keywords[0] === "")
+                        continue;
+                    var tab = '----------------';
+                    var keywords = ithCmd.keywords.join(",  ");
+                    yaSH.printPre(keywords, 'deeppink');
+                    yaSH.printPre(tab + ithCmd.desc, 'white');
                 }
-
-            }
-        },
-        {
-            keywords: ["about", "whatisthis"],
-            desc: "brief description about school bag",
-            exec: function (tokens) {
-                yaSH.printPre('School Bag is a place where you keep all your knowledge', 'gold');
             }
         },
         {
@@ -327,5 +327,12 @@ var yaSH = {
                 $(yaSH._outputDivHId).empty();
             }
         },
-    ]
+    ],
+    /**
+     * Adds cmd to _cmdList
+     * User should ensure format and constraint rules of the param cmd
+     * */
+    addCmd: function (cmd) {
+        this._cmdList.push(cmd);
+    }
 };
