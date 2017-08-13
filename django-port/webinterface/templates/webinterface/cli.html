@@ -13,14 +13,20 @@
             padding: 20px;
             font-family: 'Ubuntu Mono', monospace;
             color: #64dd17;
-            font-size: x-large;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #prefix {
+            height: 100%;
         }
 
         #cmd {
-            font-size: x-large;
+            font-size: 20px;
+            font-weight: bold;
             border: none;
             margin: 0;
-            width: 90%;
+            width: 70%;
             box-shadow: none;
         }
     </style>
@@ -35,16 +41,16 @@
          * */
         var Context = {
             _book: '',
-            _resetBook: function () {
-                this._book = '';
+            getPrefix: function () {
+                return '$[/schoolbag/' + this._book + ']: '
             },
-            _changeBook: function (book) {
+            _setBook: function (book) {
                 if (book === undefined) {
                     this._book = '';
-                    yaSH.setPrefix('$: ');
+                    yaSH.setPrefix(this.getPrefix());
                 } else {
                     this._book = book;
-                    yaSH.setPrefix('$ [' + book + ']:');
+                    yaSH.setPrefix(this.getPrefix());
                 }
             },
         };
@@ -52,6 +58,7 @@
         // colors
         yaSH.Config.color.book = 'blue';
         yaSH.Config.color.page = 'green';
+        yaSH.setPrefix(Context.getPrefix());
 
         // about
         yaSH.addCmd({
@@ -72,7 +79,7 @@
                 }
                 var book = tokens.splice(1).join(' ');
                 if (book === '..') {
-                    Context._changeBook();
+                    Context._setBook();
                 } else {
                     $.ajax({
                         url: "{% url 'restapi:book_exists' %}",
@@ -83,7 +90,7 @@
                         success: function (response) {
                             var jsonedResponse = JSON.parse(response);
                             if (jsonedResponse.status === 0) {
-                                Context._changeBook(book);
+                                Context._setBook(book);
                             } else if (jsonedResponse.status === -1) {
                                 yaSH.printErr(jsonedResponse.message, 2000);
                             }
@@ -286,14 +293,34 @@
                 });
             }
         });
-
-        // cat <page name>
-        // nano <page name>
         // mvb
         // mvc
+        // cat <page name>
+        // nano <page name>
 
         $(document).ready(function () {
-            yaSH.bind('cmd', 'log', 'terminal', 'prefix');
+            var tree = [
+                {
+                    code: 17,
+                    action: [
+                        {
+                            code: 76,
+                            action: function (e) {
+                                e.preventDefault();
+                                yaSH.evaluate('clear');
+                            }
+                        },
+                        {
+                            code: 72,
+                            action: function (e) {
+                                e.preventDefault();
+                                yaSH.evaluate('help');
+                            }
+                        }
+                    ]
+                }
+            ];
+            yaSH.bind('cmd', 'log', 'terminal', 'prefix', tree);
             yaSH.initShell();
         });
     </script>

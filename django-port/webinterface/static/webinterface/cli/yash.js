@@ -1,3 +1,6 @@
+/**
+ * @requires jQuery
+ * */
 var yaSH = {
     Config: {
         color: {
@@ -17,7 +20,7 @@ var yaSH = {
      * outputDivId  -> div where any output is printed
      * _scrollDivHId -> div is scrolled to bottom every time something gets printed in output div, typically parent of output div
      * */
-    bind: function (inputId, outputDivId, scrollDivId, prefixSpanId) {
+    bind: function (inputId, outputDivId, scrollDivId, prefixSpanId, multiKeyCallbackTree) {
         this._inputHId = '#' + inputId;
         this._outputDivHId = '#' + outputDivId;
         this._scrollDivHId = '#' + scrollDivId;
@@ -26,21 +29,26 @@ var yaSH = {
         });
         this._prefixSpanHId = '#' + prefixSpanId;
         this.setPrefix(this._prefix);
+        this._MultiKeyCallBackManager._bind(multiKeyCallbackTree);
     },
     /**
      * Registers listeners, starts REPL
      * */
     initShell: function () {
+        this._MultiKeyCallBackManager._init();
         $(this._inputHId).keydown(function (e) {
+            var cmd;
             switch (e.keyCode || e.which) {
                 // Enter
                 case 13:
-                    yaSH.evaluate();
+                    cmd = $(yaSH._inputHId).val();
+                    yaSH.evaluate(cmd);
                     break;
                 // Tab Key
                 case 9:
                     event.preventDefault();
-                    yaSH.autoComplete();
+                    cmd = $(yaSH._inputHId).val();
+                    yaSH.autoCompleteKeyword(cmd);
                     break;
                 // Up Arrow
                 case 38:
@@ -145,8 +153,7 @@ var yaSH = {
      * cmd found -> True
      * else      -> False
      * */
-    evaluate: function () {
-        var cmd = $(yaSH._inputHId).val();
+    evaluate: function (cmd) {
         // Tokenize the cmd
         var spacedSepTokens = cmd.trim().replace(/ +/g, ' ');
         var tokens = spacedSepTokens.split(' ');
@@ -188,8 +195,7 @@ var yaSH = {
      * one match found          -> Auto completes the command
      * multiple matches found   -> Displays all matching cmds
      * */
-    autoComplete: function () {
-        var cmd = $(yaSH._inputHId).val();
+    autoCompleteKeyword: function (cmd) {
         var spacedSepTokens = cmd.trim().replace(/ +/g, ' ');
         var regex = new RegExp('^' + spacedSepTokens, 'i');
         var matches = [];
@@ -329,5 +335,71 @@ var yaSH = {
      * */
     addCmd: function (cmd) {
         this._cmdList.push(cmd);
+    },
+    /**
+     * In a generation
+     * 1. all codes must be unique
+     * 2. all codes must indicate a proper key
+     * 3. all actions must either be another generation or a function
+     *
+     * In a path from root to leaf
+     * 1. all codes must be unique
+     * */
+    _MultiKeyCallBackTree: [],
+    _MultiKeyCallBackManager: {
+        _actionStack: undefined,
+        _matchedPathStack: undefined,
+        _pressedKeyStack: undefined,
+        _reset: function () {
+            this._actionStack = [yaSH._MultiKeyCallBackTree];
+            this._matchedPathStack = [];
+            this._pressedKeyStack = [];
+        },
+        _keyDown: function (e) {
+            var eCode = e.keyCode || e.which;
+            // Handles long key press
+            if (eCode === this._pressedKeyStack[this._pressedKeyStack.length - 1]) {
+                return;
+            }
+            if (this._matchedPathStack.length === this._pressedKeyStack.length) {
+                var currentGen = this._actionStack[this._actionStack.length - 1];
+                for (var i = 0; i < currentGen.length; i++) {
+                    var ithMember = currentGen[i];
+                    if (ithMember.code === eCode) {
+                        this._matchedPathStack.push(ithMember.code);
+                        this._actionStack.push(ithMember.action);
+                        if (typeof(ithMember.action) === 'function') {
+                            ithMember.action(e);
+                        }
+                    }
+                }
+            }
+            this._pressedKeyStack.push(eCode);
+        },
+        _keyUp: function (e) {
+            if (this._matchedPathStack.length === this._pressedKeyStack.length) {
+                this._matchedPathStack.pop();
+                if (this._actionStack.length > 1) {
+                    this._actionStack.pop();
+                }
+            }
+            this._pressedKeyStack.pop();
+        },
+        _init: function () {
+            this._reset();
+            $(window).keydown(function (e) {
+                yaSH._MultiKeyCallBackManager._keyDown(e);
+            });
+            $(window).keyup(function (e) {
+                yaSH._MultiKeyCallBackManager._keyUp(e);
+            });
+            $(window).focus(function () {
+                yaSH._MultiKeyCallBackManager._reset();
+            });
+        },
+        _bind: function (tree) {
+            tree = tree === undefined ? [] : tree;
+            yaSH._MultiKeyCallBackTree = tree;
+        }
     }
 };

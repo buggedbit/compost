@@ -6,3 +6,8 @@ Running Instructions
     python manage.py migrate
 3. Run the server
     python manage.py runserver
+
+Todo
+====
+1. improve token making
+2. block until ajax returns
