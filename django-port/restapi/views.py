@@ -1,6 +1,6 @@
 import json
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponse
 from paper.models import Book, Page
@@ -29,11 +29,19 @@ def ls(request):
 
             return HttpResponse(json.dumps({'status': 0, 'body': answer}))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid data'}))
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
         except (ValueError, TypeError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+
+
+def book_jsonize(book):
+    jsoned_book = {
+        'id': book.id,
+        'name': book.name,
+    }
+    return jsoned_book
 
 
 def book_exists(request):
@@ -50,23 +58,33 @@ def book_exists(request):
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
 
 
-def book_jsonize(book):
-    jsoned_book = {
-        'id': book.id,
-        'name': book.name,
-    }
-    return jsoned_book
-
-
 def book_create(request):
     if request.method == 'POST':
         try:
-            name = request.POST['name']
+            name = request.POST['book_name']
             new_book = Book(name=name)
             new_book.save()
             return HttpResponse(json.dumps({'status': 0, 'body': book_jsonize(new_book)}))
         except IntegrityError:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Constraints not met'}))
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Two books cannot have same name'}))
+        except ValidationError as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
+        except (ValueError, TypeError):
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+
+
+def book_delete(request):
+    if request.method == 'POST':
+        try:
+            name = request.POST['book_name']
+            existing_book = Book.objects.get(name=name)
+            jsoned_book = book_jsonize(existing_book)
+            existing_book.delete()
+            return HttpResponse(json.dumps({'status': 0, 'body': jsoned_book}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
         except (ValueError, TypeError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
@@ -77,5 +95,59 @@ def book_update_name(request):
     return None
 
 
-def book_delete(request):
-    return None
+def page_jsonize(page):
+    jsoned_page = {
+        'id': page.id,
+        'name': page.name,
+    }
+    return jsoned_page
+
+
+def page_create(request):
+    if request.method == 'POST':
+        try:
+            book_name = request.POST['book_name']
+            page_name = request.POST['page_name']
+            # Get book
+            if book_name == '':
+                book = None
+            else:
+                book = Book.objects.get(name=book_name)
+
+            new_page = Page(name=page_name)
+            new_page.book = book
+            new_page.save()
+
+            return HttpResponse(json.dumps({'status': 0, 'body': page_jsonize(new_page)}))
+        except ValidationError as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
+        except (ValueError, TypeError):
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+
+
+def page_delete(request):
+    if request.method == 'POST':
+        try:
+            book_name = request.POST['book_name']
+            page_name = request.POST['page_name']
+            # Get book
+            if book_name == '':
+                book = None
+            else:
+                book = Book.objects.get(name=book_name)
+
+            existing_page = Page.objects.get(name=page_name, book=book)
+            jsoned_page = page_jsonize(existing_page)
+            existing_page.delete()
+
+            return HttpResponse(json.dumps({'status': 0, 'body': jsoned_page}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
+        except (ValueError, TypeError):
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))

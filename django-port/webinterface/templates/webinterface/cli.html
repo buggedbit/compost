@@ -30,14 +30,23 @@
     <script src="{% static 'webinterface/cli/yash.js' %}"></script>
     <script>
         /**
-         * no book selected => book is ''
          * when book is selected book is set to that book's name
+         * no book selected => book is ''
          * */
-        var Current = {
-            book: '',
-            resetBook: function () {
-                this.book = '';
-            }
+        var Context = {
+            _book: '',
+            _resetBook: function () {
+                this._book = '';
+            },
+            _changeBook: function (book) {
+                if (book === undefined) {
+                    this._book = '';
+                    yaSH.setPrefix('$: ');
+                } else {
+                    this._book = book;
+                    yaSH.setPrefix('$ [' + book + ']:');
+                }
+            },
         };
 
         // colors
@@ -55,12 +64,15 @@
         // cd
         yaSH.addCmd({
             keywords: ["cd"],
-            desc: "select or deselect a book. Usage cd <book name> or cd ..",
+            desc: "select or deselect a book. Usage cd {book name} or cd ..",
             exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: cd {book name} or cd ..');
+                    return;
+                }
                 var book = tokens.splice(1).join(' ');
                 if (book === '..') {
-                    Current.resetBook();
-                    yaSH.setPrefix('$: ');
+                    Context._changeBook();
                 } else {
                     $.ajax({
                         url: "{% url 'restapi:book_exists' %}",
@@ -71,14 +83,13 @@
                         success: function (response) {
                             var jsonedResponse = JSON.parse(response);
                             if (jsonedResponse.status === 0) {
-                                Current.book = book;
-                                yaSH.setPrefix('$[' + book + ']:');
+                                Context._changeBook(book);
                             } else if (jsonedResponse.status === -1) {
                                 yaSH.printErr(jsonedResponse.message, 2000);
                             }
                         },
                         error: function (response) {
-                            yaSH.printErr('Error', 2000);
+                            yaSH.printErr('Server Error', 2000);
                         }
                     });
                 }
@@ -93,7 +104,7 @@
                     url: "{% url 'restapi:ls' %}",
                     method: 'GET',
                     data: {
-                        book_name: Current.book
+                        book_name: Context._book
                     },
                     success: function (response) {
                         var jsonedResponse = JSON.parse(response);
@@ -115,20 +126,169 @@
                         }
                     },
                     error: function (response) {
-                        yaSH.printErr('Error', 2000);
+                        yaSH.printErr('Server Error', 2000);
                     }
                 });
             }
         });
-        // pwd ()
-        // cd <book name> ()
-        // cd .. (deselect book)
+        // pwd
+        yaSH.addCmd({
+            keywords: ["pwd"],
+            desc: "prints current working place",
+            exec: function (tokens) {
+                if (Context._book === '') {
+                    yaSH.println('/schoolbag/', 'lightblue');
+                } else {
+                    yaSH.println('/schoolbag/' + Context._book, 'lightblue');
+                }
+            }
+        });
+        // mkb <book name>
+        yaSH.addCmd({
+            keywords: ["mkb"],
+            desc: "creates new a book. usage mkb {book name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: mkb {book name}');
+                    return;
+                }
+                if (Context._book !== '') {
+                    yaSH.printErr('cannot create book in another book');
+                    yaSH.println('you may want to create a book in schoolbag');
+                    return;
+                }
+                var book = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:book_create' %}",
+                    method: 'POST',
+                    data: {
+                        book_name: book
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // mkp <page name>
+        yaSH.addCmd({
+            keywords: ["mkp"],
+            desc: "creates new a page. usage mkp {page name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: mkp {page name}');
+                    return;
+                }
+                var page = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:page_create' %}",
+                    method: 'POST',
+                    data: {
+                        book_name: Context._book,
+                        page_name: page
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // rmb <book name>
+        yaSH.addCmd({
+            keywords: ["rmb"],
+            desc: "deletes specified book. usage rmb {book name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: rmb {book name}');
+                    return;
+                }
+                var book = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:book_delete' %}",
+                    method: 'POST',
+                    data: {
+                        book_name: book
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // rmp <page name>
+        yaSH.addCmd({
+            keywords: ["rmp"],
+            desc: "deletes specified page in current book or schoolbag. usage rmp {page name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: rmp {page name}');
+                    return;
+                }
+                var page = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:page_delete' %}",
+                    method: 'POST',
+                    data: {
+                        book_name: Context._book,
+                        page_name: page
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+
         // cat <page name>
         // nano <page name>
-        // mkb <book name>
-        // mkc <page name>
-        // rmb <book name>
-        // rmc <page name>
         // mvb
         // mvc
 

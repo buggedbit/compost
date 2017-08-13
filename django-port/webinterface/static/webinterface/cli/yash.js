@@ -132,19 +132,10 @@ var yaSH = {
         this.println(msg, this.Config.color.error);
     },
 
-    _startPreloader: function () {
-        $(this._inputHId).val('...');
-    },
-    _stopPreloader: function () {
-        $(this._inputHId).val('');
-    },
-
     _block: function () {
         $(this._inputHId).prop('readonly', true);
-        this._startPreloader();
     },
     _unBlock: function () {
-        this._stopPreloader();
         $(this._inputHId).prop('readonly', false);
         $(this._inputHId).focus();
     },
@@ -172,10 +163,14 @@ var yaSH = {
                 if (inputKeyword === jthKeywordOfIthCmd) {
                     // Print the command
                     this.println(yaSH._prefix + cmd);
-                    // Pass the all tokens of input to that cmd exec method
-                    ithCmd.exec(tokens);
                     // Empty the cmd line
                     $(this._inputHId).val("");
+                    // Block the control
+                    yaSH._block();
+                    // Pass the all tokens of input to that cmd exec method
+                    ithCmd.exec(tokens);
+                    // Block the control
+                    yaSH._unBlock();
                     return true;
                 }
             }

@@ -53,11 +53,11 @@ class Page(models.Model):
     def is_valid(self):
         is_name_non_empty = self.is_name_non_empty()
         if is_name_non_empty is True:
-            is_unique_in_its_book = self.is_unique_in_its_book()
-            if is_unique_in_its_book is True:
+            is_unique_in_its_domain = self.is_unique_in_its_domain()
+            if is_unique_in_its_domain is True:
                 return True
             else:
-                error_message = is_unique_in_its_book[1]
+                error_message = is_unique_in_its_domain[1]
         else:
             error_message = is_name_non_empty[1]
         return False, error_message
@@ -68,12 +68,17 @@ class Page(models.Model):
 
         return True
 
-    def is_unique_in_its_book(self):
+    def is_unique_in_its_domain(self):
         if self.book is not None:
             siblings = self.book.pages.all()
             for sibling in siblings:
                 if self.name == sibling.name:
-                    return False, 'Can\'t have same name as sibling'
+                    return False, 'Two pages in same book can\'t have same name'
+        else:
+            siblings = Page.objects.filter(book=None)
+            for sibling in siblings:
+                if self.name == sibling.name:
+                    return False, 'Two loose pages can\'t have same name'
 
         return True
 
