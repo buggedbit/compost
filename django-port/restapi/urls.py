@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^page/delete/$', views.page_delete, name='page_delete'),
     # host/restapi/page/read/text/<POST book_name, page_name>
     url(r'^page/read/text/$', views.page_read_text, name='page_read_text'),
+    # host/restapi/page/update/text/<POST book_name, page_name, text>
+    url(r'^page/update/text/$', views.page_update_text, name='page_update_text'),
 
 ]

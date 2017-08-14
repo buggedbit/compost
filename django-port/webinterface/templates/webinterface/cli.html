@@ -30,81 +30,16 @@
             width: 70%;
             box-shadow: none;
         }
-
-        #editor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-            z-index: 101;
-            padding: 50px 20px 50px 20px;
-            font-family: 'Ubuntu Mono', monospace;
-            background-color: #222222;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            display: none;
-        }
-
-        #editor #text {
-            font-size: 20px;
-            font-weight: bold;
-            border: 2px dashed cyan;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            box-shadow: none;
-        }
-
-        #editor #text:focus {
-            outline: none;
-        }
-
-        #editor #book-name {
-            position: absolute;
-            top: 0;
-            right: 0;
-            padding: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            color: cyan;
-        }
-
-        #editor #page-name {
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            color: red;
-        }
-
-        #editor #password-input {
-            position: absolute;
-            width: 50vw;
-            top: 0;
-            left: 25vw;
-            margin: 0;
-            background-color: transparent;
-            color: cyan;
-            font-size: 20px;
-            font-weight: bold;
-            border-left: 2px dashed red;
-            border-right: 2px dashed red;
-            border-top: 2px dashed red;
-            border-bottom: none;
-            box-shadow: none;
-            display: none;
-        }
     </style>
 {% endblock %}
 {% load static %}
 {% block body %}
     <script src="{% static 'webinterface/cli/yash.js' %}"></script>
     <script src="{% static 'webinterface/cli/multikeycallbackmanager.js' %}"></script>
+    <div id="terminal">
+        <div id="log"></div>
+        <span id="prefix">$: </span><input id="cmd" autofocus>
+    </div>
     <script>
         /**
          * when book is selected book is set to that book's name
@@ -364,126 +299,53 @@
                 });
             }
         });
-        // nano <page name>
+        // cat <page name>
         yaSH.addCmd({
-            keywords: ["nano"],
-            desc: "opens page in current book or schoolbag in read mode. usage nano {page name}",
+            keywords: ["cat"],
+            desc: "opens page in current book or schoolbag in read mode. usage cat {page name}",
             exec: function (tokens) {
                 if (tokens.length < 2) {
-                    yaSH.printErr('nano {page name}');
+                    yaSH.printErr('cat {page name}');
                     return;
                 }
                 var page = tokens.splice(1).join(' ');
-                $.ajax({
-                    url: "{% url 'restapi:page_read_text' %}",
-                    method: 'POST',
-                    data: {
-                        book_name: Context._book,
-                        page_name: page
-                    },
-                    success: function (response) {
-                        var jsonedResponse = JSON.parse(response);
-                        if (jsonedResponse.status === 0) {
-                            Editor.open(Context._book, page, jsonedResponse.body);
-                        } else if (jsonedResponse.status === -1) {
-                            yaSH.printErr(jsonedResponse.message);
-                        }
-                    },
-                    error: function (response) {
-                        yaSH.printErr('Server Error');
-                    },
-                    beforeSend: function (xhr, settings) {
-                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                        }
-                    }
-                });
+
             }
         });
+        // nano <page name>
+        yaSH.addCmd({
+            keywords: ["nano"],
+            desc: "opens page in current book or schoolbag in edit mode. usage nano {page name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('nano {nano name}');
+                    return;
+                }
+                var page = tokens.splice(1).join(' ');
+            }
+        });
+
         // mvb
         // mvc
-        // cat <page name>
-
-    </script>
-    <div id="terminal">
-        <div id="log"></div>
-        <span id="prefix">$: </span><input id="cmd" autofocus>
-    </div>
-    <script>
-        var Editor = {
-            _containerDivHId: undefined,
-            _bookNameInputHId: undefined,
-            _pageNameInputHId: undefined,
-            _textareaHId: undefined,
-            _inReadMode: true,
-            _currentBookName: undefined,
-            _currentPageName: undefined,
-            bind: function (containerId, bookNameInputId, pageNameInputId, textareaId) {
-                this._containerDivHId = '#' + containerId;
-                this._bookNameInputHId = '#' + bookNameInputId;
-                this._pageNameInputHId = '#' + pageNameInputId;
-                this._textareaHId = '#' + textareaId;
-            },
-            open: function (book, page, text, inReadMode) {
-                if (book === undefined ||
-                    page === undefined ||
-                    text === undefined)
-                    return;
-
-                inReadMode = inReadMode === undefined ? true : inReadMode;
-                this._currentBookName = book;
-                $(this._bookNameInputHId).html(book);
-                this._currentPageName = page;
-                $(this._pageNameInputHId).html(page);
-                $(this._textareaHId).val(text);
-
-                this._inReadMode = inReadMode;
-                if (this._inReadMode) {
-                    $(this._textareaHId).prop('readonly', true);
-                }
-                else {
-                    $(this._textareaHId).prop('readonly', false);
-                    $(this._textareaHId).focus();
-                }
-
-                $(this._containerDivHId).show();
-            },
-            close: function () {
-                $(this._containerDivHId).hide();
-            }
-        };
-    </script>
-    <div id="editor">
-        <div id="book-name">Book</div>
-        <div id="page-name">Page</div>
-        <textarea id="text"></textarea>
-        <input id="password-input" type="password">
-    </div>
-    <script>
         $(document).ready(function () {
             var tree = [
                 {
                     code: 17,
                     action: [
                         {
-                            code: 76,
-                            action: function (e) {
-                                e.preventDefault();
-                                yaSH.evaluate('clear');
-                            }
-                        },
-                        {
                             code: 72,
+                            // Ctrl + H => help
                             action: function (e) {
                                 e.preventDefault();
                                 yaSH.evaluate('help');
                             }
                         },
                         {
-                            code: 88,
+                            code: 76,
+                            // Ctrl + L => clear
                             action: function (e) {
                                 e.preventDefault();
-                                Editor.close();
+                                yaSH.evaluate('clear');
                             }
                         }
                     ]
@@ -494,8 +356,6 @@
 
             yaSH.bind('cmd', 'log', 'terminal', 'prefix');
             yaSH.initShell();
-
-            Editor.bind('editor', 'book-name', 'page-name', 'text');
         });
     </script>
 {% endblock %}
