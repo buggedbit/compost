@@ -40,3 +40,7 @@ def editor(request):
         return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
     except (ValueError, TypeError):
         return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+
+
+def home(request):
+    return render(request, 'webinterface/home.html')

@@ -4,6 +4,9 @@ from . import views
 app_name = 'webinterface'
 
 urlpatterns = [
+    # host/
+    url(r'^$', views.home, name='home'),
+
     # host/cli/
     url(r'^cli/$', views.cli, name='cli'),
 

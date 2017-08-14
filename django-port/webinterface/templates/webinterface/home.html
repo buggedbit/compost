@@ -1,0 +1,31 @@
+{% extends 'webinterface/base.html' %}
+{% block title %}SchoolBag{% endblock %}
+{% block css %}
+    <style>
+        #container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+        }
+
+        #container #logo {
+            position: absolute;
+            top: 35vh;
+            left: 0;
+            width: 100vw;
+            padding: 20px;
+            color: chartreuse;
+            font-size: 50px;
+            font-weight: bolder;
+            font-family: 'Ubuntu Mono', monospace;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div id="container">
+        <a id="logo" class="center-align grey darken-4 pulse" href="{% url 'webinterface:cli' %}">>_ School Bag</a>
+    </div>
+{% endblock %}
