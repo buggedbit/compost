@@ -309,7 +309,11 @@
                     return;
                 }
                 var page = tokens.splice(1).join(' ');
-
+                window.location.href = '{% url 'webinterface:editor' %}?book_name='
+                    + Context._book
+                    + '&page_name='
+                    + page
+                    + '&mode=read'
             }
         });
         // nano <page name>
@@ -318,10 +322,15 @@
             desc: "opens page in current book or schoolbag in edit mode. usage nano {page name}",
             exec: function (tokens) {
                 if (tokens.length < 2) {
-                    yaSH.printErr('nano {nano name}');
+                    yaSH.printErr('cat {page name}');
                     return;
                 }
                 var page = tokens.splice(1).join(' ');
+                window.location.href = '{% url 'webinterface:editor' %}?book_name='
+                    + Context._book
+                    + '&page_name='
+                    + page
+                    + '&mode=write'
             }
         });
 
