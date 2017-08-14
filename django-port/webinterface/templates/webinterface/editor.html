@@ -92,7 +92,7 @@
                             // Ctrl + Q => close editor
                             action: function (e) {
                                 e.preventDefault();
-                                console.log('close');
+                                window.location.replace('{% url 'webinterface:cli' %}');
                             }
                         },
                         {% if not readonly %}

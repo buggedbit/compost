@@ -17,6 +17,8 @@ urlpatterns = [
     # host/restapi/book/update/name/<POST id, new_name>
     url(r'^book/update/name/$', views.book_update_name, name='book_update_name'),
 
+    # host/restapi/page/exists/<GET book_name, page_name>
+    url(r'^page/exists/$', views.page_exists, name='page_exists'),
     # host/restapi/page/create/<POST book_name, page_name>
     url(r'^page/create/$', views.page_create, name='page_create'),
     # host/restapi/page/delete/<POST book_name, page_name>

@@ -305,14 +305,37 @@
             desc: "opens page in current book or schoolbag in read mode. usage cat {page name}",
             exec: function (tokens) {
                 if (tokens.length < 2) {
-                    yaSH.printErr('cat {page name}');
+                    yaSH.printErr('usage: cat {page name}');
                     return;
                 }
                 var page = tokens.splice(1).join(' ');
-                window.location.href = '{% url 'webinterface:editor' %}?book_name='
-                    + Context._book
-                    + '&page_name='
-                    + page
+                $.ajax({
+                    url: "{% url 'restapi:page_exists' %}",
+                    method: 'POST',
+                    data: {
+                        book_name: Context._book,
+                        page_name: page
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            window.location.replace('{% url 'webinterface:editor' %}?book_name='
+                                + Context._book
+                                + '&page_name='
+                                + page);
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
             }
         });
         // nano <page name>
@@ -321,15 +344,38 @@
             desc: "opens page in current book or schoolbag in edit mode. usage nano {page name}",
             exec: function (tokens) {
                 if (tokens.length < 2) {
-                    yaSH.printErr('cat {page name}');
+                    yaSH.printErr('usage: cat {page name}');
                     return;
                 }
                 var page = tokens.splice(1).join(' ');
-                window.location.href = '{% url 'webinterface:editor' %}?book_name='
-                    + Context._book
-                    + '&page_name='
-                    + page
-                    + '&readonly=0'
+                $.ajax({
+                    url: "{% url 'restapi:page_exists' %}",
+                    method: 'POST',
+                    data: {
+                        book_name: Context._book,
+                        page_name: page
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            window.location.replace('{% url 'webinterface:editor' %}?book_name='
+                                + Context._book
+                                + '&page_name='
+                                + page
+                                + '&readonly=0');
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
             }
         });
 
