@@ -3,6 +3,8 @@ import json
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponse
+from django.utils.datastructures import MultiValueDictKeyError
+
 from paper.models import Book, Page
 
 
@@ -30,7 +32,7 @@ def ls(request):
             return HttpResponse(json.dumps({'status': 0, 'body': answer}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -52,7 +54,7 @@ def book_exists(request):
             return HttpResponse(json.dumps({'status': 0}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Book doesn\'t exist'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -69,7 +71,7 @@ def book_create(request):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Two books cannot have same name'}))
         except ValidationError as e:
             return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -85,7 +87,7 @@ def book_delete(request):
             return HttpResponse(json.dumps({'status': 0, 'body': jsoned_book}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -123,7 +125,7 @@ def page_create(request):
             return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -147,7 +149,7 @@ def page_delete(request):
             return HttpResponse(json.dumps({'status': 0, 'body': jsoned_page}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -169,7 +171,7 @@ def page_read_text(request):
             return HttpResponse(json.dumps({'status': 0, 'body': existing_page.text}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -194,7 +196,7 @@ def page_update_text(request):
             return HttpResponse(json.dumps({'status': 0}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
