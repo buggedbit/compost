@@ -21,5 +21,7 @@ urlpatterns = [
     url(r'^page/create/$', views.page_create, name='page_create'),
     # host/restapi/page/delete/<POST book_name, page_name>
     url(r'^page/delete/$', views.page_delete, name='page_delete'),
+    # host/restapi/page/read/text/<POST book_name, page_name>
+    url(r'^page/read/text/$', views.page_read_text, name='page_read_text'),
 
 ]

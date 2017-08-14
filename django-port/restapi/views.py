@@ -151,3 +151,25 @@ def page_delete(request):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+
+
+def page_read_text(request):
+    if request.method == 'POST':
+        try:
+            book_name = request.POST['book_name']
+            page_name = request.POST['page_name']
+            # Get book
+            if book_name == '':
+                book = None
+            else:
+                book = Book.objects.get(name=book_name)
+
+            existing_page = Page.objects.get(name=page_name, book=book)
+
+            return HttpResponse(json.dumps({'status': 0, 'body': existing_page.text}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
+        except (ValueError, TypeError):
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))

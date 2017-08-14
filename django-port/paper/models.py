@@ -41,7 +41,7 @@ class Page(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='pages', blank=True, null=True)
     # Data fields
     name = models.TextField()  # unique in its book
-    content = models.TextField()
+    text = models.TextField()
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         is_valid = self.is_valid()
@@ -71,14 +71,28 @@ class Page(models.Model):
     def is_unique_in_its_domain(self):
         if self.book is not None:
             siblings = self.book.pages.all()
-            for sibling in siblings:
-                if self.name == sibling.name:
-                    return False, 'Two pages in same book can\'t have same name'
+            # If new one
+            if self.id is None:
+                for sibling in siblings:
+                    if self.name == sibling.name:
+                        return False, 'Two pages in same book can\'t have same name'
+            # If existing one
+            else:
+                for sibling in siblings:
+                    if self.name == sibling.name and sibling.id != self.id:
+                        return False, 'Two pages in same book can\'t have same name'
         else:
             siblings = Page.objects.filter(book=None)
-            for sibling in siblings:
-                if self.name == sibling.name:
-                    return False, 'Two loose pages can\'t have same name'
+            # If new one
+            if self.id is None:
+                for sibling in siblings:
+                    if self.name == sibling.name:
+                        return False, 'Two loose pages can\'t have same name'
+            # If existing one
+            else:
+                for sibling in siblings:
+                    if self.name == sibling.name and sibling.id != self.id:
+                        return False, 'Two loose pages can\'t have same name'
 
         return True
 
