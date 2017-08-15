@@ -18,16 +18,22 @@ class Book(models.Model):
             raise ValidationError(is_valid[1])
 
     def is_valid(self):
-        is_name_non_empty = self.is_name_non_empty()
-        if is_name_non_empty is True:
+        is_name_valid = self.is_name_valid()
+        if is_name_valid is True:
             return True
         else:
-            error_message = is_name_non_empty[1]
+            error_message = is_name_valid[1]
         return False, error_message
 
-    def is_name_non_empty(self):
+    def is_name_valid(self):
         if self.name == '':
             return False, 'Can\'t have empty name'
+        if self.name == '.':
+            return False, 'Can\'t have name as .'
+        if self.name == '..':
+            return False, 'Can\'t have name as ..'
+        if len(self.name.split()) > 1:
+            return False, 'Can\'t have whitespaces or tabs or newlines in name'
 
         return True
 
@@ -51,20 +57,26 @@ class Page(models.Model):
             raise ValidationError(is_valid[1])
 
     def is_valid(self):
-        is_name_non_empty = self.is_name_non_empty()
-        if is_name_non_empty is True:
+        is_name_valid = self.is_name_valid()
+        if is_name_valid is True:
             is_unique_in_its_domain = self.is_unique_in_its_domain()
             if is_unique_in_its_domain is True:
                 return True
             else:
                 error_message = is_unique_in_its_domain[1]
         else:
-            error_message = is_name_non_empty[1]
+            error_message = is_name_valid[1]
         return False, error_message
 
-    def is_name_non_empty(self):
+    def is_name_valid(self):
         if self.name == '':
             return False, 'Can\'t have empty name'
+        if self.name == '.':
+            return False, 'Can\'t have name as .'
+        if self.name == '..':
+            return False, 'Can\'t have name as ..'
+        if len(self.name.split()) > 1:
+            return False, 'Can\'t have whitespaces or tabs or newlines in name'
 
         return True
 
