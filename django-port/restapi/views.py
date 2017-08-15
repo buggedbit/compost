@@ -7,6 +7,8 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from paper.models import Book, Page
 
+PASSWORD = 'airturtle'
+
 
 def ls(request):
     if request.method == 'GET':
@@ -205,6 +207,11 @@ def page_update_text(request):
             book_name = request.POST['book_name']
             page_name = request.POST['page_name']
             text = request.POST['text']
+            password = request.POST['password']
+            # Password check
+            if password != PASSWORD:
+                return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid Password'}))
+
             # Get book
             if book_name == '':
                 book = None

@@ -78,7 +78,55 @@
         <div id="book-name">{{ page.book.name }}</div>
         <div id="page-name">{{ page.name }}</div>
         <textarea id="text" {% if readonly %}readonly{% endif %} autofocus>{{ page.text }}</textarea>
-        <input id="password-input" type="password">
+        {% if not readonly %}
+            <input id="password-input"
+                   type="password"
+                   onkeydown="
+                   function ajaxSave(bookName, pageName, text, password) {
+                        $.ajax({
+                            url: '{% url 'restapi:page_update_text' %}',
+                            method: 'POST',
+                            data: {
+                                book_name: bookName,
+                                page_name: pageName,
+                                text: text,
+                                password: password
+                            },
+                            success: function (response) {
+                                var jsonedResponse = JSON.parse(response);
+                                if (jsonedResponse.status === 0) {
+                                    Materialize.toast('Saved', 2000);
+                                    var passwordInput = $('#password-input');
+                                    $(passwordInput).hide();
+                                    $(passwordInput).val('');
+                                    $('#text').focus();
+                                } else if (jsonedResponse.status === -1) {
+                                    Materialize.toast(jsonedResponse.message, 2000);
+                                }
+                            },
+                            error: function (response) {
+                                Materialize.toast('Server Error', 2000);
+                            },
+                            beforeSend: function (xhr, settings) {
+                                if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                                    xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
+                                }
+                            }
+                        });
+                   }
+                   function submitOnEnter(e) {
+                       switch(e.keyCode || e.which) {
+                           case 13:
+                               var passwordInput = $('#password-input');
+                               var password = $(passwordInput).val();
+                               ajaxSave($('#book-name').html(), $('#page-name').html(), $('#text').val(), password);
+                               break;
+                           default:
+                               break;
+                       }
+                   }
+                   submitOnEnter(event);">
+        {% endif %}
         <div>Exit: Ctrl + q | {% if not readonly %}Save: Ctrl + s{% endif %}</div>
     </div>
     <script>
@@ -101,31 +149,7 @@
                                 // Ctrl + S => save editor content
                                 action: function (e) {
                                     e.preventDefault();
-                                    $.ajax({
-                                        url: "{% url 'restapi:page_update_text' %}",
-                                        method: 'POST',
-                                        data: {
-                                            book_name: $('#book-name').html(),
-                                            page_name: $('#page-name').html(),
-                                            text: $('#text').val()
-                                        },
-                                        success: function (response) {
-                                            var jsonedResponse = JSON.parse(response);
-                                            if (jsonedResponse.status === 0) {
-                                                Materialize.toast('Saved', 2000);
-                                            } else if (jsonedResponse.status === -1) {
-                                                Materialize.toast(jsonedResponse.message, 2000);
-                                            }
-                                        },
-                                        error: function (response) {
-                                            Materialize.toast('Server Error', 2000);
-                                        },
-                                        beforeSend: function (xhr, settings) {
-                                            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
-                                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                                            }
-                                        }
-                                    });
+                                    $('#password-input').show().focus();
                                 }
                             }
                         {% endif %}
