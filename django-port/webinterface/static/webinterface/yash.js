@@ -46,7 +46,26 @@ var yaSH = {
                 case 9:
                     event.preventDefault();
                     cmd = $(yaSH._inputHId).val();
-                    yaSH.autoCompleteKeyword(cmd);
+                    var autoComplete = yaSH.autoComplete(cmd, yaSH._cmdList);
+                    // If only one command auto complete
+                    if (autoComplete.matches.length === 1) {
+                        $(yaSH._inputHId).val(autoComplete.matches[0] + ' ');
+                    }
+                    // If more display them on terminal
+                    else if (autoComplete.matches.length > 1) {
+                        // Cmd typed is best match
+                        if (autoComplete.best.length - cmd.length === 0) {
+                            // Show all available options
+                            yaSH.println(yaSH._prefix + autoComplete.best);
+                            var availableCommands = autoComplete.matches.join("\n");
+                            yaSH.println(availableCommands, 'skyblue');
+                        }
+                        // Else
+                        else {
+                            // Auto complete to the best match
+                            $(yaSH._inputHId).val(autoComplete.best);
+                        }
+                    }
                     break;
                 // Up Arrow
                 case 38:
@@ -188,18 +207,16 @@ var yaSH = {
     },
     /**
      * Tries to auto complete given a cmd and available cmds
-     * Cannot auto complete args of cmd
-     * no  match found          -> Nothing happens
-     * one match found          -> Auto completes the command
-     * multiple matches found   -> Displays all matching cmds
+     * no  match found  -> returns {best: '', matches: []}
+     * matches found    -> returns {best: <best match>, matches: <array of matches>}
      * */
-    autoCompleteKeyword: function (cmd) {
+    autoComplete: function (cmd, availableCmds) {
         var spacedSepTokens = cmd.trim().replace(/ +/g, ' ');
         var regex = new RegExp('^' + spacedSepTokens, 'i');
         var matches = [];
         // Get all available cmds matching regex
-        for (var i = 0; i < yaSH._cmdList.length; ++i) {
-            var ithCmd = yaSH._cmdList[i];
+        for (var i = 0; i < availableCmds.length; ++i) {
+            var ithCmd = availableCmds[i];
             for (var j = 0; j < ithCmd.keywords.length; ++j) {
                 var jthKeywordOfIthCmd = ithCmd.keywords[j];
                 // If the regex matches
@@ -213,11 +230,13 @@ var yaSH = {
         /**
          * Returns the longest matching prefix among given param array
          * */
-        var getBestAutoComplete = function (matches) {
+        var getLongestCommonPrefix = function (matches) {
             // Finds best auto complete
             var bestAutoComplete = '';
             if (matches.length === 0) {
                 return bestAutoComplete;
+            } else if (matches.length === 1) {
+                return matches[0];
             }
 
             var pos = 0;
@@ -239,22 +258,8 @@ var yaSH = {
             }
         };
 
-        // If only one command auto complete
-        if (matches.length === 1) {
-            $(yaSH._inputHId).val(matches[0] + " ");
-        }
-        // If more display them on terminal
-        else if (matches.length > 1) {
-            var bestAutoComplete = getBestAutoComplete(matches);
-            if (bestAutoComplete.length - cmd.length === 0) {
-                // Show all options
-                this.println(this._prefix + bestAutoComplete);
-                var availableCommands = matches.join("\n");
-                this.println(availableCommands, 'skyblue');
-            } else {
-                $(yaSH._inputHId).val(bestAutoComplete);
-            }
-        }
+        var bestAutoComplete = getLongestCommonPrefix(matches);
+        return {best: bestAutoComplete, matches: matches};
     },
     HistoryManager: {
         _history: [],
