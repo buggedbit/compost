@@ -89,6 +89,7 @@
                 } else {
                     $.ajax({
                         url: "{% url 'restapi:book_exists' %}",
+                        async: false,
                         method: 'GET',
                         data: {
                             book_name: book
@@ -115,6 +116,7 @@
             exec: function (tokens) {
                 $.ajax({
                     url: "{% url 'restapi:ls' %}",
+                    async: false,
                     method: 'GET',
                     data: {
                         book_name: Context._book
@@ -173,6 +175,7 @@
                 var book = tokens.splice(1).join(' ');
                 $.ajax({
                     url: "{% url 'restapi:book_create' %}",
+                    async: false,
                     method: 'POST',
                     data: {
                         book_name: book
@@ -207,6 +210,7 @@
                 var page = tokens.splice(1).join(' ');
                 $.ajax({
                     url: "{% url 'restapi:page_create' %}",
+                    async: false,
                     method: 'POST',
                     data: {
                         book_name: Context._book,
@@ -242,6 +246,7 @@
                 var book = tokens.splice(1).join(' ');
                 $.ajax({
                     url: "{% url 'restapi:book_delete' %}",
+                    async: false,
                     method: 'POST',
                     data: {
                         book_name: book
@@ -276,6 +281,7 @@
                 var page = tokens.splice(1).join(' ');
                 $.ajax({
                     url: "{% url 'restapi:page_delete' %}",
+                    async: false,
                     method: 'POST',
                     data: {
                         book_name: Context._book,
@@ -311,6 +317,7 @@
                 var page = tokens.splice(1).join(' ');
                 $.ajax({
                     url: "{% url 'restapi:page_exists' %}",
+                    async: false,
                     method: 'POST',
                     data: {
                         book_name: Context._book,
@@ -350,6 +357,7 @@
                 var page = tokens.splice(1).join(' ');
                 $.ajax({
                     url: "{% url 'restapi:page_exists' %}",
+                    async: false,
                     method: 'POST',
                     data: {
                         book_name: Context._book,

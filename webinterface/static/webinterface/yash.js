@@ -158,10 +158,10 @@ var yaSH = {
     },
 
     _block: function () {
-        $(this._inputHId).prop('readonly', true);
+        $(this._inputHId).prop('readonly', true).hide();
     },
     _unBlock: function () {
-        $(this._inputHId).prop('readonly', false);
+        $(this._inputHId).prop('readonly', false).show();
         $(this._inputHId).focus();
     },
 
@@ -193,7 +193,7 @@ var yaSH = {
                     yaSH._block();
                     // Pass the all tokens of input to that cmd exec method
                     ithCmd.exec(tokens);
-                    // Block the control
+                    // unBlock the control
                     yaSH._unBlock();
                     return true;
                 }
