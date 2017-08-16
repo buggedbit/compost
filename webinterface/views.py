@@ -38,7 +38,7 @@ def editor(request):
         return render(request, 'webinterface/editor.html', {'page': existing_page, 'readonly': readonly})
     except ObjectDoesNotExist:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
-    except (ValueError, TypeError):
+    except (ValueError, TypeError, MultiValueDictKeyError):
         return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
 
 
