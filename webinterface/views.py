@@ -4,11 +4,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from paper.models import Book, Page
 
 
+@ensure_csrf_cookie
 def cli(request):
+    print get_token(request)
     return render(request, 'webinterface/cli.html')
 
 
