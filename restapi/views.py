@@ -96,7 +96,24 @@ def book_delete(request):
 
 
 def book_update_name(request):
-    return None
+    if request.method == 'POST':
+        try:
+            old_name = request.POST['old_book_name']
+            new_name = request.POST['new_book_name']
+            existing_book = Book.objects.get(name=old_name)
+            existing_book.name = new_name
+            existing_book.save()
+            return HttpResponse(json.dumps({'status': 0, 'body': book_jsonize(existing_book)}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Book doesn\'t exist'}))
+        except IntegrityError:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Two books cannot have same name'}))
+        except ValidationError as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
+        except (ValueError, TypeError, MultiValueDictKeyError):
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
 
 
 def page_jsonize(page):

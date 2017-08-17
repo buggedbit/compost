@@ -13,8 +13,7 @@ urlpatterns = [
     url(r'^book/create/$', views.book_create, name='book_create'),
     # host/restapi/book/delete/<POST book_name>
     url(r'^book/delete/$', views.book_delete, name='book_delete'),
-
-    # host/restapi/book/update/name/<POST id, new_name>
+    # host/restapi/book/update/name/<POST old_book_name, new_book_name>
     url(r'^book/update/name/$', views.book_update_name, name='book_update_name'),
 
     # host/restapi/page/exists/<GET book_name, page_name>

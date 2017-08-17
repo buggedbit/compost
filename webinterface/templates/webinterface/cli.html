@@ -386,8 +386,44 @@
                 });
             }
         });
-
         // mvb
+        yaSH.addCmd({
+            keywords: ["mvb"],
+            desc: "renames specified book. usage mvb {book name} {new book name}",
+            exec: function (tokens) {
+                if (tokens.length < 3) {
+                    yaSH.printErr('usage: mvb {book name} {new book name}');
+                    return;
+                }
+                var old_book_name = tokens[1];
+                var new_book_name = tokens.splice(2).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:book_update_name' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        old_book_name: old_book_name,
+                        new_book_name: new_book_name
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+
         // mvc
         $(document).ready(function () {
             var tree = [
