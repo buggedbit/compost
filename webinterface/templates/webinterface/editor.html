@@ -115,11 +115,18 @@
                         });
                    }
                    function submitOnEnter(e) {
+                       var passwordInput = $('#password-input');
+                       var bookName = $('#book-name');
+                       var pageName = $('#page-name');
+                       var text = $('#text');
                        switch(e.keyCode || e.which) {
                            case 13:
-                               var passwordInput = $('#password-input');
                                var password = $(passwordInput).val();
-                               ajaxSave($('#book-name').html(), $('#page-name').html(), $('#text').val(), password);
+                               ajaxSave($(bookName).html(), $(pageName).html(), $(text).val(), password);
+                               break;
+                           case 27:
+                               $(passwordInput).val('').hide();
+                               $(text).focus();
                                break;
                            default:
                                break;
