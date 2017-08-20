@@ -246,3 +246,39 @@ def page_update_text(request):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+
+
+def page_move(request):
+    if request.method == 'POST':
+        try:
+            prev_book_name = request.POST['prev_book_name']
+            prev_page_name = request.POST['prev_page_name']
+
+            pres_book_name = request.POST['pres_book_name']
+            pres_page_name = request.POST['pres_page_name']
+
+            # Get prev book
+            if prev_book_name == '':
+                prev_book = None
+            else:
+                prev_book = Book.objects.get(name=prev_book_name)
+
+            # Get book to which page is moved (pres book)
+            if pres_book_name == '':
+                pres_book = None
+            else:
+                pres_book = Book.objects.get(name=pres_book_name)
+
+            prev_page = Page.objects.get(name=prev_page_name, book=prev_book)
+            prev_page.name = pres_page_name
+            prev_page.book = pres_book
+            prev_page.save()
+
+            return HttpResponse(json.dumps({'status': 0, 'body': page_jsonize(prev_page)}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
+        except (ValueError, TypeError, MultiValueDictKeyError):
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+

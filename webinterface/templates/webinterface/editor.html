@@ -1,5 +1,5 @@
 {% extends 'webinterface/base.html' %}
-{% block title %}Editor{% endblock %}
+{% block title %}{{ page.name }} {% if page.book %} | {{ page.book.name }}{% endif %}{% endblock %}
 {% block css %}
     <style>
         #editor {

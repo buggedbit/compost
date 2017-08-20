@@ -32,6 +32,8 @@ class Book(models.Model):
             return False, 'Can\'t have name as .'
         if self.name == '..':
             return False, 'Can\'t have name as ..'
+        if '/' in self.name:
+            return False, 'Name can\'t have / in it'
         if len(self.name.split()) > 1:
             return False, 'Can\'t have whitespaces or tabs or newlines in name'
 
@@ -75,6 +77,8 @@ class Page(models.Model):
             return False, 'Can\'t have name as .'
         if self.name == '..':
             return False, 'Can\'t have name as ..'
+        if '/' in self.name:
+            return False, 'Name can\'t have / in it'
         if len(self.name.split()) > 1:
             return False, 'Can\'t have whitespaces or tabs or newlines in name'
 

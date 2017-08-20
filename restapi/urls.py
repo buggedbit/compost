@@ -26,5 +26,7 @@ urlpatterns = [
     url(r'^page/read/text/$', views.page_read_text, name='page_read_text'),
     # host/restapi/page/update/text/<POST book_name, page_name, text>
     url(r'^page/update/text/$', views.page_update_text, name='page_update_text'),
+    # host/restapi/page/move/ <POST old_page_name, old_book_name, new_page_name, new_book_name>
+    url(r'^page/move/$', views.page_move, name='page_move'),
 
 ]

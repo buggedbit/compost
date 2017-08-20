@@ -423,8 +423,72 @@
                 });
             }
         });
+        // mvp
+        yaSH.addCmd({
+            keywords: ["mvp"],
+            desc: "moves specified page. usage mvp {book name}/{page name} {book name}/{page name}",
+            exec: function (tokens) {
+                if (tokens.length !== 3) {
+                    yaSH.printErr('usage: mvp {book name}/{page name} {book name}/{page name}');
+                    return;
+                }
+                var prev_book_name;
+                var prev_page_name;
+                var pres_book_name;
+                var pres_page_name;
+                var book_page;
 
-        // mvc
+                var prev = tokens[1];
+                var prev_fow_slash_index = prev.indexOf('/');
+                if (prev_fow_slash_index === -1) {
+                    prev_page_name = prev;
+                    prev_book_name = Context._book;
+                } else {
+                    book_page = prev.split('/');
+                    prev_book_name = book_page[0] === '..' ? '' : book_page[0];
+                    prev_page_name = book_page[1];
+                }
+
+                var pres = tokens[2];
+                var pres_fow_slash_index = pres.indexOf('/');
+                if (pres_fow_slash_index === -1) {
+                    pres_page_name = pres;
+                    pres_book_name = Context._book;
+                } else {
+                    book_page = pres.split('/');
+                    pres_book_name = book_page[0] === '..' ? '' : book_page[0];
+                    pres_page_name = book_page[1];
+                }
+
+                $.ajax({
+                    url: "{% url 'restapi:page_move' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        prev_book_name: prev_book_name,
+                        prev_page_name: prev_page_name,
+                        pres_book_name: pres_book_name,
+                        pres_page_name: pres_page_name
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+
         $(document).ready(function () {
             var tree = [
                 {
