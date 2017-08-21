@@ -69,6 +69,16 @@
             box-shadow: none;
             display: none;
         }
+
+        ::-moz-selection { /* Code for Firefox */
+            color: black;
+            background: yellow;
+        }
+
+        ::selection {
+            color: black;
+            background: yellow;
+        }
     </style>
 {% endblock %}
 {% load static %}

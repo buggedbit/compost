@@ -30,6 +30,16 @@
             width: 70%;
             box-shadow: none;
         }
+
+        ::-moz-selection { /* Code for Firefox */
+            color: black;
+            background: #64dd17;
+        }
+
+        ::selection {
+            color: black;
+            background: #64dd17;
+        }
     </style>
 {% endblock %}
 {% load static %}
