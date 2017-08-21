@@ -1,115 +1,92 @@
-//package org.yashasvi.calender4j.core.classes;
-//
-//public class DateTime {
-//    /**
-//     * Separator for fields in simple representation
-//     */
-//    private static final String SIMPLE_REPR_SEPARATOR = " ";
-//
-//    public Date $DATE;  // date object
-//    public Time $TIME;  // time object
-//    // time is internally implemented in 24hr
-//
-//
-//    // constructors
-//    public DateTime() {
-//        unsetDateTime();
-//    }
-//
-//    public DateTime(boolean setToPresent) {
-//        if (setToPresent) {
-//            this.$DATE = new Date(true);
-//            this.$TIME = new Time(true);
-//        } else {
-//            unsetDateTime();
-//        }
-//    }
-//
-//    public DateTime(Date date) {
-//        if (date.isValid()) {
-//            this.$DATE = new Date(date);
-//            this.$TIME = new Time();
-//            this.$TIME.toStartOfDay();
-//        } else {
-//            unsetDateTime();
-//        }
-//    }
-//
-//    public DateTime(Date date, Time time) {
-//        if (date.isValid() && time.isValid()) {
-//            this.$DATE = new Date(date);
-//            this.$TIME = new Time(time);
-//        } else {
-//            unsetDateTime();
-//        }
-//    }
-//
-//    public DateTime(DateTime reference) {
-//        if (reference.isValid()) {
-//            this.$DATE = new Date(reference.$DATE);
-//            this.$TIME = new Time(reference.$TIME);
-//        } else {
-//            unsetDateTime();
-//        }
-//    }
-//
-//    public void unsetDateTime() {
-//        this.$DATE = new Date();
-//        this.$TIME = new Time();
-//    }
-//
-//    // identifiers
-//    private boolean isValid() {
-//        return this.$DATE.isValid() && this.$TIME.isValid();
-//    }
-//
-//    // comparisons
-//    // These functions compare without validity check
-//    public static boolean isFuture(DateTime A, DateTime B) {
-//        // returns A>B
-//        if (Date.isFuture(A.$DATE, B.$DATE)) return true;
-//        else if (Date.equals(A.$DATE, B.$DATE)) return Time.isFuture(A.$TIME, B.$TIME);
-//        return false;
-//    }
-//
-//    public static boolean isSame(DateTime A, DateTime B) {
-//        // returns A==B
-//        return Date.equals(A.$DATE, B.$DATE) && Time.isSame(A.$TIME, B.$TIME);
-//    }
-//
-//    public static boolean isPast(DateTime A, DateTime B) {
-//        // returns boolean A<B
-//        return DateTime.isFuture(B, A);
-//    }
-//
-//    public boolean greaterThan(DateTime B) {
-//        // returns this>B
-//        return DateTime.isFuture(this, B);
-//    }
-//
-//    public boolean lessThan(DateTime B) {
-//        // returns this<B
-//        return DateTime.isPast(this, B);
-//    }
-//
-//    public boolean equalTo(DateTime B) {
-//        // returns this==B
-//        return DateTime.isSame(this, B);
-//    }
-//
-//    public boolean isFutureOrEqualTo(DateTime B) {
-//        return DateTime.isSame(this, B) || DateTime.isFuture(this, B);
-//    }
-//
-//    public boolean isPastOrEqualTo(DateTime B) {
-//        return DateTime.isSame(this, B) || DateTime.isPast(this, B);
-//    }
-//    //
-//
-//    // difference
+package org.yashasvi.calender4j.core.classes;
+
+import lombok.NonNull;
+import org.yashasvi.calender4j.core.exceptions.InvalidDateException;
+import org.yashasvi.calender4j.core.exceptions.InvalidTimeException;
+
+import java.util.Calendar;
+
+public class DateTime {
+    private Date date;
+    private Time time;
+
+    public static DateTime now() {
+        Calendar currentTime = Calendar.getInstance();
+        DateTime dateTime = new DateTime();
+        dateTime.date = Date.now();
+        dateTime.time = Time.now();
+        return dateTime;
+    }
+
+    public static DateTime of(final int year,
+                              final int month,
+                              final int day,
+                              final int hour,
+                              final int minute,
+                              final int second,
+                              final int microsecond) throws InvalidDateException, InvalidTimeException {
+        DateTime dateTime = new DateTime();
+        dateTime.date = Date.of(year, month, day);
+        dateTime.time = Time.of(hour, minute, second, microsecond);
+
+        return dateTime;
+    }
+
+    public DateTime(@NonNull final DateTime b) {
+        this(b.date, b.time);
+    }
+
+    public DateTime(@NonNull final Date date, @NonNull final Time time) {
+        this.date = new Date(date);
+        this.time = new Time(time);
+    }
+
+    public DateTime(@NonNull final Date date) {
+        this.date = new Date(date);
+        this.time = Time.now();
+    }
+
+    public DateTime(@NonNull final Time time) {
+        this.date = Date.now();
+        this.time = new Time(time);
+    }
+
+    private DateTime() {
+    }
+
+    private boolean isValid() {
+        return this.date.isValid() && this.time.isValid();
+    }
+
+
+    public boolean greaterThan(DateTime B) {
+        if (this.date.greaterThan(B.date))
+            return true;
+        else if (this.date.equalTo(B.date))
+            return this.time.greaterThan(B.time);
+        return false;
+    }
+
+    public boolean equalTo(DateTime B) {
+        return this.date.equalTo(B.date) && this.time.equalTo(B.time);
+    }
+
+    public boolean lessThan(DateTime B) {
+        return B.greaterThan(this);
+    }
+
+    public boolean greaterThanOrEqualTo(DateTime B) {
+        return this.greaterThan(B) || this.equalTo(B);
+    }
+
+    public boolean lessThanOrEqualTo(DateTime B) {
+        return this.lessThan(B) || this.equalTo(B);
+    }
+
+    // difference
 //    // return A - B in org.yashasvi.calender4j.core.classes.Duration with sign
 //    public static Duration dateTimeDifferenceSecondToFirst(DateTime A, DateTime B) {
-//        return new Duration(Date.difference(A.$DATE, B.$DATE), Time.timeDifferenceSecondToFirst(A.$TIME, B.$TIME));
+//        return new Duration(Date.difference(A.date, B.date), Time.timeDifferenceSecondToFirst(A.time, B.time));
 //    }
 //
 //    public Duration dateTimeDifferenceFrom(DateTime B) {
@@ -119,20 +96,18 @@
 //    public Duration dateTimeDifferenceTo(DateTime A) {
 //        return DateTime.dateTimeDifferenceSecondToFirst(A, this);
 //    }
-//    //
 //
 //    // modifiers
-//
 //    public void toPresent() {
-//        this.$DATE.toPresent();
-//        this.$TIME.toPresent();
+//        this.date.toPresent();
+//        this.time.toPresent();
 //    }
 //
 //    public void toThis(DateTime dateTime) {
 //        if (!dateTime.isValid()) unsetDateTime();
 //        else {
-//            this.$DATE.toThis(dateTime.$DATE);
-//            this.$TIME.toThis(dateTime.$TIME);
+//            this.date.toThis(dateTime.date);
+//            this.time.toThis(dateTime.time);
 //        }
 //    }
 //
@@ -146,11 +121,11 @@
 //    public boolean addDaysSeconds(long days, long seconds) {
 //        if (!this.isValid()) return false;
 //
-//        long days_due_to_seconds = this.$TIME.addSeconds(seconds);
-//        boolean returnValue = this.$DATE.addDays(days + days_due_to_seconds);
+//        long days_due_to_seconds = this.time.addSeconds(seconds);
+//        boolean returnValue = this.date.addDays(days + days_due_to_seconds);
 //
 //        if (!returnValue)
-//            this.$TIME.addSeconds(-seconds);   // this is for the corner case where change in time reduces date below
+//            this.time.addSeconds(-seconds);   // this is for the corner case where change in time reduces date below
 //        // 01 01 0001
 //        // this preserves the INVARIANT mentioned above in /***/ comment
 //        return returnValue;
@@ -172,45 +147,10 @@
 //        else return A;
 //    }
 //    //
-//
-//
-////    public static void main(String[] args){
-////    }
-//
-//
-//}
-//
-//
-////public class org.yashasvi.calender4j.core.classes.DateTime {
-//
-////    public org.yashasvi.calender4j.core.classes.DateTime(int YEAR, int MONTH, int DAY, int HOUR, int MINUTE) {
-////        this.YEAR = YEAR;
-////        this.MONTH = MONTH;
-////        this.DAY = DAY;
-////        this.HOUR = HOUR;
-////        this.MINUTE = MINUTE;
-////    }
-//
-////    // constructors ..................................................................
-//
-////    public org.yashasvi.calender4j.core.classes.Time getTime() {
-////        org.yashasvi.calender4j.core.classes.Time time = new org.yashasvi.calender4j.core.classes.Time(this);
-////        return time;
-////    }
-////
-////    public org.yashasvi.calender4j.core.classes.Date getDateString() {
-////        org.yashasvi.calender4j.core.classes.Date date = new org.yashasvi.calender4j.core.classes.Date(this);
-////        return date;
-////    }
-////
-////    public TimeInput getTimeInput() {
-////        TimeInput time = new TimeInput(this);
-////        return time;
-////    }
-////
-////    public DateInput getDateInput() {
-////        DateInput date = new DateInput(this);
-////        return date;
-////    }
-////
-////    // Getters and Setters ....................................................................
+
+
+//    public static void main(String[] args){
+//    }
+
+
+}

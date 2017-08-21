@@ -1,6 +1,7 @@
 package org.yashasvi.calender4j.core.classes;
 
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 import org.yashasvi.calender4j.core.exceptions.InvalidTimeException;
 
@@ -40,7 +41,7 @@ public class Time {
         return time;
     }
 
-    public Time(Time b) {
+    public Time(@NonNull final Time b) {
         this.hour = b.hour;
         this.minute = b.minute;
         this.second = b.second;
@@ -51,7 +52,7 @@ public class Time {
     }
 
     // 00:00:00.0 - 23:59:59.99999 are valid
-    private boolean isValid() {
+    boolean isValid() {
         if (this.hour < 0 || this.hour > 23) return false;
         if (this.minute < 0 || this.minute > 59) return false;
         if (this.second < 0 || this.second > 59) return false;
@@ -59,7 +60,7 @@ public class Time {
         return true;
     }
 
-    public boolean greaterThan(Time B) {
+    public boolean greaterThan(@NonNull final Time B) {
         if (this.hour > B.hour) return true;
         else if (this.hour < B.hour) return false;
         if (this.minute > B.minute) return true;
@@ -71,16 +72,16 @@ public class Time {
         return false;
     }
 
-    public boolean equalTo(Time B) {
+    public boolean equalTo(@NonNull final Time B) {
         return this.second == B.second && this.minute == B.minute && this.hour == B.hour && this.microsecond == B.microsecond;
     }
 
-    public boolean isPastTo(Time B) {
+    public boolean isPastTo(@NonNull final Time B) {
         return B.greaterThan(this);
     }
 
     // return A - B in microseconds with sign
-    public long minus(Time B) {
+    public long minus(@NonNull final Time B) {
         return (this.hour - B.hour) * Constants.MICROSECONDS_IN_HOUR
                 + (this.minute - B.minute) * Constants.MICROSECONDS_IN_MINUTE
                 + (this.second - B.second) * Constants.MICROSECONDS_IN_SECOND
@@ -89,7 +90,7 @@ public class Time {
 
     // adds seconds to this time day circularly
     // returns # day changes occurred, NOT # overflows
-    private long add(long seconds) {
+    private long add(final long seconds) {
         if (seconds < 0)
             return 0;
 
@@ -130,8 +131,7 @@ public class Time {
 
     // subtracts seconds to this time day circularly
     // returns # day changes occurred, NOT # overflows
-    private long subtract(long seconds) {
-        seconds = -seconds;
+    private long subtract(final long seconds) {
         if (seconds < 0)
             return 0;
 
@@ -149,13 +149,13 @@ public class Time {
 
     // adds algebraic seconds to this time circularly
     // returns # day changes occurred, NOT # overflows
-    public long addSeconds(long seconds) {
+    public long addSeconds(final long seconds) {
         if (seconds == 0)
             return 0;
         else if (seconds > 0)
             return this.add(seconds);
         else
-            return this.subtract(seconds);
+            return this.subtract(-seconds);
     }
 }
 

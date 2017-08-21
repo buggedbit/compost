@@ -1,6 +1,7 @@
 package org.yashasvi.calender4j.core.classes;
 
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 import org.yashasvi.calender4j.core.exceptions.InvalidDateException;
 
@@ -67,7 +68,7 @@ public class Date {
         return date;
     }
 
-    public Date(final Date b) {
+    public Date(@NonNull final Date b) {
         this.year = b.year;
         this.month = b.month;
         this.day = b.day;
@@ -88,7 +89,7 @@ public class Date {
     /**
      * returns # days from date
      */
-    public long minus(final Date date) {
+    public long minus(@NonNull final Date date) {
         StdForm stdFormA = this.getStdForm();
         StdForm stdFormB = date.getStdForm();
         return (stdFormA.stdYear - stdFormB.stdYear) * Constants.DAYS_IN_STD_YEAR
@@ -102,7 +103,7 @@ public class Date {
         return this.year % 400 == 0 || (this.year % 100 != 0 && this.year % 4 == 0);
     }
 
-    public boolean greaterThan(final Date B) {
+    public boolean greaterThan(@NonNull final Date B) {
         if (this.year > B.year)
             return true;
         else if (this.year < B.year)
@@ -119,11 +120,11 @@ public class Date {
         return false;
     }
 
-    public boolean equalTo(final Date B) {
+    public boolean equalTo(@NonNull final Date B) {
         return this.day == B.day && this.month == B.month && this.year == B.year;
     }
 
-    public boolean lessThan(final Date B) {
+    public boolean lessThan(@NonNull final Date B) {
         return B.greaterThan(this);
     }
 
@@ -132,17 +133,17 @@ public class Date {
      * time complexity is LINEAR in no days to be added.
      * if the date obtained after algebraic addition is invalid rollbacks to initial state and throws IllegalAccessException.
      */
-    public void addDays(long noDays) throws IllegalAccessException {
+    public void addDays(final long noDays) throws IllegalAccessException {
         Date copy = new Date(this);
         if (noDays == 0) {
             return;
         } else if (noDays > 0) {
-            for (int i = 0; i < noDays; i++) {
+            for (long i = 0; i < noDays; i++) {
                 this.toTomorrow();
             }
         } else {
-            noDays = -noDays;
-            for (int i = 0; i < noDays; i++) {
+            long posNoDays = -noDays;
+            for (long i = 0; i < posNoDays; i++) {
                 this.toYesterday();
             }
         }
@@ -158,7 +159,7 @@ public class Date {
     private Date() {
     }
 
-    private boolean isValid() {
+    boolean isValid() {
         if (this.year < 1)
             return false;
         if (this.month < 1 || this.month > 12)
