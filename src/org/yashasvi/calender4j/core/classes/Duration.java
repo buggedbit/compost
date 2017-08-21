@@ -1,30 +1,32 @@
+package org.yashasvi.calender4j.core.classes;
+
 import static java.lang.Integer.parseInt;
 
 
-// DateTimeDelta class is explicitly defined for maintaining difference in dateTime
+// org.yashasvi.calender4j.core.classes.Duration class is explicitly defined for maintaining difference in dateTime
 // So use develop it accordingly
-public class DateTimeDelta {
-    // as there is no such thing as a VALID DateTimeDelta
+public class Duration {
+    // as there is no such thing as a VALID org.yashasvi.calender4j.core.classes.Duration
     // restrict with only a
-    // public DateTimeDelta(long $24hr,int $sec) constructor
+    // public org.yashasvi.calender4j.core.classes.Duration(long $24hr,int $sec) constructor
     // i.e as there is no default constructor,
-    // the DateTimeDelta is always VALID and SET whenever it is initialized
+    // the org.yashasvi.calender4j.core.classes.Duration is always VALID and SET whenever it is initialized
 
     public long $24hr = 0L;
     public long $sec = 0L;
 
-    public DateTimeDelta(long $24hr, int $sec) {
+    public Duration(long $24hr, int $sec) {
         this.$24hr = $24hr;
         this.$sec = $sec;
     }
 
-    public DateTimeDelta(long $24hr, long $sec) {
+    public Duration(long $24hr, long $sec) {
         this.$24hr = $24hr;
         this.$sec = $sec;
     }
 
     //String format = x<space>hrs<space>y<space>min
-    public DateTimeDelta(String dateTimeDiffString) {
+    public Duration(String dateTimeDiffString) {
         String[] comp = dateTimeDiffString.split(Constants.SPACE_SEP);
         try {
             int hr = parseInt(comp[0]);
@@ -39,9 +41,9 @@ public class DateTimeDelta {
 
     //String Format = Days<sep>Seconds<sep>
     //String Format = Days<sep>Seconds
-    public DateTimeDelta(String dateTimeDiffString, String sep) {
+    public Duration(String dateTimeDiffString, String sep) {
 
-        String error = "DateTimeDelta: not a proper DateTimeDelta object initialization with "
+        String error = "org.yashasvi.calender4j.core.classes.Duration: not a proper org.yashasvi.calender4j.core.classes.Duration object initialization with "
                 + "\n string " + dateTimeDiffString
                 + "\n and with separator " + sep;
 
@@ -64,7 +66,7 @@ public class DateTimeDelta {
         }
     }
 
-    public DateTimeDelta(long minutes) {
+    public Duration(long minutes) {
         this.$24hr = minutes / Constants.MINUTES_IN_DAY;
         this.$sec = (minutes % Constants.MINUTES_IN_DAY) * Constants.SECONDS_IN_MINUTE;
     }
