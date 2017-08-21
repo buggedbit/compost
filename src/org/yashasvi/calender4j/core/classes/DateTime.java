@@ -58,29 +58,28 @@ public class DateTime {
         return this.date.isValid() && this.time.isValid();
     }
 
-
-    public boolean greaterThan(DateTime B) {
-        if (this.date.greaterThan(B.date))
+    public boolean isGreaterThan(DateTime B) {
+        if (this.date.isGreaterThan(B.date))
             return true;
-        else if (this.date.equalTo(B.date))
-            return this.time.greaterThan(B.time);
+        else if (this.date.isEqualTo(B.date))
+            return this.time.isGreaterThan(B.time);
         return false;
     }
 
-    public boolean equalTo(DateTime B) {
-        return this.date.equalTo(B.date) && this.time.equalTo(B.time);
+    public boolean isEqualTo(DateTime B) {
+        return this.date.isEqualTo(B.date) && this.time.isEqualTo(B.time);
     }
 
-    public boolean lessThan(DateTime B) {
-        return B.greaterThan(this);
+    public boolean isLessThan(DateTime B) {
+        return B.isGreaterThan(this);
     }
 
-    public boolean greaterThanOrEqualTo(DateTime B) {
-        return this.greaterThan(B) || this.equalTo(B);
+    public boolean isGreaterThanOrEqualTo(DateTime B) {
+        return this.isGreaterThan(B) || this.isEqualTo(B);
     }
 
-    public boolean lessThanOrEqualTo(DateTime B) {
-        return this.lessThan(B) || this.equalTo(B);
+    public boolean isLessThanOrEqualTo(DateTime B) {
+        return this.isLessThan(B) || this.isEqualTo(B);
     }
 
     // difference

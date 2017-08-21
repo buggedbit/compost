@@ -60,7 +60,7 @@ public class Time {
         return true;
     }
 
-    public boolean greaterThan(@NonNull final Time B) {
+    public boolean isGreaterThan(@NonNull final Time B) {
         if (this.hour > B.hour) return true;
         else if (this.hour < B.hour) return false;
         if (this.minute > B.minute) return true;
@@ -72,12 +72,20 @@ public class Time {
         return false;
     }
 
-    public boolean equalTo(@NonNull final Time B) {
+    public boolean isEqualTo(@NonNull final Time B) {
         return this.second == B.second && this.minute == B.minute && this.hour == B.hour && this.microsecond == B.microsecond;
     }
 
-    public boolean isPastTo(@NonNull final Time B) {
-        return B.greaterThan(this);
+    public boolean isLessThan(@NonNull final Time B) {
+        return B.isGreaterThan(this);
+    }
+
+    public boolean isGreaterThanOrEqualTo(Time B) {
+        return this.isGreaterThan(B) || this.isEqualTo(B);
+    }
+
+    public boolean isLessThanOrEqualTo(Time B) {
+        return this.isLessThan(B) || this.isEqualTo(B);
     }
 
     // return A - B in microseconds with sign

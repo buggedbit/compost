@@ -103,7 +103,7 @@ public class Date {
         return this.year % 400 == 0 || (this.year % 100 != 0 && this.year % 4 == 0);
     }
 
-    public boolean greaterThan(@NonNull final Date B) {
+    public boolean isGreaterThan(@NonNull final Date B) {
         if (this.year > B.year)
             return true;
         else if (this.year < B.year)
@@ -120,12 +120,20 @@ public class Date {
         return false;
     }
 
-    public boolean equalTo(@NonNull final Date B) {
+    public boolean isEqualTo(@NonNull final Date B) {
         return this.day == B.day && this.month == B.month && this.year == B.year;
     }
 
-    public boolean lessThan(@NonNull final Date B) {
-        return B.greaterThan(this);
+    public boolean isLessThan(@NonNull final Date B) {
+        return B.isGreaterThan(this);
+    }
+
+    public boolean isGreaterThanOrEqualTo(Date B) {
+        return this.isGreaterThan(B) || this.isEqualTo(B);
+    }
+
+    public boolean isLessThanOrEqualTo(Date B) {
+        return this.isLessThan(B) || this.isEqualTo(B);
     }
 
     /**
