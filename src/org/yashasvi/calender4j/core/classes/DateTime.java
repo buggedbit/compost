@@ -146,11 +146,11 @@
 //    public boolean addDaysSeconds(long days, long seconds) {
 //        if (!this.isValid()) return false;
 //
-//        long days_due_to_seconds = this.$TIME.addSecondsReturnChangeInDates(seconds);
+//        long days_due_to_seconds = this.$TIME.addSeconds(seconds);
 //        boolean returnValue = this.$DATE.addDays(days + days_due_to_seconds);
 //
 //        if (!returnValue)
-//            this.$TIME.addSecondsReturnChangeInDates(-seconds);   // this is for the corner case where change in time reduces date below
+//            this.$TIME.addSeconds(-seconds);   // this is for the corner case where change in time reduces date below
 //        // 01 01 0001
 //        // this preserves the INVARIANT mentioned above in /***/ comment
 //        return returnValue;

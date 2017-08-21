@@ -103,23 +103,28 @@ public class Date {
     }
 
     public boolean greaterThan(final Date B) {
-        if (this.year > B.year) return true;
-        else if (this.year < B.year) return false;
-        if (this.month > B.month) return true;
-        else if (this.month < B.month) return false;
-        if (this.day > B.day) return true;
-        else if (this.day < B.day) return false;
+        if (this.year > B.year)
+            return true;
+        else if (this.year < B.year)
+            return false;
+        if (this.month > B.month)
+            return true;
+        else if (this.month < B.month)
+            return false;
+        if (this.day > B.day)
+            return true;
+        else if (this.day < B.day)
+            return false;
+
         return false;
     }
 
     public boolean equalTo(final Date B) {
-        // returns this==B
         return this.day == B.day && this.month == B.month && this.year == B.year;
     }
 
     public boolean lessThan(final Date B) {
-        // returns this<B
-        return !this.greaterThan(B) && !this.equalTo(B);
+        return B.greaterThan(this);
     }
 
     /**
@@ -154,20 +159,26 @@ public class Date {
     }
 
     private boolean isValid() {
-        if (this.year < 1) return false;
-        if (this.month < 1 || this.month > 12) return false;
+        if (this.year < 1)
+            return false;
+        if (this.month < 1 || this.month > 12)
+            return false;
         switch (this.month % 2) {
             case 1:
-                if (this.month >= 9) return !(this.day < 1 || this.day > 30);
-                else return !(this.day < 1 || this.day > 31);
+                if (this.month >= 9)
+                    return !(this.day < 1 || this.day > 30);
+                else
+                    return !(this.day < 1 || this.day > 31);
             case 0:
                 if (this.month == 2) {
-                    if (this.isLeapYear()) return !(this.day < 1 || this.day > 29);
-                    else {
+                    if (this.isLeapYear())
+                        return !(this.day < 1 || this.day > 29);
+                    else
                         return !(this.day < 1 || this.day > 28);
-                    }
-                } else if (this.month >= 8) return !(this.day < 1 || this.day > 31);
-                else return !(this.day < 1 || this.day > 30);
+                } else if (this.month >= 8)
+                    return !(this.day < 1 || this.day > 31);
+                else
+                    return !(this.day < 1 || this.day > 30);
             default:
                 return false;
         }
@@ -180,7 +191,8 @@ public class Date {
         stdForm.stdMonth = this.month - 1;
         if (this.month > 1)
             stdForm.monthExtraDays = Constants.STD_MONTH_EXTRAS_ARRAY[this.month - 2];
-        else stdForm.monthExtraDays = 0;
+        else
+            stdForm.monthExtraDays = 0;
         // leapExtraDays
         stdForm.stdYear = this.year - 1;
         stdForm.leapExtraDays = this.year / 4 - this.year / 100 + this.year / 400;
