@@ -88,7 +88,7 @@ public class DateTime {
     }
 
     public void addDuration(Duration duration) throws IllegalAccessException {
-        // fixme
+        // todo : make the / 1000 go away
         this.addDaysSeconds(duration.getDays(), duration.getMicroseconds() / 1000);
     }
 

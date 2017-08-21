@@ -1,11 +1,5 @@
 package org.yashasvi.calender4j.core.classes;
 
-/**
- * Contains constants related to, org.yashasvi.calender4j.core.classes.Time conversions, org.yashasvi.calender4j.core.classes.Date, org.yashasvi.calender4j.core.classes.Time, org.yashasvi.calender4j.core.classes.DateTime Classes, Gregorian Calender
- *
- * @author pandu
- * @version 1.0
- */
 public class Constants {
 
     public static final int MINUTES_IN_HOUR = 60;

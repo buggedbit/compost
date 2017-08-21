@@ -34,6 +34,11 @@ public class Duration {
         this.microseconds -= b.microseconds;
     }
 
+    public void normalize() {
+        this.days += this.microseconds / Constants.MICROSECONDS_IN_DAY;
+        this.microseconds = this.microseconds % Constants.MICROSECONDS_IN_DAY;
+    }
+
     private Duration() {
     }
 }

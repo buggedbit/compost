@@ -90,10 +90,10 @@ public class Time {
 
     // return A - B in microseconds with sign
     public long minus(@NonNull final Time B) {
-        return (this.hour - B.hour) * Constants.MICROSECONDS_IN_HOUR
-                + (this.minute - B.minute) * Constants.MICROSECONDS_IN_MINUTE
-                + (this.second - B.second) * Constants.MICROSECONDS_IN_SECOND
-                + (this.microsecond - B.microsecond);
+        return (long) (this.hour - B.hour) * Constants.MICROSECONDS_IN_HOUR
+                + (long) (this.minute - B.minute) * Constants.MICROSECONDS_IN_MINUTE
+                + (long) (this.second - B.second) * Constants.MICROSECONDS_IN_SECOND
+                + (long) (this.microsecond - B.microsecond);
     }
 
     // adds seconds to this time day circularly
