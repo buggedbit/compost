@@ -157,7 +157,7 @@
                             // Ctrl + Q => close editor
                             action: function (e) {
                                 e.preventDefault();
-                                window.location.replace('{% url 'webinterface:cli' %}');
+                                window.location.replace('{% url 'webinterface:cli' %}?current_book=' + $('#book-name').html());
                             }
                         },
                         {% if not readonly %}

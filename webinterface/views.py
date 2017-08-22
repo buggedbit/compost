@@ -12,8 +12,13 @@ from paper.models import Book, Page
 
 @ensure_csrf_cookie
 def cli(request):
-    print get_token(request)
-    return render(request, 'webinterface/cli.html')
+    try:
+        book_name = request.GET['current_book']
+        Book.objects.get(name=book_name)
+    except (ObjectDoesNotExist, MultiValueDictKeyError):
+        book_name = ''
+
+    return render(request, 'webinterface/cli.html', {'book_name': book_name})
 
 
 def editor(request):
