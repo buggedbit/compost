@@ -1,6 +1,7 @@
 package org.yashasvi.calender4j.core.classes;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 import org.yashasvi.calender4j.core.exceptions.InvalidTimeException;
@@ -9,6 +10,7 @@ import java.util.Calendar;
 
 // measures a day
 // day starts from 00:00:00.0 ends at 23:59:59.999999
+@Getter
 @ToString
 @EqualsAndHashCode
 public class Time {

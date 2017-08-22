@@ -1,6 +1,7 @@
 package org.yashasvi.calender4j.core.classes;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 import org.yashasvi.calender4j.core.exceptions.InvalidDateException;
@@ -8,6 +9,7 @@ import org.yashasvi.calender4j.core.exceptions.InvalidTimeException;
 
 import java.util.Calendar;
 
+@Getter
 @ToString
 @EqualsAndHashCode
 public class DateTime {
