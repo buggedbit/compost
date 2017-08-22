@@ -8,7 +8,7 @@ import org.yashasvi.calender4j.core.exceptions.InvalidTimeException;
 import java.util.Calendar;
 
 // measures a day
-// day starts from 00:00:00.0 ends at 23:59:59.99999
+// day starts from 00:00:00.0 ends at 23:59:59.999999
 @ToString
 @EqualsAndHashCode
 public class Time {
@@ -18,7 +18,7 @@ public class Time {
     private int minute;
     // 0 - 59
     private int second;
-    // 0 - 99999
+    // 0 - 999999
     private int microsecond;
 
     public static Time now() {
@@ -51,12 +51,12 @@ public class Time {
     private Time() {
     }
 
-    // 00:00:00.0 - 23:59:59.99999 are valid
+    // 00:00:00.0 - 23:59:59.999999 are valid
     boolean isValid() {
         if (this.hour < 0 || this.hour > 23) return false;
         if (this.minute < 0 || this.minute > 59) return false;
         if (this.second < 0 || this.second > 59) return false;
-        if (this.microsecond < 0 || this.microsecond > 99999) return false;
+        if (this.microsecond < 0 || this.microsecond > 999999) return false;
         return true;
     }
 
