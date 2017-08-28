@@ -142,6 +142,7 @@
                             yaSH.println('');
                             var books = jsonedResponse.body.books;
                             var pages = jsonedResponse.body.pages;
+                            yaSH.secondaryAutoCompleteBucket = books.concat(pages);
                             for (var i = 0; i < books.length; ++i)
                                 yaSH.println(books[i], yaSH.Config.color.book);
                             for (i = 0; i < pages.length; ++i)

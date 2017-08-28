@@ -240,7 +240,7 @@ var yaSH = {
      * matches found    -> returns {best: <best match>, matches: <array of matches>}
      * */
     autoComplete: function (wordToAutocomplete, autocompleteBucket) {
-        var regex = new RegExp('^' + wordToAutocomplete, 'i');
+        var regex = new RegExp('^' + wordToAutocomplete);
         var matches = [];
 
         for (var i = 0; i < autocompleteBucket.length; ++i) {
