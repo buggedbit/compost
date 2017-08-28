@@ -14,6 +14,7 @@ var yaSH = {
     _outputDivHId: undefined,
     _scrollDivHId: undefined,
     _prefixSpanHId: undefined,
+
     /**
      * binds terminal to HTML DOM elements
      * inputId      -> whose val can be taken as input
@@ -30,6 +31,7 @@ var yaSH = {
         this._prefixSpanHId = '#' + prefixSpanId;
         this.setPrefix(this._prefix);
     },
+
     /**
      * Registers listeners, starts REPL
      * */
@@ -46,24 +48,48 @@ var yaSH = {
                 case 9:
                     event.preventDefault();
                     cmd = $(yaSH._inputHId).val();
-                    var autoComplete = yaSH.autoComplete(cmd, yaSH._cmdList);
+                    // array with length >= 1
+                    var tokens = cmd.trim().replace(/ +/g, ' ').split(' ');
+                    var wordToAutocomplete = tokens[tokens.length - 1];
+                    var autocompleteBucket;
+                    // autocomplete from keywords
+                    if (tokens.length === 1) {
+                        autocompleteBucket = [];
+                        for (var i = 0; i < yaSH._cmdList.length; ++i) {
+                            var ithCmd = yaSH._cmdList[i];
+                            for (var j = 0; j < ithCmd.keywords.length; ++j) {
+                                var jthKeywordOfIthCmd = ithCmd.keywords[j];
+                                autocompleteBucket.push(jthKeywordOfIthCmd);
+                            }
+                        }
+                    }
+                    // autocomplete from others
+                    else {
+                        autocompleteBucket = yaSH.secondaryAutoCompleteBucket;
+                    }
+                    var autoComplete = yaSH.autoComplete(wordToAutocomplete, autocompleteBucket);
+
                     // If only one command auto complete
                     if (autoComplete.matches.length === 1) {
-                        $(yaSH._inputHId).val(autoComplete.matches[0] + ' ');
+                        tokens.pop();
+                        tokens.push(autoComplete.matches[0] + ' ');
+                        $(yaSH._inputHId).val(tokens.join(' '));
                     }
                     // If more display them on terminal
                     else if (autoComplete.matches.length > 1) {
                         // Cmd typed is best match
-                        if (autoComplete.best.length - cmd.length === 0) {
+                        if (autoComplete.best.length - wordToAutocomplete.length === 0) {
                             // Show all available options
                             yaSH.println(yaSH._prefix + autoComplete.best);
-                            var availableCommands = autoComplete.matches.join("\n");
+                            var availableCommands = autoComplete.matches.join('\n');
                             yaSH.println(availableCommands, 'skyblue');
                         }
                         // Else
                         else {
                             // Auto complete to the best match
-                            $(yaSH._inputHId).val(autoComplete.best);
+                            tokens.pop();
+                            tokens.push(autoComplete.best);
+                            $(yaSH._inputHId).val(tokens.join(' '));
                         }
                     }
                     break;
@@ -87,6 +113,7 @@ var yaSH = {
             }
         });
     },
+
     /**
      * Builds html strings which can be directly appended to a DOM object
      * Can build one member per generation only
@@ -117,6 +144,7 @@ var yaSH = {
 
         return $element;
     },
+
     scrollToBottom: function () {
         $(this._scrollDivHId).scrollTop($(this._scrollDivHId).prop('scrollHeight'));
     },
@@ -205,30 +233,25 @@ var yaSH = {
         $(this._inputHId).val("");
         return false;
     },
+    secondaryAutoCompleteBucket: [],
     /**
-     * Tries to auto complete given a cmd and available cmds
+     * Tries to auto complete given a wordToAutocomplete and autocompleteBucket
      * no  match found  -> returns {best: '', matches: []}
      * matches found    -> returns {best: <best match>, matches: <array of matches>}
      * */
-    autoComplete: function (cmd, availableCmds) {
-        var spacedSepTokens = cmd.trim().replace(/ +/g, ' ');
-        var regex = new RegExp('^' + spacedSepTokens, 'i');
+    autoComplete: function (wordToAutocomplete, autocompleteBucket) {
+        var regex = new RegExp('^' + wordToAutocomplete, 'i');
         var matches = [];
-        // Get all available cmds matching regex
-        for (var i = 0; i < availableCmds.length; ++i) {
-            var ithCmd = availableCmds[i];
-            for (var j = 0; j < ithCmd.keywords.length; ++j) {
-                var jthKeywordOfIthCmd = ithCmd.keywords[j];
-                // If the regex matches
-                if (regex.test(jthKeywordOfIthCmd)) {
-                    // Keep track of that keyword
-                    matches.push(jthKeywordOfIthCmd);
-                }
+
+        for (var i = 0; i < autocompleteBucket.length; ++i) {
+            var ithWholeWord = autocompleteBucket[i];
+            if (regex.test(ithWholeWord)) {
+                matches.push(ithWholeWord);
             }
         }
 
         /**
-         * Returns the longest matching prefix among given param array
+         * Returns the longest common prefix of given array
          * */
         var getLongestCommonPrefix = function (matches) {
             // Finds best auto complete
@@ -246,7 +269,7 @@ var yaSH = {
                     return bestAutoComplete;
                 for (var m = 1; m < matches.length; ++m) {
                     var mth = matches[m].charAt(pos);
-                    // If this word ends
+                    // If this wordToAutocomplete ends
                     if (mth === undefined)
                         return bestAutoComplete;
                     // If this char does not match
@@ -261,6 +284,7 @@ var yaSH = {
         var bestAutoComplete = getLongestCommonPrefix(matches);
         return {best: bestAutoComplete, matches: matches};
     },
+
     HistoryManager: {
         _history: [],
         _head: 0,
@@ -289,6 +313,7 @@ var yaSH = {
             this._head = this._history.length;
         }
     },
+
     _prefix: '$: ',
     setPrefix: function (prefix) {
         this._prefix = prefix;
@@ -301,6 +326,7 @@ var yaSH = {
      * desc should at least be empty string
      * exec method has to be implemented
      * */
+
     _cmdList: [
         {
             keywords: [""],
