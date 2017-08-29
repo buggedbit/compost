@@ -518,7 +518,7 @@
                             // Ctrl + L => clear
                             action: function (e) {
                                 e.preventDefault();
-                                yaSH.evaluate('clear');
+                                $(yaSH._outputDivHId).empty();
                             }
                         }
                     ]
