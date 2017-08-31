@@ -287,19 +287,24 @@ var yaSH = {
 
     HistoryManager: {
         _history: [],
-        _head: 0,
+        _head: -1,
         goForward: function () {
-            if (0 <= this._head + 1 && this._head + 1 <= this._history.length - 1) {
+            // head is not at end
+            if (this._head < this._history.length - 1) {
                 this._head++;
                 $(yaSH._inputHId).val(this._history[this._head]);
             }
-            else if (this._head + 1 === this._history.length) {
+            // head is at the end
+            else if (this._head === this._history.length - 1) {
                 $(yaSH._inputHId).val("");
             }
         },
         goBackward: function () {
-            if (0 <= this._head - 1 && this._head - 1 <= this._history.length - 1) {
+            // head is not at the start
+            if (0 < this._head) {
+                $(yaSH._inputHId).val(this._history[this._head]);
                 this._head--;
+            } else if (this._head === 0) {
                 $(yaSH._inputHId).val(this._history[this._head]);
             }
         },
@@ -310,7 +315,7 @@ var yaSH = {
                 this._history.push(cmd);
             }
             // Reset _head
-            this._head = this._history.length;
+            this._head = this._history.length - 1;
         }
     },
 
