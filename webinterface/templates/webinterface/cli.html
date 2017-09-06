@@ -255,29 +255,31 @@
                     return;
                 }
                 var book = tokens.splice(1).join(' ');
-                $.ajax({
-                    url: "{% url 'restapi:book_delete' %}",
-                    async: false,
-                    method: 'POST',
-                    data: {
-                        book_name: book
-                    },
-                    success: function (response) {
-                        var jsonedResponse = JSON.parse(response);
-                        if (jsonedResponse.status === 0) {
-                        } else if (jsonedResponse.status === -1) {
-                            yaSH.printErr(jsonedResponse.message);
+                if (window.confirm('DELETE BOOK ' + book + '?')) {
+                    $.ajax({
+                        url: "{% url 'restapi:book_delete' %}",
+                        async: false,
+                        method: 'POST',
+                        data: {
+                            book_name: book
+                        },
+                        success: function (response) {
+                            var jsonedResponse = JSON.parse(response);
+                            if (jsonedResponse.status === 0) {
+                            } else if (jsonedResponse.status === -1) {
+                                yaSH.printErr(jsonedResponse.message);
+                            }
+                        },
+                        error: function (response) {
+                            yaSH.printErr('Server Error');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
                         }
-                    },
-                    error: function (response) {
-                        yaSH.printErr('Server Error');
-                    },
-                    beforeSend: function (xhr, settings) {
-                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
         // rmp <page name>
@@ -290,30 +292,32 @@
                     return;
                 }
                 var page = tokens.splice(1).join(' ');
-                $.ajax({
-                    url: "{% url 'restapi:page_delete' %}",
-                    async: false,
-                    method: 'POST',
-                    data: {
-                        book_name: Context._book,
-                        page_name: page
-                    },
-                    success: function (response) {
-                        var jsonedResponse = JSON.parse(response);
-                        if (jsonedResponse.status === 0) {
-                        } else if (jsonedResponse.status === -1) {
-                            yaSH.printErr(jsonedResponse.message);
+                if (window.confirm('DELETE PAGE ' + page + '?')) {
+                    $.ajax({
+                        url: "{% url 'restapi:page_delete' %}",
+                        async: false,
+                        method: 'POST',
+                        data: {
+                            book_name: Context._book,
+                            page_name: page
+                        },
+                        success: function (response) {
+                            var jsonedResponse = JSON.parse(response);
+                            if (jsonedResponse.status === 0) {
+                            } else if (jsonedResponse.status === -1) {
+                                yaSH.printErr(jsonedResponse.message);
+                            }
+                        },
+                        error: function (response) {
+                            yaSH.printErr('Server Error');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
                         }
-                    },
-                    error: function (response) {
-                        yaSH.printErr('Server Error');
-                    },
-                    beforeSend: function (xhr, settings) {
-                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                        }
-                    }
-                });
+                    });
+                }
             }
         });
         // cat <page name>
