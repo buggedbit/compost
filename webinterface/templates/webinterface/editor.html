@@ -113,6 +113,7 @@
                            } else if (jsonedResponse.status === -1) {
                            Materialize.toast(jsonedResponse.message, 2000);
                            }
+                           FILE_BACKED_TEXT = text;
                            },
                            error: function (response) {
                            Materialize.toast('Server Error', 2000);
@@ -144,9 +145,10 @@
                            }
                            submitOnEnter(event);">
         {% endif %}
-        <div>Exit: Ctrl + q | {% if not readonly %}Save: Ctrl + s{% endif %}</div>
+        <div>Exit: Ctrl + q{% if not readonly %} | Save: Ctrl + s{% endif %}</div>
     </div>
     <script>
+        var FILE_BACKED_TEXT = '{{ page.text|escapejs }}';
         $(document).ready(function () {
             var tree = [
                 {
@@ -157,6 +159,11 @@
                             // Ctrl + Q => close editor
                             action: function (e) {
                                 e.preventDefault();
+                                if ($('#text').val() !== FILE_BACKED_TEXT) {
+                                    if (window.confirm("Page modified! Want to save?")) {
+                                        return;
+                                    }
+                                }
                                 window.location.replace('{% url 'webinterface:cli' %}?current_book=' + $('#book-name').html());
                             }
                         },
