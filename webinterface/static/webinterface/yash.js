@@ -261,22 +261,26 @@ var yaSH = {
             } else if (matches.length === 1) {
                 return matches[0];
             }
-
+	    
             var pos = 0;
+	    var zerothMatch = matches[0];
+	    var zerothBase;
             while (true) {
-                var base = matches[0].charAt(pos);
-                if (base === undefined)
+                zerothBase = zerothMatch.charAt(pos);
+                // If 0thMatch ends
+		if (pos === zerothMatch.length)
                     return bestAutoComplete;
                 for (var m = 1; m < matches.length; ++m) {
-                    var mth = matches[m].charAt(pos);
-                    // If this wordToAutocomplete ends
-                    if (mth === undefined)
+		    var mthMatch = matches[m]; 
+		    // If mthMatch ends
+                    if (pos === mthMatch.length)
                         return bestAutoComplete;
-                    // If this char does not match
-                    if (mth !== base)
+                    var mthBase = mthMatch.charAt(pos);
+                    // If character mismatch
+                    if (mthBase !== zerothBase)
                         return bestAutoComplete;
                 }
-                bestAutoComplete += base;
+                bestAutoComplete += zerothBase;
                 pos++;
             }
         };
