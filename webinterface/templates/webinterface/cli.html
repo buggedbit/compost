@@ -56,24 +56,26 @@
          * no book selected => book is ''
          * */
         var Context = {
+            _inSudoMode: {%  if in_sudo_mode %}true{% else %}false{% endif %},
             _book: '{{ book_name }}',
             getPrefix: function () {
-                return '$[/schoolbag/' + this._book + ']: '
+                var inSudoModeMarker = this._inSudoMode === true ? '* ' : '';
+                return inSudoModeMarker + '[/schoolbag/' + this._book + ']:$ '
             },
-            _setBook: function (book) {
-                if (book === undefined) {
-                    this._book = '';
-                    yaSH.setPrefix(this.getPrefix());
-                } else {
-                    this._book = book;
-                    yaSH.setPrefix(this.getPrefix());
-                }
+            setBook: function (book) {
+                this._book = book === undefined ? '' : book;
+                yaSH.setPrefix(this.getPrefix());
             },
+            setInSudoMode: function (inSudoMode) {
+                this._inSudoMode = inSudoMode;
+                yaSH.setPrefix(this.getPrefix());
+            }
         };
 
-        // colors
+        // init colors
         yaSH.Config.color.book = 'blue';
         yaSH.Config.color.page = 'green';
+        // init prefix
         yaSH.setPrefix(Context.getPrefix());
 
         // about
@@ -95,7 +97,7 @@
                 }
                 var book = tokens.splice(1).join(' ');
                 if (book === '..') {
-                    Context._setBook();
+                    Context.setBook();
                 } else {
                     $.ajax({
                         url: "{% url 'restapi:book_exists' %}",
@@ -107,7 +109,7 @@
                         success: function (response) {
                             var jsonedResponse = JSON.parse(response);
                             if (jsonedResponse.status === 0) {
-                                Context._setBook(book);
+                                Context.setBook(book);
                             } else if (jsonedResponse.status === -1) {
                                 yaSH.printErr(jsonedResponse.message, 2000);
                             }
@@ -152,7 +154,7 @@
                         }
                     },
                     error: function (response) {
-                        yaSH.printErr('Server Error', 2000);
+                        yaSH.printErr('Server Error');
                     }
                 });
             }
@@ -503,6 +505,68 @@
                 });
             }
         });
+        // sudo
+        yaSH.addCmd({
+            keywords: ["sudo"],
+            desc: "go in sudo mode. Usage sudo {password}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: sudo {password}');
+                    return;
+                }
+                var password = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:sudo' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        password: password
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            Context.setInSudoMode(true);
+                            yaSH.println('In sudo mode', 'red');
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // unsudo
+        yaSH.addCmd({
+            keywords: ["unsudo"],
+            desc: "go to normal mode. Usage unsudo",
+            exec: function (tokens) {
+                $.ajax({
+                    url: "{% url 'restapi:unsudo' %}",
+                    async: false,
+                    method: 'GET',
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            Context.setInSudoMode(false);
+                            yaSH.println('In normal mode');
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message, 2000);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    }
+                });
+            }
+        });
+
 
         $(document).ready(function () {
             var tree = [

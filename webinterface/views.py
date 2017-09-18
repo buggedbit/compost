@@ -18,7 +18,9 @@ def cli(request):
     except (ObjectDoesNotExist, MultiValueDictKeyError):
         book_name = ''
 
-    return render(request, 'webinterface/cli.html', {'book_name': book_name})
+    in_sudo_mode = request.session.get('sudo', False)
+
+    return render(request, 'webinterface/cli.html', {'book_name': book_name, 'in_sudo_mode': in_sudo_mode})
 
 
 def editor(request):

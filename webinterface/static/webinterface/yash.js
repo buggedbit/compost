@@ -38,18 +38,24 @@ var yaSH = {
     initShell: function () {
         $(this._inputHId).keydown(function (e) {
             var cmd;
+            var tokens;
             switch (e.keyCode || e.which) {
                 // Enter
                 case 13:
                     cmd = $(yaSH._inputHId).val();
-                    yaSH.evaluate(cmd);
+                    // clean the cmd
+                    var spacedSepTokens = cmd.trim().replace(/ +/g, ' ');
+                    // add this cmd to history
+                    yaSH.HistoryManager._addCmd(spacedSepTokens);
+                    tokens = spacedSepTokens.split(' ');
+                    yaSH.evaluate(tokens);
                     break;
                 // Tab Key
                 case 9:
                     event.preventDefault();
                     cmd = $(yaSH._inputHId).val();
                     // array with length >= 1
-                    var tokens = cmd.trim().replace(/ +/g, ' ').split(' ');
+                    tokens = cmd.trim().replace(/ +/g, ' ').split(' ');
                     var wordToAutocomplete = tokens[tokens.length - 1];
                     var autocompleteBucket;
                     // autocomplete from keywords
@@ -198,21 +204,17 @@ var yaSH = {
      * cmd found -> True
      * else      -> False
      * */
-    evaluate: function (cmd) {
-        // Tokenize the cmd
-        var spacedSepTokens = cmd.trim().replace(/ +/g, ' ');
-        var tokens = spacedSepTokens.split(' ');
-        // add this cmd to history
-        this.HistoryManager._addCmd(spacedSepTokens);
+    evaluate: function (tokens) {
+        var cmd = tokens.join(' ');
         // the first token is the keyword
-        var inputKeyword = tokens[0];
+        var cmdKeyword = tokens[0];
         // For all commands
         for (var i = 0; i < yaSH._cmdList.length; ++i) {
             var ithCmd = yaSH._cmdList[i];
             // If keyword of input matches some keywords of available cmd
             for (var j = 0; j < ithCmd.keywords.length; ++j) {
                 var jthKeywordOfIthCmd = ithCmd.keywords[j];
-                if (inputKeyword === jthKeywordOfIthCmd) {
+                if (cmdKeyword === jthKeywordOfIthCmd) {
                     // Print the command
                     this.println(yaSH._prefix + cmd);
                     // Empty the cmd line
@@ -261,18 +263,18 @@ var yaSH = {
             } else if (matches.length === 1) {
                 return matches[0];
             }
-	    
+
             var pos = 0;
-	    var zerothMatch = matches[0];
-	    var zerothBase;
+            var zerothMatch = matches[0];
+            var zerothBase;
             while (true) {
                 zerothBase = zerothMatch.charAt(pos);
                 // If 0thMatch ends
-		if (pos === zerothMatch.length)
+                if (pos === zerothMatch.length)
                     return bestAutoComplete;
                 for (var m = 1; m < matches.length; ++m) {
-		    var mthMatch = matches[m]; 
-		    // If mthMatch ends
+                    var mthMatch = matches[m];
+                    // If mthMatch ends
                     if (pos === mthMatch.length)
                         return bestAutoComplete;
                     var mthBase = mthMatch.charAt(pos);
@@ -354,8 +356,8 @@ var yaSH = {
                         continue;
                     var tab = '----------------';
                     var keywords = ithCmd.keywords.join(",  ");
-                    yaSH.printPre(keywords, 'deeppink');
-                    yaSH.printPre(tab + ithCmd.desc, 'white');
+                    yaSH.println(keywords, 'deeppink');
+                    yaSH.println(tab + ithCmd.desc, 'white');
                 }
             }
         },

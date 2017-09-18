@@ -6,8 +6,34 @@ from django.http import HttpResponse
 from django.utils.datastructures import MultiValueDictKeyError
 
 from paper.models import Book, Page
+from restapi.exceptions import SudoException
 
 PASSWORD = 'airturtle'
+
+
+def sudo(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        if password == PASSWORD:
+            request.session['sudo'] = True
+            return HttpResponse(json.dumps({'status': 0}))
+        else:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Incorrect password'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+
+
+def unsudo(request):
+    try:
+        del request.session['sudo']
+    except KeyError:
+        pass
+    return HttpResponse(json.dumps({'status': 0}))
+
+
+def confirm_sudo_mode(request):
+    if not request.session.get('sudo', False):
+        raise SudoException('Not in sudo mode')
 
 
 def ls(request):
@@ -65,6 +91,7 @@ def book_exists(request):
 def book_create(request):
     if request.method == 'POST':
         try:
+            confirm_sudo_mode(request)
             name = request.POST['book_name']
             new_book = Book(name=name)
             new_book.save()
@@ -75,6 +102,8 @@ def book_create(request):
             return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+        except SudoException as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
 
@@ -82,6 +111,7 @@ def book_create(request):
 def book_delete(request):
     if request.method == 'POST':
         try:
+            confirm_sudo_mode(request)
             name = request.POST['book_name']
             existing_book = Book.objects.get(name=name)
             jsoned_book = book_jsonize(existing_book)
@@ -91,6 +121,8 @@ def book_delete(request):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+        except SudoException as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
 
@@ -98,6 +130,7 @@ def book_delete(request):
 def book_update_name(request):
     if request.method == 'POST':
         try:
+            confirm_sudo_mode(request)
             old_name = request.POST['old_book_name']
             new_name = request.POST['new_book_name']
             existing_book = Book.objects.get(name=old_name)
@@ -112,6 +145,8 @@ def book_update_name(request):
             return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+        except SudoException as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
 
@@ -149,6 +184,7 @@ def page_exists(request):
 def page_create(request):
     if request.method == 'POST':
         try:
+            confirm_sudo_mode(request)
             book_name = request.POST['book_name']
             page_name = request.POST['page_name']
             # Get book
@@ -168,6 +204,8 @@ def page_create(request):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+        except SudoException as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
 
@@ -175,6 +213,7 @@ def page_create(request):
 def page_delete(request):
     if request.method == 'POST':
         try:
+            confirm_sudo_mode(request)
             book_name = request.POST['book_name']
             page_name = request.POST['page_name']
             # Get book
@@ -192,6 +231,8 @@ def page_delete(request):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+        except SudoException as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
 
@@ -251,6 +292,7 @@ def page_update_text(request):
 def page_move(request):
     if request.method == 'POST':
         try:
+            confirm_sudo_mode(request)
             prev_book_name = request.POST['prev_book_name']
             prev_page_name = request.POST['prev_page_name']
 
@@ -279,6 +321,7 @@ def page_move(request):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Inconsistent data'}))
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+        except SudoException as e:
+            return HttpResponse(json.dumps({'status': -1, 'message': e.message}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
-

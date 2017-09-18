@@ -4,6 +4,11 @@ from . import views
 app_name = 'restapi'
 
 urlpatterns = [
+    # host/restapi/sudo/<POST password>
+    url(r'^sudo/$', views.sudo, name='sudo'),
+    # host/restapi/unsudo/
+    url(r'^unsudo/$', views.unsudo, name='unsudo'),
+
     # host/restapi/ls/<GET book_name>
     url(r'^ls/$', views.ls, name='ls'),
 
