@@ -47,8 +47,9 @@ def jsonize_goal_iterable(goal_ids):
 
 
 def read_regex(request):
-    if request.method == 'GET' and 'search' in request.GET:
-        pattern = request.GET['search']
+    regex_param_key = 'regex'
+    if request.method == 'GET' and regex_param_key in request.GET:
+        pattern = request.GET[regex_param_key]
         try:
             re.compile(pattern)
         except re.error:
@@ -60,7 +61,7 @@ def read_regex(request):
 
         return HttpResponse(json.dumps({'status': 0, 'body': json_goals}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'No search string in request'}))
+        return HttpResponse(json.dumps({'status': -1, 'message': 'No regex string in request'}))
 
 
 def read_family(request, pk):

@@ -1,0 +1,237 @@
+{% extends 'webinterface/base.html' %}
+{% block title %}Scratch{% endblock %}
+{% load static %}
+{% block extra_headers %}
+    <script src="{% static 'webinterface/vis.min.js' %}"></script>
+    <script src="{% static 'webinterface/cookies.js' %}"></script>
+    <script src="{% static 'webinterface/moment.js' %}"></script>
+    <script src="{% static 'webinterface/myjs/datetimeconverter.js' %}"></script>
+
+    <link type="text/css" rel="stylesheet" href="{% static 'webinterface/vis.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'webinterface/vis-network.min.css' %}"/>
+    {#React & babel#}
+    <script src="{% static 'webinterface/react/react.js' %}"></script>
+    <script src="{% static 'webinterface/react/react-dom.js' %}"></script>
+    <script src="{% static 'webinterface/react/babel.js' %}"></script>
+{% endblock %}
+{% block css %}
+    <style>
+        .goal-search-app {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 33%;
+            z-index: 999;
+            margin: 20px;
+            background-color: white;
+            border-top: 2px solid black;
+            border-left: 2px solid black;
+            border-right: 2px solid black;
+            font-family: monospace;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        #goal-search-input {
+            font-size: x-large;
+            color: black;
+            border-bottom: 2px solid black;
+            outline: none;
+            margin-bottom: 0;
+            width: 100%;
+            box-shadow: none;
+        }
+
+        .goal-search-result:hover {
+            background: rgba(63, 63, 63, 0.10);
+        }
+
+        .pointer:hover {
+            cursor: pointer;
+        }
+
+        .goal-search-result-set-container {
+            height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div id="something">
+
+        </div>
+    </div>
+
+    <script>
+        function truncate(string, maxLength) {
+            var label;
+            if (string.length > maxLength) {
+                label = string.substring(0, maxLength) + '...';
+            } else {
+                label = string;
+            }
+            return label;
+        }
+    </script>
+    <script type="text/babel">
+        let GoalSearchInput = React.createClass({
+            render: function () {
+                return (
+                        <label>
+                            <input id="goal-search-input"
+                                   autoFocus
+                                   onKeyDown={this.props.onKeyDown}
+                                   title="Search using regex"
+                                   type="text"/>
+                        </label>
+                );
+            }
+        });
+
+        let GoalSearchResult = React.createClass({
+            toggleIsAchieved: function (e) {
+                this.props.toggleIsAchieved(this.props.id);
+            },
+            render: function () {
+                let isAchieved = 'crop_square';
+                if (this.props.isAchieved === true)
+                    isAchieved = 'done';
+                let style = {
+                    color: this.props.color,
+                };
+                let description = this.props.description === '' ? '@no_description' : truncate(this.props.description, this.props.maxDescLength);
+                let deadlineRepr = function (deadline) {
+                    var momentDeadline = moment()
+                        .year(deadline.year)
+                        .month(deadline.month - 1)
+                        .date(deadline.day)
+                        .hour(deadline.hour)
+                        .minute(deadline.minute)
+                        .second(deadline.second)
+                        .millisecond(deadline.microsecond / 1000);
+                    var momentNow = moment();
+                    var diff = momentDeadline.diff(momentNow);
+                    var duration = moment.duration(diff);
+                    var days = parseInt(duration.asDays());
+                    var hours = parseInt(duration.asHours()) - days * 24;
+                    var minutes = parseInt(duration.asMinutes()) - days * 1440 - hours * 60;
+
+                    var ret = '';
+                    if (days !== 0)
+                        ret += days + 'day ';
+                    if (hours !== 0)
+                        ret += hours + 'hrs ';
+                    if (minutes !== 0)
+                        ret += minutes + 'min ';
+
+                    if (ret === '')
+                        ret = 'just about now';
+
+                    return ret;
+                };
+                let deadline = this.props.deadline === null ? "." : deadlineRepr(this.props.deadline);
+
+                return (
+                        <tr className="goal-search-result">
+                            <td style={style}>{description}</td>
+                            <td className="red-text">{deadline}</td>
+                            <td className="pointer" onClick={this.toggleIsAchieved}><i
+                                    className="material-icons">{isAchieved}</i></td>
+                        </tr>
+                );
+            }
+        });
+
+        let GoalSearchApp = React.createClass({
+            maxDescLength: 15,
+            getInitialState: function () {
+                return {resultSet: []};
+            },
+            regexInputOnKeyDown: function (e) {
+                let self = this;
+                switch (e.keyCode || e.which) {
+                    // Enter Key
+                    case 13:
+                        $.ajax({
+                            url: "{% url 'restapi:goal_read_regex' %}",
+                            method: 'GET',
+                            data: {regex: e.target.value},
+                            success: function (response) {
+                                let jsonResponse = JSON.parse(response);
+                                if (jsonResponse.status === 0) {
+                                    self.setState({resultSet: jsonResponse.body});
+                                } else if (jsonResponse.status === -1) {
+                                    toastr.error(jsonResponse.message);
+                                }
+                            },
+                            error: function (response) {
+                                toastr.error('Error searching for goals');
+                            }
+                        });
+                        break;
+                    // Escape key
+                    case 27:
+                        break;
+                    default:
+                        break;
+                }
+            },
+            toggleIsAchieved: function (id) {
+                let self = this;
+                $.ajax({
+                    {# Dirty Hack #}
+                    url: "{% url 'restapi:goal_toggle_is_achieved' 1729 %}".replace('1729', id),
+                    method: 'GET',
+                    success: function (response) {
+                        let jResponse = JSON.parse(response);
+                        if (jResponse.status === 0) {
+                            let resultSet = self.state.resultSet;
+                            resultSet.forEach((v, i) => {
+                                if (v.id === id) {
+                                    v.is_achieved = jResponse.body;
+                                }
+                            });
+                            self.setState({resultSet: resultSet})
+                        } else if (jResponse.status === -1) {
+                            toastr.error(jResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        toastr.error('Error toggling completion of goal');
+                    }
+                });
+            },
+            render: function () {
+                return (
+                        <div className="goal-search-app">
+                            <GoalSearchInput onKeyDown={this.regexInputOnKeyDown}/>
+                            <div className="goal-search-result-set-container">
+                                <table>
+                                    <tbody>
+                                    {
+                                        this.state.resultSet.map((goal) => {
+                                            return (
+                                                    <GoalSearchResult
+                                                            key={goal.id}
+                                                            id={goal.id}
+                                                            description={goal.description}
+                                                            deadline={goal.deadline}
+                                                            isAchieved={goal.is_achieved}
+                                                            color={goal.color}
+                                                            toggleIsAchieved={this.toggleIsAchieved}
+                                                            maxDescLength={this.maxDescLength}/>
+                                            );
+                                        })
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                );
+            }
+        });
+
+        ReactDOM.render(<GoalSearchApp/>, document.getElementById('something'));
+    </script>
+{% endblock %}

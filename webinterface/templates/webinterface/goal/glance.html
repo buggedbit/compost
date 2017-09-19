@@ -8,6 +8,10 @@
     <script src="{% static 'webinterface/myjs/datetimeconverter.js' %}"></script>
     <link type="text/css" rel="stylesheet" href="{% static 'webinterface/vis.min.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'webinterface/vis-network.min.css' %}"/>
+    {#React & babel#}
+    <script src="https://fb.me/react-15.0.0.js"></script>
+    <script src="https://fb.me/react-dom-15.0.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
 {% endblock %}
 {% block css %}
     <style>
@@ -718,7 +722,7 @@
                             $.ajax({
                                 url: "{% url 'restapi:goal_read_regex' %}",
                                 method: "GET",
-                                data: {search: $(this).val()},
+                                data: {regex: $(this).val()},
                                 success: function (response) {
                                     var jsonResponse = JSON.parse(response);
                                     if (jsonResponse.status === 0) {
@@ -837,7 +841,7 @@
         </div>
         <div id="goal-canvas-div"
              ondrop="function drop(e) {var id = e.dataTransfer.getData('id');GoalSocietyManager.selectFamilyOfGoal(id);}drop(event)"
-             ondragover="function allowDrop(e) {e.preventDefault();}allowDrop(event)"></div>
+             ondragover="event.preventDefault();"></div>
         <button id="goal-canvas-clear-btn"
                 class="btn-floating red z-depth-0"
                 title="Clear canvas"
