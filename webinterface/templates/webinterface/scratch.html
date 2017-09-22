@@ -93,6 +93,13 @@
             toggleIsAchieved: function (e) {
                 this.props.toggleIsAchieved(this.props.id);
             },
+            onGoalDragStart: function (e) {
+                e.dataTransfer.setData('id', this.props.id);
+                console.log(this.props.id);
+            },
+            onGoalClick: function (e) {
+                console.log(this.props.id);
+            },
             render: function () {
                 let isAchieved = 'crop_square';
                 if (this.props.isAchieved === true)
@@ -133,7 +140,11 @@
                 let deadline = this.props.deadline === null ? "." : deadlineRepr(this.props.deadline);
 
                 return (
-                        <tr className="goal-search-result">
+                        <tr draggable="true"
+                            id={this.props.id}
+                            className="goal-search-result"
+                            onDragStart={this.onGoalDragStart}
+                            onClick={this.onGoalClick}>
                             <td style={style}>{description}</td>
                             <td className="red-text">{deadline}</td>
                             <td className="pointer" onClick={this.toggleIsAchieved}><i
@@ -203,27 +214,31 @@
                 });
             },
             render: function () {
+                let resultSet = this.state.resultSet.map((goal) => {
+                    return (
+                            <GoalSearchResult
+                                    key={goal.id}
+                                    id={goal.id}
+                                    description={goal.description}
+                                    deadline={goal.deadline}
+                                    isAchieved={goal.is_achieved}
+                                    color={goal.color}
+                                    toggleIsAchieved={this.toggleIsAchieved}
+                                    maxDescLength={this.maxDescLength}/>
+                    );
+                });
+                resultSet = resultSet.length === 0 ? (
+                        <tr className="red-text">
+                            <td>No matching goals</td>
+                        </tr>
+                ) : resultSet;
                 return (
                         <div className="goal-search-app">
                             <GoalSearchInput onKeyDown={this.regexInputOnKeyDown}/>
                             <div className="goal-search-result-set-container">
                                 <table>
                                     <tbody>
-                                    {
-                                        this.state.resultSet.map((goal) => {
-                                            return (
-                                                    <GoalSearchResult
-                                                            key={goal.id}
-                                                            id={goal.id}
-                                                            description={goal.description}
-                                                            deadline={goal.deadline}
-                                                            isAchieved={goal.is_achieved}
-                                                            color={goal.color}
-                                                            toggleIsAchieved={this.toggleIsAchieved}
-                                                            maxDescLength={this.maxDescLength}/>
-                                            );
-                                        })
-                                    }
+                                    {resultSet}
                                     </tbody>
                                 </table>
                             </div>
@@ -233,5 +248,588 @@
         });
 
         ReactDOM.render(<GoalSearchApp/>, document.getElementById('something'));
+    </script>
+    <script>
+
+        function truncate(string, maxLength) {
+            let label;
+            if (string.length > maxLength) {
+                label = string.substring(0, maxLength) + '...';
+            } else {
+                label = string;
+            }
+            return label;
+        }
+
+        var GoalSocietyManager = {
+            _society: {
+                __families: [],
+                _getGoal: function (id) {
+                    id = Number(id);
+                    for (var i = 0; i < this.__families.length; ++i) {
+                        var ithFamily = this.__families[i];
+                        for (var j = 0; j < ithFamily.length; ++j) {
+                            var jthMember = ithFamily[j];
+                            if (jthMember.id === id) {
+                                return jthMember;
+                            }
+                        }
+                    }
+                    return false;
+                },
+                _isGoalInSociety: function (id) {
+                    id = Number(id);
+                    for (var i = 0; i < this.__families.length; ++i) {
+                        var ithFamily = this.__families[i];
+                        for (var j = 0; j < ithFamily.length; ++j) {
+                            var jthMember = ithFamily[j];
+                            if (jthMember.id === id) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                },
+                _deleteFamilyWithGoalId: function (id) {
+                    id = Number(id);
+                    for (var i = 0; i < this.__families.length; ++i) {
+                        var ithFamily = this.__families[i];
+                        for (var j = 0; j < ithFamily.length; ++j) {
+                            var jthMember = ithFamily[j];
+                            if (jthMember.id === id) {
+                                return this.__families.splice(i, 1)[0];
+                            }
+                        }
+                    }
+                },
+                _setSociety: function (family) {
+                    this.__families = [family];
+                    GoalSocietyRenderer.reRender(this.__families);
+                },
+                _setIsAchievedOfGoal: function (id, val) {
+                    id = Number(id);
+                    for (var i = 0; i < this.__families.length; ++i) {
+                        var ithFamily = this.__families[i];
+                        for (var j = 0; j < ithFamily.length; ++j) {
+                            var jthMember = ithFamily[j];
+                            if (jthMember.id === id) {
+                                jthMember.is_achieved = val;
+                                GoalSocietyRenderer.toggleColorOfNodeInGraph(id, jthMember.is_achieved);
+                                return;
+                            }
+                        }
+                    }
+                },
+                _addFamily: function (family) {
+                    this.__families.push(family);
+                    GoalSocietyRenderer.addNodes(family);
+                },
+                _editGoal: function (goal) {
+                    var id = goal.id;
+                    for (var i = 0; i < this.__families.length; ++i) {
+                        var ithFamily = this.__families[i];
+                        for (var j = 0; j < ithFamily.length; ++j) {
+                            var jthMember = ithFamily[j];
+                            if (jthMember.id === id) {
+                                this.__families[i][j] = goal;
+                                GoalSocietyRenderer.updateNode(goal);
+                                return;
+                            }
+                        }
+                    }
+                },
+                _removeFamily: function (id) {
+                    id = Number(id);
+                    var removedFamily = this._deleteFamilyWithGoalId(id);
+                    GoalSocietyRenderer.removeNodes(removedFamily);
+                },
+                _breakRelation: function (parentId, childId, newFamilies) {
+                    parentId = Number(parentId);
+                    childId = Number(childId);
+                    this._deleteFamilyWithGoalId(parentId);
+                    this.__families.push(newFamilies[0]);
+                    if (newFamilies.length === 2) {
+                        this.__families.push(newFamilies[1]);
+                    }
+                    GoalSocietyRenderer.reRender(this.__families);
+                },
+                _makeRelation: function (parentId, childId, newFamily) {
+                    parentId = Number(parentId);
+                    childId = Number(childId);
+                    this._deleteFamilyWithGoalId(parentId);
+                    this._deleteFamilyWithGoalId(childId);
+                    this.__families.push(newFamily);
+                    GoalSocietyRenderer.reRender(this.__families);
+                },
+                _clearSociety: function () {
+                    this.__families = [];
+                    GoalSocietyRenderer.reRender(this.__families);
+                },
+                _initSociety: function () {
+                    GoalSocietyRenderer.reRender(this.__families);
+                }
+            },
+            getGoal: function (id) {
+                return this._society._getGoal(id);
+            },
+            createGoal: function (description, deadline) {
+                var csrfSafeMethod = function (method) {
+                    // these HTTP methods do not require CSRF protection
+                    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                };
+                var jsonStringedData = JSON.stringify({
+                    description: description,
+                    deadline: deadline
+                });
+                $.ajax({
+                    url: "{% url 'restapi:goal_create' %}",
+                    method: 'POST',
+                    data: {
+                        data: jsonStringedData
+                    },
+                    success: function (response) {
+                        var json_response = JSON.parse(response);
+                        if (json_response.status === 0) {
+                            GoalSocietyManager._society._addFamily([json_response.body]);
+                        } else if (json_response.status === -1) {
+                            toastr.error(json_response.message);
+                        }
+                    },
+                    error: function (response) {
+                        toastr.error('Error creating goal');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            },
+            updateGoal: function (id, description, deadline) {
+                if (!this.isGoalInSociety(id)) {
+                    return false;
+                } else {
+                    var csrfSafeMethod = function (method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    };
+                    var jsonStringedData = JSON.stringify({
+                        id: id,
+                        description: description,
+                        deadline: deadline
+                    });
+                    $.ajax({
+                        url: "{% url 'restapi:goal_update' %}",
+                        method: 'POST',
+                        data: {
+                            data: jsonStringedData
+                        },
+                        success: function (response) {
+                            var json_response = JSON.parse(response);
+                            if (json_response.status === 0) {
+                                GoalSocietyManager._society._editGoal(json_response.body);
+                            } else if (json_response.status === -1) {
+                                toastr.error(json_response.message);
+                            }
+                        },
+                        error: function (response) {
+                            toastr.error('Error updating goal');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
+                        }
+                    });
+                }
+            },
+            deleteGoalIfSingle: function (id) {
+                if (!this.isGoalInSociety(id)) {
+                    return false;
+                } else {
+                    var csrfSafeMethod = function (method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    };
+                    $.ajax({
+                        url: "{% url 'restapi:goal_delete_if_single' %}",
+                        method: 'POST',
+                        data: {
+                            id: id
+                        },
+                        success: function (response) {
+                            var json_response = JSON.parse(response);
+                            if (json_response.status === 0) {
+                                GoalSocietyManager._society._removeFamily(id);
+                            } else if (json_response.status === -1) {
+                                toastr.error(json_response.message);
+                            }
+                        },
+                        error: function (response) {
+                            toastr.error('Error deleting goal');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
+                        }
+                    });
+                }
+            },
+            addRelation: function (parentId, childId) {
+                if (!this.isGoalInSociety(parentId) || !this.isGoalInSociety(childId)) {
+                    return false;
+                } else {
+                    var csrfSafeMethod = function (method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    };
+                    $.ajax({
+                        url: "{% url 'restapi:goal_add_relation' %}",
+                        method: 'POST',
+                        data: {
+                            parent_id: parentId,
+                            child_id: childId
+                        },
+                        success: function (response) {
+                            var json_response = JSON.parse(response);
+                            if (json_response.status === 0) {
+                                GoalSocietyManager._society._makeRelation(parentId, childId, json_response.body);
+                            } else if (json_response.status === -1) {
+                                toastr.error(json_response.message);
+                            }
+                        },
+                        error: function (response) {
+                            toastr.error('Error adding relation');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
+                        }
+                    });
+                }
+            },
+            removeRelation: function (parentId, childId) {
+                if (!this.isGoalInSociety(parentId) || !this.isGoalInSociety(childId)) {
+                    return false;
+                } else {
+                    var csrfSafeMethod = function (method) {
+                        // these HTTP methods do not require CSRF protection
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                    };
+                    $.ajax({
+                        url: "{% url 'restapi:goal_remove_relation' %}",
+                        method: 'POST',
+                        data: {
+                            parent_id: parentId,
+                            child_id: childId
+                        },
+                        success: function (response) {
+                            var json_response = JSON.parse(response);
+                            if (json_response.status === 0) {
+                                GoalSocietyManager._society._breakRelation(parentId, childId, json_response.body);
+                            } else if (json_response.status === -1) {
+                                toastr.error(json_response.message);
+                            }
+                        },
+                        error: function (response) {
+                            toastr.error('Error removing relation');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
+                        }
+                    });
+                }
+            },
+            isGoalInSociety: function (id) {
+                return this._society._isGoalInSociety(id);
+            },
+            selectFamilyOfGoal: function (id) {
+                if (this.isGoalInSociety(id)) {
+                    return false;
+                } else {
+                    $.ajax({
+                        {# Dirty hack #}
+                        url: "{% url 'restapi:goal_read_family' 1729 %}".replace('1729', id),
+                        method: "GET",
+                        success: function (response) {
+                            var json_response = JSON.parse(response);
+                            if (json_response.status === 0) {
+                                var family = json_response.body;
+                                GoalSocietyManager._society._addFamily(family);
+                            } else if (json_response.status === -1) {
+                                toastr.error(json_response.message);
+                            }
+                        },
+                        error: function (response) {
+                            toastr.error('Error reading family of ' + id);
+                        }
+                    });
+                }
+            },
+            deselectFamilyOfGoal: function (id) {
+                return this._society._removeFamily(id) !== undefined;
+            },
+            hardSelectFamilyOfGoal: function (id) {
+                $.ajax({
+                    {# Dirty hack #}
+                    url: "{% url 'restapi:goal_read_family' 1729 %}".replace('1729', id),
+                    method: "GET",
+                    success: function (response) {
+                        var json_response = JSON.parse(response);
+                        if (json_response.status === 0) {
+                            var family = json_response.body;
+                            GoalSocietyManager._society._setSociety(family);
+                        } else if (json_response.status === -1) {
+                            toastr.error(json_response.message);
+                        }
+                    },
+                    error: function (response) {
+                        toastr.error('Error reading family of ' + id);
+                    }
+                });
+            },
+            clearSociety: function () {
+                this._society._clearSociety();
+            },
+            toggleAchievement: function (id) {
+                if (!this.isGoalInSociety(id)) {
+                    return false;
+                } else {
+                    $.ajax({
+                        {# Dirty Hack #}
+                        url: "{% url 'restapi:goal_toggle_is_achieved' 1729 %}".replace('1729', id),
+                        method: "GET",
+                        success: function (response) {
+                            var json_response = JSON.parse(response);
+                            if (json_response.status === 0) {
+                                GoalSocietyManager._society._setIsAchievedOfGoal(id, json_response.body);
+                            } else if (json_response.status === -1) {
+                                toastr.error(json_response.message);
+                            }
+                        },
+                        error: function (response) {
+                            toastr.error('Error toggling completion of goal');
+                        }
+                    });
+                }
+            },
+            init: function () {
+                this._society._initSociety();
+            }
+        };
+        let GoalSocietyRenderer = {
+            containerId: 'goal-canvas-div',
+            edgesDataSet: undefined,
+            nodesDataSet: undefined,
+            uiSettings: {
+                MAX_LABEL_LENGTH: 15,
+                colors: {
+                    UN_ACHIEVED: {
+                        background: 'pink',
+                        border: 'purple'
+                    },
+                    ACHIEVED: {
+                        background: 'lightgreen',
+                        border: 'green'
+                    },
+                    MARKED: {
+                        background: 'orange',
+                        border: 'red'
+                    }
+                }
+            },
+            getNodeArray: function (families) {
+                let array = [];
+                for (let i = 0; i < families.length; ++i) {
+                    let ithFamily = families[i];
+                    for (let j = 0; j < ithFamily.length; ++j) {
+                        let jthMember = ithFamily[j];
+                        let color;
+                        if (jthMember.is_achieved === true) {
+                            color = GoalSocietyRenderer.uiSettings.colors.ACHIEVED;
+                        } else {
+                            color = GoalSocietyRenderer.uiSettings.colors.UN_ACHIEVED;
+                        }
+                        array.push({
+                            id: jthMember.id,
+                            color: color,
+                            label: truncate(jthMember.description, GoalSocietyRenderer.uiSettings.MAX_LABEL_LENGTH),
+                            title: jthMember.description
+                        });
+                    }
+                }
+                return array;
+            },
+            getEdgeArray: function (families) {
+                let array = [];
+                for (let i = 0; i < families.length; ++i) {
+                    let ithFamily = families[i];
+                    for (let j = 0; j < ithFamily.length; ++j) {
+                        let jthMember = ithFamily[j];
+                        for (let k = 0; k < jthMember.child_ids.length; ++k) {
+                            let child_id = jthMember.child_ids[k];
+                            array.push({
+                                from: jthMember.id,
+                                to: child_id,
+                                arrows: 'to'
+                            });
+                        }
+                    }
+                }
+                return array;
+            },
+            reRender: function (families) {
+                let emptyContainer = function () {
+                    $('#' + GoalSocietyRenderer.containerId).empty();
+                };
+                let renderGraph = function (families) {
+                    let canvasDiv = document.getElementById(GoalSocietyRenderer.containerId);
+                    GoalSocietyRenderer.nodesDataSet = new vis.DataSet(GoalSocietyRenderer.getNodeArray(families));
+                    GoalSocietyRenderer.edgesDataSet = new vis.DataSet(GoalSocietyRenderer.getEdgeArray(families));
+                    let data = {
+                        nodes: GoalSocietyRenderer.nodesDataSet,
+                        edges: GoalSocietyRenderer.edgesDataSet
+                    };
+                    let options = {
+                        nodes: {
+                            shape: 'dot',
+                            borderWidth: 5,
+                            size: 10,
+                            font: {size: 15, color: 'black', background: 'white', face: 'Roboto'}
+                        },
+                        layout: {
+                            hierarchical: {
+                                sortMethod: "directed"
+                            }
+                        },
+                        interaction: {
+                            hover: true,
+                            navigationButtons: true
+                        }
+                    };
+                    return new vis.Network(canvasDiv, data, options);
+                };
+                let setListeners = function (graph) {
+                    let NewEdgeMaker = {
+                        fromId: undefined,
+                        toId: undefined,
+                        fromColor: undefined,
+                        reset: function () {
+                            this.fromId = undefined;
+                            this.toId = undefined;
+                            this.fromColor = undefined;
+                        },
+                        startOrEnd: function (nodeId) {
+                            // Start
+                            if (this.fromId === undefined && this.toId === undefined) {
+                                this.fromId = nodeId;
+                                this.fromColor = GoalSocietyRenderer.nodesDataSet.get(nodeId).color;
+                                GoalSocietyRenderer.nodesDataSet.update({
+                                    id: NewEdgeMaker.fromId,
+                                    color: GoalSocietyRenderer.uiSettings.colors.MARKED
+                                });
+                            }
+                            // End
+                            else if (this.fromId !== undefined && this.toId === undefined) {
+                                GoalSocietyRenderer.nodesDataSet.update({
+                                    id: NewEdgeMaker.fromId,
+                                    color: NewEdgeMaker.fromColor
+                                });
+                                this.toId = nodeId;
+                                GoalSocietyManager.addRelation(this.fromId, this.toId);
+                                this.reset();
+                            }
+                        },
+                        discardOperation: function () {
+                            if (this.fromId !== undefined && this.toId === undefined) {
+                                GoalSocietyRenderer.nodesDataSet.update({
+                                    id: NewEdgeMaker.fromId,
+                                    color: NewEdgeMaker.fromColor
+                                });
+                                this.reset();
+                            }
+                        }
+                    };
+                    graph.on('click', function (params) {
+                        $('#goal-results-div').hide();
+                        // on empty space
+                        if (params.nodes.length === 0 && params.edges.length === 0) {
+                            NewEdgeMaker.discardOperation();
+                            $('#existing-goal-modal').hide();
+                        }
+                    });
+                    graph.on('selectNode', function (params) {
+                        let goal = GoalSocietyManager.getGoal(params.nodes[0]);
+                        $('#existing-goal-description').val(goal.description);
+                        $('#existing-goal-deadline').val(DatetimeConverter.format(goal.deadline));
+                        $('#existing-goal-id').val(goal.id);
+                        $('#existing-goal-modal').show();
+                    });
+                    graph.on('selectEdge', function (params) {
+                        {#console.log('selectEdge Event:', params);#}
+                    });
+                    graph.on('doubleClick', function (params) {
+                        $('#existing-goal-modal').hide();
+                        // On node
+                        if (params.nodes.length === 1) {
+                            let nodeId = params.nodes[0];
+                            NewEdgeMaker.startOrEnd(nodeId);
+                        }
+                        // On Edge
+                        else if (params.edges.length === 1) {
+                            let edge = GoalSocietyRenderer.edgesDataSet.get(params.edges[0]);
+                            let fromGoalId = edge.from;
+                            let toGoalId = edge.to;
+                            GoalSocietyManager.removeRelation(fromGoalId, toGoalId);
+                        }
+                        // On empty space
+                        else if (params.nodes.length === 0 && params.edges.length === 0) {
+                            $('#new-goal-modal').toggle();
+                        }
+                    });
+                    graph.on('oncontext', function (params) {
+                        // On node
+                        if (params.nodes.length === 1) {
+                            GoalSocietyManager.toggleAchievement(params.nodes[0]);
+                        }
+                    });
+                    graph.on('showPopup', function (nodeId) {
+                        {#console.log('popUp Event:', GoalSocietyRenderer.nodesDataSet.get(nodeId));#}
+                    });
+                };
+                emptyContainer();
+                let graph = renderGraph(families);
+                setListeners(graph);
+            },
+            addNodes: function (family) {
+                this.nodesDataSet.add(this.getNodeArray([family]));
+                this.edgesDataSet.add(this.getEdgeArray([family]));
+            },
+            updateNode: function (goal) {
+                this.nodesDataSet.update([{
+                    id: goal.id,
+                    label: truncate(goal.description, GoalSocietyRenderer.uiSettings.MAX_LABEL_LENGTH),
+                    title: goal.description
+                }]);
+            },
+            removeNodes: function (family) {
+                this.nodesDataSet.remove(this.getNodeArray([family]));
+            },
+            toggleColorOfNodeInGraph: function (id, is_achieved) {
+                let color = {};
+                if (is_achieved === true) {
+                    color.background = 'lightgreen';
+                    color.border = 'green';
+                } else {
+                    color.background = 'pink';
+                    color.border = 'purple';
+                }
+                this.nodesDataSet.update([{id: id, color: color}]);
+            }
+        };
     </script>
 {% endblock %}

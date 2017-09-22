@@ -7,6 +7,8 @@ import re
 import json
 
 
+# todo: catch MultiValueDictKeyError exceptions also
+
 def jsonize_goal(goal):
     deadline = None
     if goal.deadline is not None:
@@ -81,9 +83,8 @@ def read_family(request, pk):
 def create(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.POST['data'])
-            description = data['description']
-            deadline = data['deadline']
+            description = request.POST['description']
+            deadline = json.loads(request.POST['deadline'])
             if deadline is not None:
                 deadline = dt(year=deadline['year'],
                               month=deadline['month'],
@@ -104,10 +105,9 @@ def create(request):
 def update(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.POST['data'])
-            pk = data['id']
-            description = data['description']
-            deadline = data['deadline']
+            pk = request.POST['id']
+            description = request.POST['description']
+            deadline = json.loads(request.POST['deadline'])
             if deadline is not None:
                 deadline = dt(year=deadline['year'],
                               month=deadline['month'],

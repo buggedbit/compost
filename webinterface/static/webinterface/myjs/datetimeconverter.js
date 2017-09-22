@@ -3,15 +3,15 @@
  * Dependencies :
  *      moment.js
  * */
-var DatetimeConverter = {
+let DatetimeConverter = {
     shortForms: ['d', 'm', 'y', 'h', 't', 's', 'u'],
     longForms: ['day', 'month', 'year', 'hour', 'minute', 'second', 'microsecond'],
     getShortForm: function (longForm) {
-        var index = this.longForms.indexOf(longForm);
+        let index = this.longForms.indexOf(longForm);
         return this.shortForms[index];
     },
     getLongForm: function (shortForm) {
-        var index = this.shortForms.indexOf(shortForm);
+        let index = this.shortForms.indexOf(shortForm);
         return this.longForms[index];
     },
     parse: function (datetimeStr) {
@@ -19,10 +19,10 @@ var DatetimeConverter = {
             if (datetimeStr === '') {
                 return null;
             }
-            var ans = {microsecond: 0, second: 0, minute: 0, hour: 0, day: 0, month: 0, year: 0};
-            var spilt = datetimeStr.split(' ');
-            for (var i = 0; i < spilt.length; ++i) {
-                var unit = spilt[i];
+            let ans = {microsecond: 0, second: 0, minute: 0, hour: 0, day: 0, month: 0, year: 0};
+            let spilt = datetimeStr.split(' ');
+            for (let i = 0; i < spilt.length; ++i) {
+                let unit = spilt[i];
                 ans[this.getLongForm(unit.charAt(0))] = Number(unit.substr(1));
             }
             return ans;
@@ -34,14 +34,14 @@ var DatetimeConverter = {
         if (datetimeObj === null) {
             return '';
         }
-        var ans = '';
-        for (var i = 0; i < this.longForms.length; ++i) {
+        let ans = '';
+        for (let i = 0; i < this.longForms.length; ++i) {
             ans += this.shortForms[i] + datetimeObj[this.longForms[i]] + ' ';
         }
         return ans;
     },
     formatNow: function () {
-        var now = moment();
+        let now = moment();
         return this.getShortForm('day') + now.date() + ' '
             + this.getShortForm('month') + (now.month() + 1) + ' '
             + this.getShortForm('year') + now.year() + ' '
