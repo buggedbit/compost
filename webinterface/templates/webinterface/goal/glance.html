@@ -123,7 +123,7 @@
             padding: 0;
         }
 
-        #create-goal-view-toggle-btn {
+        .create-goal-view-toggle-btn {
             position: fixed;
             top: 80px;
             right: 20px;
@@ -467,7 +467,7 @@
                 return (
                         <div className="create-goal-view" ref="entireView" style={style}>
                             <button className="btn white black-text z-depth-0 create-goal-view-hide-btn"
-                                    title="Submit"
+                                    title="Create"
                                     onClick={(e) => {
                                         $(this.refs.entireView).hide()
                                     }}>
@@ -1176,6 +1176,10 @@
                             <GoalCreateView
                                     onGoalCreate={this.api_createGoal}
                                     isOpen={this.state.goalCreateView.isOpen}/>
+                            <button className="btn-floating green z-depth-0 create-goal-view-toggle-btn"
+                                    title="Create a goal"
+                                    onClick={this.api_toggleGoalCreateView}>
+                                <i className="material-icons">add</i></button>
                         </div>
                 );
             },
@@ -1185,10 +1189,5 @@
     </script>
     <div class="container-fluid">
         <div id="app"></div>
-        <button id="create-goal-view-toggle-btn"
-                class="btn-floating green z-depth-0"
-                title="Create a goal"
-                onclick="function toggleNewGoalModal() {$('#create-goal-view').toggle();}toggleNewGoalModal()">
-            <i class="material-icons">add</i></button>
     </div>
 {% endblock %}
