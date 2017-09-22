@@ -181,7 +181,6 @@
     <script type="text/babel">
         //
         // todo: react-ify a bit more
-        // todo: make relation, break relation
         //
 
         let truncate = function (string, maxLength) {
@@ -214,18 +213,9 @@
         });
 
         /**
-         * @propFunctions: onDescriptionClick, onAchievementClick
+         * @propFunctions: onDescriptionClick, onDeadlineClick, onAchievementClick
          * */
         let GoalSearchResult = React.createClass({
-            onDragStart: function (e) {
-                e.dataTransfer.setData('id', this.props.id);
-            },
-            onDescriptionClick: function (e) {
-                this.props.onDescriptionClick(this.props.id);
-            },
-            onAchievementClick: function (e) {
-                this.props.onAchievementClick(this.props.id);
-            },
             render: function () {
                 let isAchieved = 'crop_square';
                 if (this.props.isAchieved === true)
@@ -269,11 +259,18 @@
                         <tr draggable="true"
                             id={this.props.id}
                             className="goal-search-result"
-                            onDragStart={this.onDragStart}>
-                            <td style={style} onClick={this.onDescriptionClick}>{description}</td>
-                            <td className="red-text">{deadline}</td>
-                            <td className="goal-achievement-status" onClick={this.onAchievementClick}><i
-                                    className="material-icons">{isAchieved}</i></td>
+                            onDragStart={(e) => {
+                                e.dataTransfer.setData('goalId', this.props.id);
+                            }}>
+                            <td style={style} onClick={(e) => {
+                                this.props.onDescriptionClick(this.props.id);
+                            }}>{description}</td>
+                            <td className="red-text" onClick={(e) => {
+                                this.props.onDeadlineClick(this.props.id);
+                            }}>{deadline}</td>
+                            <td className="goal-achievement-status" onClick={(e) => {
+                                this.props.onAchievementClick(this.props.id);
+                            }}><i className="material-icons">{isAchieved}</i></td>
                         </tr>
                 );
             }
@@ -320,9 +317,6 @@
                         break;
                 }
             },
-            onRegexInputDbClick: function (e) {
-                $(this.refs.resultSetContainer).toggle();
-            },
             onToggleGoalAchievement: function (id) {
                 let self = this;
                 $.ajax({
@@ -362,33 +356,35 @@
                                     deadline={goal.deadline}
                                     isAchieved={goal.is_achieved}
                                     color={goal.color}
+
+                                    maxDescLength={this.maxDescLength}
+
                                     onAchievementClick={this.onToggleGoalAchievement}
-                                    onDescriptionClick={(id) => {
-                                        this.props.onGoalSelect(id)
-                                    }}
-                                    maxDescLength={this.maxDescLength}/>
+                                    onDescriptionClick={this.props.onGoalSelect}
+                                    onDeadlineClick={this.props.onGoalSelect}/>
                     );
                 });
-                resultSet = resultSet.length === 0 ? (
-                        <tr className="red-text">
-                            <td className="center align">
-                                <i className="material-icons">border_bottom</i>
-                                <i className="material-icons">border_bottom</i>
-                                <i className="material-icons">border_bottom</i>
-                            </td>
-                        </tr>
-                ) : resultSet;
                 let resultSetContainerStyle = {display: 'none'};
                 return (
                         <div className="goal-search-app z-depth-1">
                             <GoalSearchInput onKeyDown={this.onRegexInputKeyDown}
-                                             onDoubleClick={this.onRegexInputDbClick}/>
+                                             onDoubleClick={(e) => {
+                                                 $(this.refs.resultSetContainer).toggle();
+                                             }}/>
                             <div ref="resultSetContainer"
                                  className="goal-search-result-set-container"
                                  style={resultSetContainerStyle}>
                                 <table>
                                     <tbody>
-                                    {resultSet}
+                                    {resultSet.length === 0 ? (
+                                            <tr className="red-text">
+                                                <td className="center align">
+                                                    <i className="material-icons">border_bottom</i>
+                                                    <i className="material-icons">border_bottom</i>
+                                                    <i className="material-icons">border_bottom</i>
+                                                </td>
+                                            </tr>
+                                    ) : resultSet}
                                     </tbody>
                                 </table>
                             </div>
@@ -467,8 +463,9 @@
          * */
         let GoalCreateView = React.createClass({
             render: function () {
+                let style = this.props.isOpen === true ? {display: 'block'} : {display: 'none'};
                 return (
-                        <div className="create-goal-view" ref="entireView">
+                        <div className="create-goal-view" ref="entireView" style={style}>
                             <button className="btn white black-text z-depth-0 create-goal-view-hide-btn"
                                     title="Submit"
                                     onClick={(e) => {
@@ -503,9 +500,22 @@
             }
         });
 
-        // todo : move state of GoalCanvasWrapper to GoalGlanceView,
-        // todo : make GoalDetailView & GoalCreateView children of GoalGlanceView
         // todo : prevent change of state from external agents like drop
+        /**
+         * @propFunctions:
+         * onGoalDrop,
+         * onEmptySpaceClick,
+         * onGoalSelect,
+         * onRelationSelect,
+         * onDoubleClick,
+         * onGoalDoubleClick,
+         * onEdgeDoubleClick,
+         * onEmptySpaceDoubleClick,
+         * onGoalContext,
+         * onRelationContext,
+         * onGoalShowPopup,
+         * onTwoGoalsConsecutiveDoubleClick,
+         * */
         let GoalCanvasWrapper = React.createClass({
             prevSocietyString: undefined,
             getDefaultProps: function () {
@@ -547,6 +557,175 @@
                     },
                 };
             },
+
+            // graph fields & methods
+            graphNodeDataSet: undefined,
+            graphEdgeDataSet: undefined,
+            getNodeSet: function (society) {
+                const self = this;
+                let array = [];
+                society.forEach((family, fi) => {
+                    family.forEach((goal, gi) => {
+                        let color;
+                        if (goal.is_achieved === true) {
+                            color = self.props.graphSettings.colors.ACHIEVED;
+                        }
+                        else {
+                            color = self.props.graphSettings.colors.UN_ACHIEVED;
+                        }
+                        array.push({
+                            id: goal.id,
+                            color: color,
+                            label: truncate(goal.description, self.props.graphSettings.MAX_LABEL_LENGTH),
+                            title: goal.description
+                        });
+                    });
+                });
+                return array;
+            },
+            getEdgeSet: function (society) {
+                let array = [];
+                society.forEach((family, fi) => {
+                    family.forEach((goal, gi) => {
+                        goal.child_ids.forEach((child, ci) => {
+                            array.push({
+                                from: goal.id,
+                                to: child,
+                                arrows: 'to'
+                            });
+                        })
+                    });
+                });
+                return array;
+            },
+
+            render: function () {
+                return (<div>
+                            <div id={this.props.wrappingDivId}
+                                 onDrop={(e) => {
+                                     this.props.onGoalDrop(e.dataTransfer.getData('goalId'));
+                                 }}
+                                 onDragOver={(e) => {
+                                     e.preventDefault();
+                                 }}>
+                            </div>
+                        </div>
+                );
+            },
+            componentDidMount: function () {
+                let canvasDiv = document.getElementById(this.props.wrappingDivId);
+                // store node and edge vis data sets for future use
+                let nds = this.graphNodeDataSet = new vis.DataSet(this.getNodeSet(this.props.society));
+                let eds = this.graphEdgeDataSet = new vis.DataSet(this.getEdgeSet(this.props.society));
+                let data = {
+                    nodes: nds,
+                    edges: eds,
+                };
+                let options = this.props.graphSettings.visOptions;
+                let graph = new vis.Network(canvasDiv, data, options);
+
+                // listeners
+                let self = this;
+                let NewEdgeMaker = {
+                    fromId: undefined,
+                    toId: undefined,
+                    fromColor: undefined,
+                    reset: function () {
+                        this.fromId = undefined;
+                        this.toId = undefined;
+                        this.fromColor = undefined;
+                    },
+                    startOrEnd: function (nodeId) {
+                        // Start
+                        if (this.fromId === undefined && this.toId === undefined) {
+                            this.fromId = nodeId;
+                            this.fromColor = self.graphNodeDataSet.get(nodeId).color;
+                            self.graphNodeDataSet.update({
+                                id: NewEdgeMaker.fromId,
+                                color: self.props.graphSettings.colors.MARKED
+                            });
+                        }
+                        // End
+                        else if (this.fromId !== undefined && this.toId === undefined) {
+                            self.graphNodeDataSet.update({
+                                id: NewEdgeMaker.fromId,
+                                color: NewEdgeMaker.fromColor
+                            });
+                            this.toId = nodeId;
+                            self.props.onTwoGoalsConsecutiveDoubleClick(this.fromId, this.toId);
+                            this.reset();
+                        }
+                    },
+                    discardOperation: function () {
+                        if (this.fromId !== undefined && this.toId === undefined) {
+                            self.graphNodeDataSet.update({
+                                id: NewEdgeMaker.fromId,
+                                color: NewEdgeMaker.fromColor
+                            });
+                            this.reset();
+                        }
+                    },
+                };
+                graph.on('click', function (params) {
+                    // on empty space
+                    if (params.nodes.length === 0 && params.edges.length === 0) {
+                        self.props.onEmptySpaceClick();
+                        NewEdgeMaker.discardOperation();
+                    }
+                });
+                graph.on('selectNode', function (params) {
+                    self.props.onGoalSelect(params.nodes[0]);
+                });
+                graph.on('selectEdge', function (params) {
+                    self.props.onRelationSelect(params.nodes[0]);
+                });
+                graph.on('doubleClick', function (params) {
+                    self.props.onDoubleClick();
+                    // On node
+                    if (params.nodes.length === 1) {
+                        let nodeId = params.nodes[0];
+                        NewEdgeMaker.startOrEnd(nodeId);
+                        self.props.onGoalDoubleClick(nodeId);
+                    }
+                    // On Edge
+                    else if (params.edges.length === 1) {
+                        let edge = self.graphEdgeDataSet.get(params.edges[0]);
+                        let fromGoalId = edge.from;
+                        let toGoalId = edge.to;
+                        self.props.onEdgeDoubleClick(fromGoalId, toGoalId);
+                    }
+                    // On empty space
+                    else if (params.nodes.length === 0 && params.edges.length === 0) {
+                        self.props.onEmptySpaceDoubleClick();
+                    }
+                });
+                graph.on('oncontext', function (params) {
+                    // On node
+                    if (params.nodes.length === 1) {
+                        self.props.onGoalContext(params.nodes[0]);
+                    }
+                    // On edge
+                    else if (params.edges.length === 1) {
+                        self.props.onRelationContext(params.nodes[0]);
+                    }
+                });
+                graph.on('showPopup', function (nodeId) {
+                    self.props.onGoalShowPopup(nodeId);
+                });
+            },
+            componentDidUpdate: function () {
+                // if previous society's graph is different from this ones then re render whole graph
+                if (this.prevSocietyString !== JSON.stringify(this.props.society)) {
+                    this.graphNodeDataSet.clear();
+                    this.graphNodeDataSet.add(this.getNodeSet(this.props.society));
+                    this.graphEdgeDataSet.clear();
+                    this.graphEdgeDataSet.add(this.getEdgeSet(this.props.society));
+                    this.prevSocietyString = JSON.stringify(this.props.society);
+                }
+            },
+        });
+
+        let GoalGlanceView = React.createClass({
             getInitialState: function () {
                 return {
                     society: [],
@@ -555,6 +734,9 @@
                         description: undefined,
                         deadline: undefined,
                         isAchieved: undefined,
+                        isOpen: undefined,
+                    },
+                    goalCreateView: {
                         isOpen: undefined,
                     },
                 };
@@ -599,17 +781,18 @@
                     this.setState(state);
                 }
             },
-            s_toggleGoalAchievement: function (goalId, isAchieved) {
+            s_setGoalAchievement: function (goalId, isAchieved) {
                 let goalPos = this.s_pointToGoalInSociety(goalId);
                 if (goalPos[0]) {
                     let state = this.state;
                     state.society[goalPos[1]][goalPos[2]].is_achieved = isAchieved;
+                    this.setState(state);
                 }
             },
             s_removeFamilyIfExists: function (goalId) {
-                let state = this.state;
                 let goalPos = this.s_pointToGoalInSociety(goalId);
                 if (goalPos[0]) {
+                    let state = this.state;
                     state.society.splice(goalPos[1], 1);
                     this.setState(state);
                 }
@@ -677,6 +860,11 @@
             s_closeGoalDetailView: function () {
                 let state = this.state;
                 state.goalDetailView.isOpen = false;
+                this.setState(state);
+            },
+            s_toggleGoalCreateView: function () {
+                let state = this.state;
+                state.goalCreateView.isOpen = !state.goalCreateView.isOpen;
                 this.setState(state);
             },
 
@@ -889,7 +1077,7 @@
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
-                                self.s_toggleGoalAchievement(goalId, jResponse.body);
+                                self.s_setGoalAchievement(goalId, jResponse.body);
                             } else if (jResponse.status === -1) {
                                 toastr.error(jResponse.message);
                             }
@@ -899,6 +1087,10 @@
                         }
                     });
                 }
+            },
+            api_setGoalAchievement: function (goalId, isAchieved) {
+                goalId = Number(goalId);
+                this.s_setGoalAchievement(goalId, isAchieved);
             },
             api_deleteGoalIfSingle: function (goalId) {
                 goalId = Number(goalId);
@@ -941,63 +1133,33 @@
             api_closeGoalDetailView: function () {
                 this.s_closeGoalDetailView();
             },
-
-            // event handlers
-            onDrop: function (e) {
-                let id = e.dataTransfer.getData('id');
-                this.api_softSelectFamilyOfGoal(id);
-            },
-            onDragOver: function (e) {
-                e.preventDefault();
-            },
-
-            // graph fields & methods
-            graphNodeDataSet: undefined,
-            graphEdgeDataSet: undefined,
-            getNodeSet: function (society) {
-                const self = this;
-                let array = [];
-                society.forEach((family, fi) => {
-                    family.forEach((goal, gi) => {
-                        let color;
-                        if (goal.is_achieved === true) {
-                            color = self.props.graphSettings.colors.ACHIEVED;
-                        }
-                        else {
-                            color = self.props.graphSettings.colors.UN_ACHIEVED;
-                        }
-                        array.push({
-                            id: goal.id,
-                            color: color,
-                            label: truncate(goal.description, self.props.graphSettings.MAX_LABEL_LENGTH),
-                            title: goal.description
-                        });
-                    });
-                });
-                return array;
-            },
-            getEdgeSet: function (society) {
-                let array = [];
-                society.forEach((family, fi) => {
-                    family.forEach((goal, gi) => {
-                        goal.child_ids.forEach((child, ci) => {
-                            array.push({
-                                from: goal.id,
-                                to: child,
-                                arrows: 'to'
-                            });
-                        })
-                    });
-                });
-                return array;
+            api_toggleGoalCreateView: function () {
+                this.s_toggleGoalCreateView();
             },
 
             render: function () {
-                return (<div>
-                            <div id={this.props.wrappingDivId}
-                                 onDrop={this.onDrop}
-                                 onDragOver={this.onDragOver}>
-                            </div>
+                return (
+                        <div>
+                            <GoalSearchView onToggleGoalAchievement={this.api_setGoalAchievement}
+                                            onGoalSelect={this.api_hardSelectFamilyOfGoal}/>
+                            <GoalCanvasWrapper society={this.state.society}
+                                               onGoalDrop={this.api_softSelectFamilyOfGoal}
+                                               onEmptySpaceClick={this.api_closeGoalDetailView}
+                                               onGoalSelect={this.api_openGoalDetailView}
+                                               onRelationSelect={() => {
+                                               }}
+                                               onDoubleClick={() => {
+                                               }}
+                                               onGoalDoubleClick={(goalId) => {
+                                               }}
+                                               onEdgeDoubleClick={this.api_breakRelation}
+                                               onEmptySpaceDoubleClick={this.api_toggleGoalCreateView}
+                                               onGoalContext={this.api_toggleGoalAchievement}
+                                               onRelationContext={() => {
+                                               }}
+                                               onGoalShowPopup={() => {
+                                               }}
+                                               onTwoGoalsConsecutiveDoubleClick={this.api_makeRelation}/>
                             <button className="btn-floating red z-depth-0 goal-canvas-clear-btn"
                                     title="Clear canvas"
                                     onClick={this.api_clearCanvas}>
@@ -1007,140 +1169,16 @@
                                     description={this.state.goalDetailView.description}
                                     deadline={this.state.goalDetailView.deadline}
                                     isAchieved={this.state.goalDetailView.is_achieved}
-                                    isOpen={this.state.goalDetailView.isOpen}
                                     onGoalFamilyDeselect={this.api_deselectFamilyOfGoal}
                                     onGoalUpdate={this.api_updateGoal}
-                                    onGoalDelete={this.api_deleteGoalIfSingle}/>
+                                    onGoalDelete={this.api_deleteGoalIfSingle}
+                                    isOpen={this.state.goalDetailView.isOpen}/>
                             <GoalCreateView
-                                    onGoalCreate={this.api_createGoal}/>
+                                    onGoalCreate={this.api_createGoal}
+                                    isOpen={this.state.goalCreateView.isOpen}/>
                         </div>
                 );
             },
-            componentDidMount: function () {
-                let canvasDiv = document.getElementById(this.props.wrappingDivId);
-                // store node and edge vis data sets for future use
-                let nds = this.graphNodeDataSet = new vis.DataSet(this.getNodeSet(this.state.society));
-                let eds = this.graphEdgeDataSet = new vis.DataSet(this.getEdgeSet(this.state.society));
-                let data = {
-                    nodes: nds,
-                    edges: eds,
-                };
-                let options = this.props.graphSettings.visOptions;
-                let graph = new vis.Network(canvasDiv, data, options);
-
-                // listeners
-                let self = this;
-                let NewEdgeMaker = {
-                    fromId: undefined,
-                    toId: undefined,
-                    fromColor: undefined,
-                    reset: function () {
-                        this.fromId = undefined;
-                        this.toId = undefined;
-                        this.fromColor = undefined;
-                    },
-                    startOrEnd: function (nodeId) {
-                        // Start
-                        if (this.fromId === undefined && this.toId === undefined) {
-                            this.fromId = nodeId;
-                            this.fromColor = self.graphNodeDataSet.get(nodeId).color;
-                            self.graphNodeDataSet.update({
-                                id: NewEdgeMaker.fromId,
-                                color: self.props.graphSettings.colors.MARKED
-                            });
-                        }
-                        // End
-                        else if (this.fromId !== undefined && this.toId === undefined) {
-                            self.graphNodeDataSet.update({
-                                id: NewEdgeMaker.fromId,
-                                color: NewEdgeMaker.fromColor
-                            });
-                            this.toId = nodeId;
-                            self.api_makeRelation(this.fromId, this.toId);
-                            this.reset();
-                        }
-                    },
-                    discardOperation: function () {
-                        if (this.fromId !== undefined && this.toId === undefined) {
-                            self.graphNodeDataSet.update({
-                                id: NewEdgeMaker.fromId,
-                                color: NewEdgeMaker.fromColor
-                            });
-                            this.reset();
-                        }
-                    },
-                };
-                graph.on('click', function (params) {
-                    // on empty space
-                    if (params.nodes.length === 0 && params.edges.length === 0) {
-                        NewEdgeMaker.discardOperation();
-                        console.log('click on emty space');
-                        self.api_closeGoalDetailView();
-                    }
-                });
-                graph.on('selectNode', function (params) {
-                    self.api_openGoalDetailView(params.nodes[0]);
-                });
-                graph.on('selectEdge', function (params) {
-                    console.log('selectEdge Event:', params);
-                });
-                graph.on('doubleClick', function (params) {
-                    $('#existing-goal-modal').hide();
-                    // On node
-                    if (params.nodes.length === 1) {
-                        let nodeId = params.nodes[0];
-                        NewEdgeMaker.startOrEnd(nodeId);
-                    }
-                    // On Edge
-                    else if (params.edges.length === 1) {
-                        let edge = self.graphEdgeDataSet.get(params.edges[0]);
-                        let fromGoalId = edge.from;
-                        let toGoalId = edge.to;
-                        self.api_breakRelation(fromGoalId, toGoalId);
-                    }
-                    // On empty space
-                    else if (params.nodes.length === 0 && params.edges.length === 0) {
-                        $('#create-goal-view').toggle();
-                    }
-                });
-                graph.on('oncontext', function (params) {
-                    // On node
-                    if (params.nodes.length === 1) {
-                        self.api_toggleGoalAchievement(params.nodes[0]);
-                    }
-                });
-                {#                graph.on('showPopup', function (nodeId) {#}
-                {#                    console.log('popUp Event: ' + nodeId);#}
-                {#                });#}
-            },
-            componentDidUpdate: function () {
-                // if previous society's graph is different from this ones then re render whole graph
-                if (this.prevSocietyString !== JSON.stringify(this.state.society)) {
-                    this.graphNodeDataSet.clear();
-                    this.graphNodeDataSet.add(this.getNodeSet(this.state.society));
-                    this.graphEdgeDataSet.clear();
-                    this.graphEdgeDataSet.add(this.getEdgeSet(this.state.society));
-                    this.prevSocietyString = JSON.stringify(this.state.society);
-                }
-            },
-        });
-
-        let GoalGlanceView = React.createClass({
-            otga: function () {
-                console.log('otga');
-            },
-            ogs: function () {
-                console.log('ogs');
-            },
-            render: function () {
-                let goalWrapper = <GoalCanvasWrapper/>;
-                return (
-                        <div>
-                            <GoalSearchView onToggleGoalAchievement={this.otga} onGoalSelect={this.ogs}/>
-                            {goalWrapper}
-                        </div>
-                );
-            }
         });
 
         ReactDOM.render(<GoalGlanceView/>, document.getElementById('app'));
