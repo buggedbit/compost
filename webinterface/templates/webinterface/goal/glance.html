@@ -371,7 +371,7 @@
                 });
                 let resultSetContainerStyle = {display: 'none'};
                 return (
-                        <div className="goal-search-app z-depth-1">
+                        <div ref="entireView" className="goal-search-app z-depth-1">
                             <GoalSearchInput onKeyDown={this.onRegexInputKeyDown}
                                              onDoubleClick={(e) => {
                                                  $(this.refs.resultSetContainer).toggle();
@@ -395,7 +395,18 @@
                             </div>
                         </div>
                 );
-            }
+            },
+            componentDidMount: function () {
+                let self = this;
+                $(document).click(function (e) {
+                    let $entireView = $(self.refs.entireView);
+                    let $resultSetContainer = $(self.refs.resultSetContainer);
+                    // if the target of the click isn't the container nor a descendant of the container
+                    if (!$entireView.is(e.target) && $entireView.has(e.target).length === 0) {
+                        $resultSetContainer.hide();
+                    }
+                });
+            },
         });
 
         /**
@@ -500,7 +511,6 @@
                                     }}>
                                 <i className="material-icons">send</i></button>
                         </div>
-
                 );
             }
         });
@@ -934,7 +944,9 @@
                             if (jResponse.status === 0) {
                                 let family = jResponse.body;
                                 self.s_setSocietyToFamily(family);
-                            } else if (jResponse.status === -1) {
+                                self.s_openGoalDetailView(goalId);
+                            }
+                            else if (jResponse.status === -1) {
                                 toastr.error(jResponse.message);
                             }
                         },
@@ -1179,12 +1191,12 @@
                                                }}
                                                onEdgeDoubleClick={this.api_breakRelation}
                                                onEmptySpaceDoubleClick={this.api_toggleGoalCreateView}
+                                               onTwoGoalsConsecutiveDoubleClick={this.api_makeRelation}
                                                onGoalContext={this.api_toggleGoalAchievement}
                                                onRelationContext={() => {
                                                }}
                                                onGoalShowPopup={() => {
-                                               }}
-                                               onTwoGoalsConsecutiveDoubleClick={this.api_makeRelation}/>
+                                               }}/>
                             <button className="btn-floating red z-depth-0 goal-canvas-clear-btn"
                                     title="Clear canvas"
                                     onClick={this.api_clearCanvas}>
