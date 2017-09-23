@@ -296,7 +296,10 @@
                             success: function (response) {
                                 let jsonResponse = JSON.parse(response);
                                 if (jsonResponse.status === 0) {
-                                    self.setState({resultSet: jsonResponse.body});
+                                    self.setState((prevState, props) => {
+                                        let resultSet = jsonResponse.body;
+                                        return {resultSet: resultSet};
+                                    });
                                     $(self.refs.resultSetContainer).show();
                                 }
                                 else if (jsonResponse.status === -1) {
@@ -328,13 +331,15 @@
                         if (jResponse.status === 0) {
                             let isAchieved = jResponse.body;
                             // set state
-                            let resultSet = self.state.resultSet;
-                            resultSet.forEach((v, i) => {
-                                if (v.id === id) {
-                                    v.is_achieved = isAchieved;
-                                }
+                            self.setState((prevState, props) => {
+                                let resultSet = prevState.resultSet;
+                                resultSet.forEach((v, i) => {
+                                    if (v.id === id) {
+                                        v.is_achieved = isAchieved;
+                                    }
+                                });
+                                return {resultSet: resultSet};
                             });
-                            self.setState({resultSet: resultSet});
                             // call back to parent
                             self.props.onToggleGoalAchievement(id, isAchieved);
                         } else if (jResponse.status === -1) {
@@ -500,7 +505,6 @@
             }
         });
 
-        // todo : prevent change of state from external agents like drop
         /**
          * @propFunctions:
          * onGoalDrop,
@@ -764,41 +768,49 @@
                 return answer;
             },
             s_setSocietyToFamily: function (family) {
-                let state = this.state;
-                state.society = [family];
-                this.setState(state);
+                this.setState((prevState, props) => {
+                    let society = [family];
+                    return {society: society};
+                });
             },
             s_addFamily: function (family) {
-                let state = this.state;
-                state.society.push(family);
-                this.setState(state);
+                this.setState((prevState, props) => {
+                    let society = prevState.society;
+                    society.push(family);
+                    return {society: society};
+                });
             },
             s_updateGoalInSociety: function (goalId, goal) {
                 let goalIndex = this.s_pointToGoalInSociety(goalId);
                 if (goalIndex[0]) {
-                    let state = this.state;
-                    state.society[goalIndex[1]][goalIndex[2]] = goal;
-                    this.setState(state);
+                    this.setState((prevState, props) => {
+                        let society = prevState.society;
+                        society[goalIndex[1]][goalIndex[2]] = goal;
+                        return {society: society};
+                    });
                 }
             },
             s_setGoalAchievement: function (goalId, isAchieved) {
                 let goalPos = this.s_pointToGoalInSociety(goalId);
                 if (goalPos[0]) {
-                    let state = this.state;
-                    state.society[goalPos[1]][goalPos[2]].is_achieved = isAchieved;
-                    this.setState(state);
+                    this.setState((prevState, props) => {
+                        let society = prevState.society;
+                        society[goalPos[1]][goalPos[2]].is_achieved = isAchieved;
+                        return {society: society};
+                    });
                 }
             },
             s_removeFamilyIfExists: function (goalId) {
                 let goalPos = this.s_pointToGoalInSociety(goalId);
                 if (goalPos[0]) {
-                    let state = this.state;
-                    state.society.splice(goalPos[1], 1);
-                    this.setState(state);
+                    this.setState((prevState, props) => {
+                        let society = prevState.society;
+                        society.splice(goalPos[1], 1);
+                        return {society: society};
+                    });
                 }
             },
             s_makeRelation: function (parentId, childId, newFamily) {
-                let state = this.state;
                 let removeFamilyIfExists = function (society, goalId) {
                     let familyIndex = -1;
                     society.forEach((family, fi) => {
@@ -811,13 +823,15 @@
                     if (familyIndex > -1)
                         society.splice(familyIndex, 1);
                 };
-                removeFamilyIfExists(state.society, parentId);
-                removeFamilyIfExists(state.society, childId);
-                state.society.push(newFamily);
-                this.setState(state);
+                this.setState((prevState, props) => {
+                    let society = prevState.society;
+                    removeFamilyIfExists(society, parentId);
+                    removeFamilyIfExists(society, childId);
+                    society.push(newFamily);
+                    return {society: society};
+                });
             },
             s_breakRelation: function (parentId, childId, setOfNewFamilies) {
-                let state = this.state;
                 let removeFamilyIfExists = function (society, goalId) {
                     let familyIndex = -1;
                     society.forEach((family, fi) => {
@@ -830,42 +844,53 @@
                     if (familyIndex > -1)
                         society.splice(familyIndex, 1);
                 };
-                removeFamilyIfExists(state.society, parentId);
-                removeFamilyIfExists(state.society, childId);
-                state.society.push(setOfNewFamilies[0]);
-                // if by breaking relation the family was split into two
-                if (setOfNewFamilies.length === 2) {
-                    state.society.push(setOfNewFamilies[1]);
-                }
-                this.setState(state);
+                this.setState((prevState, props) => {
+                    let society = prevState.society;
+                    removeFamilyIfExists(society, parentId);
+                    removeFamilyIfExists(society, childId);
+                    society.push(setOfNewFamilies[0]);
+                    // if by breaking relation the family was split into two
+                    if (setOfNewFamilies.length === 2) {
+                        society.push(setOfNewFamilies[1]);
+                    }
+                    return {society: society};
+                });
             },
             s_clearSociety: function () {
-                let state = this.state;
-                state.society = [];
-                this.setState(state);
+                this.setState((prevState, props) => {
+                    let society = [];
+                    return {society: society};
+                });
             },
             s_openGoalDetailView: function (goalId) {
                 let goalPos = this.s_pointToGoalInSociety(goalId);
                 if (goalPos[0]) {
-                    let state = this.state;
-                    let goalToBeOpened = state.society[goalPos[1]][goalPos[2]];
-                    state.goalDetailView.id = goalToBeOpened.id;
-                    state.goalDetailView.description = goalToBeOpened.description;
-                    state.goalDetailView.deadline = goalToBeOpened.deadline;
-                    state.goalDetailView.isAchieved = goalToBeOpened.isAchieved;
-                    state.goalDetailView.isOpen = true;
-                    this.setState(state);
+                    this.setState((prevState, props) => {
+                        let society = prevState.society;
+                        let goalDetailView = prevState.goalDetailView;
+                        let goalToBeOpened = society[goalPos[1]][goalPos[2]];
+                        goalDetailView.id = goalToBeOpened.id;
+                        goalDetailView.description = goalToBeOpened.description;
+                        goalDetailView.deadline = goalToBeOpened.deadline;
+                        goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                        goalDetailView.isOpen = true;
+                        return {goalDetailView: goalDetailView};
+                    });
                 }
             },
             s_closeGoalDetailView: function () {
-                let state = this.state;
-                state.goalDetailView.isOpen = false;
-                this.setState(state);
+                this.setState((prevState, props) => {
+                    let goalDetailView = prevState.goalDetailView;
+                    goalDetailView.isOpen = false;
+                    return {goalDetailView: goalDetailView};
+                });
             },
             s_toggleGoalCreateView: function () {
-                let state = this.state;
-                state.goalCreateView.isOpen = !state.goalCreateView.isOpen;
-                this.setState(state);
+                this.setState((prevState, props) => {
+                    let goalCreateView = prevState.goalCreateView;
+                    goalCreateView.isOpen = !goalCreateView.isOpen;
+                    return {goalCreateView: goalCreateView};
+                });
             },
 
             // api
