@@ -1,6 +1,7 @@
 {% extends 'webinterface/base.html' %}
+{% load static %}
 {% block extra_headers %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    <script src="{% static 'webinterface/materialize.min.js' %}"></script>
 {% endblock %}
 {% block title %}\Errands{% endblock %}
 {% block body %}
