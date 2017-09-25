@@ -24,9 +24,15 @@
             margin-bottom: 0 !important;
             box-shadow: none !important;
             border-bottom: 1px solid black !important;
-            width: 90% !important;
+            width: 80% !important;
             padding-left: 5% !important;
-            padding-right: 5% !important;
+            padding-right: 15% !important;
+        }
+
+        .goal-search-all-inclusive-checkbox {
+            position: absolute;
+            right: 0;
+            padding: 10px;
         }
 
         .goal-search-app {
@@ -179,10 +185,6 @@
 {% endblock %}
 {% block body %}
     <script type="text/babel">
-        //
-        // todo: react-ify a bit more
-        //
-
         let truncate = function (string, maxLength) {
             let label;
             if (string.length > maxLength) {
@@ -193,24 +195,6 @@
             }
             return label;
         };
-
-        /**
-         * @propFunctions: onKeyDown, onDoubleClick
-         * */
-        let GoalSearchInput = React.createClass({
-            render: function () {
-                return (
-                        <label>
-                            <input className="goal-search-input"
-                                   autoFocus
-                                   onKeyDown={this.props.onKeyDown}
-                                   onDoubleClick={this.props.onDoubleClick}
-                                   title="Search"
-                                   type="text"/>
-                        </label>
-                );
-            }
-        });
 
         /**
          * @propFunctions: onDescriptionClick, onDeadlineClick, onAchievementClick
@@ -289,10 +273,14 @@
                 switch (e.keyCode || e.which) {
                     // Enter Key
                     case 13:
+                        let achievedAlso = this.refs.achievedAlso.checked === true ? 1 : 0;
                         $.ajax({
                             url: "{% url 'restapi:goal_read_regex' %}",
                             method: 'GET',
-                            data: {regex: e.target.value},
+                            data: {
+                                regex: e.target.value,
+                                achieved_also: achievedAlso,
+                            },
                             success: function (response) {
                                 let jsonResponse = JSON.parse(response);
                                 if (jsonResponse.status === 0) {
@@ -372,10 +360,27 @@
                 let resultSetContainerStyle = {display: 'none'};
                 return (
                         <div ref="entireView" className="goal-search-app z-depth-1">
-                            <GoalSearchInput onKeyDown={this.onRegexInputKeyDown}
-                                             onDoubleClick={(e) => {
-                                                 $(this.refs.resultSetContainer).toggle();
-                                             }}/>
+                            <label>
+                                <input className="goal-search-input"
+                                       ref="input"
+                                       autoFocus
+                                       onKeyDown={this.onRegexInputKeyDown}
+                                       onDoubleClick={(e) => {
+                                           $(this.refs.resultSetContainer).toggle();
+                                       }}
+                                       title="Search"
+                                       type="text"/>
+                            </label>
+                            <span className="goal-search-all-inclusive-checkbox"
+                                  onClick={(e) => {
+                                      $(this.refs.input).focus();
+                                  }}>
+                                <input type="checkbox" ref="achievedAlso" className="filled-in"
+                                       id="this-is-a-really-long-id-just-in-case-that-it-does-not-collide-with-some-other-id-that-would-come-in-future"/>
+                                <label htmlFor="this-is-a-really-long-id-just-in-case-that-it-does-not-collide-with-some-other-id-that-would-come-in-future">
+                                    <i className="material-icons">all_inclusive</i>
+                                </label>
+                            </span>
                             <div ref="resultSetContainer"
                                  className="goal-search-result-set-container"
                                  style={resultSetContainerStyle}>
@@ -428,7 +433,7 @@
                                 <textarea className="goal-detail-view-description"
                                           defaultValue={this.props.description === undefined ? '' : this.props.description}
                                           ref="description">
-                                </textarea>
+                </textarea>
                             </label>
                             <label>
                                 Deadline: t -> minute, m -> month, u -> microsecond
@@ -760,7 +765,6 @@
             // does not validate params
             // WARNING: each state method may change graph before returning
             //          most probably you don't want to use a state method in a loop or in consecutive repetition
-            // todo : use this.setState((prevState, props) => ({});
             s_pointToGoalInSociety: function (goalId) {
                 let answer = [false, -1, -1];
                 // todo : actually all such forEach loops

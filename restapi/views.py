@@ -7,8 +7,6 @@ import re
 import json
 
 
-# todo: catch MultiValueDictKeyError exceptions also
-
 def jsonize_goal(goal):
     deadline = None
     if goal.deadline is not None:
@@ -49,19 +47,26 @@ def jsonize_goal_iterable(goal_ids):
 
 
 def read_regex(request):
-    regex_param_key = 'regex'
-    if request.method == 'GET' and regex_param_key in request.GET:
-        pattern = request.GET[regex_param_key]
+    if request.method == 'GET':
         try:
+            pattern = request.GET['regex']
             re.compile(pattern)
+
+            achieved_also = request.GET['achieved_also']
+            if achieved_also == '1':
+                matched_goals = Goal.objects.filter(description__iregex=pattern).order_by('is_achieved', 'deadline')
+            else:
+                matched_goals = Goal.objects.filter(description__iregex=pattern,
+                                                    is_achieved__exact=False).order_by('is_achieved', 'deadline')
+            json_goals = []
+
+            for goal in matched_goals:
+                json_goals.append(jsonize_goal(goal))
+            return HttpResponse(json.dumps({'status': 0, 'body': json_goals}))
+        except MultiValueDictKeyError:
+            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except re.error:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Not proper regex'}))
-        matched_goals = Goal.objects.filter(description__iregex=pattern).order_by('is_achieved', 'deadline')
-        json_goals = []
-        for goal in matched_goals:
-            json_goals.append(jsonize_goal(goal))
-
-        return HttpResponse(json.dumps({'status': 0, 'body': json_goals}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'No regex string in request'}))
 
@@ -96,7 +101,7 @@ def create(request):
             new_goal = Goal(description=description, deadline=deadline)
             new_goal.save()
             return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(new_goal)}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
         return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
@@ -124,7 +129,7 @@ def update(request):
                 return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(existing_goal)}))
             else:
                 return HttpResponse(json.dumps({'status': -1, 'message': is_saved[1]}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
@@ -143,7 +148,7 @@ def delete_if_single(request):
                 return HttpResponse(json.dumps({'status': 0, 'body': jsoned_goal}))
             else:
                 return HttpResponse(json.dumps({'status': -1, 'message': 'Goal is not single'}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
@@ -168,7 +173,7 @@ def add_relation(request):
             else:
                 return HttpResponse(json.dumps({'status': -1, 'message': was_relation_added[1]}))
 
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
@@ -195,7 +200,7 @@ def remove_relation(request):
                 body.append(jsoned_child_family)
 
             return HttpResponse(json.dumps({'status': 0, 'body': body}))
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except ObjectDoesNotExist:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
