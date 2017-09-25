@@ -7,8 +7,3 @@ Running Instructions
 3. Run the server
     python manage.py runserver
 
-Todo
-====
-(Done)  1. improve token making
-        2. block until ajax returns
-(Done)  3. book name ..
