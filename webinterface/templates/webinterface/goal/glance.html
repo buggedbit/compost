@@ -488,7 +488,7 @@
                 return (
                         <div className="create-goal-view" ref="entireView" style={style}>
                             <button className="btn white black-text z-depth-0 create-goal-view-hide-btn"
-                                    title="Create"
+                                    title="Create a goal"
                                     onClick={(e) => {
                                         $(this.refs.entireView).hide()
                                     }}>
@@ -509,6 +509,8 @@
                                         let deadline = DatetimeConverter.parse(this.refs.deadline.value);
                                         if (deadline !== false) {
                                             this.props.onGoalCreate(description, deadline);
+                                            this.refs.description.value = '';
+                                            this.refs.deadline.value = '';
                                         }
                                         else {
                                             toastr.error('Incorrect datetime format, try again');
