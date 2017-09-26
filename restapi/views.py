@@ -52,8 +52,8 @@ def read_regex(request):
             pattern = request.GET['regex']
             re.compile(pattern)
 
-            achieved_also = request.GET['achieved_also']
-            if achieved_also == '1':
+            global_search = request.GET['global_search']
+            if global_search == '1':
                 matched_goals = Goal.objects.filter(description__iregex=pattern).order_by('is_achieved', 'deadline')
             else:
                 matched_goals = Goal.objects.filter(description__iregex=pattern,
