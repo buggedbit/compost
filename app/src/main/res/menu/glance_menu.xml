@@ -12,5 +12,9 @@
     <item
         android:id="@+id/a_glance_menu_pull_all_goals_item"
         android:title="@string/pull_all_goals" />
+    <item
+        android:id="@+id/a_glance_menu_global_search_item"
+        android:checkable="true"
+        android:title="@string/global_search" />
 
 </menu>

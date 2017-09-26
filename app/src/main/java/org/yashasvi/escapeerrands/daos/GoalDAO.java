@@ -13,7 +13,7 @@ public interface GoalDAO {
      * @return null if any problem else # of matched goals
      */
     @Nullable
-    public List<Goal> getGoalsByRegex(@NonNull final String pattern);
+    public List<Goal> getGoalsByRegex(@NonNull final String pattern, final boolean globalSearch);
 
     public List<Goal> getFamilyOfGoal(final int id);
 

@@ -23,6 +23,8 @@ public class Glance extends AppCompatActivity {
 
     private GoalDAO goalDAO = new GoalDAOImpl();
     private ListView goalListView;
+    private boolean globalSearch = false;
+    private String prevRegexPattern = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class Glance extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String string) {
+                prevRegexPattern = string;
                 new GoalPuller(string).execute();
                 return false;
             }
@@ -50,16 +53,24 @@ public class Glance extends AppCompatActivity {
             }
         });
 
-        MenuItem pullAllGoals = menu.findItem(R.id.a_glance_menu_pull_all_goals_item);
-        pullAllGoals.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.a_glance_menu_pull_all_goals_item:
+                prevRegexPattern = "";
                 new GoalPuller("").execute();
                 return false;
-            }
-        });
-
-        return true;
+            case R.id.a_glance_menu_global_search_item:
+                boolean isChecked = !item.isChecked();
+                globalSearch = isChecked;
+                item.setChecked(isChecked);
+                new GoalPuller(prevRegexPattern).execute();
+            default:
+                return false;
+        }
     }
 
     private class GoalPuller extends AsyncTask<String, Integer, List<Goal>> {
@@ -79,7 +90,7 @@ public class Glance extends AppCompatActivity {
 
         @Override
         protected List<Goal> doInBackground(final String... strings) {
-            return goalDAO.getGoalsByRegex(pattern);
+            return goalDAO.getGoalsByRegex(pattern, globalSearch);
         }
 
         @Override

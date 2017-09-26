@@ -26,18 +26,21 @@ public class Goal implements Serializable {
     @Nullable
     private DateTime deadline;
     private boolean isAchieved;
+    private String color;
 
     public Goal(final int id,
                 @NonNull final List<Integer> parentIds,
                 @NonNull final List<Integer> childIds,
                 @NonNull final String description,
                 @Nullable final DateTime deadline,
-                final boolean isAchieved) {
+                final boolean isAchieved,
+                @NonNull final String color) {
         this.id = id;
         this.parentIds = parentIds;
         this.childIds = childIds;
         this.description = description;
         this.deadline = deadline;
         this.isAchieved = isAchieved;
+        this.color = color;
     }
 }

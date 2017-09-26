@@ -24,11 +24,12 @@ import okhttp3.Response;
 public class GoalDAOImpl implements GoalDAO {
 
     @Override
-    public List<Goal> getGoalsByRegex(@NonNull String pattern) {
+    public List<Goal> getGoalsByRegex(@NonNull final String pattern, final boolean globalSearch) {
         try {
             // Sending request
             HttpUrl.Builder urlBuilder = HttpUrl.parse("https://escape-errands.herokuapp.com/rest/goal/read/regex/").newBuilder();
-            urlBuilder.addQueryParameter("search", pattern);
+            urlBuilder.addQueryParameter("regex", pattern);
+            urlBuilder.addQueryParameter("global_search", globalSearch ? "1" : "0");
             String url = urlBuilder.build().toString();
 
             OkHttpClient client = new OkHttpClient.Builder()
@@ -51,13 +52,13 @@ public class GoalDAOImpl implements GoalDAO {
                 JSONArray jParentIds = jsonGoal.getJSONArray("parent_ids");
                 List<Integer> parentIds = new ArrayList<>();
                 for (int j = 0; j < jParentIds.length(); j++) {
-                    parentIds.add(jParentIds.getInt(i));
+                    parentIds.add(jParentIds.getInt(j));
                 }
 
                 JSONArray jChildIds = jsonGoal.getJSONArray("child_ids");
                 List<Integer> childIds = new ArrayList<>();
                 for (int j = 0; j < jChildIds.length(); j++) {
-                    childIds.add(jChildIds.getInt(i));
+                    childIds.add(jChildIds.getInt(j));
                 }
 
                 DateTime deadline;
@@ -82,7 +83,8 @@ public class GoalDAOImpl implements GoalDAO {
                         childIds,
                         jsonGoal.getString("description"),
                         deadline,
-                        jsonGoal.getBoolean("is_achieved")
+                        jsonGoal.getBoolean("is_achieved"),
+                        jsonGoal.getString("color")
                 );
 
                 answer.add(goal);
@@ -96,12 +98,12 @@ public class GoalDAOImpl implements GoalDAO {
     }
 
     @Override
-    public List<Goal> getFamilyOfGoal(int id) {
+    public List<Goal> getFamilyOfGoal(final int id) {
         return null;
     }
 
     @Override
-    public Boolean toggleIsAchieved(int id) {
+    public Boolean toggleIsAchieved(final int id) {
         try {
             // Sending request
             HttpUrl.Builder urlBuilder = HttpUrl.parse("https://escape-errands.herokuapp.com/rest/goal/toggle/is_achieved/" + id).newBuilder();
@@ -117,8 +119,13 @@ public class GoalDAOImpl implements GoalDAO {
 
             // Parsing response
             JSONObject httpBody = new JSONObject(response.body().string());
-            // NOTE : there is a body JSON array in body HTTP
-            return httpBody.getBoolean("body");
+            if (httpBody.getInt("status") == 0) {
+                boolean isAchieved = httpBody.getBoolean("body");
+                return isAchieved;
+            } else {
+                // todo : return the error message
+                return null;
+            }
         } catch (IOException | JSONException | NullPointerException e) {
             e.printStackTrace();
             return null;
