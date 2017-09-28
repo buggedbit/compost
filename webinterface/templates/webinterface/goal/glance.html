@@ -243,7 +243,8 @@
                         <tr draggable="true"
                             id={this.props.id}
                             className="goal-search-result"
-                            onDragStart={(e) => {
+			    title={this.props.description}
+			    onDragStart={(e) => {
                                 e.dataTransfer.setData('goalId', this.props.id);
                             }}>
                             <td style={style} onClick={(e) => {
