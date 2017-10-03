@@ -3,4 +3,6 @@
     <string name="search_in_menu">Search</string>
     <string name="pull_all_goals">Pull Everything</string>
     <string name="global_search">Global Search</string>
+    <string name="goal_glance">Goal Glance</string>
+    <string name="swipe_down_to_refresh">Swipe Down to Refresh</string>
 </resources>

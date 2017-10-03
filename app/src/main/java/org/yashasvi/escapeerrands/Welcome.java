@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 public class Welcome extends AppCompatActivity {
 
-    private static final String WELCOME_MESSAGE = "Escape Errands!";
+    private static final String WELCOME_WORD1 = "Escape ";
+    private static final String WELCOME_WORD2 = "Errands";
     private TextView welcomeMessage;
 
     @Override
@@ -26,9 +27,13 @@ public class Welcome extends AppCompatActivity {
         protected Integer doInBackground(Integer... integers) {
             try {
                 Thread.sleep(500);
-                for (int i = 0; i < WELCOME_MESSAGE.length() + 1; ++i) {
-                    publishProgress(WELCOME_MESSAGE.substring(0, i));
-                    Thread.sleep(10);
+                int maxLength = Math.max(WELCOME_WORD1.length(), WELCOME_WORD2.length());
+                for (int i = 0; i < maxLength + 1; ++i) {
+                    publishProgress(
+                            WELCOME_WORD1.substring(0, Math.min(i, WELCOME_WORD1.length()))
+                            + WELCOME_WORD2.substring(0, Math.min(i, WELCOME_WORD2.length()))
+                    );
+                    Thread.sleep(30);
                 }
                 Thread.sleep(100);
             } catch (InterruptedException ignored) {

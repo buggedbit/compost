@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -23,6 +25,7 @@ public class Glance extends AppCompatActivity {
 
     private GoalDAO goalDAO = new GoalDAOImpl();
     private ListView goalListView;
+    private SwipeRefreshLayout goalListSwipeRefresh;
     private boolean globalSearch = false;
     private String prevRegexPattern = "";
 
@@ -31,7 +34,18 @@ public class Glance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_glance);
         goalListView = (ListView) findViewById(R.id.a_glance_goal_list);
-        new GoalPuller("").execute();
+        goalListSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.a_glance_goal_list_swipe_refresh);
+        goalListSwipeRefresh.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        goalListSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new GoalPuller(prevRegexPattern).execute();
+            }
+        });
     }
 
     @Override
@@ -77,10 +91,10 @@ public class Glance extends AppCompatActivity {
         private ProgressDialog progressDialog;
         private String pattern;
 
-        public GoalPuller(final String pattern) {
+        private GoalPuller(final String pattern) {
             this.pattern = pattern;
             progressDialog = new ProgressDialog(Glance.this);
-            progressDialog.setMessage("Connecting ...");
+            progressDialog.setMessage("Searching ...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(false);
             progressDialog.setCanceledOnTouchOutside(false);
@@ -100,6 +114,7 @@ public class Glance extends AppCompatActivity {
             } else {
                 goalListView.setAdapter(new GoalListAdapter(Glance.this, goalList));
             }
+            goalListSwipeRefresh.setRefreshing(false);
             progressDialog.dismiss();
         }
     }

@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".Welcome"
             android:noHistory="true">
@@ -20,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Glance" />
+
+        <activity android:name=".Glance"
+            android:label="@string/goal_glance"/>
     </application>
 
 </manifest>

@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:textSize="40sp"
         android:layout_centerInParent="true"
-        android:fontFamily="casual"/>
+        android:fontFamily="monospace"/>
 
 </RelativeLayout>
