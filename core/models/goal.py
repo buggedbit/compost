@@ -147,7 +147,7 @@ class Goal(models.Model):
             if child.id not in family:
                 self._dfs_for_family(child, family)
 
-    def get_family_set(self):
+    def get_family_id_set(self):
         family = set()
         self._dfs_for_family(self, family)
         return family

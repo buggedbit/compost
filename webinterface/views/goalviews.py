@@ -5,6 +5,7 @@ from datetime import datetime as dt
 from core.models.goal import Goal
 import re
 import json
+from core.dacs.goaldac import GoalDAC
 
 
 def jsonize_goal(goal):
@@ -49,19 +50,14 @@ def jsonize_goal_iterable(goal_ids):
 def read_regex(request):
     if request.method == 'GET':
         try:
-            pattern = request.GET['regex']
-            re.compile(pattern)
-
+            regex = request.GET['regex']
             global_search = request.GET['global_search']
-            if global_search == '1':
-                matched_goals = Goal.objects.filter(description__iregex=pattern).order_by('is_achieved', 'deadline')
-            else:
-                matched_goals = Goal.objects.filter(description__iregex=pattern,
-                                                    is_achieved__exact=False).order_by('is_achieved', 'deadline')
-            json_goals = []
 
+            matched_goals = GoalDAC.read_regex(regex, global_search)
+            json_goals = []
             for goal in matched_goals:
                 json_goals.append(jsonize_goal(goal))
+
             return HttpResponse(json.dumps({'status': 0, 'body': json_goals}))
         except MultiValueDictKeyError:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
@@ -73,11 +69,10 @@ def read_regex(request):
 
 def read_family(request, pk):
     try:
-        goal = Goal.objects.get(pk=pk)
-        family_of_ids = goal.get_family_set()
+
+        goal_family = GoalDAC.read_family(pk)
         json_family = []
-        for member_id in family_of_ids:
-            member = Goal.objects.get(pk=member_id)
+        for member in goal_family:
             json_family.append(jsonize_goal(member))
 
         return HttpResponse(json.dumps({'status': 0, 'body': json_family}))
@@ -90,6 +85,7 @@ def create(request):
         try:
             description = request.POST['description']
             deadline = json.loads(request.POST['deadline'])
+
             if deadline is not None:
                 deadline = dt(year=deadline['year'],
                               month=deadline['month'],
@@ -98,9 +94,13 @@ def create(request):
                               minute=deadline['minute'],
                               second=deadline['second'],
                               microsecond=deadline['microsecond'])
-            new_goal = Goal(description=description, deadline=deadline)
-            new_goal.save()
-            return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(new_goal)}))
+            is_created = GoalDAC.create(description, deadline)
+
+            if is_created[0] is True:
+                return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(is_created[1])}))
+            else:
+                return HttpResponse(json.dumps({'status': -1, 'message': is_created[1]}))
+
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
     else:
@@ -121,14 +121,13 @@ def update(request):
                               minute=deadline['minute'],
                               second=deadline['second'],
                               microsecond=deadline['microsecond'])
-            existing_goal = Goal.objects.get(pk=pk)
-            existing_goal.description = description
-            existing_goal.deadline = deadline
-            is_saved = existing_goal.save()
-            if is_saved is True:
-                return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(existing_goal)}))
+            is_updated = GoalDAC.update(pk, description, deadline)
+
+            if is_updated[0] is True:
+                return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(is_updated[1])}))
             else:
-                return HttpResponse(json.dumps({'status': -1, 'message': is_saved[1]}))
+                return HttpResponse(json.dumps({'status': -1, 'message': is_updated[1]}))
+
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except ObjectDoesNotExist:
@@ -141,13 +140,14 @@ def delete_if_single(request):
     if request.method == 'POST':
         try:
             pk = request.POST['id']
-            existing_goal = Goal.objects.get(pk=pk)
-            if len(existing_goal.get_parents()) == 0 and len(existing_goal.get_children()) == 0:
-                jsoned_goal = jsonize_goal(existing_goal)
-                existing_goal.delete()
-                return HttpResponse(json.dumps({'status': 0, 'body': jsoned_goal}))
+
+            is_deleted = GoalDAC.delete_if_single(pk)
+
+            if is_deleted is True:
+                return HttpResponse(json.dumps({'status': 0}))
             else:
-                return HttpResponse(json.dumps({'status': -1, 'message': 'Goal is not single'}))
+                return HttpResponse(json.dumps({'status': -1, 'message': is_deleted[1]}))
+
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except ObjectDoesNotExist:
@@ -162,14 +162,10 @@ def add_relation(request):
             parent_id = int(request.POST['parent_id'])
             child_id = int(request.POST['child_id'])
 
-            parent = Goal.objects.get(pk=parent_id)
-            child = Goal.objects.get(pk=child_id)
-            was_relation_added = parent.add_child(child)
+            was_relation_added = GoalDAC.add_relation(parent_id, child_id)
 
-            if was_relation_added is True:
-                new_family = parent.get_family_set()
-                jsoned_new_family = jsonize_goal_iterable(new_family)
-                return HttpResponse(json.dumps({'status': 0, 'body': jsoned_new_family}))
+            if was_relation_added[0] is True:
+                return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal_iterable(was_relation_added[1])}))
             else:
                 return HttpResponse(json.dumps({'status': -1, 'message': was_relation_added[1]}))
 
@@ -187,19 +183,12 @@ def remove_relation(request):
             parent_id = int(request.POST['parent_id'])
             child_id = int(request.POST['child_id'])
 
-            parent = Goal.objects.get(pk=parent_id)
-            child = Goal.objects.get(pk=child_id)
-            parent.remove_child(child)
+            family_id_sets = GoalDAC.remove_relation(parent_id, child_id)
+            jsoned_family_id_sets = []
+            for family_id_set in family_id_sets:
+                jsoned_family_id_sets.append(jsonize_goal_iterable(family_id_set))
 
-            parent_family = parent.get_family_set()
-            jsoned_parent_family = jsonize_goal_iterable(parent_family)
-            body = [jsoned_parent_family]
-            if child_id not in parent_family:
-                child_family = child.get_family_set()
-                jsoned_child_family = jsonize_goal_iterable(child_family)
-                body.append(jsoned_child_family)
-
-            return HttpResponse(json.dumps({'status': 0, 'body': body}))
+            return HttpResponse(json.dumps({'status': 0, 'body': jsoned_family_id_sets}))
         except (ValueError, TypeError, MultiValueDictKeyError):
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except ObjectDoesNotExist:
@@ -210,12 +199,11 @@ def remove_relation(request):
 
 def toggle_is_achieved(request, pk):
     try:
-        goal = Goal.objects.get(pk=pk)
-        goal.is_achieved = not goal.is_achieved
-        is_saved = goal.save()
-        if is_saved is True:
-            return HttpResponse(json.dumps({'status': 0, 'body': goal.is_achieved}))
+        is_saved = GoalDAC.toggle_is_achieved(pk)
+        if is_saved[0] is True:
+            return HttpResponse(json.dumps({'status': 0, 'body': is_saved[1]}))
         else:
             return HttpResponse(json.dumps({'status': -1, 'message': is_saved[1]}))
+
     except ObjectDoesNotExist:
         return HttpResponse(json.dumps({'status': -1, 'message': 'No goal with such id'}))

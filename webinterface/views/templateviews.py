@@ -2,11 +2,6 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 
-# for debugging
-def scratch(request):
-    return render(request, 'webinterface/scratch.html')
-
-
 def index(request):
     return render(request, 'webinterface/index/index.html')
 

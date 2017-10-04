@@ -276,7 +276,7 @@
                     case 13:
                         let achievedAlso = this.refs.achievedAlso.checked === true ? 1 : 0;
                         $.ajax({
-                            url: "{% url 'restapi:goal_read_regex' %}",
+                            url: "{% url 'webinterface:goal_read_regex' %}",
                             method: 'GET',
                             data: {
                                 regex: e.target.value,
@@ -313,7 +313,7 @@
                 let self = this;
                 $.ajax({
                     {# Dirty Hack #}
-                    url: "{% url 'restapi:goal_toggle_is_achieved' 1729 %}".replace('1729', id),
+                    url: "{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', id),
                     method: 'GET',
                     success: function (response) {
                         let jResponse = JSON.parse(response);
@@ -921,7 +921,7 @@
                     let self = this;
                     $.ajax({
                         {# Dirty hack #}
-                        url: "{% url 'restapi:goal_read_family' 1729 %}".replace('1729', String(goalId)),
+                        url: "{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId)),
                         method: 'GET',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
@@ -944,7 +944,7 @@
                     let self = this;
                     $.ajax({
                         {# Dirty hack #}
-                        url: "{% url 'restapi:goal_read_family' 1729 %}".replace('1729', String(goalId)),
+                        url: "{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId)),
                         method: 'GET',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
@@ -974,7 +974,7 @@
                 if (this.s_pointToGoalInSociety(parentId)[0] && this.s_pointToGoalInSociety(childId)[0]) {
                     let self = this;
                     $.ajax({
-                        url: "{% url 'restapi:goal_add_relation' %}",
+                        url: "{% url 'webinterface:goal_add_relation' %}",
                         method: 'POST',
                         data: {
                             parent_id: parentId,
@@ -1010,7 +1010,7 @@
                 if (this.s_pointToGoalInSociety(parentId)[0] && this.s_pointToGoalInSociety(childId)[0]) {
                     let self = this;
                     $.ajax({
-                        url: "{% url 'restapi:goal_remove_relation' %}",
+                        url: "{% url 'webinterface:goal_remove_relation' %}",
                         method: 'POST',
                         data: {
                             parent_id: parentId,
@@ -1046,7 +1046,7 @@
             api_createGoal: function (description, deadline) {
                 let self = this;
                 $.ajax({
-                    url: "{% url 'restapi:goal_create' %}",
+                    url: "{% url 'webinterface:goal_create' %}",
                     method: 'POST',
                     data: {
                         description: description,
@@ -1079,7 +1079,7 @@
                 let self = this;
                 if (this.s_pointToGoalInSociety(goalId)[0]) {
                     $.ajax({
-                        url: "{% url 'restapi:goal_update' %}",
+                        url: "{% url 'webinterface:goal_update' %}",
                         method: 'POST',
                         data: {
                             id: goalId,
@@ -1116,7 +1116,7 @@
                     let self = this;
                     $.ajax({
                         {# Dirty Hack #}
-                        url: "{% url 'restapi:goal_toggle_is_achieved' 1729 %}".replace('1729', goalId),
+                        url: "{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', goalId),
                         method: 'GET',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
@@ -1141,7 +1141,7 @@
                 let self = this;
                 if (this.s_pointToGoalInSociety(goalId)[0]) {
                     $.ajax({
-                        url: "{% url 'restapi:goal_delete_if_single' %}",
+                        url: "{% url 'webinterface:goal_delete_if_single' %}",
                         method: 'POST',
                         data: {
                             id: goalId
