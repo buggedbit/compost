@@ -3,16 +3,16 @@
 {% load static %}
 {% block extra_headers %}
     {# Vis JS #}
-    <script src="{% static 'webinterface/vis.min.js' %}"></script>
-    <link type="text/css" rel="stylesheet" href="{% static 'webinterface/vis.min.css' %}"/>
-    <link type="text/css" rel="stylesheet" href="{% static 'webinterface/vis-network.min.css' %}"/>
+    <script src="{% static 'webinterface/visjs/vis.min.js' %}"></script>
+    <link type="text/css" rel="stylesheet" href="{% static 'webinterface/visjs/vis.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'webinterface/visjs/vis-network.min.css' %}"/>
     {# React & babel #}
-    <script src="{% static 'webinterface/react/react.js' %}"></script>
-    <script src="{% static 'webinterface/react/react-dom.js' %}"></script>
-    <script src="{% static 'webinterface/react/babel.js' %}"></script>
+    <script src="{% static 'webinterface/reactjs/react.js' %}"></script>
+    <script src="{% static 'webinterface/reactjs/react-dom.js' %}"></script>
+    <script src="{% static 'webinterface/reactjs/babel.js' %}"></script>
     {# Misc #}
-    <script src="{% static 'webinterface/cookies.js' %}"></script>
-    <script src="{% static 'webinterface/moment.js' %}"></script>
+    <script src="{% static 'webinterface/miscjs/cookies.js' %}"></script>
+    <script src="{% static 'webinterface/miscjs/moment.js' %}"></script>
     <script src="{% static 'webinterface/myjs/datetimeconverter.js' %}"></script>
 {% endblock %}
 {% block css %}
