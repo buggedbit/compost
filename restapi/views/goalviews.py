@@ -59,12 +59,16 @@ def read_regex(request):
             regex = request.GET['regex']
             global_search = request.GET['global_search']
 
-            matched_goals = GoalDAC.read_regex(regex, global_search)
-            json_goals = []
-            for goal in matched_goals:
-                json_goals.append(jsonize_goal(goal))
+            matched_goal_family_subsets = GoalDAC.read_regex(regex, global_search)
 
-            return HttpResponse(json.dumps({'status': 0, 'body': json_goals}))
+            json_goal_family_subsets = []
+            for family_subset in matched_goal_family_subsets:
+                json_family_subset = []
+                for goal in family_subset:
+                    json_family_subset.append(jsonize_goal(goal))
+                json_goal_family_subsets.append(json_family_subset)
+
+            return HttpResponse(json.dumps({'status': 0, 'body': json_goal_family_subsets}))
         except MultiValueDictKeyError:
             return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
         except re.error:

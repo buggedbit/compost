@@ -4,14 +4,64 @@ import re
 
 class GoalDAC:
     @staticmethod
+    def group_by_family(goal_iterable):
+        goal_family_subset_list = []
+        augmented_goal_list = []
+        # add picked flag to each goal
+        for goal in goal_iterable:
+            augmented_goal_list.append([goal, False])
+
+        for i in range(len(augmented_goal_list)):
+            # ith goal not picked
+            if not augmented_goal_list[i][1]:
+                # pick this goal
+                augmented_goal_list[i][1] = True
+                ith_goal_family_subset = [augmented_goal_list[i][0]]
+                ith_goal_family_id_set = augmented_goal_list[i][0].get_family_id_set()
+                for j in range(i + 1, len(augmented_goal_list)):
+                    # if jth goal (i < j < N) belongs to family of ith goal and is not picked
+                    # two conditions are redundant
+                    if not augmented_goal_list[j][1] and augmented_goal_list[j][0].id in ith_goal_family_id_set:
+                        # pick this goal
+                        augmented_goal_list[j][1] = True
+                        ith_goal_family_subset.append(augmented_goal_list[j][0])
+                # append ith goal family subset
+                goal_family_subset_list.append(ith_goal_family_subset)
+
+        return goal_family_subset_list
+
+    @staticmethod
+    def push_deadline_nulls_to_last(goal_iterable):
+        goals_count = len(goal_iterable)
+        nulls_last_goals_list = [None for i in range(goals_count)]
+        next_index_from_start = 0
+        next_index_from_end = goals_count - 1
+        for i in range(goals_count):
+            if goal_iterable[i].deadline is not None:
+                nulls_last_goals_list[next_index_from_start] = goal_iterable[i]
+                next_index_from_start = next_index_from_start + 1
+            else:
+                nulls_last_goals_list[next_index_from_end] = goal_iterable[i]
+                next_index_from_end = next_index_from_end - 1
+        return nulls_last_goals_list
+
+    @staticmethod
     def read_regex(regex, global_search):
         re.compile(regex)
         if global_search == '1':
-            matched_goals = Goal.objects.filter(description__iregex=regex).order_by('is_achieved', 'deadline')
+            not_achieved_goals = Goal.objects.filter(description__iregex=regex,
+                                                     is_achieved__exact=False).order_by('deadline')
+            achieved_goals = Goal.objects.filter(description__iregex=regex,
+                                                 is_achieved__exact=True).order_by('deadline')
+            not_achieved_goals = GoalDAC.push_deadline_nulls_to_last(not_achieved_goals)
+            achieved_goals = GoalDAC.push_deadline_nulls_to_last(achieved_goals)
+            matched_goals_query_set = not_achieved_goals + achieved_goals
         else:
-            matched_goals = Goal.objects.filter(description__iregex=regex,
-                                                is_achieved__exact=False).order_by('is_achieved', 'deadline')
-        return matched_goals
+            matched_goals_query_set = Goal.objects.filter(description__iregex=regex,
+                                                          is_achieved__exact=False).order_by('deadline')
+            matched_goals_query_set = GoalDAC.push_deadline_nulls_to_last(matched_goals_query_set)
+
+        return GoalDAC.group_by_family(matched_goals_query_set)
 
     @staticmethod
     def read_family(pk):

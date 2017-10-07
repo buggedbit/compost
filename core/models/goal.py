@@ -153,4 +153,4 @@ class Goal(models.Model):
         return family
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) + ' ' + self.description
