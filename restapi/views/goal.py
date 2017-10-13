@@ -68,13 +68,13 @@ def read_regex(request):
                     json_family_subset.append(jsonize_goal(goal))
                 json_goal_family_subsets.append(json_family_subset)
 
-            return HttpResponse(json.dumps({'status': 0, 'body': json_goal_family_subsets}))
+            return HttpResponse(json.dumps({'status': 0, 'data': json_goal_family_subsets}))
         except MultiValueDictKeyError:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Improper data'}))
         except re.error:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Not proper regex'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Not proper regex'}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'No regex string in request'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'No regex string in request'}))
 
 
 @csrf_exempt
@@ -86,9 +86,9 @@ def read_family(request, pk):
         for member in goal_family:
             json_family.append(jsonize_goal(member))
 
-        return HttpResponse(json.dumps({'status': 0, 'body': json_family}))
+        return HttpResponse(json.dumps({'status': 0, 'data': json_family}))
     except ObjectDoesNotExist:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'No goal with such id'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'No goal with such id'}))
 
 
 @csrf_exempt
@@ -109,14 +109,14 @@ def create(request):
             is_created = GoalDAC.create(description, deadline)
 
             if is_created[0] is True:
-                return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(is_created[1])}))
+                return HttpResponse(json.dumps({'status': 0, 'data': jsonize_goal(is_created[1])}))
             else:
-                return HttpResponse(json.dumps({'status': -1, 'message': is_created[1]}))
+                return HttpResponse(json.dumps({'status': -1, 'error': is_created[1]}))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Improper data'}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
 @csrf_exempt
@@ -137,16 +137,16 @@ def update(request):
             is_updated = GoalDAC.update(pk, description, deadline)
 
             if is_updated[0] is True:
-                return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal(is_updated[1])}))
+                return HttpResponse(json.dumps({'status': 0, 'data': jsonize_goal(is_updated[1])}))
             else:
-                return HttpResponse(json.dumps({'status': -1, 'message': is_updated[1]}))
+                return HttpResponse(json.dumps({'status': -1, 'error': is_updated[1]}))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Improper data'}))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid id'}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
 @csrf_exempt
@@ -160,14 +160,14 @@ def delete_if_single(request):
             if is_deleted is True:
                 return HttpResponse(json.dumps({'status': 0}))
             else:
-                return HttpResponse(json.dumps({'status': -1, 'message': is_deleted[1]}))
+                return HttpResponse(json.dumps({'status': -1, 'error': is_deleted[1]}))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Improper data'}))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid id'}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
 @csrf_exempt
@@ -180,16 +180,16 @@ def add_relation(request):
             was_relation_added = GoalDAC.add_relation(parent_id, child_id)
 
             if was_relation_added[0] is True:
-                return HttpResponse(json.dumps({'status': 0, 'body': jsonize_goal_iterable(was_relation_added[1])}))
+                return HttpResponse(json.dumps({'status': 0, 'data': jsonize_goal_iterable(was_relation_added[1])}))
             else:
-                return HttpResponse(json.dumps({'status': -1, 'message': was_relation_added[1]}))
+                return HttpResponse(json.dumps({'status': -1, 'error': was_relation_added[1]}))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Improper data'}))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid id'}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
 @csrf_exempt
@@ -204,13 +204,13 @@ def remove_relation(request):
             for family_id_set in family_id_sets:
                 jsoned_family_id_sets.append(jsonize_goal_iterable(family_id_set))
 
-            return HttpResponse(json.dumps({'status': 0, 'body': jsoned_family_id_sets}))
+            return HttpResponse(json.dumps({'status': 0, 'data': jsoned_family_id_sets}))
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Improper data'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Improper data'}))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid id'}))
+            return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid id'}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'Invalid request'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
 @csrf_exempt
@@ -218,9 +218,9 @@ def toggle_is_achieved(request, pk):
     try:
         is_saved = GoalDAC.toggle_is_achieved(pk)
         if is_saved[0] is True:
-            return HttpResponse(json.dumps({'status': 0, 'body': is_saved[1]}))
+            return HttpResponse(json.dumps({'status': 0, 'data': is_saved[1]}))
         else:
-            return HttpResponse(json.dumps({'status': -1, 'message': is_saved[1]}))
+            return HttpResponse(json.dumps({'status': -1, 'error': is_saved[1]}))
 
     except ObjectDoesNotExist:
-        return HttpResponse(json.dumps({'status': -1, 'message': 'No goal with such id'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'No goal with such id'}))

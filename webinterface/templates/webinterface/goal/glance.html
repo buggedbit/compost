@@ -317,13 +317,13 @@
                                 let jsonResponse = JSON.parse(response);
                                 if (jsonResponse.status === 0) {
                                     self.setState((prevState, props) => {
-                                        let resultSet = jsonResponse.body;
+                                        let resultSet = jsonResponse.data;
                                         return {resultSet: resultSet};
                                     });
                                     $(self.refs.resultSetContainer).show();
                                 }
                                 else if (jsonResponse.status === -1) {
-                                    toastr.error(jsonResponse.message);
+                                    toastr.error(jsonResponse.error);
                                 }
                             },
                             error: function (response) {
@@ -349,7 +349,7 @@
                     success: function (response) {
                         let jResponse = JSON.parse(response);
                         if (jResponse.status === 0) {
-                            let isAchieved = jResponse.body;
+                            let isAchieved = jResponse.data;
                             // set state
                             self.setState((prevState, props) => {
                                 let resultSet = prevState.resultSet;
@@ -365,7 +365,7 @@
                             // call back to parent
                             self.props.onToggleGoalAchievement(id, isAchieved);
                         } else if (jResponse.status === -1) {
-                            toastr.error(jResponse.message);
+                            toastr.error(jResponse.error);
                         }
                     },
                     error: function (response) {
@@ -958,10 +958,10 @@
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
-                                let family = jResponse.body;
+                                let family = jResponse.data;
                                 self.s_addFamily(family);
                             } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.message);
+                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -981,12 +981,12 @@
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
-                                let family = jResponse.body;
+                                let family = jResponse.data;
                                 self.s_setSocietyToFamily(family);
                                 self.s_openGoalDetailView(goalId);
                             }
                             else if (jResponse.status === -1) {
-                                toastr.error(jResponse.message);
+                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1015,10 +1015,10 @@
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
-                                let newFamily = jResponse.body;
+                                let newFamily = jResponse.data;
                                 self.s_makeRelation(parentId, childId, newFamily);
                             } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.message);
+                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1051,10 +1051,10 @@
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
-                                let setOfNewFamilies = jResponse.body;
+                                let setOfNewFamilies = jResponse.data;
                                 self.s_breakRelation(parentId, childId, setOfNewFamilies);
                             } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.message);
+                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1087,9 +1087,9 @@
                     success: function (response) {
                         let jResponse = JSON.parse(response);
                         if (jResponse.status === 0) {
-                            self.s_addFamily([jResponse.body]);
+                            self.s_addFamily([jResponse.data]);
                         } else if (jResponse.status === -1) {
-                            toastr.error(jResponse.message);
+                            toastr.error(jResponse.error);
                         }
                     },
                     error: function (response) {
@@ -1121,10 +1121,10 @@
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
-                                self.s_updateGoalInSociety(goalId, jResponse.body);
+                                self.s_updateGoalInSociety(goalId, jResponse.data);
                                 self.s_openGoalDetailView(goalId);
                             } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.message);
+                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1153,9 +1153,9 @@
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
-                                self.s_setGoalAchievement(goalId, jResponse.body);
+                                self.s_setGoalAchievement(goalId, jResponse.data);
                             } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.message);
+                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1184,7 +1184,7 @@
                                 self.s_removeFamilyIfExists(goalId);
                                 self.s_closeGoalDetailView();
                             } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.message);
+                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
