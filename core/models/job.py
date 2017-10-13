@@ -1,15 +1,15 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from timetree import TimeTree
+from dtt import DTT
 from goal import Goal
 
 
 class Job(models.Model):
     # Relational fields
     id = models.AutoField(primary_key=True)
-    time_tree = models.OneToOneField(TimeTree, blank=True, null=True, on_delete=models.SET_NULL)
-    _goals = models.ManyToManyField(Goal, related_name='_jobs')
+    time_tree = models.OneToOneField(DTT, blank=True, null=True, on_delete=models.SET_NULL, related_name='job')
+    _goals = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='_jobs')
     # Other fields
     description = models.TextField(default='')
     is_done = models.BooleanField(default=False)

@@ -9,3 +9,7 @@ def index(request):
 @ensure_csrf_cookie
 def goal_glance(request):
     return render(request, 'webinterface/goal/glance.html')
+
+
+def scratch(request):
+    return render(request, 'webinterface/scratch.html')

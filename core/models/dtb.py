@@ -3,12 +3,17 @@ from __future__ import unicode_literals
 import math
 from django.db import models
 from datetime import datetime as dt, timedelta as td
-from timetree import TimeTree
+from dtt import DTT
+from core.stub import Stub
 
-from core.timeutils import Stub, to_microseconds
+from core.timeutils import to_microseconds
 
 
-class TimeBranch(models.Model):
+class DTB(models.Model):
+    """
+    Deterministic Time Branch
+    """
+
     class Standards:
         MIN_TPR = td(0, 43200)
         MAX_TPR = td(740)
@@ -20,7 +25,7 @@ class TimeBranch(models.Model):
 
     # Relational fields
     id = models.AutoField(primary_key=True)
-    parent_tree = models.ForeignKey(TimeTree, on_delete=models.CASCADE, related_name='branches')
+    parent_tree = models.ForeignKey(DTT, on_delete=models.CASCADE, related_name='branches')
     # Time fields
     epoch = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
@@ -30,7 +35,7 @@ class TimeBranch(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         is_savable = self.is_savable()
         if is_savable is True:
-            super(TimeBranch, self).save(force_insert=False, force_update=False, using=None, update_fields=None)
+            super(DTB, self).save(force_insert=False, force_update=False, using=None, update_fields=None)
             return True
         else:
             return is_savable
@@ -105,14 +110,14 @@ class TimeBranch(models.Model):
 
     def is_standard(self):
         if self.time_period is not None:
-            if self.time_period < TimeBranch.Standards.MIN_TPR:
+            if self.time_period < DTB.Standards.MIN_TPR:
                 return False, 'Too small time period'
-            if self.time_period > TimeBranch.Standards.MAX_TPR:
+            if self.time_period > DTB.Standards.MAX_TPR:
                 return False, 'Too big time period'
 
-        if self.duration < TimeBranch.Standards.MIN_DUR:
+        if self.duration < DTB.Standards.MIN_DUR:
             return False, 'Too small duration'
-        if self.duration > TimeBranch.Standards.MAX_DUR:
+        if self.duration > DTB.Standards.MAX_DUR:
             return False, 'Too big duration'
 
         return True
@@ -215,7 +220,7 @@ class TimeBranch(models.Model):
         return hash((self.epoch, self.end, self.time_period, self.duration))
 
     def __eq__(self, other):
-        if not isinstance(other, TimeBranch):
+        if not isinstance(other, DTB):
             return False
         return (self.epoch, self.end, self.time_period, self.duration) == (
             other.epoch, other.end, other.time_period, other.duration)
