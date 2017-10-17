@@ -8,9 +8,9 @@ from goal import Goal
 class Job(models.Model):
     # Relational fields
     id = models.AutoField(primary_key=True)
-    time_tree = models.OneToOneField(DTT, blank=True, null=True, on_delete=models.SET_NULL, related_name='job')
-    _goals = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='_jobs')
-    # Other fields
+    time_tree = models.OneToOneField(DTT, related_name='job')
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='jobs')
+    # Core fields
     description = models.TextField(default='')
     is_done = models.BooleanField(default=False)
 
@@ -38,9 +38,8 @@ class Job(models.Model):
     def is_is_done_valid(self):
         if self.id is not None:
             if self.is_done is False:
-                for goal in self._goals.all():
-                    if goal.is_achieved is True:
-                        return False, 'Goal is achieved before its job is done'
+                if self.goal is True:
+                    return False, 'Goal is achieved before its job is done'
 
             # No objection -> is_achieved valid
             return True
@@ -50,39 +49,36 @@ class Job(models.Model):
     def is_timewise_valid(self):
         # Not saved yet
         if self.id is not None:
-            if self.time_tree is not None and self._goals.count() > 0:
-                for goal in self._goals.all():
-                    for time_branch in self.time_tree.branches.all():
-                        time_branch_end = time_branch.end
-                        goal_end = goal.end
-                        # goal_end must be >= time_branch_end
-                        if time_branch_end is None and goal_end is None:
-                            continue
-                        elif time_branch_end is not None and goal_end is None:
-                            continue
-                        elif time_branch_end is None and goal_end is not None:
+            if self.time_tree is not None and self.goal is not None:
+                for time_branch in self.time_tree.branches.all():
+                    time_branch_end = time_branch.end
+                    goal_end = self.goal.deadline
+                    # goal_end must be >= time_branch_end
+                    if time_branch_end is None and goal_end is None:
+                        continue
+                    elif time_branch_end is not None and goal_end is None:
+                        continue
+                    elif time_branch_end is None and goal_end is not None:
+                        return False, 'Goal is achieved before its job finishes'
+                    else:
+                        if goal_end < time_branch_end:
                             return False, 'Goal is achieved before its job finishes'
-                        else:
-                            if goal_end < time_branch_end:
-                                return False, 'Goal is achieved before its job finishes'
 
             # No objection -> timewise valid
             return True
         else:
             return True
 
-    def get_goals(self):
-        return self._goals.all()
+    def get_goal(self):
+        return self.goal
 
-    def add_goal(self, goal):
-        self._goals.add(goal)
+    def set_goal(self, goal):
+        prev_goal = self.goal
+        self.goal = goal
         is_valid = self.is_valid()
         if is_valid is not True:
-            self._goals.remove(goal)
+            self.goal = prev_goal
         return is_valid
-
-    def remove_goal(self, goal):
-        self._goals.remove(goal)
 
     def __str__(self):
         return str(self.id)

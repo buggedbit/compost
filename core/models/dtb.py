@@ -12,6 +12,7 @@ from core.timeutils import to_microseconds
 class DTB(models.Model):
     """
     Deterministic Time Branch
+    duration = 0 is not valid
     """
 
     class Standards:
@@ -25,7 +26,7 @@ class DTB(models.Model):
 
     # Relational fields
     id = models.AutoField(primary_key=True)
-    parent_tree = models.ForeignKey(DTT, on_delete=models.CASCADE, related_name='branches')
+    tree = models.ForeignKey(DTT, on_delete=models.CASCADE, related_name='branches')
     # Time fields
     epoch = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)

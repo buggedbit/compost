@@ -6,7 +6,7 @@ from django.db import models
 class Goal(models.Model):
     # Relational fields
     id = models.AutoField(primary_key=True)
-    _parents = models.ManyToManyField('Goal', related_name='_children')
+    parents = models.ManyToManyField('Goal', related_name='children')
     # Core fields
     description = models.TextField(default='')
     deadline = models.DateTimeField(blank=True, null=True)
@@ -42,7 +42,7 @@ class Goal(models.Model):
     def is_deadline_valid(self):
         # Not saved yet
         if self.id is not None:
-            for parent in self._parents.all():
+            for parent in self.parents.all():
                 if self.deadline is None and parent.deadline is None:
                     continue
                 if self.deadline is None and parent.deadline is not None:
@@ -53,7 +53,7 @@ class Goal(models.Model):
                     if self.deadline < parent.deadline:
                         return False, 'Deadline before parent'
 
-            for child in self._children.all():
+            for child in self.children.all():
                 if self.deadline is None and child.deadline is None:
                     continue
                 if self.deadline is None and child.deadline is not None:
@@ -72,11 +72,11 @@ class Goal(models.Model):
     def is_is_achieved_valid(self):
         if self.id is not None:
             if self.is_achieved is True:
-                for parent in self._parents.all():
+                for parent in self.parents.all():
                     if parent.is_achieved is False:
                         return False, 'This goal is achieved before its parent'
             elif self.is_achieved is False:
-                for child in self._children.all():
+                for child in self.children.all():
                     if child.is_achieved is True:
                         return False, 'Child goal is achieved before this'
 
@@ -103,39 +103,30 @@ class Goal(models.Model):
             return True
 
     def get_parents(self):
-        return self._parents.all()
+        return self.parents.all()
 
     def add_parent(self, parent):
-        self._parents.add(parent)
+        self.parents.add(parent)
         is_valid = self.is_valid()
         if is_valid is not True:
-            self._parents.remove(parent)
+            self.parents.remove(parent)
         return is_valid
 
     def remove_parent(self, parent):
-        self._parents.remove(parent)
+        self.parents.remove(parent)
 
     def get_children(self):
-        return self._children.all()
+        return self.children.all()
 
     def add_child(self, child):
-        self._children.add(child)
+        self.children.add(child)
         is_valid = self.is_valid()
         if is_valid is not True:
-            self._children.remove(child)
+            self.children.remove(child)
         return is_valid
 
     def remove_child(self, child):
-        self._children.remove(child)
-
-    def get_jobs(self):
-        return self._jobs.all()
-
-    def add_job(self, job):
-        return job.add_goal(self)
-
-    def remove_job(self, job):
-        self._jobs.remove(job)
+        self.children.remove(child)
 
     def _dfs_for_family(self, node, family):
         family.add(node.id)
