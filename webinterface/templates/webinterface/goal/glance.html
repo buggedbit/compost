@@ -240,25 +240,7 @@
                         .minute(deadline.minute)
                         .second(deadline.second)
                         .millisecond(deadline.microsecond / 1000);
-                    let momentNow = moment();
-                    let diff = momentDeadline.diff(momentNow);
-                    let duration = moment.duration(diff);
-                    let days = parseInt(duration.asDays());
-                    let hours = parseInt(duration.asHours()) - days * 24;
-                    let minutes = parseInt(duration.asMinutes()) - days * 1440 - hours * 60;
-
-                    let ret = '';
-                    if (days !== 0)
-                        ret += days + 'day ';
-                    if (hours !== 0)
-                        ret += hours + 'hrs ';
-                    if (minutes !== 0)
-                        ret += minutes + 'min ';
-
-                    if (ret === '')
-                        ret = 'just about now';
-
-                    return ret;
+                    return momentDeadline.fromNow();
                 };
                 let deadline = this.props.deadline === null ? "." : deadlineRepr(this.props.deadline);
 
