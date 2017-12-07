@@ -288,29 +288,22 @@
                     // Enter Key
                     case 13:
                         let achievedAlso = this.refs.achievedAlso.checked === true ? 1 : 0;
-                        $.ajax({
-                            url: "{% url 'webinterface:goal_read_regex' %}",
-                            method: 'POST',
-                            data: {
-                                regex: e.target.value,
-                                global_search: achievedAlso,
-                            },
-                            success: function (response) {
-                                let jsonResponse = JSON.parse(response);
-                                if (jsonResponse.status === -1) {
-                                    toastr.error(jsonResponse.error);
-                                }
-                                else {
-                                    self.setState((prevState, props) => {
-                                        let resultSet = jsonResponse.data;
-                                        return {resultSet: resultSet};
-                                    });
-                                    $(self.refs.resultSetContainer).show();
-                                }
-                            },
-                            error: function (response) {
-                                toastr.error('Error searching for goals');
+                        $.post("{% url 'webinterface:goal_read_regex' %}", {
+                            regex: e.target.value,
+                            is_global_search: achievedAlso,
+                        }).done((r) => {
+                            let json = JSON.parse(r);
+                            if (json.status === -1) {
+                                toastr.error(json.error);
+                            } else {
+                                self.setState((prevState, props) => {
+                                    let resultSet = json.data;
+                                    return {resultSet: resultSet};
+                                });
+                                $(self.refs.resultSetContainer).show();
                             }
+                        }).fail(() => {
+                            toastr.error('Server Error');
                         });
                         break;
                     // Escape key
@@ -324,36 +317,30 @@
             },
             onToggleGoalAchievement: function (id) {
                 let self = this;
-                $.ajax({
-                    {# Dirty Hack #}
-                    url: "{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', id),
-                    method: 'POST',
-                    success: function (response) {
-                        let jResponse = JSON.parse(response);
-                        if (jResponse.status === -1) {
-                            toastr.error(jResponse.error);
-                        }
-                        else {
-                            let isAchieved = jResponse.data;
-                            // set state
-                            self.setState((prevState, props) => {
-                                let resultSet = prevState.resultSet;
-                                resultSet.forEach((goalFamilySubset, gfsi) => {
-                                    goalFamilySubset.forEach((goal, gi) => {
-                                        if (goal.id === id) {
-                                            goal.is_achieved = isAchieved;
-                                        }
-                                    });
+                $.post("{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', id)
+                ).done((r) => {
+                    let json = JSON.parse(r);
+                    if (json.status === -1) {
+                        toastr.error(json.error);
+                    } else {
+                        let isAchieved = json.data;
+                        // set state
+                        self.setState((prevState, props) => {
+                            let resultSet = prevState.resultSet;
+                            resultSet.forEach((goalFamilySubset, gfsi) => {
+                                goalFamilySubset.forEach((goal, gi) => {
+                                    if (goal.id === id) {
+                                        goal.is_achieved = isAchieved;
+                                    }
                                 });
-                                return {resultSet: resultSet};
                             });
-                            // call back to parent
-                            self.props.onToggleGoalAchievement(id, isAchieved);
-                        }
-                    },
-                    error: function (response) {
-                        toastr.error('Error toggling completion of goal');
+                            return {resultSet: resultSet};
+                        });
+                        // call back to parent
+                        self.props.onToggleGoalAchievement(id, isAchieved);
                     }
+                }).fail(() => {
+                    toastr.error('Server Error');
                 });
             },
             render: function () {
@@ -936,22 +923,17 @@
                 goalId = Number(goalId);
                 if (!this.s_pointToGoalInSociety(goalId)[0]) {
                     let self = this;
-                    $.ajax({
-                        {# Dirty hack #}
-                        url: "{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId)),
-                        method: 'POST',
-                        success: function (response) {
-                            let jResponse = JSON.parse(response);
-                            if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
-                            } else {
-                                let family = jResponse.data;
-                                self.s_addFamily(family);
-                            }
-                        },
-                        error: function (response) {
-                            toastr.error('Error reading family of ' + goalId);
+                    $.post("{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId))
+                    ).done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            let family = json.data;
+                            self.s_addFamily(family);
                         }
+                    }).fail(() => {
+                        toastr.error('Server Error');
                     });
                 }
             },
@@ -959,24 +941,19 @@
                 goalId = Number(goalId);
                 if (!this.s_pointToGoalInSociety(goalId)[0]) {
                     let self = this;
-                    $.ajax({
-                        {# Dirty hack #}
-                        url: "{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId)),
-                        method: 'POST',
-                        success: function (response) {
-                            let jResponse = JSON.parse(response);
-                            if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
-                            }
-                            else {
-                                let family = jResponse.data;
-                                self.s_setSocietyToFamily(family);
-                                self.s_openGoalDetailView(goalId);
-                            }
-                        },
-                        error: function (response) {
-                            toastr.error('Error reading family of ' + goalId);
+                    $.post("{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId))
+                    ).done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
                         }
+                        else {
+                            let family = json.data;
+                            self.s_setSocietyToFamily(family);
+                            self.s_openGoalDetailView(goalId);
+                        }
+                    }).fail(() => {
+                        toastr.error('Server Error');
                     });
                 }
             },
@@ -990,25 +967,19 @@
                 childId = Number(childId);
                 if (this.s_pointToGoalInSociety(parentId)[0] && this.s_pointToGoalInSociety(childId)[0]) {
                     let self = this;
-                    $.ajax({
-                        url: "{% url 'webinterface:goal_add_relation' %}",
-                        method: 'POST',
-                        data: {
-                            parent_id: parentId,
-                            child_id: childId
-                        },
-                        success: function (response) {
-                            let jResponse = JSON.parse(response);
-                            if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
-                            } else {
-                                let newFamily = jResponse.data;
-                                self.s_makeRelation(parentId, childId, newFamily);
-                            }
-                        },
-                        error: function (response) {
-                            toastr.error('Error adding relation');
-                        },
+                    $.post("{% url 'webinterface:goal_add_relation' %}", {
+                        parent_id: parentId,
+                        child_id: childId
+                    }).done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            let newFamily = json.data;
+                            self.s_makeRelation(parentId, childId, newFamily);
+                        }
+                    }).fail(() => {
+                        toastr.error('Server Error');
                     });
                 }
             },
@@ -1017,25 +988,19 @@
                 childId = Number(childId);
                 if (this.s_pointToGoalInSociety(parentId)[0] && this.s_pointToGoalInSociety(childId)[0]) {
                     let self = this;
-                    $.ajax({
-                        url: "{% url 'webinterface:goal_remove_relation' %}",
-                        method: 'POST',
-                        data: {
-                            parent_id: parentId,
-                            child_id: childId
-                        },
-                        success: function (response) {
-                            let jResponse = JSON.parse(response);
-                            if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
-                            } else {
-                                let setOfNewFamilies = jResponse.data;
-                                self.s_breakRelation(parentId, childId, setOfNewFamilies);
-                            }
-                        },
-                        error: function (response) {
-                            toastr.error('Error removing relation');
-                        },
+                    $.post("{% url 'webinterface:goal_remove_relation' %}", {
+                        parent_id: parentId,
+                        child_id: childId
+                    }).done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            let setOfNewFamilies = json.data;
+                            self.s_breakRelation(parentId, childId, setOfNewFamilies);
+                        }
+                    }).fail(() => {
+                        toastr.error('Server Error');
                     });
                 }
             },
@@ -1044,50 +1009,38 @@
             },
             api_createGoal: function (description, deadline) {
                 let self = this;
-                $.ajax({
-                    url: "{% url 'webinterface:goal_create' %}",
-                    method: 'POST',
-                    data: {
-                        description: description,
-                        deadline: JSON.stringify(deadline),
-                    },
-                    success: function (response) {
-                        let jResponse = JSON.parse(response);
-                        if (jResponse.status === -1) {
-                            toastr.error(jResponse.error);
-                        } else {
-                            self.s_addFamily([jResponse.data]);
-                        }
-                    },
-                    error: function (response) {
-                        toastr.error('Error creating goal');
-                    },
+                $.post("{% url 'webinterface:goal_create' %}", {
+                    description: description,
+                    deadline: JSON.stringify(deadline),
+                }).done((r) => {
+                    let json = JSON.parse(r);
+                    if (json.status === -1) {
+                        toastr.error(json.error);
+                    } else {
+                        self.s_addFamily([json.data]);
+                    }
+                }).fail(() => {
+                    toastr.error('Server Error');
                 });
             },
             api_updateGoal: function (goalId, description, deadline) {
                 goalId = Number(goalId);
                 let self = this;
                 if (this.s_pointToGoalInSociety(goalId)[0]) {
-                    $.ajax({
-                        url: "{% url 'webinterface:goal_update' %}",
-                        method: 'POST',
-                        data: {
-                            id: goalId,
-                            description: description,
-                            deadline: JSON.stringify(deadline)
-                        },
-                        success: function (response) {
-                            let jResponse = JSON.parse(response);
-                            if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
-                            } else {
-                                self.s_updateGoalInSociety(goalId, jResponse.data);
-                                self.s_openGoalDetailView(goalId);
-                            }
-                        },
-                        error: function (response) {
-                            toastr.error('Error updating goal');
-                        },
+                    $.post("{% url 'webinterface:goal_update' %}", {
+                        id: goalId,
+                        description: description,
+                        deadline: JSON.stringify(deadline)
+                    }).done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            self.s_updateGoalInSociety(goalId, json.data);
+                            self.s_openGoalDetailView(goalId);
+                        }
+                    }).fail(() => {
+                        toastr.error('Server Error');
                     });
                 }
             },
@@ -1095,21 +1048,16 @@
                 goalId = Number(goalId);
                 if (this.s_pointToGoalInSociety(goalId)[0]) {
                     let self = this;
-                    $.ajax({
-                        {# Dirty Hack #}
-                        url: "{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', goalId),
-                        method: 'POST',
-                        success: function (response) {
-                            let jResponse = JSON.parse(response);
-                            if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
-                            } else {
-                                self.s_setGoalAchievement(goalId, jResponse.data);
-                            }
-                        },
-                        error: function (response) {
-                            toastr.error('Error toggling completion of goal');
+                    $.post("{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', goalId)
+                    ).done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            self.s_setGoalAchievement(goalId, json.data);
                         }
+                    }).fail(() => {
+                        toastr.error('Server Error');
                     });
                 }
             },
@@ -1121,24 +1069,18 @@
                 goalId = Number(goalId);
                 let self = this;
                 if (this.s_pointToGoalInSociety(goalId)[0]) {
-                    $.ajax({
-                        url: "{% url 'webinterface:goal_delete_if_single' %}",
-                        method: 'POST',
-                        data: {
-                            id: goalId
-                        },
-                        success: function (response) {
-                            let jResponse = JSON.parse(response);
-                            if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
-                            } else {
-                                self.s_removeFamilyIfExists(goalId);
-                                self.s_closeGoalDetailView();
-                            }
-                        },
-                        error: function (response) {
-                            toastr.error('Error deleting goal');
-                        },
+                    $.post("{% url 'webinterface:goal_delete_if_single' %}", {
+                        id: goalId
+                    }).done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            self.s_removeFamilyIfExists(goalId);
+                            self.s_closeGoalDetailView();
+                        }
+                    }).fail(() => {
+                        toastr.error('Server Error');
                     });
                 }
             },

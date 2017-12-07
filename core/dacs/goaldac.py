@@ -47,9 +47,9 @@ class GoalDAC:
         return nulls_last_goals_list
 
     @staticmethod
-    def read_regex(regex, global_search):
+    def read_regex(regex, is_global_search):
         re.compile(regex)
-        if global_search == '1':
+        if is_global_search == '1':
             not_achieved_goals = Goal.objects.filter(description__iregex=regex,
                                                      is_achieved__exact=False).order_by('deadline')
             achieved_goals = Goal.objects.filter(description__iregex=regex,

@@ -78,9 +78,9 @@ def read_regex(request):
     if request.method == 'POST':
         try:
             regex = request.POST['regex']
-            global_search = request.POST['global_search']
+            is_global_search = request.POST['is_global_search']
 
-            matched_goal_family_subsets = GoalDAC.read_regex(regex, global_search)
+            matched_goal_family_subsets = GoalDAC.read_regex(regex, is_global_search)
 
             json_goal_family_subsets = []
             for family_subset in matched_goal_family_subsets:
