@@ -2,12 +2,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.utils.datastructures import MultiValueDictKeyError
 from datetime import datetime as dt
+
+from django.views.decorators.csrf import csrf_exempt
+
 from core.models.goal import Goal
 import re
 import json
 from core.dacs.goaldac import GoalDAC
 
 
+@csrf_exempt
 def jsonize_goal(goal):
     deadline = None
     if goal.deadline is not None:
@@ -39,6 +43,7 @@ def jsonize_goal(goal):
     return json_goal
 
 
+@csrf_exempt
 def jsonize_goal_iterable(goal_ids):
     jsoned = []
     for goal_id in goal_ids:
@@ -47,11 +52,12 @@ def jsonize_goal_iterable(goal_ids):
     return jsoned
 
 
+@csrf_exempt
 def read_regex(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         try:
-            regex = request.GET['regex']
-            global_search = request.GET['global_search']
+            regex = request.POST['regex']
+            global_search = request.POST['global_search']
 
             matched_goal_family_subsets = GoalDAC.read_regex(regex, global_search)
 
@@ -68,22 +74,26 @@ def read_regex(request):
         except re.error:
             return HttpResponse(json.dumps({'status': -1, 'error': 'Not proper regex'}))
     else:
-        return HttpResponse(json.dumps({'status': -1, 'error': 'No regex string in request'}))
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
+@csrf_exempt
 def read_family(request, pk):
-    try:
+    if request.method == 'POST':
+        try:
+            goal_family = GoalDAC.read_family(pk)
+            json_family = []
+            for member in goal_family:
+                json_family.append(jsonize_goal(member))
 
-        goal_family = GoalDAC.read_family(pk)
-        json_family = []
-        for member in goal_family:
-            json_family.append(jsonize_goal(member))
-
-        return HttpResponse(json.dumps({'status': 0, 'data': json_family}))
-    except ObjectDoesNotExist:
-        return HttpResponse(json.dumps({'status': -1, 'error': 'No goal with such id'}))
+            return HttpResponse(json.dumps({'status': 0, 'data': json_family}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'error': 'No goal with such id'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
+@csrf_exempt
 def create(request):
     if request.method == 'POST':
         try:
@@ -111,6 +121,7 @@ def create(request):
         return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
+@csrf_exempt
 def update(request):
     if request.method == 'POST':
         try:
@@ -140,6 +151,7 @@ def update(request):
         return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
+@csrf_exempt
 def delete_if_single(request):
     if request.method == 'POST':
         try:
@@ -160,6 +172,7 @@ def delete_if_single(request):
         return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
+@csrf_exempt
 def add_relation(request):
     if request.method == 'POST':
         try:
@@ -181,6 +194,7 @@ def add_relation(request):
         return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
+@csrf_exempt
 def remove_relation(request):
     if request.method == 'POST':
         try:
@@ -201,13 +215,16 @@ def remove_relation(request):
         return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))
 
 
+@csrf_exempt
 def toggle_is_achieved(request, pk):
-    try:
-        is_saved = GoalDAC.toggle_is_achieved(pk)
-        if is_saved[0] is True:
-            return HttpResponse(json.dumps({'status': 0, 'data': is_saved[1]}))
-        else:
-            return HttpResponse(json.dumps({'status': -1, 'error': is_saved[1]}))
-
-    except ObjectDoesNotExist:
-        return HttpResponse(json.dumps({'status': -1, 'error': 'No goal with such id'}))
+    if request.method == 'POST':
+        try:
+            is_saved = GoalDAC.toggle_is_achieved(pk)
+            if is_saved[0] is True:
+                return HttpResponse(json.dumps({'status': 0, 'data': is_saved[1]}))
+            else:
+                return HttpResponse(json.dumps({'status': -1, 'error': is_saved[1]}))
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({'status': -1, 'error': 'No goal with such id'}))
+    else:
+        return HttpResponse(json.dumps({'status': -1, 'error': 'Invalid request'}))

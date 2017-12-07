@@ -11,9 +11,9 @@
     <script src="{% static 'webinterface/reactjs/react-dom.js' %}"></script>
     <script src="{% static 'webinterface/reactjs/babel.js' %}"></script>
     {# Misc #}
-    <script src="{% static 'webinterface/miscjs/cookies.js' %}"></script>
-    <script src="{% static 'webinterface/miscjs/moment.js' %}"></script>
-    <script src="{% static 'webinterface/myjs/datetimeconverter.js' %}"></script>
+    <script src="{% static 'webinterface/cookiesjs/cookies.js' %}"></script>
+    <script src="{% static 'webinterface/momentjs/moment.js' %}"></script>
+    <script src="{% static 'webinterface/escapeerrandsjs/datetimeconverter.js' %}"></script>
 {% endblock %}
 {% block css %}
     <style>
@@ -290,7 +290,7 @@
                         let achievedAlso = this.refs.achievedAlso.checked === true ? 1 : 0;
                         $.ajax({
                             url: "{% url 'webinterface:goal_read_regex' %}",
-                            method: 'GET',
+                            method: 'POST',
                             data: {
                                 regex: e.target.value,
                                 global_search: achievedAlso,
@@ -327,7 +327,7 @@
                 $.ajax({
                     {# Dirty Hack #}
                     url: "{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', id),
-                    method: 'GET',
+                    method: 'POST',
                     success: function (response) {
                         let jResponse = JSON.parse(response);
                         if (jResponse.status === 0) {
@@ -938,7 +938,7 @@
                     $.ajax({
                         {# Dirty hack #}
                         url: "{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId)),
-                        method: 'GET',
+                        method: 'POST',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
@@ -961,7 +961,7 @@
                     $.ajax({
                         {# Dirty hack #}
                         url: "{% url 'webinterface:goal_read_family' 1729 %}".replace('1729', String(goalId)),
-                        method: 'GET',
+                        method: 'POST',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
@@ -1008,15 +1008,6 @@
                         error: function (response) {
                             toastr.error('Error adding relation');
                         },
-                        csrfSafeMethod: function (method) {
-                            // these HTTP methods do not require CSRF protection
-                            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-                        },
-                        beforeSend: function (xhr, settings) {
-                            if (!this.csrfSafeMethod(settings.type) && !this.crossDomain) {
-                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                            }
-                        }
                     });
                 }
             },
@@ -1044,15 +1035,6 @@
                         error: function (response) {
                             toastr.error('Error removing relation');
                         },
-                        csrfSafeMethod: function (method) {
-                            // these HTTP methods do not require CSRF protection
-                            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-                        },
-                        beforeSend: function (xhr, settings) {
-                            if (!this.csrfSafeMethod(settings.type) && !this.crossDomain) {
-                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                            }
-                        }
                     });
                 }
             },
@@ -1079,15 +1061,6 @@
                     error: function (response) {
                         toastr.error('Error creating goal');
                     },
-                    csrfSafeMethod: function (method) {
-                        // these HTTP methods do not require CSRF protection
-                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-                    },
-                    beforeSend: function (xhr, settings) {
-                        if (!this.csrfSafeMethod(settings.type) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                        }
-                    }
                 });
             },
             api_updateGoal: function (goalId, description, deadline) {
@@ -1114,15 +1087,6 @@
                         error: function (response) {
                             toastr.error('Error updating goal');
                         },
-                        csrfSafeMethod: function (method) {
-                            // these HTTP methods do not require CSRF protection
-                            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-                        },
-                        beforeSend: function (xhr, settings) {
-                            if (!this.csrfSafeMethod(settings.type) && !this.crossDomain) {
-                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                            }
-                        }
                     });
                 }
             },
@@ -1133,7 +1097,7 @@
                     $.ajax({
                         {# Dirty Hack #}
                         url: "{% url 'webinterface:goal_toggle_is_achieved' 1729 %}".replace('1729', goalId),
-                        method: 'GET',
+                        method: 'POST',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
                             if (jResponse.status === 0) {
@@ -1174,15 +1138,6 @@
                         error: function (response) {
                             toastr.error('Error deleting goal');
                         },
-                        csrfSafeMethod: function (method) {
-                            // these HTTP methods do not require CSRF protection
-                            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-                        },
-                        beforeSend: function (xhr, settings) {
-                            if (!this.csrfSafeMethod(settings.type) && !this.crossDomain) {
-                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
-                            }
-                        }
                     });
                 }
             },
