@@ -23,6 +23,16 @@ class Goal(models.Model):
             return is_valid
 
     def is_valid(self):
+        """
+        Checks the following conditions
+        1. is the family of the current goal acyclic
+        2. are the deadlines of goals in current family proper (child_deadline >= parent_deadline)
+        3. is the achievement of the goals proper (child achieved only after all its parents achieved)
+        :return: if (all above conditions met):
+                    True
+                 else:
+                    False, "reason for failure"
+        """
         is_deadline_valid = self.is_deadline_valid()
         if is_deadline_valid is True:
             is_is_achieved_valid = self.is_is_achieved_valid()

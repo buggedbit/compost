@@ -784,18 +784,20 @@
             //          most probably you don't want to use a state method in a loop or in consecutive repetition
             s_pointToGoalInSociety: function (goalId) {
                 let answer = [false, -1, -1];
-                // todo : actually all such forEach loops
                 // little redundant
                 // check continues even after finding the goal
                 // but clean code
                 // anyways society wont be so big to cause any real change
-                this.state.society.forEach((family, fi) => {
-                    family.forEach((goal, gi) => {
+                for (let i = 0; i < this.state.society.length; i++) {
+                    let family = this.state.society[i];
+                    for (let j = 0; j < family.length; j++) {
+                        let goal = family[j];
                         if (goal.id === goalId) {
-                            answer = [true, fi, gi];
+                            answer = [true, i, j];
+                            return answer;
                         }
-                    });
-                });
+                    }
+                }
                 return answer;
             },
             s_setSocietyToFamily: function (family) {
