@@ -297,15 +297,15 @@
                             },
                             success: function (response) {
                                 let jsonResponse = JSON.parse(response);
-                                if (jsonResponse.status === 0) {
+                                if (jsonResponse.status === -1) {
+                                    toastr.error(jsonResponse.error);
+                                }
+                                else {
                                     self.setState((prevState, props) => {
                                         let resultSet = jsonResponse.data;
                                         return {resultSet: resultSet};
                                     });
                                     $(self.refs.resultSetContainer).show();
-                                }
-                                else if (jsonResponse.status === -1) {
-                                    toastr.error(jsonResponse.error);
                                 }
                             },
                             error: function (response) {
@@ -330,7 +330,10 @@
                     method: 'POST',
                     success: function (response) {
                         let jResponse = JSON.parse(response);
-                        if (jResponse.status === 0) {
+                        if (jResponse.status === -1) {
+                            toastr.error(jResponse.error);
+                        }
+                        else {
                             let isAchieved = jResponse.data;
                             // set state
                             self.setState((prevState, props) => {
@@ -346,8 +349,6 @@
                             });
                             // call back to parent
                             self.props.onToggleGoalAchievement(id, isAchieved);
-                        } else if (jResponse.status === -1) {
-                            toastr.error(jResponse.error);
                         }
                     },
                     error: function (response) {
@@ -941,11 +942,11 @@
                         method: 'POST',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
-                            if (jResponse.status === 0) {
+                            if (jResponse.status === -1) {
+                                toastr.error(jResponse.error);
+                            } else {
                                 let family = jResponse.data;
                                 self.s_addFamily(family);
-                            } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -964,13 +965,13 @@
                         method: 'POST',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
-                            if (jResponse.status === 0) {
+                            if (jResponse.status === -1) {
+                                toastr.error(jResponse.error);
+                            }
+                            else {
                                 let family = jResponse.data;
                                 self.s_setSocietyToFamily(family);
                                 self.s_openGoalDetailView(goalId);
-                            }
-                            else if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -998,11 +999,11 @@
                         },
                         success: function (response) {
                             let jResponse = JSON.parse(response);
-                            if (jResponse.status === 0) {
+                            if (jResponse.status === -1) {
+                                toastr.error(jResponse.error);
+                            } else {
                                 let newFamily = jResponse.data;
                                 self.s_makeRelation(parentId, childId, newFamily);
-                            } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1025,11 +1026,11 @@
                         },
                         success: function (response) {
                             let jResponse = JSON.parse(response);
-                            if (jResponse.status === 0) {
+                            if (jResponse.status === -1) {
+                                toastr.error(jResponse.error);
+                            } else {
                                 let setOfNewFamilies = jResponse.data;
                                 self.s_breakRelation(parentId, childId, setOfNewFamilies);
-                            } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1052,10 +1053,10 @@
                     },
                     success: function (response) {
                         let jResponse = JSON.parse(response);
-                        if (jResponse.status === 0) {
-                            self.s_addFamily([jResponse.data]);
-                        } else if (jResponse.status === -1) {
+                        if (jResponse.status === -1) {
                             toastr.error(jResponse.error);
+                        } else {
+                            self.s_addFamily([jResponse.data]);
                         }
                     },
                     error: function (response) {
@@ -1077,11 +1078,11 @@
                         },
                         success: function (response) {
                             let jResponse = JSON.parse(response);
-                            if (jResponse.status === 0) {
+                            if (jResponse.status === -1) {
+                                toastr.error(jResponse.error);
+                            } else {
                                 self.s_updateGoalInSociety(goalId, jResponse.data);
                                 self.s_openGoalDetailView(goalId);
-                            } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
@@ -1100,10 +1101,10 @@
                         method: 'POST',
                         success: function (response) {
                             let jResponse = JSON.parse(response);
-                            if (jResponse.status === 0) {
-                                self.s_setGoalAchievement(goalId, jResponse.data);
-                            } else if (jResponse.status === -1) {
+                            if (jResponse.status === -1) {
                                 toastr.error(jResponse.error);
+                            } else {
+                                self.s_setGoalAchievement(goalId, jResponse.data);
                             }
                         },
                         error: function (response) {
@@ -1128,11 +1129,11 @@
                         },
                         success: function (response) {
                             let jResponse = JSON.parse(response);
-                            if (jResponse.status === 0) {
+                            if (jResponse.status === -1) {
+                                toastr.error(jResponse.error);
+                            } else {
                                 self.s_removeFamilyIfExists(goalId);
                                 self.s_closeGoalDetailView();
-                            } else if (jResponse.status === -1) {
-                                toastr.error(jResponse.error);
                             }
                         },
                         error: function (response) {
