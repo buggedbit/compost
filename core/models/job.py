@@ -9,7 +9,7 @@ class Job(models.Model):
     # Relational fields
     id = models.AutoField(primary_key=True)
     time_tree = models.OneToOneField(DTT, related_name='job')
-    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, related_name='jobs')
+    goal = models.OneToOneField(Goal, related_name='job')
     # Core fields
     description = models.TextField(default='')
     is_done = models.BooleanField(default=False)

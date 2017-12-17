@@ -21,7 +21,6 @@ class GoalDAC:
                 ith_goal_family_id_set = augmented_goal_list[i][0].get_family_id_set()
                 for j in range(i + 1, len(augmented_goal_list)):
                     # if jth goal (i < j < N) belongs to family of ith goal and is not picked
-                    # two conditions are redundant
                     if not augmented_goal_list[j][1] and augmented_goal_list[j][0].id in ith_goal_family_id_set:
                         # pick this goal
                         augmented_goal_list[j][1] = True
@@ -48,6 +47,10 @@ class GoalDAC:
 
     @staticmethod
     def read_regex(regex, is_global_search):
+        """
+        :return: matched goals sorted wrt deadline with earliest deadline first, all non-deadlines at last grouped by
+            family
+        """
         re.compile(regex)
         if is_global_search == '1':
             not_achieved_goals = Goal.objects.filter(description__iregex=regex,
