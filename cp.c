@@ -33,11 +33,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Cannot open source file : %s\n", sourcePath);
 		exit(EXIT_FAILURE);
 	}
-	// get file size
-	fseek(source, 0, SEEK_END);
-	unsigned long int fileSize = ftell(source);
-	fseek(source, 0, SEEK_SET);
-	
+
 	destination = fopen(destinationPath, "wb");
 	if (destination == NULL) {
 		fclose(source);
@@ -45,8 +41,17 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	for (unsigned long int i = 0; i < fileSize; ++i) {
-		fputc(fgetc(source), destination);
+	unsigned char buf[256];
+	size_t size;
+	while ((size = fread(buf, 1, sizeof(buf), source)) > 0) {
+		fwrite(buf, 1, size, destination);
+	}
+
+	if (ferror(source) || !feof(source)) {
+		fclose(source);
+		fclose(destination);
+		fprintf(stderr, "Error while copying file : %s\n", sourcePath);
+		exit(EXIT_FAILURE);
 	}
 
 	fclose(source);
