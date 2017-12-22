@@ -5,7 +5,14 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-int digitlen(unsigned long int l) {
+#define SAME_SOURCE_AND_DESTINATION 1
+#define CANNOT_OPEN_FILE 2
+#define CANNOT_GET_STATUS_OF_FILE 3
+#define CANNOT_SET_TIMESTAMPS_OF_FILE 4
+#define ERROR_WHILE_COPY 5
+
+int digitlen(unsigned long int l)
+{
 	int length = 0;
 	while (l > 0) {
 		length++;
@@ -28,7 +35,8 @@ char* ltoa(unsigned long int l)
 	return ans;
 }
 
-char* join(char* a, char* b, char* c, char delimiter) {
+char* join(char* a, char* b, char* c, char delimiter)
+{
 	int lena = strlen(a);
 	int lenb = strlen(b);
 	int lenc = strlen(c);
@@ -74,20 +82,15 @@ int copy(FILE *source, FILE *destination)
 					if that also exists, doesnot copy
 					else, copies to augmented destination path (destinationpath.seconds.nanoseconds)
 		3. Preserves modified timestamps
+		returns 0 on successful duplication
+		else returns status code
 */
-int main(int argc, char *argv[])
+int dupy(char* sourcePath, char* destinationPath)
 {
-	// argument validation
-	if (argc != 3) {
-		fprintf(stderr, "Usage: %s <source-file-path> <destination-file-path>\n", argv[0]);
-		exit(EXIT_FAILURE);
-	}
-	char *sourcePath = argv[1];
-	char *destinationPath = argv[2];
 	// source path and destination path cannot be equal
 	if (strcmp(sourcePath, destinationPath) == 0) {
-		fprintf(stderr, "source path and destination path cannot be same\n");
-		exit(EXIT_FAILURE);		
+		fprintf(stderr, "Source path and Destination path cannot be same\n");
+		return SAME_SOURCE_AND_DESTINATION;		
 	}
 	
 	FILE *source, *destination;
@@ -95,14 +98,14 @@ int main(int argc, char *argv[])
 	source = fopen(sourcePath, "rb");
 	if (source == NULL) {
 		fprintf(stderr, "Cannot open source file : %s\n", sourcePath);
-		exit(EXIT_FAILURE);
+		return CANNOT_OPEN_FILE;
 	}
 	// get timestamps of source
 	struct stat sourceStat;
 	if (stat(sourcePath, &sourceStat)) {
 		fclose(source);
-		fprintf(stderr, "Error while getting status of file : %s\n", sourcePath);
-		exit(EXIT_FAILURE);
+		fprintf(stderr, "Cannot get status of file : %s\n", sourcePath);
+		return CANNOT_GET_STATUS_OF_FILE;
 	}
 	// precision is cutdown to microsec because of struct timeval can handle only upto microseconds
 	long int sa_sec = sourceStat.st_atim.tv_sec;						// source access sec
@@ -123,8 +126,8 @@ int main(int argc, char *argv[])
 		struct stat destinationStat;
 		if (stat(destinationPath, &destinationStat)) {
 			fclose(source);
-			fprintf(stderr, "Error while getting status of file : %s\n", destinationPath);
-			exit(EXIT_FAILURE);
+			fprintf(stderr, "Cannot get status of file : %s\n", destinationPath);
+			return CANNOT_GET_STATUS_OF_FILE;
 		}
 		// precision is cutdown to microsec because of struct timeval can handle only upto microseconds
 		long int dm_sec = destinationStat.st_mtim.tv_sec;
@@ -147,7 +150,7 @@ int main(int argc, char *argv[])
 					fclose(source);
 					free(augmentedDestinationPath);
 					fprintf(stderr, "Cannot open destination file : %s\n", destinationPath);
-					exit(EXIT_FAILURE);
+					return CANNOT_OPEN_FILE;
 				}
 				// copy data
 				if (copy(source, destination)) {
@@ -155,7 +158,7 @@ int main(int argc, char *argv[])
 					fclose(destination);
 					free(augmentedDestinationPath);
 					fprintf(stderr, "Error while copying file : %s\n", sourcePath);
-					exit(EXIT_FAILURE);
+					return ERROR_WHILE_COPY;
 				}
 				// close source and destination files
 				fclose(destination);
@@ -164,8 +167,8 @@ int main(int argc, char *argv[])
 				if (utimes(augmentedDestinationPath, sourceTimes)) {
 					fclose(source);
 					free(augmentedDestinationPath);
-					fprintf(stderr, "Error while setting timestamps of file : %s\n", destinationPath);
-					exit(EXIT_FAILURE);
+					fprintf(stderr, "Cannot set timestamps of file : %s\n", destinationPath);
+					return CANNOT_SET_TIMESTAMPS_OF_FILE;
 				}
 			}
 		}
@@ -176,14 +179,14 @@ int main(int argc, char *argv[])
 		if (destination == NULL) {
 			fclose(source);
 			fprintf(stderr, "Cannot open destination file : %s\n", destinationPath);
-			exit(EXIT_FAILURE);
+			return CANNOT_OPEN_FILE;
 		}
 		// copy data
 		if (copy(source, destination)) {
 			fclose(source);
 			fclose(destination);
 			fprintf(stderr, "Error while copying file : %s\n", sourcePath);
-			exit(EXIT_FAILURE);
+			return ERROR_WHILE_COPY;
 		}
 		// close source and destination files
 		fclose(destination);
@@ -191,11 +194,26 @@ int main(int argc, char *argv[])
 		// set access and modified timestamps of source file to destination file
 		if (utimes(destinationPath, sourceTimes)) {
 			fclose(source);
-			fprintf(stderr, "Error while setting timestamps of file : %s\n", destinationPath);
-			exit(EXIT_FAILURE);
+			fprintf(stderr, "Cannot set timestamps of file : %s\n", destinationPath);
+			return CANNOT_SET_TIMESTAMPS_OF_FILE;
 		}
 	}
 	fclose(source);
+	return 0;
+}
+
+int main(int argc, char *argv[])
+{
+	// argument validation
+	if (argc != 3) {
+		fprintf(stderr, "Usage: %s <source-file-path> <destination-file-path>\n", argv[0]);
+		exit(EXIT_FAILURE);
+	}
+
+	if (dupy(argv[1], argv[2])) {
+		fprintf(stderr, "Some error has occured\n");
+		exit(EXIT_FAILURE);
+	}
 
 	return 0;
 }
