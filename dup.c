@@ -104,11 +104,17 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Error while getting status of file : %s\n", sourcePath);
 		exit(EXIT_FAILURE);
 	}
+	// precision is cutdown to microsec because of struct timeval can handle only upto microseconds
+	long int sa_sec = sourceStat.st_atim.tv_sec;						// source access sec
+	long int sa_usec = sourceStat.st_atim.tv_nsec / 1000;		// source acccess micro seconds
+	long int sm_sec = sourceStat.st_mtim.tv_sec;						// source modified sec
+	long int sm_usec = sourceStat.st_mtim.tv_nsec / 1000;		// source modified micro seconds
+
 	struct timeval sourceTimes[2];
-	sourceTimes[0].tv_sec = sourceStat.st_atim.tv_sec;
-	sourceTimes[0].tv_usec = sourceStat.st_atim.tv_nsec / 1000;
-	sourceTimes[1].tv_sec = sourceStat.st_mtim.tv_sec;
-	sourceTimes[1].tv_usec = sourceStat.st_mtim.tv_nsec / 1000;
+	sourceTimes[0].tv_sec = sa_sec;
+	sourceTimes[0].tv_usec = sa_usec;
+	sourceTimes[1].tv_sec = sm_sec;
+	sourceTimes[1].tv_usec = sm_usec;
 
 	// check if destination file already exists
 	int destinationAlreadyExists = (access(destinationPath, F_OK) != -1);
@@ -120,15 +126,18 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "Error while getting status of file : %s\n", destinationPath);
 			exit(EXIT_FAILURE);
 		}
+		// precision is cutdown to microsec because of struct timeval can handle only upto microseconds
+		long int dm_sec = destinationStat.st_mtim.tv_sec;
+		long int dm_usec = destinationStat.st_mtim.tv_nsec / 1000;
 
-		char* sourceModifiedSecondsStr = ltoa(sourceStat.st_mtim.tv_sec);
-		char* sourceModifiedNanosecondsStr = ltoa(sourceStat.st_mtim.tv_nsec);
+		char* sourceModifiedSecondsStr = ltoa(sm_sec);
+		char* sourceModifiedNanosecondsStr = ltoa(sm_usec);
 		char* augmentedDestinationPath = join(destinationPath, sourceModifiedSecondsStr, sourceModifiedNanosecondsStr, '.');
 		free(sourceModifiedSecondsStr);
 		free(sourceModifiedNanosecondsStr);
 
 		// if modified timestamps of source and destination are different
-		if (sourceStat.st_mtim.tv_sec != destinationStat.st_mtim.tv_sec || sourceStat.st_mtim.tv_nsec != destinationStat.st_mtim.tv_nsec) {
+		if (sm_sec != dm_sec || sm_usec != dm_usec) {
 			int augmentedDestinationAlreadyExists = (access(augmentedDestinationPath, F_OK) != -1);
 			if (!augmentedDestinationAlreadyExists) {
 				// then this is a different file
