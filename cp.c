@@ -1,16 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
-/*
+/**
+return 0 on success, 1 on error
+*/
+int copy(FILE *source, FILE *destination)
+{
+	unsigned char buf[256];
+	size_t size;
+	while ((size = fread(buf, 1, sizeof(buf), source)) > 0) {
+		fwrite(buf, 1, size, destination);
+	}
 
-Basic copy
+	if (ferror(source) || !feof(source)) {
+		return 1;
+	}
+	return 0;
+}
+
+/**
+Basic Duplicate
 Validates source path and destination path
 	1. Asserts that they are different
-Overwrites destination file if already exists
-
+Doesnot copy if destination already exists
 */
-
 int main(int argc, char *argv[])
 {
 	// argument validation
@@ -34,28 +52,41 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	destination = fopen(destinationPath, "wb");
-	if (destination == NULL) {
+	int destinationAlreadyExists = (access(destinationPath, F_OK) != -1);
+
+	if (destinationAlreadyExists) {
+		// struct stat sourceStat;
+		// if (stat(sourcePath, &sourceStat)) {
+		// 	fclose(source);
+		// 	fclose(destination);
+		// 	fprintf(stderr, "Error while getting status of file : %s\n", sourcePath);
+		// 	exit(EXIT_FAILURE);
+		// }
+		// struct stat destinationStat;
+		// if (stat(destinationPath, &destinationStat)) {
+		// 	fclose(source);
+		// 	fclose(destination);
+		// 	fprintf(stderr, "Error while getting status of file : %s\n", destinationPath);
+		// 	exit(EXIT_FAILURE);
+		// }
 		fclose(source);
-		fprintf(stderr, "Cannot open destination file : %s\n", destinationPath);
-		exit(EXIT_FAILURE);
-	}
-
-	unsigned char buf[256];
-	size_t size;
-	while ((size = fread(buf, 1, sizeof(buf), source)) > 0) {
-		fwrite(buf, 1, size, destination);
-	}
-
-	if (ferror(source) || !feof(source)) {
+	} else {
+		destination = fopen(destinationPath, "wb");
+		if (destination == NULL) {
+			fclose(source);
+			fprintf(stderr, "Cannot open destination file : %s\n", destinationPath);
+			exit(EXIT_FAILURE);
+		}
+		if (copy(source, destination)) {
+			fclose(source);
+			fclose(destination);
+			fprintf(stderr, "Error while copying file : %s\n", sourcePath);
+			exit(EXIT_FAILURE);
+		}
+		
 		fclose(source);
 		fclose(destination);
-		fprintf(stderr, "Error while copying file : %s\n", sourcePath);
-		exit(EXIT_FAILURE);
 	}
-
-	fclose(source);
-	fclose(destination);
 
 	return 0;
 }
