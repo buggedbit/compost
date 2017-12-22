@@ -1,1 +1,1 @@
-Raider is a simple tool to safely pool your photos and videos from different devices to a backup device avoiding unncessary duplicates
+Dupy is a simple tool to safely pool your photos and videos from different devices to a backup device avoiding unncessary duplicates
