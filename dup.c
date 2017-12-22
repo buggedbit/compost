@@ -5,6 +5,50 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
+int digitlen(unsigned long int l) {
+	int length = 0;
+	while (l > 0) {
+		length++;
+		l = l / 10;
+	}
+	return length;
+}
+
+char* ltoa(unsigned long int l)
+{
+	int length = digitlen(l);
+	char* ans = (char *) malloc((length + 1) * sizeof(char));
+	ans[length] = '\0';
+
+	while (length > 0) {
+		ans[length - 1] = l % 10 + '0';
+		l = l / 10;
+		length--;
+	}
+	return ans;
+}
+
+char* join(char* a, char* b, char* c, char delimiter) {
+	int lena = strlen(a);
+	int lenb = strlen(b);
+	int lenc = strlen(c);
+	int totalLength = lena + lenb + lenc + 2; // 2 delimiters
+	char* ans = (char *) malloc((totalLength + 1) * sizeof(char)); // NULL character
+	ans[totalLength] = '\0';
+	for (int i = 0; i < lena; ++i) {
+		ans[i] = a[i];
+	}
+	ans[lena] = delimiter;
+	for (int i = 0; i < lenb; ++i) {
+		ans[i + lena + 1] = b[i];
+	}
+	ans[lena + lenb + 1] = delimiter;
+	for (int i = 0; i < lenc; ++i) {
+		ans[i + lena + lenb + 2] = c[i];
+	}
+	return ans;
+}
+
 /**
 	return 0 on success, 1 on error
 */
@@ -25,8 +69,11 @@ int copy(FILE *source, FILE *destination)
 /**
 	Duplicate a file
 		1. Asserts source path and destination path are different
-		2. Doesnot copy if destination already exists
-		3. Preserves access and modified timestamps
+		2. If destination already exists but modified timestamp donot match
+				Checks existence of augmented destination path (destinationpath.seconds.nanoseconds)
+					if that also exists, doesnot copy
+					else, copies to augmented destination path (destinationpath.seconds.nanoseconds)
+		3. Preserves modified timestamps
 */
 int main(int argc, char *argv[])
 {
@@ -67,14 +114,53 @@ int main(int argc, char *argv[])
 	int destinationAlreadyExists = (access(destinationPath, F_OK) != -1);
 
 	if (destinationAlreadyExists) {
-		// struct stat destinationStat;
-		// if (stat(destinationPath, &destinationStat)) {
-		// 	fclose(source);
-		// 	fclose(destination);
-		// 	fprintf(stderr, "Error while getting status of file : %s\n", destinationPath);
-		// 	exit(EXIT_FAILURE);
-		// }
-		fclose(source);
+		struct stat destinationStat;
+		if (stat(destinationPath, &destinationStat)) {
+			fclose(source);
+			fprintf(stderr, "Error while getting status of file : %s\n", destinationPath);
+			exit(EXIT_FAILURE);
+		}
+
+		char* sourceModifiedSecondsStr = ltoa(sourceStat.st_mtim.tv_sec);
+		char* sourceModifiedNanosecondsStr = ltoa(sourceStat.st_mtim.tv_nsec);
+		char* augmentedDestinationPath = join(destinationPath, sourceModifiedSecondsStr, sourceModifiedNanosecondsStr, '.');
+		free(sourceModifiedSecondsStr);
+		free(sourceModifiedNanosecondsStr);
+
+		// if modified timestamps of source and destination are different
+		if (sourceStat.st_mtim.tv_sec != destinationStat.st_mtim.tv_sec || sourceStat.st_mtim.tv_nsec != destinationStat.st_mtim.tv_nsec) {
+			int augmentedDestinationAlreadyExists = (access(augmentedDestinationPath, F_OK) != -1);
+			if (!augmentedDestinationAlreadyExists) {
+				// then this is a different file
+				// open augmented destination file
+				destination = fopen(augmentedDestinationPath, "wb");
+				if (destination == NULL) {
+					fclose(source);
+					free(augmentedDestinationPath);
+					fprintf(stderr, "Cannot open destination file : %s\n", destinationPath);
+					exit(EXIT_FAILURE);
+				}
+				// copy data
+				if (copy(source, destination)) {
+					fclose(source);
+					fclose(destination);
+					free(augmentedDestinationPath);
+					fprintf(stderr, "Error while copying file : %s\n", sourcePath);
+					exit(EXIT_FAILURE);
+				}
+				// close source and destination files
+				fclose(destination);
+
+				// set access and modified timestamps of source file to destination file
+				if (utimes(augmentedDestinationPath, sourceTimes)) {
+					fclose(source);
+					free(augmentedDestinationPath);
+					fprintf(stderr, "Error while setting timestamps of file : %s\n", destinationPath);
+					exit(EXIT_FAILURE);
+				}
+			}
+		}
+		free(augmentedDestinationPath);
 	} else {
 		// open destination file
 		destination = fopen(destinationPath, "wb");
@@ -91,15 +177,16 @@ int main(int argc, char *argv[])
 			exit(EXIT_FAILURE);
 		}
 		// close source and destination files
-		fclose(source);
 		fclose(destination);
 
 		// set access and modified timestamps of source file to destination file
 		if (utimes(destinationPath, sourceTimes)) {
+			fclose(source);
 			fprintf(stderr, "Error while setting timestamps of file : %s\n", destinationPath);
 			exit(EXIT_FAILURE);
 		}
 	}
+	fclose(source);
 
 	return 0;
 }
