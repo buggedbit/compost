@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <fcntl.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 /**
-return 0 on success, 1 on error
+	return 0 on success, 1 on error
 */
 int copy(FILE *source, FILE *destination)
 {
@@ -24,10 +23,10 @@ int copy(FILE *source, FILE *destination)
 }
 
 /**
-Basic Duplicate
-Validates source path and destination path
-	1. Asserts that they are different
-Doesnot copy if destination already exists
+	Duplicate a file
+		1. Asserts source path and destination path are different
+		2. Doesnot copy if destination already exists
+		3. Preserves access and modified timestamps
 */
 int main(int argc, char *argv[])
 {
@@ -51,17 +50,23 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Cannot open source file : %s\n", sourcePath);
 		exit(EXIT_FAILURE);
 	}
+	// get timestamps of source
+	struct stat sourceStat;
+	if (stat(sourcePath, &sourceStat)) {
+		fclose(source);
+		fprintf(stderr, "Error while getting status of file : %s\n", sourcePath);
+		exit(EXIT_FAILURE);
+	}
+	struct timeval sourceTimes[2];
+	sourceTimes[0].tv_sec = sourceStat.st_atim.tv_sec;
+	sourceTimes[0].tv_usec = sourceStat.st_atim.tv_nsec / 1000;
+	sourceTimes[1].tv_sec = sourceStat.st_mtim.tv_sec;
+	sourceTimes[1].tv_usec = sourceStat.st_mtim.tv_nsec / 1000;
 
+	// check if destination file already exists
 	int destinationAlreadyExists = (access(destinationPath, F_OK) != -1);
 
 	if (destinationAlreadyExists) {
-		// struct stat sourceStat;
-		// if (stat(sourcePath, &sourceStat)) {
-		// 	fclose(source);
-		// 	fclose(destination);
-		// 	fprintf(stderr, "Error while getting status of file : %s\n", sourcePath);
-		// 	exit(EXIT_FAILURE);
-		// }
 		// struct stat destinationStat;
 		// if (stat(destinationPath, &destinationStat)) {
 		// 	fclose(source);
@@ -71,21 +76,29 @@ int main(int argc, char *argv[])
 		// }
 		fclose(source);
 	} else {
+		// open destination file
 		destination = fopen(destinationPath, "wb");
 		if (destination == NULL) {
 			fclose(source);
 			fprintf(stderr, "Cannot open destination file : %s\n", destinationPath);
 			exit(EXIT_FAILURE);
 		}
+		// copy data
 		if (copy(source, destination)) {
 			fclose(source);
 			fclose(destination);
 			fprintf(stderr, "Error while copying file : %s\n", sourcePath);
 			exit(EXIT_FAILURE);
 		}
-		
+		// close source and destination files
 		fclose(source);
 		fclose(destination);
+
+		// set access and modified timestamps of source file to destination file
+		if (utimes(destinationPath, sourceTimes)) {
+			fprintf(stderr, "Error while setting timestamps of file : %s\n", destinationPath);
+			exit(EXIT_FAILURE);
+		}
 	}
 
 	return 0;
