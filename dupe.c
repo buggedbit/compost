@@ -85,7 +85,7 @@ int copy(FILE *source, FILE *destination)
 		returns 0 on successful duplication
 		else returns status code
 */
-int dupy(char* sourcePath, char* destinationPath)
+int dupe(char* sourcePath, char* destinationPath)
 {
 	// source path and destination path cannot be equal
 	if (strcmp(sourcePath, destinationPath) == 0) {
@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if (dupy(argv[1], argv[2])) {
+	if (dupe(argv[1], argv[2])) {
 		fprintf(stderr, "Some error has occured\n");
 		exit(EXIT_FAILURE);
 	}

@@ -1,1 +1,1 @@
-Dupy is a simple tool to safely pool your photos and videos from different devices to a backup device avoiding unncessary duplicates
+Dupe is a tool to easily and safely pool your photos, videos and files from different devices to a backup device avoiding unncessary duplicates
