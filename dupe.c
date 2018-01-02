@@ -149,7 +149,7 @@ int dupe(char* sourcePath, char* destinationPath)
 				if (destination == NULL) {
 					fclose(source);
 					free(augmentedDestinationPath);
-					fprintf(stderr, "Cannot open destination file : %s\n", destinationPath);
+					fprintf(stderr, "Cannot open destination file : %s\n", augmentedDestinationPath);
 					return CANNOT_OPEN_FILE;
 				}
 				// copy data
@@ -167,10 +167,15 @@ int dupe(char* sourcePath, char* destinationPath)
 				if (utimes(augmentedDestinationPath, sourceTimes)) {
 					fclose(source);
 					free(augmentedDestinationPath);
-					fprintf(stderr, "Cannot set timestamps of file : %s\n", destinationPath);
+					fprintf(stderr, "Cannot set timestamps of file : %s\n", augmentedDestinationPath);
 					return CANNOT_SET_TIMESTAMPS_OF_FILE;
 				}
+				printf("Conflict resolved using augmented timestamp method\n\t%s\t->\t%s\n", sourcePath, augmentedDestinationPath);
+			} else {
+				printf("Dupe already exists for : %s\t->\t%s\n", sourcePath, augmentedDestinationPath);
 			}
+		} else {
+				printf("Dupe already exists for : %s\t->\t%s\n", sourcePath, destinationPath);
 		}
 		free(augmentedDestinationPath);
 	} else {
