@@ -5,9 +5,6 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <dirent.h>
-#include <sys/types.h>
-
-#define MAX_PATH_LENGTH 4096
 
 #define COPY_BUFFER_SIZE 4096
 
@@ -223,8 +220,8 @@ void dupe(const char *sourceDir, const char *destinationDir)
 		return;
 	}
 
-	char srcPath[MAX_PATH_LENGTH];
-	char destPath[MAX_PATH_LENGTH];
+	char srcPath[PATH_MAX];
+	char destPath[PATH_MAX];
 	struct stat st;
 	while ((dirEntry = readdir(sourceDIR)) != NULL) {
 		snprintf(srcPath, sizeof(srcPath), "%s/%s", sourceDir, dirEntry->d_name);
@@ -268,15 +265,17 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	char *sourceDir = argv[1];
-	char *destinationDir = argv[2];
-
-	// removing additional / at the end if it exists
-	if (sourceDir[strlen(sourceDir) - 1] == '/') {
-		sourceDir[strlen(sourceDir) - 1] = '\0';
+	char sourceDir[PATH_MAX];
+	char destinationDir[PATH_MAX];
+	
+	if (realpath(argv[1], sourceDir) == NULL) {
+		fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[1]);
+		exit(EXIT_FAILURE);		
 	}
-	if (destinationDir[strlen(destinationDir) - 1] == '/') {
-		destinationDir[strlen(destinationDir) - 1] = '\0';
+
+	if (realpath(argv[2], destinationDir) == NULL) {
+		fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[2]);
+		exit(EXIT_FAILURE);		
 	}
 
 	DIR *dir;
