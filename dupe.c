@@ -4,6 +4,12 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <dirent.h>
+#include <sys/types.h>
+
+#define MAX_PATH_LENGTH 4096
+
+#define COPY_BUFFER_SIZE 4096
 
 #define SAME_SOURCE_AND_DESTINATION 1
 #define CANNOT_OPEN_FILE 2
@@ -35,7 +41,7 @@ char* ltoa(unsigned long int l)
 	return ans;
 }
 
-char* join(char* a, char* b, char* c, char delimiter)
+char* join(const char* a, const char* b, const char* c, char delimiter)
 {
 	int lena = strlen(a);
 	int lenb = strlen(b);
@@ -62,7 +68,7 @@ char* join(char* a, char* b, char* c, char delimiter)
 */
 int copy(FILE *source, FILE *destination)
 {
-	unsigned char buf[256];
+	unsigned char buf[COPY_BUFFER_SIZE];
 	size_t size;
 	while ((size = fread(buf, 1, sizeof(buf), source)) > 0) {
 		fwrite(buf, 1, size, destination);
@@ -85,7 +91,7 @@ int copy(FILE *source, FILE *destination)
 		returns 0 on successful duplication
 		else returns status code
 */
-int dupe(char* sourcePath, char* destinationPath)
+int dupef(const char* sourcePath, const char* destinationPath)
 {
 	// source path and destination path cannot be equal
 	if (strcmp(sourcePath, destinationPath) == 0) {
@@ -175,7 +181,7 @@ int dupe(char* sourcePath, char* destinationPath)
 				printf("Dupe already exists for : %s\t->\t%s\n", sourcePath, augmentedDestinationPath);
 			}
 		} else {
-				printf("Dupe already exists for : %s\t->\t%s\n", sourcePath, destinationPath);
+			printf("Dupe already exists for : %s\t->\t%s\n", sourcePath, destinationPath);
 		}
 		free(augmentedDestinationPath);
 	} else {
@@ -207,18 +213,87 @@ int dupe(char* sourcePath, char* destinationPath)
 	return 0;
 }
 
+void dupe(const char *sourceDir, const char *destinationDir)
+{
+	DIR *sourceDIR;
+	struct dirent *dirEntry;
+
+	if ((sourceDIR = opendir(sourceDir)) == NULL) {
+		printf ("Cannot open directory: %s\n", sourceDir);
+		return;
+	}
+
+	char srcPath[MAX_PATH_LENGTH];
+	char destPath[MAX_PATH_LENGTH];
+	struct stat st;
+	while ((dirEntry = readdir(sourceDIR)) != NULL) {
+		snprintf(srcPath, sizeof(srcPath), "%s/%s", sourceDir, dirEntry->d_name);
+		snprintf(destPath, sizeof(destPath), "%s/%s", destinationDir, dirEntry->d_name);
+
+		if (dirEntry->d_type == DT_DIR) {
+			// dirEntry is a directory
+			if (strcmp(dirEntry->d_name, ".") == 0 || strcmp(dirEntry->d_name, "..") == 0) {
+				continue;
+			}
+			if (stat(destPath, &st) == -1) {
+				if (mkdir(destPath, S_IRWXU | S_IRWXG | S_IROTH)) {
+					fprintf(stderr, "Cannot create directory %s\n", destPath);
+					return;
+				}
+				if (stat(srcPath, &st)) {
+					fprintf(stderr, "Cannot get status of directory %s\n", srcPath);
+					return;
+				}
+				if (chmod(destPath, st.st_mode)) {
+					fprintf(stderr, "Cannot set permissions to directory %s\n", destPath);
+					return;
+				}
+			}
+			dupe(srcPath, destPath);
+		} else {
+			// dirEntry is a file		
+			if (dupef(srcPath, destPath)) {
+				fprintf(stderr, "**Some error has occured while duping %s\n", srcPath);
+			}
+		}
+	}
+	closedir(sourceDIR);
+}
+
 int main(int argc, char *argv[])
 {
 	// argument validation
 	if (argc != 3) {
-		fprintf(stderr, "Usage: %s <source-file-path> <destination-file-path>\n", argv[0]);
+		fprintf(stderr, "Usage: %s <source-directory> <destination-directory>\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
-	if (dupe(argv[1], argv[2])) {
-		fprintf(stderr, "Some error has occured\n");
+	char *sourceDir = argv[1];
+	char *destinationDir = argv[2];
+
+	// removing additional / at the end if it exists
+	if (sourceDir[strlen(sourceDir) - 1] == '/') {
+		sourceDir[strlen(sourceDir) - 1] = '\0';
+	}
+	if (destinationDir[strlen(destinationDir) - 1] == '/') {
+		destinationDir[strlen(destinationDir) - 1] = '\0';
+	}
+
+	DIR *dir;
+
+	if ((dir = opendir(sourceDir)) == NULL) {
+		fprintf(stderr, "Cannot open directory: %s\n", sourceDir);
 		exit(EXIT_FAILURE);
 	}
+	closedir(dir);
+
+	if ((dir = opendir(destinationDir)) == NULL) {
+		fprintf(stderr, "Cannot open directory: %s\n", destinationDir);
+		exit(EXIT_FAILURE);
+	}
+	closedir(dir);
+
+	dupe(sourceDir, destinationDir);
 
 	return 0;
 }
