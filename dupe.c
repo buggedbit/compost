@@ -51,39 +51,45 @@ void dupe(const char *sourceDir, const char *destinationDir)
 int main(int argc, char *argv[])
 {
 	// argument validation
-	if (argc != 3) {
+	if (argc == 3) {
+		char sourceDir[PATH_MAX];
+		char destinationDir[PATH_MAX];
+		if (realpath(argv[1], sourceDir) == NULL) {
+			fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[1]);
+			exit(EXIT_FAILURE);		
+		}
+		if (realpath(argv[2], destinationDir) == NULL) {
+			fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[2]);
+			exit(EXIT_FAILURE);
+		}
+
+		DIR *dir;
+		if ((dir = opendir(sourceDir)) == NULL) {
+			fprintf(stderr, "Cannot open directory: %s\n", sourceDir);
+			exit(EXIT_FAILURE);
+		}
+		closedir(dir);
+		if ((dir = opendir(destinationDir)) == NULL) {
+			fprintf(stderr, "Cannot open directory: %s\n", destinationDir);
+			exit(EXIT_FAILURE);
+		}
+		closedir(dir);
+
+		dupe(sourceDir, destinationDir);
+
+	} else if (argc == 4 && strcmp(argv[1], "-f") == 0) {
+		char *sourceFile = argv[2];
+		char *destinationFile = argv[3];
+		
+		if (dupef(sourceFile, destinationFile)) {
+			fprintf(stderr, "**Some error has occured while duping %s\n", sourceFile);
+		}
+
+	} else {
 		fprintf(stderr, "Usage: %s <source-directory> <destination-directory>\n", argv[0]);
-		exit(EXIT_FAILURE);
-	}
-
-	char sourceDir[PATH_MAX];
-	char destinationDir[PATH_MAX];
-	
-	if (realpath(argv[1], sourceDir) == NULL) {
-		fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[1]);
+		fprintf(stderr, "Usage: %s -f <source-file-path> <destination-file-path>\n", argv[0]);
 		exit(EXIT_FAILURE);		
 	}
-
-	if (realpath(argv[2], destinationDir) == NULL) {
-		fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[2]);
-		exit(EXIT_FAILURE);		
-	}
-
-	DIR *dir;
-
-	if ((dir = opendir(sourceDir)) == NULL) {
-		fprintf(stderr, "Cannot open directory: %s\n", sourceDir);
-		exit(EXIT_FAILURE);
-	}
-	closedir(dir);
-
-	if ((dir = opendir(destinationDir)) == NULL) {
-		fprintf(stderr, "Cannot open directory: %s\n", destinationDir);
-		exit(EXIT_FAILURE);
-	}
-	closedir(dir);
-
-	dupe(sourceDir, destinationDir);
 
 	return 0;
 }
