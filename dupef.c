@@ -13,6 +13,7 @@
 #define CANNOT_SET_TIMESTAMPS_OF_FILE 4
 #define ERROR_WHILE_COPY 5
 
+int noFilesSeen = 0;
 int noFilesCopied = 0;
 int noBytesCopied = 0;
 
@@ -93,6 +94,7 @@ int copy(FILE *source, FILE *destination)
 */
 int dupef(const char* sourcePath, const char* destinationPath)
 {
+	noFilesSeen++;
 	// source path and destination path cannot be equal
 	if (strcmp(sourcePath, destinationPath) == 0) {
 		fprintf(stderr, "Source path and Destination path cannot be same\n");
@@ -118,7 +120,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 	long int sa_usec = sourceStat.st_atim.tv_nsec / 1000;				// source acccess micro seconds
 	long int sm_sec = sourceStat.st_mtim.tv_sec;						// source modified sec
 	long int sm_usec = sourceStat.st_mtim.tv_nsec / 1000;				// source modified micro seconds
-    size_t sourceSizeInBytes = sourceStat.st_size;
+	size_t sourceSizeInBytes = sourceStat.st_size;
 
 	struct timeval sourceTimes[2];
 	sourceTimes[0].tv_sec = sa_sec;
@@ -160,6 +162,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 					return CANNOT_OPEN_FILE;
 				}
 				// copy data
+				printf("Copying %s -> %s\n", sourcePath, augmentedDestinationPath);
 				if (copy(source, destination)) {
 					fclose(source);
 					fclose(destination);
@@ -168,7 +171,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 					return ERROR_WHILE_COPY;
 				}
 				noBytesCopied += sourceSizeInBytes;
-				printf("Copied %s -> %s\n", sourcePath, augmentedDestinationPath);
+				printf("Copied...");
 				// close source and destination files
 				fclose(destination);
 
@@ -181,10 +184,10 @@ int dupef(const char* sourcePath, const char* destinationPath)
 				}
 				printf("Conflict resolved using augmented timestamp method\n\t%s\t->\t%s\n", sourcePath, augmentedDestinationPath);
 			} else {
-				printf("Dupe already exists for : %s\t->\t%s\n", sourcePath, augmentedDestinationPath);
+				printf("Dupe already exists for : %s\n                       -> %s\n", sourcePath, augmentedDestinationPath);
 			}
 		} else {
-			printf("Dupe already exists for : %s\t->\t%s\n", sourcePath, destinationPath);
+			printf("Dupe already exists for : %s\n                       -> %s\n", sourcePath, destinationPath);
 		}
 		free(augmentedDestinationPath);
 	} else {
@@ -196,6 +199,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 			return CANNOT_OPEN_FILE;
 		}
 		// copy data
+		printf("Copying %s -> %s\n", sourcePath, destinationPath);
 		if (copy(source, destination)) {
 			fclose(source);
 			fclose(destination);
@@ -203,7 +207,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 			return ERROR_WHILE_COPY;
 		}
 		noBytesCopied += sourceSizeInBytes;
-		printf("Copied %s -> %s\n", sourcePath, destinationPath);
+		printf("Copied...");
 		// close source and destination files
 		fclose(destination);
 

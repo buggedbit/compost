@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
 		closedir(dir);
 
 		dupe(sourceDir, destinationDir);
+		printf("%d files seen\n", noFilesSeen);
 		printf("%d files copied\n", noFilesCopied);
 		printf("%f MB copied\n", noBytesCopied / (1000 * 1000.0));
 
