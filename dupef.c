@@ -14,6 +14,7 @@
 #define ERROR_WHILE_COPY 5
 
 int noFilesCopied = 0;
+int noBytesCopied = 0;
 
 int digitlen(unsigned long int l)
 {
@@ -117,6 +118,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 	long int sa_usec = sourceStat.st_atim.tv_nsec / 1000;				// source acccess micro seconds
 	long int sm_sec = sourceStat.st_mtim.tv_sec;						// source modified sec
 	long int sm_usec = sourceStat.st_mtim.tv_nsec / 1000;				// source modified micro seconds
+    size_t sourceSizeInBytes = sourceStat.st_size;
 
 	struct timeval sourceTimes[2];
 	sourceTimes[0].tv_sec = sa_sec;
@@ -165,6 +167,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 					fprintf(stderr, "Error while copying file : %s\n", sourcePath);
 					return ERROR_WHILE_COPY;
 				}
+				noBytesCopied += sourceSizeInBytes;
 				printf("Copied %s -> %s\n", sourcePath, augmentedDestinationPath);
 				// close source and destination files
 				fclose(destination);
@@ -199,6 +202,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 			fprintf(stderr, "Error while copying file : %s\n", sourcePath);
 			return ERROR_WHILE_COPY;
 		}
+		noBytesCopied += sourceSizeInBytes;
 		printf("Copied %s -> %s\n", sourcePath, destinationPath);
 		// close source and destination files
 		fclose(destination);

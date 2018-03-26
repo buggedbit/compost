@@ -1,4 +1,4 @@
-#include "dupef.h"
+#include "dupef.c"
 #include <dirent.h>
 
 void dupe(const char *sourceDir, const char *destinationDir)
@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
 
 		dupe(sourceDir, destinationDir);
 		printf("%d files copied\n", noFilesCopied);
+		printf("%f MB copied\n", noBytesCopied / (1000 * 1000.0));
 
 	} else if (argc == 4 && strcmp(argv[1], "-f") == 0) {
 		char *sourceFile = argv[2];
