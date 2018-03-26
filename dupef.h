@@ -13,6 +13,8 @@
 #define CANNOT_SET_TIMESTAMPS_OF_FILE 4
 #define ERROR_WHILE_COPY 5
 
+int noFilesCopied = 0;
+
 int digitlen(unsigned long int l)
 {
 	int length = 0;
@@ -73,6 +75,7 @@ int copy(FILE *source, FILE *destination)
 	if (ferror(source) || !feof(source)) {
 		return 1;
 	}
+	noFilesCopied++;
 	return 0;
 }
 
@@ -92,7 +95,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 	// source path and destination path cannot be equal
 	if (strcmp(sourcePath, destinationPath) == 0) {
 		fprintf(stderr, "Source path and Destination path cannot be same\n");
-		return SAME_SOURCE_AND_DESTINATION;		
+		return SAME_SOURCE_AND_DESTINATION;
 	}
 	
 	FILE *source, *destination;
@@ -111,9 +114,9 @@ int dupef(const char* sourcePath, const char* destinationPath)
 	}
 	// precision is cutdown to microsec because of struct timeval can handle only upto microseconds
 	long int sa_sec = sourceStat.st_atim.tv_sec;						// source access sec
-	long int sa_usec = sourceStat.st_atim.tv_nsec / 1000;		// source acccess micro seconds
+	long int sa_usec = sourceStat.st_atim.tv_nsec / 1000;				// source acccess micro seconds
 	long int sm_sec = sourceStat.st_mtim.tv_sec;						// source modified sec
-	long int sm_usec = sourceStat.st_mtim.tv_nsec / 1000;		// source modified micro seconds
+	long int sm_usec = sourceStat.st_mtim.tv_nsec / 1000;				// source modified micro seconds
 
 	struct timeval sourceTimes[2];
 	sourceTimes[0].tv_sec = sa_sec;
@@ -162,6 +165,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 					fprintf(stderr, "Error while copying file : %s\n", sourcePath);
 					return ERROR_WHILE_COPY;
 				}
+				printf("Copied %s -> %s\n", sourcePath, augmentedDestinationPath);
 				// close source and destination files
 				fclose(destination);
 
@@ -195,6 +199,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 			fprintf(stderr, "Error while copying file : %s\n", sourcePath);
 			return ERROR_WHILE_COPY;
 		}
+		printf("Copied %s -> %s\n", sourcePath, destinationPath);
 		// close source and destination files
 		fclose(destination);
 

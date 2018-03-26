@@ -39,7 +39,7 @@ void dupe(const char *sourceDir, const char *destinationDir)
 			}
 			dupe(srcPath, destPath);
 		} else {
-			// dirEntry is a file		
+			// dirEntry is a file
 			if (dupef(srcPath, destPath)) {
 				fprintf(stderr, "**Some error has occured while duping %s\n", srcPath);
 			}
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 		char destinationDir[PATH_MAX];
 		if (realpath(argv[1], sourceDir) == NULL) {
 			fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[1]);
-			exit(EXIT_FAILURE);		
+			exit(EXIT_FAILURE);
 		}
 		if (realpath(argv[2], destinationDir) == NULL) {
 			fprintf(stderr, "Cannot resolve realpath directory: %s\n", argv[2]);
@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
 		closedir(dir);
 
 		dupe(sourceDir, destinationDir);
+		printf("%d files copied\n", noFilesCopied);
 
 	} else if (argc == 4 && strcmp(argv[1], "-f") == 0) {
 		char *sourceFile = argv[2];
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
 	} else {
 		fprintf(stderr, "Usage: %s <source-directory> <destination-directory>\n", argv[0]);
 		fprintf(stderr, "Usage: %s -f <source-file-path> <destination-file-path>\n", argv[0]);
-		exit(EXIT_FAILURE);		
+		exit(EXIT_FAILURE);
 	}
 
 	return 0;
