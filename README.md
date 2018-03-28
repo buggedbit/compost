@@ -1,4 +1,4 @@
-Dupe is a tool to easily and safely pool your files from different devices to a backup device avoiding unncessary duplicates
+Dupe is a tool to easily and safely pool your files from different devices to a backup device avoiding unnecessary duplicates
 
 ### Compilation
 
