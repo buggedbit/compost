@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/a_glance_menu_search_item"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/search_in_menu"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/a_glance_menu_pull_all_goals_item"
+        android:title="@string/pull_all_goals" />
+    <item
+        android:id="@+id/a_glance_menu_global_search_item"
+        android:checkable="true"
+        android:title="@string/global_search" />
+
+</menu>
