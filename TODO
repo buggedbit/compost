@@ -1,6 +1,6 @@
     improve goal search app
-		group by families
-		fix sort order
+	*	group by families
+	*	fix sort order
 		set bg of overdue goals to red
         reduce !important in css
 
