@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from dtt import DTT
-from goal import Goal
+from core.models.dtt import DTT
+from core.models.goal import Goal
 
 
 class Job(models.Model):

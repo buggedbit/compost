@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from views import ajax
-from views import template
+from webinterface.views import ajax
+from webinterface.views import template
 
 app_name = 'webinterface'
 
