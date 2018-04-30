@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import math
 from django.db import models
 from datetime import datetime as dt, timedelta as td
-from dtt import DTT
+from core.models.dtt import DTT
 from core.stub import Stub
 
 from core.timeutils import to_microseconds
