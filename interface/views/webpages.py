@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from interface.views.sessionapis import is_loggedin
+from interface.views.sessionapis import is_session_active
 
 
 def index(request):
-    if is_loggedin(request.session):
-        context = {'isLoggedIn': True}
+    if is_session_active(request.session):
+        context = {'isSessionActive': True}
     else:
-        context = {'isLoggedIn': False}
+        context = {'isSessionActive': False}
     return render(request, 'interface/index/index.html', context)
 
 
