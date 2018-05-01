@@ -5,7 +5,7 @@ from datetime import datetime as dt
 
 from django.views.decorators.csrf import csrf_exempt
 
-from webinterface.views.responsewrapper import ResponseWrapper
+from interface.views.responsewrapper import ResponseWrapper
 from core.models.goal import Goal
 import re
 import json

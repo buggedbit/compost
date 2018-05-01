@@ -1,12 +1,12 @@
-{% extends 'webinterface/base.html' %}
+{% extends 'interface/base.html' %}
 {% load static %}
 {% block extra_headers %}
     {# JQuery #}
-    <script src="{% static 'webinterface/materialize/materialize.min.js' %}"></script>
+    <script src="{% static 'interface/materialize/materialize.min.js' %}"></script>
     {# React & babel JS #}
-    <script src="{% static 'webinterface/reactjs/react.js' %}"></script>
-    <script src="{% static 'webinterface/reactjs/react-dom.js' %}"></script>
-    <script src="{% static 'webinterface/reactjs/babel.js' %}"></script>
+    <script src="{% static 'interface/reactjs/react.js' %}"></script>
+    <script src="{% static 'interface/reactjs/react-dom.js' %}"></script>
+    <script src="{% static 'interface/reactjs/babel.js' %}"></script>
 
 {% endblock %}
 {% block title %}\Errands{% endblock %}
@@ -77,8 +77,8 @@
         });
 
         ReactDOM.render(<LoginLogoutView
-                loginUrl='{% url 'webinterface:login' %}'
-                logoutUrl='{% url 'webinterface:logout' %}'
+                loginUrl='{% url 'interface:login' %}'
+                logoutUrl='{% url 'interface:logout' %}'
             />,
             document.getElementById('app'));
     </script>
@@ -94,7 +94,7 @@
         <div class="col l4 m4 s4">
             <div id="app"></div>
             <ul>
-                <li class="center"><a href="{% url 'webinterface:goal_glance' %}">Have a glance on your goals</a></li>
+                <li class="center"><a href="{% url 'interface:goal_glance' %}">Have a glance on your goals</a></li>
             </ul>
         </div>
     </div>
