@@ -1,7 +1,7 @@
 from datetime import datetime as dt, timedelta as td
 
 
-class Stub:
+class TimeStub:
     def __init__(self, epoch=dt.now(), end=dt.now(), duration=td()):
         self.epoch = epoch
         self.end = end
