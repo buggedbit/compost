@@ -6,17 +6,18 @@
     <script src="{% static 'webinterface/visjs/vis.min.js' %}"></script>
     <link type="text/css" rel="stylesheet" href="{% static 'webinterface/visjs/vis.min.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'webinterface/visjs/vis-network.min.css' %}"/>
-    {# React & babel #}
+    {# React & babel JS #}
     <script src="{% static 'webinterface/reactjs/react.js' %}"></script>
     <script src="{% static 'webinterface/reactjs/react-dom.js' %}"></script>
     <script src="{% static 'webinterface/reactjs/babel.js' %}"></script>
-    {# Misc #}
+    {# Escape Errands JS #}
     <script src="{% static 'webinterface/cookiesjs/cookies.js' %}"></script>
     <script src="{% static 'webinterface/momentjs/moment.js' %}"></script>
     <script src="{% static 'webinterface/escapeerrandsjs/utils.jsx' %}"></script>
     <script src="{% static 'webinterface/escapeerrandsjs/time-formatter.jsx' %}"></script>
     <script src="{% static 'webinterface/escapeerrandsjs/goal-create-view.jsx' %}" type="text/babel"></script>
     <script src="{% static 'webinterface/escapeerrandsjs/goal-search-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet" href="{% static 'webinterface/escapeerrandsjs/goal-detail-view.css' %}"/>
     <script src="{% static 'webinterface/escapeerrandsjs/goal-detail-view.jsx' %}" type="text/babel"></script>
     <script src="{% static 'webinterface/escapeerrandsjs/goal-canvas-controller.jsx' %}" type="text/babel"></script>
     <script src="{% static 'webinterface/escapeerrandsjs/goal-glance-view.jsx' %}" type="text/babel"></script>
@@ -100,62 +101,6 @@
             position: fixed;
             top: 20px;
             right: 20px;
-        }
-
-        .goal-detail-view {
-            position: fixed;
-            width: 25%;
-            background-color: white;
-            border: 2px solid black;
-            padding: 20px;
-            margin: 20px;
-            z-index: 1000;
-            font-size: large;
-            font-weight: bold;
-            top: 0;
-            right: 0;
-        }
-
-        .goal-detail-view-description {
-            border: none;
-            border-bottom: 1px solid black;
-            height: 200px;
-            color: black;
-            font-size: large;
-        }
-
-        .goal-detail-view-description:focus {
-            border: 1px solid black;
-            outline: none;
-        }
-
-        .goal-detail-view-deadline {
-            outline: none !important;
-            box-shadow: none !important;
-            border-bottom: 1px solid black !important;
-            color: black;
-            font-size: large;
-        }
-
-        .goal-detail-view-hide-btn {
-            padding: 0;
-            position: absolute;
-            top: 5px;
-            right: 10px;
-        }
-
-        .goal-detail-view-update-btn {
-            padding: 0;
-        }
-
-        .goal-detail-view-deselect-btn {
-            padding: 0;
-        }
-
-        .goal-detail-view-delete-btn {
-            position: absolute;
-            right: 20px;
-            padding: 0;
         }
 
         .create-goal-view-toggle-btn {

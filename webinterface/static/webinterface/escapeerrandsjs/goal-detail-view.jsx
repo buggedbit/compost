@@ -27,8 +27,8 @@ let GoalDetailView = React.createClass({
                 </textarea>
                 </label>
                 <label>
-                    by? (t -> min, m -> month, u -> microsec)
-                    <button className="btn-floating z-depth-0"
+                    by when?<br/>(t -> min, m -> month, u -> microsec)
+                    <button className="btn-floating right purple darken-4 z-depth-0"
                             title="Fill deadline with current timestamp"
                             onClick={() => {
                                 this.refs.deadline.value = TimeFormatter.formatNow()
@@ -42,7 +42,7 @@ let GoalDetailView = React.createClass({
                                this.refs.deadline.value = TimeFormatter.formatNow()
                            }}/>
                 </label>
-                <button className="btn-floating blue z-depth-0 goal-detail-view-update-btn"
+                <button className="btn-floating blue z-depth-0"
                         title="Update"
                         onClick={(e) => {
                             let id = this.props.id;
@@ -56,13 +56,13 @@ let GoalDetailView = React.createClass({
                             }
                         }}>
                     <i className="material-icons">sync</i></button>
-                <button className="btn-floating black z-depth-0 goal-detail-view-deselect-btn"
+                <button className="btn-floating black z-depth-0"
                         title="Remove from canvas"
                         onClick={(e) => {
                             this.props.onGoalFamilyDeselect(this.props.id)
                         }}>
                     <i className="material-icons">vertical_align_bottom</i></button>
-                <button className="btn-floating red z-depth-0 goal-detail-view-delete-btn"
+                <button className="btn-floating red z-depth-0 right"
                         title="Delete"
                         onClick={(e) => {
                             this.props.onGoalDelete(this.props.id);
