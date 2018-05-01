@@ -4,7 +4,7 @@ import math
 from django.db import models
 from datetime import datetime as dt, timedelta as td
 from core.models.dtt import DTT
-from core.stub import Stub
+from core.timestub import TimeStub
 
 from core.timeutils import to_microseconds
 
@@ -143,7 +143,7 @@ class DTB(models.Model):
                 stub_epoch = max([lp, epoch])
                 stub_end = min([end, up])
                 stub_duration = stub_end - stub_epoch
-                return [Stub(stub_epoch, stub_end, stub_duration)]
+                return [TimeStub(stub_epoch, stub_end, stub_duration)]
         # Repeating
         else:
             snapshot = []
@@ -163,7 +163,7 @@ class DTB(models.Model):
                         stub_epoch = i_epoch
                         stub_end = min([i_end, up])
                         stub_duration = stub_end - stub_epoch
-                        snapshot.append(Stub(stub_epoch, stub_end, stub_duration))
+                        snapshot.append(TimeStub(stub_epoch, stub_end, stub_duration))
                     i_end -= time_period
                 elif up >= init_end > lp:
                     i_end = init_end
@@ -177,7 +177,7 @@ class DTB(models.Model):
                     stub_epoch = max([i_epoch, loop_limit])
                     stub_end = i_end
                     stub_duration = stub_end - stub_epoch
-                    snapshot.append(Stub(stub_epoch, stub_end, stub_duration))
+                    snapshot.append(TimeStub(stub_epoch, stub_end, stub_duration))
                     i_end -= time_period
             else:
                 init_epoch = self.epoch
@@ -192,7 +192,7 @@ class DTB(models.Model):
                         stub_epoch = lp
                         stub_end = min([i_end, up])
                         stub_duration = stub_end - stub_epoch
-                        snapshot.append(Stub(stub_epoch, stub_end, stub_duration))
+                        snapshot.append(TimeStub(stub_epoch, stub_end, stub_duration))
                     i_epoch += time_period
                 elif lp <= init_epoch < up:
                     i_epoch = init_epoch
@@ -209,7 +209,7 @@ class DTB(models.Model):
                     stub_epoch = i_epoch
                     stub_end = min([i_end, loop_limit])
                     stub_duration = stub_end - stub_epoch
-                    snapshot.append(Stub(stub_epoch, stub_end, stub_duration))
+                    snapshot.append(TimeStub(stub_epoch, stub_end, stub_duration))
                     i_epoch += time_period
 
             return snapshot

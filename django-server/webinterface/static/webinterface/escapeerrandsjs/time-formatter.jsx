@@ -1,9 +1,12 @@
 /**
- * Order of shortForms and longForms must be same
  * Dependencies :
  *      moment.js
  * */
-let DatetimeConverter = {
+
+let TimeFormatter = {
+    /**
+     * shortForms and longForms must have corresponding elements
+     * */
     shortForms: ['d', 'm', 'y', 'h', 't', 's', 'u'],
     longForms: ['day', 'month', 'year', 'hour', 'minute', 'second', 'microsecond'],
     getShortForm: function (longForm) {
