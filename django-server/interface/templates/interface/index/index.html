@@ -26,7 +26,8 @@
                             toastr.error(json.error);
                         } else {
                             this.setState((prevState) => {
-                                return {isLoggedIn: !prevState.isLoggedIn}
+                                toastr.info('Logged In');
+                                return {isLoggedIn: true}
                             });
                         }
                     })
@@ -42,7 +43,8 @@
                             toastr.error(json.error);
                         } else {
                             this.setState((prevState) => {
-                                return {isLoggedIn: !prevState.isLoggedIn}
+                                toastr.info('Logged Out');
+                                return {isLoggedIn: false}
                             });
                         }
                     })
@@ -53,23 +55,32 @@
             render: function () {
                 let ret = '';
                 if (!this.state.isLoggedIn) {
-                    ret = <div>
-                        <span>Not logged in! Login for total access</span>
-                        <button className="btn btn-flat" onClick={() => {
+                    ret = <div className="row">
+                        <input className="col l9 m9 s9" ref="passwordField" autoFocus type="password"
+                               placeholder="enter passphrase to login"
+                               onKeyPress={(e) => {
+                                   if ((e.which || e.keyCode) === 13) {
+                                       this.login(this.refs.passwordField.value)
+                                   }
+                               }}/>
+                        <button className="btn-floating btn-large green darken-3 right" onClick={() => {
                             this.login(this.refs.passwordField.value)
-                        }}>Login
+                        }}>
+                            <i className="material-icons">lock_open</i>
                         </button>
-                        <label>
-                            <input ref="passwordField" type="password"/>
-                        </label>
+
                     </div>;
                 } else {
                     ret = <div>
-                        <span>Logged In!</span>
-                        <button className="btn btn-flat" onClick={() => {
+                        <button title="logout" className="btn-floating btn-large right red darken-3" onClick={() => {
                             this.logout()
-                        }}>Logout
+                        }}>
+                            <i className="material-icons">lock</i>
                         </button>
+                        <ul>
+                            <li>What would you like to do?</li>
+                            <li><a href="{% url 'interface:goal_glance' %}">Have a glance on your goals</a></li>
+                        </ul>
                     </div>;
                 }
                 return ret;
@@ -93,9 +104,6 @@
         </div>
         <div class="col l4 m4 s4">
             <div id="app"></div>
-            <ul>
-                <li class="center"><a href="{% url 'interface:goal_glance' %}">Have a glance on your goals</a></li>
-            </ul>
         </div>
     </div>
 {% endblock %}
