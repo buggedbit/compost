@@ -8,6 +8,13 @@ SESSION_KEY = 'loggedIn'
 SESSION_VALUE = 'yes'
 
 
+def is_loggedin(session):
+    try:
+        return session[SESSION_KEY] == SESSION_VALUE
+    except KeyError:
+        return False
+
+
 @csrf_exempt
 def login(request):
     if request.method == 'POST':

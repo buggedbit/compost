@@ -1,22 +1,38 @@
 {% extends 'webinterface/base.html' %}
 {% load static %}
 {% block extra_headers %}
+    {# JQuery #}
     <script src="{% static 'webinterface/materialize/materialize.min.js' %}"></script>
+    {# React & babel JS #}
+    <script src="{% static 'webinterface/reactjs/react.js' %}"></script>
+    <script src="{% static 'webinterface/reactjs/react-dom.js' %}"></script>
+    <script src="{% static 'webinterface/reactjs/babel.js' %}"></script>
 {% endblock %}
 {% block title %}\Errands{% endblock %}
 {% block body %}
     <div class="row" style="position: relative;top: 25vh;">
-        <div class="col l0 m0 s0"></div>
-        <div class="col l12 m12 s12 center align">
-            <div class="card-content">
+        <div class="col l4 m4 s4"></div>
+        <div class="col l4 m4 s4">
+            <div class="card-content center">
                 <h1>Escape</h1>
                 <div class="flow-text grey-text">(Your)</div>
                 <h1>Errands</h1>
             </div>
+        </div>
+        <div class="col l4 m4 s4">
+            {% if not isLoggedIn %}
+                <div>
+                    <span>Not logged in! Login for total access</span>
+                    <input type="password"/>
+                </div>
+            {% else %}
+                <div>
+                    <span>Logged In!</span>
+                </div>
+            {% endif %}
             <ul>
-                <li><a href="{% url 'webinterface:goal_glance' %}">Have a glance on your goals</a></li>
+                <li class="center"><a href="{% url 'webinterface:goal_glance' %}">Have a glance on your goals</a></li>
             </ul>
         </div>
-        <div class="col l0 m0 s0"></div>
     </div>
 {% endblock %}
