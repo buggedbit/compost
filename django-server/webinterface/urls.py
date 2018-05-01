@@ -1,23 +1,32 @@
 from django.conf.urls import url
-from webinterface.views import goalapis
+from webinterface.views import goalapis, sessionapis
 from webinterface.views import webpages
 
 app_name = 'webinterface'
 
 urlpatterns = [
+
+    # webpages
     # host/scratch/
     url(r'^scratch/$', webpages.scratch, name='scratch'),
-
     # host/
     url(r'^$', webpages.index, name='index'),
     # host/goal/glance/
     url(r'^goal/glance/$', webpages.goal_glance, name='goal_glance'),
 
+    # sessionapis
+    # host/login/<POST password>
+    url(r'^login/$', sessionapis.login, name='login'),
+    # host/logout/
+    url(r'^logout/$', sessionapis.logout, name='logout'),
+
+    # goalapis
+    # read
     # host/goal/read/regex/?regex=REGEX_PATTERN & global_search=(1 or 0)
     url(r'^goal/read/regex/$', goalapis.read_regex, name='goal_read_regex'),
     # host/goal/read/family/pk
     url(r'^goal/read/family/(?P<pk>[1-9][0-9]*)/$', goalapis.read_family, name='goal_read_family'),
-
+    # write
     # host/goal/create/<POST description, deadline>
     url(r'^goal/create/$', goalapis.create, name='goal_create'),
     # host/goal/update/<POST id, description, deadline>
