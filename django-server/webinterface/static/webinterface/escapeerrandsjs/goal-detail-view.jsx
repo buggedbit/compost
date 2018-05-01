@@ -27,7 +27,7 @@ let GoalDetailView = React.createClass({
                 </textarea>
                 </label>
                 <label>
-                    by when?<br/>(t -> min, m -> month, u -> microsec)
+                    by when?
                     <button className="btn-floating right purple darken-4 z-depth-0"
                             title="Fill deadline with current timestamp"
                             onClick={() => {
@@ -36,6 +36,7 @@ let GoalDetailView = React.createClass({
                         <i className="material-icons">format_color_fill</i>
                     </button>
                     <input className="goal-detail-view-deadline"
+                           title="d -> day, m -> month, y -> year, h -> hour, t -> min, s -> sec, u -> microsec"
                            ref="deadline"
                            defaultValue={this.props.deadline === undefined ? '' : TimeFormatter.format(this.props.deadline)}
                            onDoubleClick={(e) => {
