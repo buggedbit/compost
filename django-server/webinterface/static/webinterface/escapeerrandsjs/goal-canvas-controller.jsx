@@ -24,7 +24,7 @@ let GoalCanvasController = React.createClass({
     prevSocietyString: undefined,
     getDefaultProps: function () {
         return {
-            wrappingDivId: 'goal-canvas-wrapper',
+            targetDivId: 'goal-canvas-controller',
             graphSettings: {
                 MAX_LABEL_LENGTH: 15,
                 colors: {
@@ -105,7 +105,7 @@ let GoalCanvasController = React.createClass({
 
     render: function () {
         return (<div>
-                <div id={this.props.wrappingDivId}
+                <div id={this.props.targetDivId}
                      onDrop={(e) => {
                          this.props.onGoalDrop(e.dataTransfer.getData('goalId'));
                      }}
@@ -117,7 +117,7 @@ let GoalCanvasController = React.createClass({
         );
     },
     componentDidMount: function () {
-        let canvasDiv = document.getElementById(this.props.wrappingDivId);
+        let canvasDiv = document.getElementById(this.props.targetDivId);
         // store node and edge vis data sets for future use
         let nds = this.graphNodeDataSet = new vis.DataSet(this.getNodeSet(this.props.society));
         let eds = this.graphEdgeDataSet = new vis.DataSet(this.getEdgeSet(this.props.society));

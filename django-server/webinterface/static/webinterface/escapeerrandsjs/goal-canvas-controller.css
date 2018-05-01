@@ -1,0 +1,9 @@
+#goal-canvas-controller {
+    height: 100vh;
+}
+
+.goal-canvas-clear-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
