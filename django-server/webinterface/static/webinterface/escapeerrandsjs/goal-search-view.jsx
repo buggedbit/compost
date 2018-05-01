@@ -19,15 +19,14 @@ let GoalSearchResult = React.createClass({
         };
         let description = this.props.description === '' ? '@no_description' : truncate(this.props.description, this.props.maxDescLength);
         let deadlineRepr = function (deadline) {
-            let momentDeadline = moment()
+            return moment()
                 .year(deadline.year)
                 .month(deadline.month - 1)
                 .date(deadline.day)
                 .hour(deadline.hour)
                 .minute(deadline.minute)
                 .second(deadline.second)
-                .millisecond(deadline.microsecond / 1000);
-            return momentDeadline.fromNow();
+                .millisecond(deadline.microsecond / 1000).fromNow();
         };
         let deadline = this.props.deadline === null ? "." : deadlineRepr(this.props.deadline);
 
@@ -40,7 +39,7 @@ let GoalSearchResult = React.createClass({
                     e.dataTransfer.setData('goalId', this.props.id);
                 }}>
                 <div className="row">
-                    <div className="col l6 m6 s6 pointer data" style={style} onClick={(e) => {
+                    <div className="col l5 m5 s5 pointer data" style={style} onClick={(e) => {
                         this.props.onDescriptionClick(this.props.id);
                     }}>
                         {description}
@@ -50,7 +49,7 @@ let GoalSearchResult = React.createClass({
                     }}>
                         {deadline}
                     </div>
-                    <div className="col l1 m1 s1 pointer data" onClick={(e) => {
+                    <div className="col l2 m2 s2 pointer data" onClick={(e) => {
                         this.props.onAchievementClick(this.props.id);
                     }}>
                         <i className="material-icons">{isAchieved}</i>
@@ -132,7 +131,9 @@ let GoalSearchView = React.createClass({
     },
     render: function () {
         let resultSet = this.state.resultSet.map((goalFamilySubset) => {
+            let familyKey = [];
             let goalFamilySubsetView = goalFamilySubset.map((goal) => {
+                familyKey.push(goal.id);
                 return (
                     <GoalSearchResult
                         key={goal.id}
@@ -150,7 +151,7 @@ let GoalSearchView = React.createClass({
                 );
             });
             return (
-                <ul className="collection goal-search-family-subset">
+                <ul key={familyKey.join()} className="collection goal-search-family-subset">
                     {goalFamilySubsetView}
                 </ul>
             );
