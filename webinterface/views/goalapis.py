@@ -42,7 +42,7 @@ def jsonize_goal(goal):
     return json_goal
 
 
-def jsonize_goal_iterable(goal_ids):
+def jsonize_goals_using_ids(goal_ids):
     jsoned = []
     for goal_id in goal_ids:
         goal = Goal.objects.get(pk=goal_id)
@@ -50,7 +50,7 @@ def jsonize_goal_iterable(goal_ids):
     return jsoned
 
 
-class ResponseWrapper:
+class Response:
     OBJECT_RESPONSE = 1
     ARRAY_RESPONSE = 2
     STRING_RESPONSE = 3
@@ -67,7 +67,7 @@ class ResponseWrapper:
 
     @staticmethod
     def error(error):
-        return {'error': error, 'status': ResponseWrapper.ERROR_RESPONSE}
+        return {'error': error, 'status': Response.ERROR_RESPONSE}
 
     def __init__(self):
         pass
@@ -90,13 +90,13 @@ def read_regex(request):
                 json_goal_family_subsets.append(json_family_subset)
 
             return HttpResponse(
-                json.dumps(ResponseWrapper.of(json_goal_family_subsets, ResponseWrapper.ARRAY_RESPONSE)))
+                json.dumps(Response.of(json_goal_family_subsets, Response.ARRAY_RESPONSE)))
         except MultiValueDictKeyError:
-            return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
+            return HttpResponse(json.dumps(Response.error('Improper data')))
         except re.error:
-            return HttpResponse(json.dumps(ResponseWrapper.error('Not proper regex')))
+            return HttpResponse(json.dumps(Response.error('Not proper regex')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
 
 
 @csrf_exempt
@@ -108,11 +108,11 @@ def read_family(request, pk):
             for member in goal_family:
                 json_family.append(jsonize_goal(member))
 
-            return HttpResponse(json.dumps(ResponseWrapper.of(json_family, ResponseWrapper.ARRAY_RESPONSE)))
+            return HttpResponse(json.dumps(Response.of(json_family, Response.ARRAY_RESPONSE)))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps(ResponseWrapper.error('No goal with such id')))
+            return HttpResponse(json.dumps(Response.error('No goal with such id')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
 
 
 @csrf_exempt
@@ -134,14 +134,14 @@ def create(request):
 
             if is_created[0] is True:
                 return HttpResponse(
-                    json.dumps(ResponseWrapper.of(jsonize_goal(is_created[1]), ResponseWrapper.OBJECT_RESPONSE)))
+                    json.dumps(Response.of(jsonize_goal(is_created[1]), Response.OBJECT_RESPONSE)))
             else:
-                return HttpResponse(json.dumps(ResponseWrapper.error(is_created[1])))
+                return HttpResponse(json.dumps(Response.error(is_created[1])))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
+            return HttpResponse(json.dumps(Response.error('Improper data')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
 
 
 @csrf_exempt
@@ -163,16 +163,16 @@ def update(request):
 
             if is_updated[0] is True:
                 return HttpResponse(
-                    json.dumps(ResponseWrapper.of(jsonize_goal(is_updated[1]), ResponseWrapper.OBJECT_RESPONSE)))
+                    json.dumps(Response.of(jsonize_goal(is_updated[1]), Response.OBJECT_RESPONSE)))
             else:
-                return HttpResponse(json.dumps(ResponseWrapper.error(is_updated[1])))
+                return HttpResponse(json.dumps(Response.error(is_updated[1])))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
+            return HttpResponse(json.dumps(Response.error('Improper data')))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps(ResponseWrapper.error('Invalid id')))
+            return HttpResponse(json.dumps(Response.error('Invalid id')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
 
 
 @csrf_exempt
@@ -184,16 +184,16 @@ def delete_if_single(request):
             is_deleted = GoalDAC.delete_if_single(pk)
 
             if is_deleted is True:
-                return HttpResponse(json.dumps(ResponseWrapper.of(0, ResponseWrapper.NUMBER_RESPONSE)))
+                return HttpResponse(json.dumps(Response.of(0, Response.NUMBER_RESPONSE)))
             else:
-                return HttpResponse(json.dumps(ResponseWrapper.error(is_deleted[1])))
+                return HttpResponse(json.dumps(Response.error(is_deleted[1])))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
+            return HttpResponse(json.dumps(Response.error('Improper data')))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps(ResponseWrapper.error('Invalid id')))
+            return HttpResponse(json.dumps(Response.error('Invalid id')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
 
 
 @csrf_exempt
@@ -207,16 +207,16 @@ def add_relation(request):
 
             if was_relation_added[0] is True:
                 return HttpResponse(json.dumps(
-                    ResponseWrapper.of(jsonize_goal_iterable(was_relation_added[1]), ResponseWrapper.ARRAY_RESPONSE)))
+                    Response.of(jsonize_goals_using_ids(was_relation_added[1]), Response.ARRAY_RESPONSE)))
             else:
-                return HttpResponse(json.dumps(ResponseWrapper.error(was_relation_added[1])))
+                return HttpResponse(json.dumps(Response.error(was_relation_added[1])))
 
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
+            return HttpResponse(json.dumps(Response.error('Improper data')))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps(ResponseWrapper.error('Invalid id')))
+            return HttpResponse(json.dumps(Response.error('Invalid id')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
 
 
 @csrf_exempt
@@ -229,15 +229,15 @@ def remove_relation(request):
             family_id_sets = GoalDAC.remove_relation(parent_id, child_id)
             jsoned_family_id_sets = []
             for family_id_set in family_id_sets:
-                jsoned_family_id_sets.append(jsonize_goal_iterable(family_id_set))
+                jsoned_family_id_sets.append(jsonize_goals_using_ids(family_id_set))
 
-            return HttpResponse(json.dumps(ResponseWrapper.of(jsoned_family_id_sets, ResponseWrapper.ARRAY_RESPONSE)))
+            return HttpResponse(json.dumps(Response.of(jsoned_family_id_sets, Response.ARRAY_RESPONSE)))
         except (ValueError, TypeError, MultiValueDictKeyError):
-            return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
+            return HttpResponse(json.dumps(Response.error('Improper data')))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps(ResponseWrapper.error('Invalid id')))
+            return HttpResponse(json.dumps(Response.error('Invalid id')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
 
 
 @csrf_exempt
@@ -246,10 +246,10 @@ def toggle_is_achieved(request, pk):
         try:
             is_saved = GoalDAC.toggle_is_achieved(pk)
             if is_saved[0] is True:
-                return HttpResponse(json.dumps(ResponseWrapper.of(is_saved[1], ResponseWrapper.OBJECT_RESPONSE)))
+                return HttpResponse(json.dumps(Response.of(is_saved[1], Response.OBJECT_RESPONSE)))
             else:
-                return HttpResponse(json.dumps(ResponseWrapper.error(is_saved[1])))
+                return HttpResponse(json.dumps(Response.error(is_saved[1])))
         except ObjectDoesNotExist:
-            return HttpResponse(json.dumps(ResponseWrapper.error('No goal with such id')))
+            return HttpResponse(json.dumps(Response.error('No goal with such id')))
     else:
-        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+        return HttpResponse(json.dumps(Response.error('Invalid request')))
