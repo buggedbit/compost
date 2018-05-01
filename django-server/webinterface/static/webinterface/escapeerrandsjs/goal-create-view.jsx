@@ -19,13 +19,20 @@ let GoalCreateView = React.createClass({
                             $(this.refs.entireView).hide()
                         }}>
                     <i className="material-icons">close</i></button>
-                <label>Description
+                <label>what?
                     <textarea ref="description" className="create-goal-view-description"></textarea>
                 </label>
-                <label>Deadline: Deadline: t -> minute, m -> month, u ->microsecond
+                <label>by when? <br/>(t -> min, m -> month, u ->microsec)
+                    <button className="btn-floating right purple darken-4 z-depth-0"
+                            title="Fill deadline with current timestamp"
+                            onClick={() => {
+                                this.refs.deadline.value = TimeFormatter.formatNow()
+                            }}>
+                        <i className="material-icons">format_color_fill</i>
+                    </button>
                     <input ref="deadline" className="create-goal-view-deadline"
-                           onDoubleClick={(e) => {
-                               e.target.value = TimeFormatter.formatNow()
+                           onDoubleClick={() => {
+                               this.refs.deadline.value = TimeFormatter.formatNow()
                            }}/>
                 </label>
                 <button className="btn btn-large white black-text z-depth-0 create-goal-view-submit-btn"
