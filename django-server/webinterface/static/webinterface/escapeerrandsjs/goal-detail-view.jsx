@@ -20,19 +20,26 @@ let GoalDetailView = React.createClass({
                             $(this.refs.entireView).hide()
                         }}>
                     <i className="material-icons">close</i></button>
-                <label>Description
+                <label>what?
                     <textarea className="goal-detail-view-description"
                               defaultValue={this.props.description === undefined ? '' : this.props.description}
                               ref="description">
                 </textarea>
                 </label>
                 <label>
-                    Deadline: t -> minute, m -> month, u -> microsecond
+                    by? (t -> min, m -> month, u -> microsec)
+                    <button className="btn-floating z-depth-0"
+                            title="Fill deadline with current timestamp"
+                            onClick={() => {
+                                this.refs.deadline.value = TimeFormatter.formatNow()
+                            }}>
+                        <i className="material-icons">format_color_fill</i>
+                    </button>
                     <input className="goal-detail-view-deadline"
                            ref="deadline"
                            defaultValue={this.props.deadline === undefined ? '' : TimeFormatter.format(this.props.deadline)}
                            onDoubleClick={(e) => {
-                               e.target.value = TimeFormatter.formatNow()
+                               this.refs.deadline.value = TimeFormatter.formatNow()
                            }}/>
                 </label>
                 <button className="btn-floating blue z-depth-0 goal-detail-view-update-btn"
