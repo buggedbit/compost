@@ -5,6 +5,7 @@
 
 let TimeFormatter = {
     /**
+     * every element of shortForms and longForms must be unique
      * shortForms and longForms must have corresponding elements
      * */
     shortForms: ['d', 'm', 'y', 'h', 't', 's', 'u'],
