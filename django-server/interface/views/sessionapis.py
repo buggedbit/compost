@@ -8,7 +8,7 @@ SESSION_KEY = 'loggedIn'
 SESSION_VALUE = 'yes'
 
 
-def is_loggedin(session):
+def is_session_active(session):
     try:
         return session[SESSION_KEY] == SESSION_VALUE
     except KeyError:
