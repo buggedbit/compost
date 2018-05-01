@@ -1,0 +1,44 @@
+{% extends 'interface/base.html' %}
+{% block title %}Goals at a Glance{% endblock %}
+{% load static %}
+{% block extra_headers %}
+    {# Vis JS #}
+    <script src="{% static 'interface/visjs/vis.min.js' %}"></script>
+    <link type="text/css" rel="stylesheet" href="{% static 'interface/visjs/vis.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'interface/visjs/vis-network.min.css' %}"/>
+    {# React & babel JS #}
+    <script src="{% static 'interface/reactjs/react.js' %}"></script>
+    <script src="{% static 'interface/reactjs/react-dom.js' %}"></script>
+    <script src="{% static 'interface/reactjs/babel.js' %}"></script>
+    {# Moment JS #}
+    <script src="{% static 'interface/momentjs/moment.js' %}"></script>
+    {# Escape Errands JS #}
+    <script src="{% static 'interface/escapeerrandsjs/utils.jsx' %}"></script>
+    <script src="{% static 'interface/escapeerrandsjs/time-formatter.jsx' %}"></script>
+    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-create-view.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal-create-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-search-view.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal-search-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-detail-view.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal-detail-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-canvas-controller.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal-canvas-controller.jsx' %}" type="text/babel"></script>
+    <script src="{% static 'interface/escapeerrandsjs/goal-glance-view.jsx' %}" type="text/babel"></script>
+{% endblock %}
+{% block body %}
+    <script type="text/babel">
+        ReactDOM.render(<GoalGlanceView
+            readFamilyUrl='{% url 'interface:goal_read_family' 1729 %}'
+            addRelationUrl='{% url 'interface:goal_add_relation' %}'
+            removeRelationUrl="{% url 'interface:goal_remove_relation' %}"
+            createUrl="{% url 'interface:goal_create' %}"
+            updateUrl="{% url 'interface:goal_update' %}"
+            toggleIsAchievedUrl="{% url 'interface:goal_toggle_is_achieved' 1729 %}"
+            deleteIfSingleUrl="{% url 'interface:goal_delete_if_single' %}"
+            readRegexUrl="{% url 'interface:goal_read_regex' %}"
+        />, document.getElementById('app'));
+    </script>
+    <div class="container-fluid">
+        <div id="app"></div>
+    </div>
+{% endblock %}

@@ -7,5 +7,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # host/
-    url(r'^', include('webinterface.urls')),
+    url(r'^', include('interface.urls')),
 ]

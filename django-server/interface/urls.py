@@ -1,8 +1,8 @@
 from django.conf.urls import url
-from webinterface.views import goalapis, sessionapis
-from webinterface.views import webpages
+from interface.views import goalapis, sessionapis
+from interface.views import webpages
 
-app_name = 'webinterface'
+app_name = 'interface'
 
 urlpatterns = [
 
