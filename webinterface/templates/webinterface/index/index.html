@@ -7,9 +7,81 @@
     <script src="{% static 'webinterface/reactjs/react.js' %}"></script>
     <script src="{% static 'webinterface/reactjs/react-dom.js' %}"></script>
     <script src="{% static 'webinterface/reactjs/babel.js' %}"></script>
+
 {% endblock %}
 {% block title %}\Errands{% endblock %}
 {% block body %}
+    <script type="text/babel">
+        let LoginLogoutView = React.createClass({
+            getInitialState: function () {
+                return {
+                    isLoggedIn: '{{ isLoggedIn }}' === 'True',
+                }
+            },
+            login: function (password) {
+                $.post(this.props.loginUrl, {password: password})
+                    .done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            this.setState((prevState) => {
+                                return {isLoggedIn: !prevState.isLoggedIn}
+                            });
+                        }
+                    })
+                    .fail(() => {
+                        toastr.error('Server Error');
+                    });
+            },
+            logout: function () {
+                $.post(this.props.logoutUrl)
+                    .done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            this.setState((prevState) => {
+                                return {isLoggedIn: !prevState.isLoggedIn}
+                            });
+                        }
+                    })
+                    .fail(() => {
+                        toastr.error('Server Error');
+                    });
+            },
+            render: function () {
+                let ret = '';
+                if (!this.state.isLoggedIn) {
+                    ret = <div>
+                        <span>Not logged in! Login for total access</span>
+                        <button className="btn btn-flat" onClick={() => {
+                            this.login(this.refs.passwordField.value)
+                        }}>Login
+                        </button>
+                        <label>
+                            <input ref="passwordField" type="password"/>
+                        </label>
+                    </div>;
+                } else {
+                    ret = <div>
+                        <span>Logged In!</span>
+                        <button className="btn btn-flat" onClick={() => {
+                            this.logout()
+                        }}>Logout
+                        </button>
+                    </div>;
+                }
+                return ret;
+            }
+        });
+
+        ReactDOM.render(<LoginLogoutView
+                loginUrl='{% url 'webinterface:login' %}'
+                logoutUrl='{% url 'webinterface:logout' %}'
+            />,
+            document.getElementById('app'));
+    </script>
     <div class="row" style="position: relative;top: 25vh;">
         <div class="col l4 m4 s4"></div>
         <div class="col l4 m4 s4">
@@ -20,16 +92,7 @@
             </div>
         </div>
         <div class="col l4 m4 s4">
-            {% if not isLoggedIn %}
-                <div>
-                    <span>Not logged in! Login for total access</span>
-                    <input type="password"/>
-                </div>
-            {% else %}
-                <div>
-                    <span>Logged In!</span>
-                </div>
-            {% endif %}
+            <div id="app"></div>
             <ul>
                 <li class="center"><a href="{% url 'webinterface:goal_glance' %}">Have a glance on your goals</a></li>
             </ul>
