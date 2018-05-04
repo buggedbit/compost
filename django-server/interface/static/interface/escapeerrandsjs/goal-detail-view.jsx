@@ -6,7 +6,7 @@
  * */
 
 /**
- * @propFunctions: onGoalUpdate, onGoalDelete, onGoalFamilyDeselect
+ * @propFunctions: onGoalUpdate, onGoalChainUpdate, onGoalDelete, onGoalFamilyDeselect
  * */
 let GoalDetailView = React.createClass({
     render: function () {
@@ -28,7 +28,7 @@ let GoalDetailView = React.createClass({
                 </label>
                 <label>
                     by when?
-                    <button className="btn-floating right purple darken-4 z-depth-0"
+                    <button className="btn-floating right purple darken-4 z-depth-1"
                             title="Fill deadline with current timestamp"
                             onClick={() => {
                                 this.refs.deadline.value = TimeFormatter.formatNow()
@@ -43,9 +43,10 @@ let GoalDetailView = React.createClass({
                                this.refs.deadline.value = TimeFormatter.formatNow()
                            }}/>
                 </label>
-                <button className="btn-floating blue z-depth-0"
+                <button className="btn-floating blue z-depth-1"
                         title="Update"
-                        onClick={(e) => {
+                        style={{marginRight: '10px'}}
+                        onClick={() => {
                             let id = this.props.id;
                             let description = this.refs.description.value;
                             let deadline = TimeFormatter.parse(this.refs.deadline.value);
@@ -57,13 +58,29 @@ let GoalDetailView = React.createClass({
                             }
                         }}>
                     <i className="material-icons">sync</i></button>
-                <button className="btn-floating black z-depth-0"
+                <button className="btn-floating pink z-depth-1"
+                        title="Chain Update"
+                        style={{marginRight: '10px'}}
+                        onClick={() => {
+                            let id = this.props.id;
+                            let description = this.refs.description.value;
+                            let deadline = TimeFormatter.parse(this.refs.deadline.value);
+                            if (deadline !== false) {
+                                this.props.onGoalChainUpdate(id, description, deadline);
+                            }
+                            else {
+                                toastr.error('Incorrect datetime format, try again');
+                            }
+                        }}>
+                    <i className="material-icons">timeline</i></button>
+                <button className="btn-floating black z-depth-1"
                         title="Remove from canvas"
+                        style={{marginRight: '10px'}}
                         onClick={(e) => {
                             this.props.onGoalFamilyDeselect(this.props.id)
                         }}>
                     <i className="material-icons">vertical_align_bottom</i></button>
-                <button className="btn-floating red z-depth-0 right"
+                <button className="btn-floating red z-depth-1 right"
                         title="Delete"
                         onClick={(e) => {
                             this.props.onGoalDelete(this.props.id);
