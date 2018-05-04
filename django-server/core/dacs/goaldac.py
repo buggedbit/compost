@@ -98,21 +98,21 @@ class GoalDAC:
             return is_updated
 
     @staticmethod
-    def _set_deadline_for_child_chain(goal, deadline):
+    def _set_child_chain_deadlines(goal, deadline):
         for child in goal.get_children():
             # pruning
             if DeadlineUtils.is_lesser(child.deadline, deadline):
-                GoalDAC._set_deadline_for_child_chain(child, deadline)
+                GoalDAC._set_child_chain_deadlines(child, deadline)
 
         goal.deadline = deadline
         goal.save()
 
     @staticmethod
-    def _set_deadline_for_parent_chain(goal, deadline):
+    def _set_parent_chain_deadlines(goal, deadline):
         for parent in goal.get_parents():
             # pruning
             if DeadlineUtils.is_greater(parent.deadline, deadline):
-                GoalDAC._set_deadline_for_parent_chain(parent, deadline)
+                GoalDAC._set_parent_chain_deadlines(parent, deadline)
 
         goal.deadline = deadline
         goal.save()
@@ -121,8 +121,8 @@ class GoalDAC:
     def chain_update(pk, description, deadline):
         existing_goal = Goal.objects.get(pk=pk)
         existing_goal.description = description
-        GoalDAC._set_deadline_for_child_chain(existing_goal, deadline)
-        GoalDAC._set_deadline_for_parent_chain(existing_goal, deadline)
+        GoalDAC._set_child_chain_deadlines(existing_goal, deadline)
+        GoalDAC._set_parent_chain_deadlines(existing_goal, deadline)
         is_updated = existing_goal.save()
         if is_updated is True:
             return True, existing_goal

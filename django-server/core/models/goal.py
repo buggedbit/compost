@@ -51,7 +51,7 @@ class Goal(models.Model):
         return False, error_message
 
     def is_deadline_valid(self):
-        # parent deadline should be < child deadline
+        # parent deadline should be < child deadline for a valid relation
         if self.id is not None:
             for parent in self.get_parents():
                 if DeadlineUtils.is_greater(parent.deadline, self.deadline):
@@ -93,10 +93,10 @@ class Goal(models.Model):
 
     def is_acyclically_valid(self):
         if self.id is not None:
-            if Goal._cycle_exists(self, self.id, True) is not True:
-                return True
-            else:
+            if Goal._cycle_exists(self, self.id, True) is True:
                 return False, 'Forms cycle'
+            else:
+                return True
         else:
             return True
 
