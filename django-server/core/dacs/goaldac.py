@@ -1,11 +1,12 @@
 from core.models.goal import Goal
 import re
+from core.timeutils import DeadlineUtils
 
 
 # Data access class
 class GoalDAC:
     @staticmethod
-    def group_by_family(goal_iterable):
+    def _group_by_family(goal_iterable):
         goal_family_subset_list = []
         augmented_goal_list = []
         # add picked flag to each goal
@@ -31,7 +32,7 @@ class GoalDAC:
         return goal_family_subset_list
 
     @staticmethod
-    def push_deadline_nulls_to_last(goal_iterable):
+    def _push_deadline_nulls_to_last(goal_iterable):
         goals_count = len(goal_iterable)
         nulls_last_goals_list = [None for i in range(goals_count)]
         next_index_from_start = 0
@@ -57,15 +58,15 @@ class GoalDAC:
                                                      is_achieved__exact=False).order_by('deadline')
             achieved_goals = Goal.objects.filter(description__iregex=regex,
                                                  is_achieved__exact=True).order_by('deadline')
-            not_achieved_goals = GoalDAC.push_deadline_nulls_to_last(not_achieved_goals)
-            achieved_goals = GoalDAC.push_deadline_nulls_to_last(achieved_goals)
+            not_achieved_goals = GoalDAC._push_deadline_nulls_to_last(not_achieved_goals)
+            achieved_goals = GoalDAC._push_deadline_nulls_to_last(achieved_goals)
             matched_goals_query_set = not_achieved_goals + achieved_goals
         else:
             matched_goals_query_set = Goal.objects.filter(description__iregex=regex,
                                                           is_achieved__exact=False).order_by('deadline')
-            matched_goals_query_set = GoalDAC.push_deadline_nulls_to_last(matched_goals_query_set)
+            matched_goals_query_set = GoalDAC._push_deadline_nulls_to_last(matched_goals_query_set)
 
-        return GoalDAC.group_by_family(matched_goals_query_set)
+        return GoalDAC._group_by_family(matched_goals_query_set)
 
     @staticmethod
     def read_family(pk):
@@ -90,6 +91,38 @@ class GoalDAC:
         existing_goal = Goal.objects.get(pk=pk)
         existing_goal.description = description
         existing_goal.deadline = deadline
+        is_updated = existing_goal.save()
+        if is_updated is True:
+            return True, existing_goal
+        else:
+            return is_updated
+
+    @staticmethod
+    def _set_deadline_for_child_chain(goal, deadline):
+        for child in goal.get_children():
+            # pruning
+            if DeadlineUtils.is_lesser(child.deadline, deadline):
+                GoalDAC._set_deadline_for_child_chain(child, deadline)
+
+        goal.deadline = deadline
+        goal.save()
+
+    @staticmethod
+    def _set_deadline_for_parent_chain(goal, deadline):
+        for parent in goal.get_parents():
+            # pruning
+            if DeadlineUtils.is_greater(parent.deadline, deadline):
+                GoalDAC._set_deadline_for_parent_chain(parent, deadline)
+
+        goal.deadline = deadline
+        goal.save()
+
+    @staticmethod
+    def chain_update(pk, description, deadline):
+        existing_goal = Goal.objects.get(pk=pk)
+        existing_goal.description = description
+        GoalDAC._set_deadline_for_child_chain(existing_goal, deadline)
+        GoalDAC._set_deadline_for_parent_chain(existing_goal, deadline)
         is_updated = existing_goal.save()
         if is_updated is True:
             return True, existing_goal
@@ -139,6 +172,3 @@ class GoalDAC:
             return True, goal.is_achieved
         else:
             return is_saved
-
-    def __init__(self):
-        pass

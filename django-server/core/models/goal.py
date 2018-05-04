@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from core.timeutils import DeadlineUtils
 
 
 class Goal(models.Model):
@@ -49,47 +50,15 @@ class Goal(models.Model):
 
         return False, error_message
 
-    @classmethod
-    def set_deadline_for_child_chain(cls, goal, deadline):
-        for child in goal.get_children():
-            # pruning
-            if child.deadline < deadline:
-                cls.set_deadline_for_child_chain(child, deadline)
-
-        goal.deadline = deadline
-        goal.save()
-
-    @classmethod
-    def set_deadline_for_parent_chain(cls, goal, deadline):
-        for parent in goal.get_parents():
-            # pruning
-            if parent.deadline > deadline:
-                cls.set_deadline_for_parent_chain(parent, deadline)
-
-        goal.deadline = deadline
-        goal.save()
-
     def is_deadline_valid(self):
-        # Not saved yet
+        # parent deadline should be < child deadline
         if self.id is not None:
             for parent in self.get_parents():
-                if self.deadline is None and parent.deadline is None:
-                    continue
-                if self.deadline is None and parent.deadline is not None:
-                    continue
-                if self.deadline is not None and parent.deadline is None:
-                    return False, 'Deadline before parent'
-                if self.deadline is not None and parent.deadline is not None and self.deadline < parent.deadline:
+                if DeadlineUtils.is_greater(parent.deadline, self.deadline):
                     return False, 'Deadline before parent'
 
             for child in self.get_children():
-                if self.deadline is None and child.deadline is None:
-                    continue
-                if self.deadline is None and child.deadline is not None:
-                    return False, 'Deadline after child'
-                if self.deadline is not None and child.deadline is None:
-                    continue
-                if self.deadline is not None and child.deadline is not None and self.deadline > child.deadline:
+                if DeadlineUtils.is_greater(self.deadline, child.deadline):
                     return False, 'Deadline after child'
 
             # No objection -> deadline valid
@@ -113,18 +82,18 @@ class Goal(models.Model):
         else:
             return True
 
-    @classmethod
-    def _dfs_for_checking_cycles(cls, node, origin_id, at_root=True):
-        if not at_root and node.id == origin_id:
+    @staticmethod
+    def _cycle_exists(node, origin_id, is_node_a_root=True):
+        if not is_node_a_root and node.id == origin_id:
             return True
         else:
             for child in node.get_children().all():
-                if cls._dfs_for_checking_cycles(child, origin_id, False) is True:
+                if Goal._cycle_exists(child, origin_id, False) is True:
                     return True
 
     def is_acyclically_valid(self):
         if self.id is not None:
-            if Goal._dfs_for_checking_cycles(self, self.id, True) is not True:
+            if Goal._cycle_exists(self, self.id, True) is not True:
                 return True
             else:
                 return False, 'Forms cycle'
@@ -157,21 +126,21 @@ class Goal(models.Model):
     def remove_child(self, child):
         self.children.remove(child)
 
-    @classmethod
-    def _dfs_for_family(cls, node, family):
-        family.add(node.id)
+    @staticmethod
+    def _generate_family_ids_set(node, family_ids_result_set):
+        family_ids_result_set.add(node.id)
         for parent in node.get_parents():
-            if parent.id not in family:
-                cls._dfs_for_family(parent, family)
+            if parent.id not in family_ids_result_set:
+                Goal._generate_family_ids_set(parent, family_ids_result_set)
 
         for child in node.get_children():
-            if child.id not in family:
-                cls._dfs_for_family(child, family)
+            if child.id not in family_ids_result_set:
+                Goal._generate_family_ids_set(child, family_ids_result_set)
 
     def get_family_id_set(self):
-        family = set()
-        Goal._dfs_for_family(self, family)
-        return family
+        family_ids_result_set = set()
+        Goal._generate_family_ids_set(self, family_ids_result_set)
+        return family_ids_result_set
 
     def __str__(self):
         return str(self.id) + ' ' + self.description
