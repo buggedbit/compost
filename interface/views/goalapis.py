@@ -167,6 +167,40 @@ def update(request):
 
 
 @csrf_exempt
+def chain_update(request):
+    if is_session_active(request.session):
+        if request.method == 'POST':
+            try:
+                pk = request.POST['id']
+                description = request.POST['description']
+                deadline = json.loads(request.POST['deadline'])
+                if deadline is not None:
+                    deadline = dt(year=deadline['year'],
+                                  month=deadline['month'],
+                                  day=deadline['day'],
+                                  hour=deadline['hour'],
+                                  minute=deadline['minute'],
+                                  second=deadline['second'],
+                                  microsecond=deadline['microsecond'])
+                is_updated = GoalDAC.chain_update(pk, description, deadline)
+
+                if is_updated[0] is True:
+                    return HttpResponse(
+                        json.dumps(ResponseWrapper.of(jsonize_goal(is_updated[1]), ResponseWrapper.OBJECT_RESPONSE)))
+                else:
+                    return HttpResponse(json.dumps(ResponseWrapper.error(is_updated[1])))
+
+            except (ValueError, TypeError, MultiValueDictKeyError):
+                return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
+            except ObjectDoesNotExist:
+                return HttpResponse(json.dumps(ResponseWrapper.error('Invalid id')))
+        else:
+            return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+    else:
+        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid session')))
+
+
+@csrf_exempt
 def delete_if_single(request):
     if is_session_active(request.session):
         if request.method == 'POST':

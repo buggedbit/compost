@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^goal/create/$', goalapis.create, name='goal_create'),
     # host/goal/update/<POST id, description, deadline>
     url(r'^goal/update/$', goalapis.update, name='goal_update'),
+    # host/goal/chain_update/<POST id, description, deadline>
+    url(r'^goal/chain_update/$', goalapis.chain_update, name='goal_chain_update'),
     # host/goal/delete/if_single/<POST id>
     url(r'^goal/delete/if_single/$', goalapis.delete_if_single, name='goal_delete_if_single'),
     # host/goal/add_relation/<POST parent_id, child_id>
