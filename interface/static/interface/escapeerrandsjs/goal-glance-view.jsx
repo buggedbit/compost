@@ -399,7 +399,7 @@ let GoalGlanceView = React.createClass({
                                       }}
                                       onGoalShowPopup={() => {
                                       }}/>
-                <button className="btn-floating red z-depth-0 goal-canvas-clear-btn"
+                <button className="btn-floating red z-depth-1 goal-canvas-clear-btn"
                         title="Clear canvas"
                         onClick={this.api_clearCanvas}>
                     <i className="material-icons">clear</i></button>
@@ -416,7 +416,7 @@ let GoalGlanceView = React.createClass({
                 <GoalCreateView
                     onGoalCreate={this.api_createGoal}
                     isOpen={this.state.goalCreateView.isOpen}/>
-                <button className="btn-floating green z-depth-0 create-goal-view-toggle-btn"
+                <button className="btn-floating green z-depth-1 create-goal-view-toggle-btn"
                         title="Create a goal"
                         onClick={this.api_toggleGoalCreateView}>
                     <i className="material-icons">add</i></button>

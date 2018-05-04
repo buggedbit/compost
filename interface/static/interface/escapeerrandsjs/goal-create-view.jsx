@@ -22,21 +22,21 @@ let GoalCreateView = React.createClass({
                 <label>what?
                     <textarea ref="description" className="create-goal-view-description"></textarea>
                 </label>
+                <button className="btn-floating right purple darken-4 z-depth-1"
+                        title="Fill deadline with current timestamp"
+                        onClick={() => {
+                            this.refs.deadline.value = TimeFormatter.formatNow()
+                        }}>
+                    <i className="material-icons">format_color_fill</i>
+                </button>
                 <label>by when?
-                    <button className="btn-floating right purple darken-4 z-depth-0"
-                            title="Fill deadline with current timestamp"
-                            onClick={() => {
-                                this.refs.deadline.value = TimeFormatter.formatNow()
-                            }}>
-                        <i className="material-icons">format_color_fill</i>
-                    </button>
                     <input ref="deadline" className="create-goal-view-deadline"
                            title="d -> day, m -> month, y -> year, h -> hour, t -> min, s -> sec, u -> microsec"
                            onDoubleClick={() => {
                                this.refs.deadline.value = TimeFormatter.formatNow()
                            }}/>
                 </label>
-                <button className="btn-floating right z-depth-0 create-goal-view-submit-btn"
+                <button className="btn-floating right z-depth-1 create-goal-view-submit-btn"
                         title="Submit"
                         onClick={(e) => {
                             let description = this.refs.description.value;
