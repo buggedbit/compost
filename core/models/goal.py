@@ -49,30 +49,48 @@ class Goal(models.Model):
 
         return False, error_message
 
+    @classmethod
+    def set_deadline_for_child_chain(cls, goal, deadline):
+        for child in goal.get_children():
+            # pruning
+            if child.deadline < deadline:
+                cls.set_deadline_for_child_chain(child, deadline)
+
+        goal.deadline = deadline
+        goal.save()
+
+    @classmethod
+    def set_deadline_for_parent_chain(cls, goal, deadline):
+        for parent in goal.get_parents():
+            # pruning
+            if parent.deadline > deadline:
+                cls.set_deadline_for_parent_chain(parent, deadline)
+
+        goal.deadline = deadline
+        goal.save()
+
     def is_deadline_valid(self):
         # Not saved yet
         if self.id is not None:
-            for parent in self.parents.all():
+            for parent in self.get_parents():
                 if self.deadline is None and parent.deadline is None:
                     continue
                 if self.deadline is None and parent.deadline is not None:
                     continue
                 if self.deadline is not None and parent.deadline is None:
                     return False, 'Deadline before parent'
-                if self.deadline is not None and parent.deadline is not None:
-                    if self.deadline < parent.deadline:
-                        return False, 'Deadline before parent'
+                if self.deadline is not None and parent.deadline is not None and self.deadline < parent.deadline:
+                    return False, 'Deadline before parent'
 
-            for child in self.children.all():
+            for child in self.get_children():
                 if self.deadline is None and child.deadline is None:
                     continue
                 if self.deadline is None and child.deadline is not None:
                     return False, 'Deadline after child'
                 if self.deadline is not None and child.deadline is None:
                     continue
-                if self.deadline is not None and child.deadline is not None:
-                    if self.deadline > child.deadline:
-                        return False, 'Deadline after child'
+                if self.deadline is not None and child.deadline is not None and self.deadline > child.deadline:
+                    return False, 'Deadline after child'
 
             # No objection -> deadline valid
             return True
@@ -82,11 +100,11 @@ class Goal(models.Model):
     def is_is_achieved_valid(self):
         if self.id is not None:
             if self.is_achieved is True:
-                for parent in self.parents.all():
+                for parent in self.get_parents():
                     if parent.is_achieved is False:
                         return False, 'This goal is achieved before its parent'
             elif self.is_achieved is False:
-                for child in self.children.all():
+                for child in self.get_children():
                     if child.is_achieved is True:
                         return False, 'Child goal is achieved before this'
 
@@ -95,17 +113,18 @@ class Goal(models.Model):
         else:
             return True
 
-    def _dfs_for_checking_cycles(self, node, origin_id, at_root=True):
+    @classmethod
+    def _dfs_for_checking_cycles(cls, node, origin_id, at_root=True):
         if not at_root and node.id == origin_id:
             return True
         else:
             for child in node.get_children().all():
-                if self._dfs_for_checking_cycles(child, origin_id, False) is True:
+                if cls._dfs_for_checking_cycles(child, origin_id, False) is True:
                     return True
 
     def is_acyclically_valid(self):
         if self.id is not None:
-            if self._dfs_for_checking_cycles(self, self.id, True) is not True:
+            if Goal._dfs_for_checking_cycles(self, self.id, True) is not True:
                 return True
             else:
                 return False, 'Forms cycle'
@@ -138,19 +157,20 @@ class Goal(models.Model):
     def remove_child(self, child):
         self.children.remove(child)
 
-    def _dfs_for_family(self, node, family):
+    @classmethod
+    def _dfs_for_family(cls, node, family):
         family.add(node.id)
         for parent in node.get_parents():
             if parent.id not in family:
-                self._dfs_for_family(parent, family)
+                cls._dfs_for_family(parent, family)
 
         for child in node.get_children():
             if child.id not in family:
-                self._dfs_for_family(child, family)
+                cls._dfs_for_family(child, family)
 
     def get_family_id_set(self):
         family = set()
-        self._dfs_for_family(self, family)
+        Goal._dfs_for_family(self, family)
         return family
 
     def __str__(self):
