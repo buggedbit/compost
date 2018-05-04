@@ -175,9 +175,9 @@ let GoalGlanceView = React.createClass({
     // does ajax calls if needed
     // use state methods for CUD operations
     // preferably use these to state methods
-    api_softSelectFamilyOfGoal: function (goalId) {
+    api_softSelectFamilyOfGoal: function (goalId, force_select = false) {
         goalId = Number(goalId);
-        if (!this.s_pointToGoalInSociety(goalId)[0]) {
+        if (force_select || !this.s_pointToGoalInSociety(goalId)[0]) {
             let self = this;
             $.post(this.props.readFamilyUrl.replace('1729', String(goalId))
             ).done((r) => {
@@ -300,6 +300,28 @@ let GoalGlanceView = React.createClass({
             });
         }
     },
+    api_chainUpdateGoal: function (goalId, description, deadline) {
+        goalId = Number(goalId);
+        let self = this;
+        if (this.s_pointToGoalInSociety(goalId)[0]) {
+            $.post(this.props.chainUpdateUrl, {
+                id: goalId,
+                description: description,
+                deadline: JSON.stringify(deadline)
+            }).done((r) => {
+                let json = JSON.parse(r);
+                if (json.status === -1) {
+                    toastr.error(json.error);
+                } else {
+                    // todo update whole family here
+                    self.api_deselectFamilyOfGoal(goalId);
+                    self.api_softSelectFamilyOfGoal(goalId, true);
+                }
+            }).fail(() => {
+                toastr.error('Server Error');
+            });
+        }
+    },
     api_toggleGoalAchievement: function (goalId) {
         goalId = Number(goalId);
         if (this.s_pointToGoalInSociety(goalId)[0]) {
@@ -388,6 +410,7 @@ let GoalGlanceView = React.createClass({
                     isAchieved={this.state.goalDetailView.is_achieved}
                     onGoalFamilyDeselect={this.api_deselectFamilyOfGoal}
                     onGoalUpdate={this.api_updateGoal}
+                    onGoalChainUpdate={this.api_chainUpdateGoal}
                     onGoalDelete={this.api_deleteGoalIfSingle}
                     isOpen={this.state.goalDetailView.isOpen}/>
                 <GoalCreateView
