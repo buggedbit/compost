@@ -9,22 +9,22 @@
  * @propFunctions:
  * onGoalDrop,
  * onEmptySpaceClick,
+ * onEmptySpaceDoubleClick,
  * onGoalSelect,
  * onRelationSelect,
  * onDoubleClick,
  * onGoalDoubleClick,
  * onEdgeDoubleClick,
- * onEmptySpaceDoubleClick,
  * onGoalContext,
  * onRelationContext,
  * onGoalShowPopup,
  * onTwoGoalsConsecutiveDoubleClick,
  * */
-let GoalCanvasController = React.createClass({
+let GoalCanvasView = React.createClass({
     prevSocietyString: undefined,
     getDefaultProps: function () {
         return {
-            targetDivId: 'goal-canvas-controller',
+            targetDivId: 'goal-canvas-view',
             graphSettings: {
                 MAX_LABEL_LENGTH: 15,
                 colors: {
@@ -104,15 +104,14 @@ let GoalCanvasController = React.createClass({
     },
 
     render: function () {
-        return (<div>
-                <div id={this.props.targetDivId}
-                     onDrop={(e) => {
-                         this.props.onGoalDrop(e.dataTransfer.getData('goalId'));
-                     }}
-                     onDragOver={(e) => {
-                         e.preventDefault();
-                     }}>
-                </div>
+        return (
+            <div id={this.props.targetDivId}
+                 onDrop={(e) => {
+                     this.props.onGoalDrop(e.dataTransfer.getData('goalId'));
+                 }}
+                 onDragOver={(e) => {
+                     e.preventDefault();
+                 }}>
             </div>
         );
     },
@@ -129,7 +128,7 @@ let GoalCanvasController = React.createClass({
         let graph = new vis.Network(canvasDiv, data, options);
 
         // listeners
-        let self = this;
+        const self = this;
         let NewEdgeMaker = {
             fromId: undefined,
             toId: undefined,
@@ -230,4 +229,4 @@ let GoalCanvasController = React.createClass({
 });
 
 /* Export */
-window.GoalCanvasController = GoalCanvasController;
+window.GoalCanvasView = GoalCanvasView;
