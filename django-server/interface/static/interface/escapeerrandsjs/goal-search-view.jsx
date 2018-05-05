@@ -61,13 +61,10 @@ let GoalSearchResult = React.createClass({
 });
 
 /**
- * @propFunctions: onGoalSelect, setGoalAchievement
+ * @propFunctions: onGoalSelect, setGoalAchievement, setResultSet
  * */
 let GoalSearchView = React.createClass({
     maxDescLength: 15,
-    getInitialState: function () {
-        return {resultSet: []};
-    },
     onRegexInputKeyDown: function (e) {
         let self = this;
         switch (e.keyCode || e.which) {
@@ -82,10 +79,7 @@ let GoalSearchView = React.createClass({
                     if (json.status === -1) {
                         toastr.error(json.error);
                     } else {
-                        self.setState((prevState, props) => {
-                            let resultSet = json.data;
-                            return {resultSet: resultSet};
-                        });
+                        self.props.setResultSet(json.data);
                         $(self.refs.resultSetContainer).show();
                     }
                 }).fail(() => {
@@ -110,18 +104,6 @@ let GoalSearchView = React.createClass({
                 toastr.error(json.error);
             } else {
                 let isAchieved = json.data;
-                // set state
-                self.setState((prevState, props) => {
-                    let resultSet = prevState.resultSet;
-                    resultSet.forEach((goalFamilySubset, gfsi) => {
-                        goalFamilySubset.forEach((goal, gi) => {
-                            if (goal.id === id) {
-                                goal.is_achieved = isAchieved;
-                            }
-                        });
-                    });
-                    return {resultSet: resultSet};
-                });
                 // call back to parent
                 self.props.setGoalAchievement(id, isAchieved);
             }
@@ -130,7 +112,7 @@ let GoalSearchView = React.createClass({
         });
     },
     render: function () {
-        let resultSet = this.state.resultSet.map((goalFamilySubset) => {
+        let resultSet = this.props.resultSet.map((goalFamilySubset) => {
             let familyKey = [];
             let goalFamilySubsetView = goalFamilySubset.map((goal) => {
                 familyKey.push(goal.id);
