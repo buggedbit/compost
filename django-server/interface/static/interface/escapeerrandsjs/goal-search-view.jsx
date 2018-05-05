@@ -61,7 +61,7 @@ let GoalSearchResult = React.createClass({
 });
 
 /**
- * @propFunctions: onGoalSelect, onToggleGoalAchievement
+ * @propFunctions: onGoalSelect, setGoalAchievement
  * */
 let GoalSearchView = React.createClass({
     maxDescLength: 15,
@@ -123,7 +123,7 @@ let GoalSearchView = React.createClass({
                     return {resultSet: resultSet};
                 });
                 // call back to parent
-                self.props.onToggleGoalAchievement(id, isAchieved);
+                self.props.setGoalAchievement(id, isAchieved);
             }
         }).fail(() => {
             toastr.error('Server Error');
