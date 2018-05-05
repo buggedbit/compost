@@ -19,6 +19,9 @@ let GoalGlanceView = React.createClass({
             goalCreateView: {
                 isOpen: undefined,
             },
+            goalSearchView: {
+                resultSet: []
+            }
         };
     },
     //
@@ -43,6 +46,14 @@ let GoalGlanceView = React.createClass({
                 return goal
             }
         }
+    },
+    //
+    setSearchResultSet: function (resultsSet) {
+        this.setState((prevState, props) => {
+            let goalSearchView = prevState.goalSearchView;
+            goalSearchView.resultSet = resultsSet;
+            return {goalSearchView: goalSearchView};
+        });
     },
     //
     softSelectFamilyOfGoal: function (goalId) {
@@ -194,7 +205,17 @@ let GoalGlanceView = React.createClass({
             this.setState((prevState, props) => {
                 let society = prevState.society;
                 society[goalPos[1]][goalPos[2]].is_achieved = isAchieved;
-                return {society: society};
+
+                let goalSearchView = prevState.goalSearchView;
+                goalSearchView.resultSet.forEach((goalFamilySubset, gfsi) => {
+                    goalFamilySubset.forEach((goal, gi) => {
+                        if (goal.id === goalId) {
+                            goal.is_achieved = isAchieved;
+                        }
+                    });
+                });
+
+                return {society: society, goalSearchView: goalSearchView};
             });
         }
     },
@@ -375,7 +396,9 @@ let GoalGlanceView = React.createClass({
                 <GoalSearchView
                     readRegexUrl={this.props.readRegexUrl}
                     toggleGoalIsAchievedUrl={this.props.toggleIsAchievedUrl}
+                    resultSet={this.state.goalSearchView.resultSet}
                     setGoalAchievement={this.setGoalAchievement}
+                    setResultSet={this.setSearchResultSet}
                     onGoalSelect={this.hardSelectFamilyOfGoal}/>
                 <GoalCanvasController society={this.state.society}
                                       onGoalDrop={this.softSelectFamilyOfGoal}

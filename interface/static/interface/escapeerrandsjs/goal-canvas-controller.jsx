@@ -46,7 +46,7 @@ let GoalCanvasController = React.createClass({
                         shape: 'dot',
                         borderWidth: 5,
                         size: 10,
-                        font: {size: 15, color: 'black', background: 'white', face: 'Roboto'}
+                        font: {size: 15, color: 'black', background: 'white', face: 'monospace'}
                     },
                     layout: {
                         hierarchical: {
