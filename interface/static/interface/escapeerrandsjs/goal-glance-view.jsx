@@ -182,7 +182,8 @@ let GoalGlanceView = React.createClass({
     chainUpdateGoal: function (goalId, description, deadline) {
         goalId = Number(goalId);
         let self = this;
-        if (this.getPointerToGoalInSociety(goalId)[0]) {
+        let goalPointer = this.getPointerToGoalInSociety(goalId);
+        if (goalPointer[0]) {
             $.post(this.props.chainUpdateUrl, {
                 id: goalId,
                 description: description,
@@ -192,7 +193,32 @@ let GoalGlanceView = React.createClass({
                 if (json.status === -1) {
                     toastr.error(json.error);
                 } else {
-                    toastr.info('success')
+                    let newFamily = json.data;
+                    let removeFamilyFromSocietyIfExists = function (society, goalId) {
+                        let familyIndex = -1;
+                        society.forEach((family, fi) => {
+                            family.forEach((goal, gi) => {
+                                if (goal.id === goalId) {
+                                    familyIndex = fi;
+                                }
+                            });
+                        });
+                        if (familyIndex > -1)
+                            society.splice(familyIndex, 1);
+                    };
+                    self.setState((prevState, props) => {
+                        let society = prevState.society;
+                        removeFamilyFromSocietyIfExists(society, goalId);
+                        society.push(newFamily);
+                        let goalDetailView = prevState.goalDetailView;
+                        let goalToBeOpened = society[goalPointer[1]][goalPointer[2]];
+                        goalDetailView.id = goalToBeOpened.id;
+                        goalDetailView.description = goalToBeOpened.description;
+                        goalDetailView.deadline = goalToBeOpened.deadline;
+                        goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                        goalDetailView.isOpen = true;
+                        return {society: society, goalDetailView: goalDetailView};
+                    });
                 }
             }).fail(() => {
                 toastr.error('Server Error');

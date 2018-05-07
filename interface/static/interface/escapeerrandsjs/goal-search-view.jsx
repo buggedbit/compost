@@ -27,7 +27,7 @@ let GoalSearchResult = React.createClass({
         },
         urgencyColor: function (deadline, isAchived) {
             if (isAchived) {
-                return '#9e9e9e'
+                return '#e8f5e9'
             }
             if (deadline === null) {
                 return '#ffffff';
