@@ -33,7 +33,7 @@ let GoalDetailView = React.createClass({
                             onClick={() => {
                                 this.refs.deadline.value = TimeFormatter.formatNow()
                             }}>
-                        <i className="material-icons">format_color_fill</i>
+                        <i className="material-icons">alarm</i>
                     </button>
                     <input className="goal-detail-view-deadline"
                            title="d -> day, m -> month, y -> year, h -> hour, t -> min, s -> sec, u -> microsec"

@@ -9,6 +9,11 @@
  * @propFunctions: onGoalCreate
  * */
 let GoalCreateView = React.createClass({
+    getDefaultProps: function () {
+        return {
+            colorPalate: ['black', 'red', 'blue', 'yellow darken-4', 'green']
+        }
+    },
     render: function () {
         let style = this.props.isOpen === true ? {display: 'block'} : {display: 'none'};
         return (
@@ -27,7 +32,7 @@ let GoalCreateView = React.createClass({
                         onClick={() => {
                             this.refs.deadline.value = TimeFormatter.formatNow()
                         }}>
-                    <i className="material-icons">format_color_fill</i>
+                    <i className="material-icons">alarm</i>
                 </button>
                 <label>by when?
                     <input ref="deadline" className="create-goal-view-deadline"
@@ -51,6 +56,20 @@ let GoalCreateView = React.createClass({
                             }
                         }}>
                     <i className="material-icons">send</i></button>
+                <div>
+                    {this.props.colorPalate.map((color) => {
+                        return <button key={color}
+                                       className={"btn-floating z-depth-1 " + color}
+                                       title={"Tag this goal with " + color.split(" ")[0] + " color"}
+                                       style={{marginRight: '10px'}}
+                                       onClick={(e) => {
+                                           let color = $(e.target).parent().css('background-color');
+                                           $(this.refs.description).css('color', color);
+                                       }}>
+                            <i className="material-icons">color_lens</i>
+                        </button>
+                    })}
+                </div>
             </div>
         );
     }
