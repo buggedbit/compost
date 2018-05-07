@@ -72,11 +72,31 @@ let GoalGlanceView = React.createClass({
                     self.setState((prevState, props) => {
                         let society = prevState.society;
                         society.push(family);
-                        return {society: society};
+                        let goalDetailView = prevState.goalDetailView;
+                        let goalToBeOpened = self.getGoalInFamily(goalId, family);
+                        goalDetailView.id = goalToBeOpened.id;
+                        goalDetailView.description = goalToBeOpened.description;
+                        goalDetailView.deadline = goalToBeOpened.deadline;
+                        goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                        goalDetailView.color = goalToBeOpened.color;
+                        goalDetailView.isOpen = true;
+                        return {society: society, goalDetailView: goalDetailView};
                     });
                 }
             }).fail(() => {
                 toastr.error('Server Error');
+            });
+        } else {
+            this.setState((prevState, props) => {
+                let goalDetailView = prevState.goalDetailView;
+                let goalToBeOpened = prevState.society[goalPointer[1]][goalPointer[2]];
+                goalDetailView.id = goalToBeOpened.id;
+                goalDetailView.description = goalToBeOpened.description;
+                goalDetailView.deadline = goalToBeOpened.deadline;
+                goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                goalDetailView.color = goalToBeOpened.color;
+                goalDetailView.isOpen = true;
+                return {goalDetailView: goalDetailView};
             });
         }
     },
@@ -108,6 +128,18 @@ let GoalGlanceView = React.createClass({
                 }
             }).fail(() => {
                 toastr.error('Server Error');
+            });
+        } else {
+            this.setState((prevState, props) => {
+                let goalDetailView = prevState.goalDetailView;
+                let goalToBeOpened = prevState.society[goalPointer[1]][goalPointer[2]];
+                goalDetailView.id = goalToBeOpened.id;
+                goalDetailView.description = goalToBeOpened.description;
+                goalDetailView.deadline = goalToBeOpened.deadline;
+                goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                goalDetailView.color = goalToBeOpened.color;
+                goalDetailView.isOpen = true;
+                return {goalDetailView: goalDetailView};
             });
         }
     },
@@ -147,7 +179,7 @@ let GoalGlanceView = React.createClass({
             toastr.error('Server Error');
         });
     },
-    updateGoal: function (goalId, description, deadline) {
+    updateGoal: function (goalId, description, deadline, color) {
         goalId = Number(goalId);
         let self = this;
         let goalPointer = this.getPointerToGoalInSociety(goalId);
@@ -155,7 +187,8 @@ let GoalGlanceView = React.createClass({
             $.post(this.props.updateUrl, {
                 id: goalId,
                 description: description,
-                deadline: JSON.stringify(deadline)
+                deadline: JSON.stringify(deadline),
+                color: color
             }).done((r) => {
                 let json = JSON.parse(r);
                 if (json.status === -1) {
@@ -182,7 +215,7 @@ let GoalGlanceView = React.createClass({
             });
         }
     },
-    chainUpdateGoal: function (goalId, description, deadline) {
+    chainUpdateGoal: function (goalId, description, deadline, color) {
         goalId = Number(goalId);
         let self = this;
         let goalPointer = this.getPointerToGoalInSociety(goalId);
@@ -190,7 +223,8 @@ let GoalGlanceView = React.createClass({
             $.post(this.props.chainUpdateUrl, {
                 id: goalId,
                 description: description,
-                deadline: JSON.stringify(deadline)
+                deadline: JSON.stringify(deadline),
+                color: color
             }).done((r) => {
                 let json = JSON.parse(r);
                 if (json.status === -1) {

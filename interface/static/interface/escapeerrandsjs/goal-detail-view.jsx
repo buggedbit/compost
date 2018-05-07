@@ -69,8 +69,9 @@ let GoalDetailView = React.createClass({
                             let id = this.props.id;
                             let description = this.refs.description.value;
                             let deadline = TimeFormatter.parse(this.refs.deadline.value);
+                            let color = $(this.refs.description).css('color');
                             if (deadline !== false) {
-                                this.props.onGoalUpdate(id, description, deadline);
+                                this.props.onGoalUpdate(id, description, deadline, color);
                             }
                             else {
                                 toastr.error('Incorrect datetime format, try again');
@@ -84,8 +85,9 @@ let GoalDetailView = React.createClass({
                             let id = this.props.id;
                             let description = this.refs.description.value;
                             let deadline = TimeFormatter.parse(this.refs.deadline.value);
+                            let color = $(this.refs.description).css('color');
                             if (deadline !== false) {
-                                this.props.onGoalChainUpdate(id, description, deadline);
+                                this.props.onGoalChainUpdate(id, description, deadline, color);
                             }
                             else {
                                 toastr.error('Incorrect datetime format, try again');
