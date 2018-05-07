@@ -119,13 +119,18 @@ class GoalDAC:
 
     @staticmethod
     def chain_update(pk, description, deadline):
+        # fixme: handle error after partial save or implement rollback
         existing_goal = Goal.objects.get(pk=pk)
         existing_goal.description = description
         GoalDAC._set_child_chain_deadlines(existing_goal, deadline)
         GoalDAC._set_parent_chain_deadlines(existing_goal, deadline)
         is_updated = existing_goal.save()
         if is_updated is True:
-            return True, existing_goal
+            family_of_ids = existing_goal.get_family_id_set()
+            goal_family = []
+            for member_id in family_of_ids:
+                goal_family.append(Goal.objects.get(pk=member_id))
+            return True, goal_family
         else:
             return is_updated
 
@@ -146,7 +151,10 @@ class GoalDAC:
 
         if was_relation_added is True:
             new_family_id_set = parent.get_family_id_set()
-            return True, new_family_id_set
+            goal_family = []
+            for member_id in new_family_id_set:
+                goal_family.append(Goal.objects.get(pk=member_id))
+            return True, goal_family
         else:
             return was_relation_added
 
@@ -157,11 +165,19 @@ class GoalDAC:
         parent.remove_child(child)
 
         parent_family_id_set = parent.get_family_id_set()
-        family_id_sets_after_breakup = [parent_family_id_set]
+        id_sets_after_breakup = [parent_family_id_set]
         if child_id not in parent_family_id_set:
             child_family_id_set = child.get_family_id_set()
-            family_id_sets_after_breakup.append(child_family_id_set)
-        return family_id_sets_after_breakup
+            id_sets_after_breakup.append(child_family_id_set)
+
+        goal_families = []
+        for id_set in id_sets_after_breakup:
+            family = []
+            for member_id in id_set:
+                family.append(Goal.objects.get(pk=member_id))
+            goal_families.append(family)
+
+        return goal_families
 
     @staticmethod
     def toggle_is_achieved(pk):

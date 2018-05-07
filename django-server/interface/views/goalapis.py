@@ -44,14 +44,6 @@ def jsonize_goal(goal):
     return json_goal
 
 
-def jsonize_goals_using_ids(goal_ids):
-    jsoned = []
-    for goal_id in goal_ids:
-        goal = Goal.objects.get(pk=goal_id)
-        jsoned.append(jsonize_goal(goal))
-    return jsoned
-
-
 @csrf_exempt
 def read_regex(request):
     if is_session_active(request.session):
@@ -186,8 +178,13 @@ def chain_update(request):
                 is_updated = GoalDAC.chain_update(pk, description, deadline)
 
                 if is_updated[0] is True:
+                    goal_family = is_updated[1]
+                    json_family = []
+                    for member in goal_family:
+                        json_family.append(jsonize_goal(member))
+
                     return HttpResponse(
-                        json.dumps(ResponseWrapper.of(jsonize_goal(is_updated[1]), ResponseWrapper.OBJECT_RESPONSE)))
+                        json.dumps(ResponseWrapper.of(json_family, ResponseWrapper.OBJECT_RESPONSE)))
                 else:
                     return HttpResponse(json.dumps(ResponseWrapper.error(is_updated[1])))
 
@@ -236,9 +233,12 @@ def add_relation(request):
                 was_relation_added = GoalDAC.add_relation(parent_id, child_id)
 
                 if was_relation_added[0] is True:
-                    return HttpResponse(json.dumps(
-                        ResponseWrapper.of(jsonize_goals_using_ids(was_relation_added[1]),
-                                           ResponseWrapper.ARRAY_RESPONSE)))
+                    goal_family = was_relation_added[1]
+                    json_family = []
+                    for member in goal_family:
+                        json_family.append(jsonize_goal(member))
+
+                    return HttpResponse(json.dumps(ResponseWrapper.of(json_family, ResponseWrapper.ARRAY_RESPONSE)))
                 else:
                     return HttpResponse(json.dumps(ResponseWrapper.error(was_relation_added[1])))
 
@@ -260,13 +260,17 @@ def remove_relation(request):
                 parent_id = int(request.POST['parent_id'])
                 child_id = int(request.POST['child_id'])
 
-                family_id_sets = GoalDAC.remove_relation(parent_id, child_id)
-                jsoned_family_id_sets = []
-                for family_id_set in family_id_sets:
-                    jsoned_family_id_sets.append(jsonize_goals_using_ids(family_id_set))
+                goal_families = GoalDAC.remove_relation(parent_id, child_id)
+
+                json_families = []
+                for goal_family in goal_families:
+                    json_family = []
+                    for member in goal_family:
+                        json_family.append(jsonize_goal(member))
+                    json_families.append(json_family)
 
                 return HttpResponse(
-                    json.dumps(ResponseWrapper.of(jsoned_family_id_sets, ResponseWrapper.ARRAY_RESPONSE)))
+                    json.dumps(ResponseWrapper.of(json_families, ResponseWrapper.ARRAY_RESPONSE)))
             except (ValueError, TypeError, MultiValueDictKeyError):
                 return HttpResponse(json.dumps(ResponseWrapper.error('Improper data')))
             except ObjectDoesNotExist:
