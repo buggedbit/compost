@@ -133,6 +133,8 @@ def update(request):
                 pk = request.POST['id']
                 description = request.POST['description']
                 deadline = json.loads(request.POST['deadline'])
+                color = request.POST['color']
+
                 if deadline is not None:
                     deadline = dt(year=deadline['year'],
                                   month=deadline['month'],
@@ -141,7 +143,7 @@ def update(request):
                                   minute=deadline['minute'],
                                   second=deadline['second'],
                                   microsecond=deadline['microsecond'])
-                is_updated = GoalDAC.update(pk, description, deadline)
+                is_updated = GoalDAC.update(pk, description, deadline, color)
 
                 if is_updated[0] is True:
                     return HttpResponse(
@@ -167,6 +169,8 @@ def chain_update(request):
                 pk = request.POST['id']
                 description = request.POST['description']
                 deadline = json.loads(request.POST['deadline'])
+                color = request.POST['color']
+
                 if deadline is not None:
                     deadline = dt(year=deadline['year'],
                                   month=deadline['month'],
@@ -175,7 +179,7 @@ def chain_update(request):
                                   minute=deadline['minute'],
                                   second=deadline['second'],
                                   microsecond=deadline['microsecond'])
-                is_updated = GoalDAC.chain_update(pk, description, deadline)
+                is_updated = GoalDAC.chain_update(pk, description, deadline, color)
 
                 if is_updated[0] is True:
                     goal_family = is_updated[1]

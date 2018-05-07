@@ -87,10 +87,11 @@ class GoalDAC:
             return is_created
 
     @staticmethod
-    def update(pk, description, deadline):
+    def update(pk, description, deadline, color):
         existing_goal = Goal.objects.get(pk=pk)
         existing_goal.description = description
         existing_goal.deadline = deadline
+        existing_goal.color = color
         is_updated = existing_goal.save()
         if is_updated is True:
             return True, existing_goal
@@ -118,10 +119,11 @@ class GoalDAC:
         goal.save()
 
     @staticmethod
-    def chain_update(pk, description, deadline):
+    def chain_update(pk, description, deadline, color):
         # fixme: handle error after partial save or implement rollback
         existing_goal = Goal.objects.get(pk=pk)
         existing_goal.description = description
+        existing_goal.color = color
         GoalDAC._set_child_chain_deadlines(existing_goal, deadline)
         GoalDAC._set_parent_chain_deadlines(existing_goal, deadline)
         is_updated = existing_goal.save()
