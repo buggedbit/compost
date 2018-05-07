@@ -70,17 +70,18 @@ let GoalCanvasView = React.createClass({
         let array = [];
         society.forEach((family, fi) => {
             family.forEach((goal, gi) => {
-                let color;
+                let nodeColor;
                 if (goal.is_achieved === true) {
-                    color = self.props.graphSettings.colors.ACHIEVED;
+                    nodeColor = self.props.graphSettings.colors.ACHIEVED;
                 }
                 else {
-                    color = self.props.graphSettings.colors.UN_ACHIEVED;
+                    nodeColor = self.props.graphSettings.colors.UN_ACHIEVED;
                 }
                 array.push({
                     id: goal.id,
-                    color: color,
+                    color: nodeColor,
                     label: truncate(goal.description, self.props.graphSettings.MAX_LABEL_LENGTH),
+                    font: {color: goal.color},
                     title: goal.description
                 });
             });

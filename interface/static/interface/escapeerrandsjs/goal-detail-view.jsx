@@ -9,6 +9,11 @@
  * @propFunctions: onGoalUpdate, onGoalChainUpdate, onGoalDelete, onGoalFamilyDeselect
  * */
 let GoalDetailView = React.createClass({
+    getDefaultProps: function () {
+        return {
+            colorPalate: ['black', 'red', 'blue', 'yellow darken-4', 'green']
+        }
+    },
     render: function () {
         let style = this.props.isOpen === true ? {display: 'block'} : {display: 'none'};
         return (
@@ -43,6 +48,20 @@ let GoalDetailView = React.createClass({
                                this.refs.deadline.value = TimeFormatter.formatNow()
                            }}/>
                 </label>
+                <div style={{marginBottom: '10px'}}>
+                    {this.props.colorPalate.map((color) => {
+                        return <button key={color}
+                                       className={"btn-floating z-depth-1 " + color}
+                                       title={"Tag this goal with " + color.split(" ")[0] + " color"}
+                                       style={{marginRight: '10px'}}
+                                       onClick={(e) => {
+                                           let color = $(e.target).parent().css('background-color');
+                                           $(this.refs.description).css('color', color);
+                                       }}>
+                            <i className="material-icons">color_lens</i>
+                        </button>
+                    })}
+                </div>
                 <button className="btn-floating blue z-depth-1"
                         title="Update"
                         style={{marginRight: '10px'}}
@@ -92,6 +111,7 @@ let GoalDetailView = React.createClass({
     componentDidUpdate: function () {
         this.refs.description.value = this.props.description === undefined ? '' : this.props.description;
         this.refs.deadline.value = this.props.deadline === undefined ? '' : TimeFormatter.format(this.props.deadline);
+        $(this.refs.description).css('color', this.props.color)
     },
 });
 
