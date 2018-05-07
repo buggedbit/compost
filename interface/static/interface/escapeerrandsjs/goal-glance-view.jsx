@@ -201,23 +201,23 @@ let GoalGlanceView = React.createClass({
     setGoalAchievement: function (goalId, isAchieved) {
         goalId = Number(goalId);
         let goalPos = this.getPointerToGoalInSociety(goalId);
-        if (goalPos[0]) {
-            this.setState((prevState, props) => {
-                let society = prevState.society;
+        this.setState((prevState, props) => {
+            let society = prevState.society;
+            if (goalPos[0]) {
                 society[goalPos[1]][goalPos[2]].is_achieved = isAchieved;
+            }
 
-                let goalSearchView = prevState.goalSearchView;
-                goalSearchView.resultSet.forEach((goalFamilySubset, gfsi) => {
-                    goalFamilySubset.forEach((goal, gi) => {
-                        if (goal.id === goalId) {
-                            goal.is_achieved = isAchieved;
-                        }
-                    });
+            let goalSearchView = prevState.goalSearchView;
+            goalSearchView.resultSet.forEach((goalFamilySubset, gfsi) => {
+                goalFamilySubset.forEach((goal, gi) => {
+                    if (goal.id === goalId) {
+                        goal.is_achieved = isAchieved;
+                    }
                 });
-
-                return {society: society, goalSearchView: goalSearchView};
             });
-        }
+
+            return {society: society, goalSearchView: goalSearchView};
+        });
     },
     toggleGoalAchievement: function (goalId) {
         goalId = Number(goalId);
@@ -401,23 +401,23 @@ let GoalGlanceView = React.createClass({
                     setResultSet={this.setSearchResultSet}
                     onGoalSelect={this.hardSelectFamilyOfGoal}/>
                 <GoalCanvasView society={this.state.society}
-                                      onGoalDrop={this.softSelectFamilyOfGoal}
-                                      onEmptySpaceClick={this.closeGoalDetailView}
-                                      onGoalSelect={this.openGoalDetailView}
-                                      onRelationSelect={() => {
-                                      }}
-                                      onDoubleClick={() => {
-                                      }}
-                                      onGoalDoubleClick={(goalId) => {
-                                      }}
-                                      onEdgeDoubleClick={this.breakRelation}
-                                      onEmptySpaceDoubleClick={this.toggleGoalCreateView}
-                                      onTwoGoalsConsecutiveDoubleClick={this.makeRelation}
-                                      onGoalContext={this.toggleGoalAchievement}
-                                      onRelationContext={() => {
-                                      }}
-                                      onGoalShowPopup={() => {
-                                      }}/>
+                                onGoalDrop={this.softSelectFamilyOfGoal}
+                                onEmptySpaceClick={this.closeGoalDetailView}
+                                onGoalSelect={this.openGoalDetailView}
+                                onRelationSelect={() => {
+                                }}
+                                onDoubleClick={() => {
+                                }}
+                                onGoalDoubleClick={(goalId) => {
+                                }}
+                                onEdgeDoubleClick={this.breakRelation}
+                                onEmptySpaceDoubleClick={this.toggleGoalCreateView}
+                                onTwoGoalsConsecutiveDoubleClick={this.makeRelation}
+                                onGoalContext={this.toggleGoalAchievement}
+                                onRelationContext={() => {
+                                }}
+                                onGoalShowPopup={() => {
+                                }}/>
                 <button className="btn-floating red z-depth-1 goal-canvas-clear-btn"
                         title="Clear canvas"
                         onClick={this.clearCanvas}>

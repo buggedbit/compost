@@ -10,55 +10,91 @@
  * @propFunctions: onDescriptionClick, onDeadlineClick, onAchievementClick
  * */
 let GoalSearchResult = React.createClass({
-    render: function () {
-        let isAchieved = 'crop_square';
-        if (this.props.isAchieved === true)
-            isAchieved = 'done';
-        let style = {
-            color: this.props.color,
-        };
-        let description = this.props.description === '' ? '@no_description' : truncate(this.props.description, this.props.maxDescLength);
-        let deadlineRepr = function (deadline) {
-            return moment()
+        deadlineRepr: function (deadline) {
+            if (deadline === null) {
+                return ".";
+            }
+            else {
+                return moment()
+                    .year(deadline.year)
+                    .month(deadline.month - 1)
+                    .date(deadline.day)
+                    .hour(deadline.hour)
+                    .minute(deadline.minute)
+                    .second(deadline.second)
+                    .millisecond(deadline.microsecond / 1000).fromNow();
+            }
+        },
+        urgencyColor: function (deadline, isAchived) {
+            if (isAchived) {
+                return '#9e9e9e'
+            }
+            if (deadline === null) {
+                return '#ffffff';
+            }
+            let duration = moment.duration(moment()
                 .year(deadline.year)
                 .month(deadline.month - 1)
                 .date(deadline.day)
                 .hour(deadline.hour)
                 .minute(deadline.minute)
                 .second(deadline.second)
-                .millisecond(deadline.microsecond / 1000).fromNow();
-        };
-        let deadline = this.props.deadline === null ? "." : deadlineRepr(this.props.deadline);
+                .millisecond(deadline.microsecond / 1000).diff(moment()));
+            let noHours = duration.as('hours');
+            if (noHours <= 0) {
+                return '#ffcdd2'
+            } else if (noHours > 0 && noHours < 24) {
+                return '#fff59d'
+            } else {
+                return '#ffffff'
+            }
+        },
+        render: function () {
+            let isAchieved = 'crop_square';
+            if (this.props.isAchieved === true)
+                isAchieved = 'done';
+            let description = this.props.description === '' ? '@no_description' : truncate(this.props.description, this.props.maxDescLength);
+            let deadline = this.deadlineRepr(this.props.deadline);
+            let color = this.urgencyColor(this.props.deadline, this.props.isAchieved);
 
-        return (
-            <li draggable="true"
-                className="collection-item goal-search-result"
-                id={this.props.id}
-                title={this.props.description}
-                onDragStart={(e) => {
-                    e.dataTransfer.setData('goalId', this.props.id);
-                }}>
-                <div className="row">
-                    <div className="col l5 m5 s5 pointer data" style={style} onClick={(e) => {
-                        this.props.onDescriptionClick(this.props.id);
+            return (
+                <li draggable="true"
+                    className="collection-item goal-search-result"
+                    id={this.props.id}
+                    title={this.props.description}
+                    onDragStart={(e) => {
+                        e.dataTransfer.setData('goalId', this.props.id);
                     }}>
-                        {description}
+                    <div className="row">
+                        <div className="col l5 m5 s5 pointer data"
+                             style={{
+                                 color: this.props.color,
+                             }}
+                             onClick={(e) => {
+                                 this.props.onDescriptionClick(this.props.id);
+                             }}>
+                            {description}
+                        </div>
+                        <div className="col l5 m5 s5 red-text pointer data"
+                             style={{backgroundColor: color}}
+                             onClick={(e) => {
+                                 this.props.onDeadlineClick(this.props.id);
+                             }}>
+                            {deadline}
+                        </div>
+                        <div className="col l2 m2 s2 pointer data"
+                             style={{paddingBottom: '0px'}}
+                             onClick={(e) => {
+                                 this.props.onAchievementClick(this.props.id);
+                             }}>
+                            <i className="material-icons">{isAchieved}</i>
+                        </div>
                     </div>
-                    <div className="col l5 m5 s5 red-text pointer data" onClick={(e) => {
-                        this.props.onDeadlineClick(this.props.id);
-                    }}>
-                        {deadline}
-                    </div>
-                    <div className="col l2 m2 s2 pointer data" onClick={(e) => {
-                        this.props.onAchievementClick(this.props.id);
-                    }}>
-                        <i className="material-icons">{isAchieved}</i>
-                    </div>
-                </div>
-            </li>
-        );
-    }
-});
+                </li>
+            );
+        }
+    })
+;
 
 /**
  * @propFunctions: onGoalSelect, setGoalAchievement, setResultSet

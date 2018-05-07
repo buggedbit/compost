@@ -1,8 +1,7 @@
-    improve goal search app
+*    improve goal search app
 	*	group by families
 	*	fix sort order
-		set bg of overdue goals to red
-        reduce !important in css
+	*   set bg of overdue goals to red
 
     Job model
 
@@ -12,4 +11,4 @@
 
 *   title
 
-    password
+*   password
