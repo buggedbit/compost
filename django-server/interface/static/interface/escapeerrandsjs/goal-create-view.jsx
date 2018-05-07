@@ -46,10 +46,12 @@ let GoalCreateView = React.createClass({
                         onClick={(e) => {
                             let description = this.refs.description.value;
                             let deadline = TimeFormatter.parse(this.refs.deadline.value);
+                            let color = $(this.refs.description).css('color');
                             if (deadline !== false) {
-                                this.props.onGoalCreate(description, deadline);
+                                this.props.onGoalCreate(description, deadline, color);
                                 this.refs.description.value = '';
                                 this.refs.deadline.value = '';
+                                $(this.refs.description).css('color', '');
                             }
                             else {
                                 toastr.error('Incorrect datetime format, try again');
