@@ -107,6 +107,7 @@ def create(request):
             try:
                 description = request.POST['description']
                 deadline = json.loads(request.POST['deadline'])
+                color = request.POST['color']
 
                 if deadline is not None:
                     deadline = dt(year=deadline['year'],
@@ -116,7 +117,7 @@ def create(request):
                                   minute=deadline['minute'],
                                   second=deadline['second'],
                                   microsecond=deadline['microsecond'])
-                is_created = GoalDAC.create(description, deadline)
+                is_created = GoalDAC.create(description, deadline, color)
 
                 if is_created[0] is True:
                     return HttpResponse(

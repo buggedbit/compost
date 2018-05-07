@@ -78,8 +78,8 @@ class GoalDAC:
         return goal_family
 
     @staticmethod
-    def create(description, deadline):
-        new_goal = Goal(description=description, deadline=deadline)
+    def create(description, deadline, color):
+        new_goal = Goal(description=description, deadline=deadline, color=color)
         is_created = new_goal.save()
         if is_created is True:
             return True, new_goal

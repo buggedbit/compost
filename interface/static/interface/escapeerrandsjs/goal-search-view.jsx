@@ -42,9 +42,9 @@ let GoalSearchResult = React.createClass({
                 .millisecond(deadline.microsecond / 1000).diff(moment()));
             let noHours = duration.as('hours');
             if (noHours <= 0) {
-                return '#ffcdd2'
+                return '#ffebee'
             } else if (noHours > 0 && noHours < 24) {
-                return '#fff59d'
+                return '#fff8e1'
             } else {
                 return '#ffffff'
             }

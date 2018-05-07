@@ -123,11 +123,12 @@ let GoalGlanceView = React.createClass({
         }
     },
     //
-    createGoal: function (description, deadline) {
+    createGoal: function (description, deadline, color) {
         let self = this;
         $.post(this.props.createUrl, {
             description: description,
             deadline: JSON.stringify(deadline),
+            color: color,
         }).done((r) => {
             let json = JSON.parse(r);
             if (json.status === -1) {
