@@ -19,7 +19,7 @@
 }
 
 .create-goal-view-description {
-    color: black !important;
+    color: black;
     font-size: large !important;
     border: none !important;
     border-bottom: 1px solid black !important;
