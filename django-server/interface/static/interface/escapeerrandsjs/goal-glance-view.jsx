@@ -15,6 +15,7 @@ let GoalGlanceView = React.createClass({
                 deadline: undefined,
                 isAchieved: undefined,
                 isOpen: undefined,
+                color: undefined,
             },
             goalCreateView: {
                 isOpen: undefined,
@@ -100,6 +101,7 @@ let GoalGlanceView = React.createClass({
                         goalDetailView.description = goalToBeOpened.description;
                         goalDetailView.deadline = goalToBeOpened.deadline;
                         goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                        goalDetailView.color = goalToBeOpened.color;
                         goalDetailView.isOpen = true;
                         return {goalDetailView: goalDetailView, society: society};
                     });
@@ -170,6 +172,7 @@ let GoalGlanceView = React.createClass({
                         goalDetailView.description = goalToBeOpened.description;
                         goalDetailView.deadline = goalToBeOpened.deadline;
                         goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                        goalDetailView.color = goalToBeOpened.color;
                         goalDetailView.isOpen = true;
                         return {society: society, goalDetailView: goalDetailView};
                     });
@@ -216,6 +219,7 @@ let GoalGlanceView = React.createClass({
                         goalDetailView.description = goalToBeOpened.description;
                         goalDetailView.deadline = goalToBeOpened.deadline;
                         goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                        goalDetailView.color = goalToBeOpened.color;
                         goalDetailView.isOpen = true;
                         return {society: society, goalDetailView: goalDetailView};
                     });
@@ -391,6 +395,7 @@ let GoalGlanceView = React.createClass({
                 goalDetailView.description = goalToBeOpened.description;
                 goalDetailView.deadline = goalToBeOpened.deadline;
                 goalDetailView.isAchieved = goalToBeOpened.isAchieved;
+                goalDetailView.color = goalToBeOpened.color;
                 goalDetailView.isOpen = true;
                 return {goalDetailView: goalDetailView};
             });
@@ -458,6 +463,7 @@ let GoalGlanceView = React.createClass({
                     description={this.state.goalDetailView.description}
                     deadline={this.state.goalDetailView.deadline}
                     isAchieved={this.state.goalDetailView.is_achieved}
+                    color={this.state.goalDetailView.color}
                     onGoalFamilyDeselect={this.deselectFamilyOfGoal}
                     onGoalUpdate={this.updateGoal}
                     onGoalChainUpdate={this.chainUpdateGoal}
