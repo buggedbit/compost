@@ -1,2 +1,2 @@
-* Format of data
-* Named entities are not considered
+- [x] Format of data
+- [ ] Named entities are not considered

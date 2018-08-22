@@ -3,4 +3,5 @@
 ## todo
 - [ ] Get all glove data
 - [ ] Tag named entities @ to a new encoding
-- [ ] Tag spelling mistakes
+- [x] Tag new words as 0
+- [ ] Make Trainable True in embeddings layer

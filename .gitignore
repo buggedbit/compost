@@ -1,3 +1,4 @@
 word_embeddings
 data
 .idea
+__pycache__
