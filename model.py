@@ -1,32 +1,48 @@
-from keras.layers import Embedding, Flatten, Dense
+from keras import Input
+from keras.engine import Model
+from keras.layers import Embedding, Flatten, Dense, Conv1D, Conv2D, Average
 from keras.models import Sequential
+from keras.utils import plot_model
 
 from preprocessing import preprocess_essay_data, load_word_embeddings, get_word_embeddings_matrix
 
 # parameters
-max_data_length = 2000
+MAX_ESSAY_LENGTH = 2000
 
 # pre processing
 print('-------- -------- Pre Processing -------- --------')
-data, labels, vocabulary_size, word_index = preprocess_essay_data('data/all.tsv', max_length=max_data_length)
+data, labels, vocabulary_size, word_index = preprocess_essay_data('data/all.tsv', max_length=MAX_ESSAY_LENGTH)
 word_embeddings = load_word_embeddings('word_embeddings/glove.100K.300d.txt')
 embeddings_matrix = get_word_embeddings_matrix(word_embeddings, vocabulary_size, word_index)
 
 # define model
-model = Sequential()
-model.add(Embedding(vocabulary_size, 300, weights=[embeddings_matrix], input_length=max_data_length, trainable=False))
-model.add(Flatten())
-model.add(Dense(1, activation='sigmoid'))
+print('-------- -------- Defining Model -------- --------')
+input_layer = Input(shape=(MAX_ESSAY_LENGTH,), dtype='int32')
+embedding_layer = Embedding(input_dim=vocabulary_size,
+                            output_dim=300,
+                            input_length=MAX_ESSAY_LENGTH,
+                            weights=[embeddings_matrix],
+                            trainable=True)(input_layer)
+conv_layer = Conv1D(filters=1,
+                    kernel_size=3,
+                    use_bias=True,
+                    padding="same")(embedding_layer)
+
+flatten_layer = Flatten()(conv_layer)
+
+output_layer = Dense(1, activation='softmax')(flatten_layer)
+
+model = Model(input_layer, output_layer)
 
 print('-------- -------- Compiling Model -------- --------')
 # compile the model
-model.compile(optimizer='adagrad', loss='mse', metrics=['mse'])
+model.compile(optimizer='rmsprop', loss='mse', metrics=['mse'])
 # summarize the model
 print(model.summary())
 
 print('-------- -------- Fitting Model -------- --------')
 # fit the model
-model.fit(data, labels, epochs=50, verbose=0)
+model.fit(data, labels, epochs=10, verbose=1)
 # evaluate the model
-loss, accuracy = model.evaluate(data, labels, verbose=0)
+loss, accuracy = model.evaluate(data, labels, verbose=1)
 print('Accuracy: %f' % (accuracy * 100))
