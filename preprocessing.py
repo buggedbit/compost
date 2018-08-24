@@ -67,7 +67,7 @@ def get_word_embeddings_matrix(word_embeddings, vocabulary_size, word_index):
     for word, index in word_index.items():
         embedding = word_embeddings.get(word)
         if embedding is None:
-            embeddings_matrix[index] = 0  # default representation
+            # 0 by default
             spelling_mistakes.append(word)
         else:
             embeddings_matrix[index] = embedding
