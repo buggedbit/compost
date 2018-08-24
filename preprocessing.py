@@ -37,7 +37,7 @@ def preprocess_essay_data(filepath, max_length=2000):
     # vocabulary size
     vocabulary_size = len(tokenizer.word_index) + 1
 
-    print('encoded data and labels')
+    print('---- ---- encoded data and labels')
     print('data shape = ', padded_data.shape, ' labels shape = ', labels.shape, 'vocabulary_size = ', vocabulary_size)
 
     return padded_data, labels, vocabulary_size, tokenizer.word_index
@@ -55,7 +55,7 @@ def load_word_embeddings(filepath):
             word_embedding = np.array(values[1:], dtype='float32')
             word_embeddings[word] = word_embedding
 
-    print('loaded word embeddings into memory')
+    print('---- ---- loaded word embeddings into memory')
     print('no. of word embeddings = ', len(word_embeddings))
 
     return word_embeddings
@@ -63,14 +63,18 @@ def load_word_embeddings(filepath):
 
 def get_word_embeddings_matrix(word_embeddings, vocabulary_size, word_index):
     embeddings_matrix = np.zeros((vocabulary_size, 300))
+    spelling_mistakes = []
     for word, index in word_index.items():
         embedding = word_embeddings.get(word)
         if embedding is None:
             embeddings_matrix[index] = 0  # default representation
+            spelling_mistakes.append(word)
         else:
             embeddings_matrix[index] = embedding
 
-    print('created embeddings matrix')
-    print('embeddings matrix shape = ', embeddings_matrix.shape)
+    print('---- ---- created embeddings matrix')
+    print('embeddings matrix shape =', embeddings_matrix.shape)
+    print('found #spelling mistakes =', len(spelling_mistakes))
+    print('%of words not found in word word embeddings =', len(spelling_mistakes) / vocabulary_size * 100)
 
     return embeddings_matrix
