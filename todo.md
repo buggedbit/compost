@@ -1,6 +1,3 @@
-## assumptions
-- [ ] named entities given 0
-
 ## todo
 - [x] Tag spelling mistakes words as 0
 - [x] Make Trainable True in embeddings layer

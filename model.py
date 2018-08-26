@@ -1,6 +1,5 @@
-from keras import Input
-from keras.engine import Model
-from keras.layers import Embedding, Flatten, Dense, Conv1D
+from keras.layers import Embedding, Flatten, Dense, Conv1D, LSTM
+from keras.models import Sequential
 
 from preprocessing import preprocess_essay_data, load_word_embeddings, get_word_embeddings_matrix
 
@@ -15,22 +14,19 @@ embeddings_matrix = get_word_embeddings_matrix(word_embeddings, vocabulary_size,
 
 # define model
 print('-------- -------- Defining Model -------- --------')
-input_layer = Input(shape=(MAX_ESSAY_LENGTH,), dtype='int32')
-embedding_layer = Embedding(input_dim=vocabulary_size,
-                            output_dim=300,
-                            input_length=MAX_ESSAY_LENGTH,
-                            weights=[embeddings_matrix],
-                            trainable=True)(input_layer)
-conv_layer = Conv1D(filters=1,
-                    kernel_size=3,
-                    use_bias=True,
-                    padding="same")(embedding_layer)
-
-flatten_layer = Flatten()(conv_layer)
-
-output_layer = Dense(units=1, activation='sigmoid')(flatten_layer)
-
-model = Model(inputs=input_layer, outputs=output_layer)
+model = Sequential()
+model.add(Embedding(input_dim=vocabulary_size,
+                    output_dim=300,
+                    input_length=MAX_ESSAY_LENGTH,
+                    weights=[embeddings_matrix],
+                    trainable=False))
+model.add(Conv1D(filters=1,
+                 kernel_size=3,
+                 use_bias=True,
+                 padding="same"))
+model.add(LSTM(100, return_sequences=True))
+model.add(Flatten())
+model.add(Dense(units=1, activation='sigmoid'))
 
 print('-------- -------- Compiling Model -------- --------')
 # compile the model
