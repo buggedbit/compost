@@ -1,8 +1,6 @@
 from keras import Input
 from keras.engine import Model
-from keras.layers import Embedding, Flatten, Dense, Conv1D, Conv2D, Average
-from keras.models import Sequential
-from keras.utils import plot_model
+from keras.layers import Embedding, Flatten, Dense, Conv1D
 
 from preprocessing import preprocess_essay_data, load_word_embeddings, get_word_embeddings_matrix
 
@@ -30,7 +28,7 @@ conv_layer = Conv1D(filters=1,
 
 flatten_layer = Flatten()(conv_layer)
 
-output_layer = Dense(units=1, activation='softmax')(flatten_layer)
+output_layer = Dense(units=1, activation='sigmoid')(flatten_layer)
 
 model = Model(inputs=input_layer, outputs=output_layer)
 
@@ -43,6 +41,8 @@ print(model.summary())
 print('-------- -------- Fitting Model -------- --------')
 # fit the model
 model.fit(data, labels, epochs=10, verbose=1)
+
+print('-------- -------- Evaluating Model -------- --------')
 # evaluate the model
 loss, accuracy = model.evaluate(data, labels, verbose=1)
 print('Accuracy: %f' % (accuracy * 100))
