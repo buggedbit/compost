@@ -30,9 +30,9 @@ conv_layer = Conv1D(filters=1,
 
 flatten_layer = Flatten()(conv_layer)
 
-output_layer = Dense(1, activation='softmax')(flatten_layer)
+output_layer = Dense(units=1, activation='softmax')(flatten_layer)
 
-model = Model(input_layer, output_layer)
+model = Model(inputs=input_layer, outputs=output_layer)
 
 print('-------- -------- Compiling Model -------- --------')
 # compile the model
