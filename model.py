@@ -1,7 +1,7 @@
-from keras.layers import Embedding, Flatten, Dense, Conv1D, LSTM
+from keras.layers import Embedding, Flatten, Dense, Conv1D, LSTM, Dropout
 from keras.models import Sequential
 
-from custom_layers import Conv1DWithMasking
+from custom_layers import Conv1DWithMasking, MeanOverTime, Attention
 from preprocessing import preprocess_essay_data, load_word_embeddings, get_word_embeddings_matrix
 
 # parameters
@@ -20,13 +20,15 @@ model.add(Embedding(input_dim=vocabulary_size,
                     output_dim=300,
                     input_length=MAX_ESSAY_LENGTH,
                     weights=[embeddings_matrix],
-                    trainable=False))
+                    trainable=True,
+                    mask_zero=True,))
 model.add(Conv1DWithMasking(filters=3,
                             kernel_size=3,
                             use_bias=True,
-                            padding="same"))
-model.add(LSTM(3, return_sequences=True))
-model.add(Flatten())
+                            padding="same",))
+model.add(LSTM(3, return_sequences=True,))
+model.add(Dropout(0.1))
+model.add(Attention(op='attmean', activation='tanh', init_stdev=0.01))
 model.add(Dense(units=1, activation='sigmoid'))
 
 print('-------- -------- Compiling Model -------- --------')

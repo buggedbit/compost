@@ -13,13 +13,15 @@ class Attention(Layer):
         self.op = op
         self.activation = activation
         self.init_stdev = init_stdev
+        self.att_v = None
+        self.att_W = None
         super(Attention, self).__init__(**kwargs)
 
     def build(self, input_shape):
         init_val_v = (np.random.randn(input_shape[2]) * self.init_stdev).astype(backend.floatx())
         self.att_v = backend.variable(init_val_v, name='att_v')
-        init_val_W = (np.random.randn(input_shape[2], input_shape[2]) * self.init_stdev).astype(backend.floatx())
-        self.att_W = backend.variable(init_val_W, name='att_W')
+        init_val_w = (np.random.randn(input_shape[2], input_shape[2]) * self.init_stdev).astype(backend.floatx())
+        self.att_W = backend.variable(init_val_w, name='att_W')
         self.trainable_weights = [self.att_v, self.att_W]
 
     def call(self, x, mask=None):
@@ -36,10 +38,10 @@ class Attention(Layer):
             out = out.sum(axis=1) / mask.sum(axis=1, keepdims=True)
         return backend.cast(out, backend.floatx())
 
-    def get_output_shape_for(self, input_shape):
+    def compute_output_shape(self, input_shape):
         return input_shape[0], input_shape[2]
 
-    def compute_mask(self, x, mask):
+    def compute_mask(self, x, mask=None):
         return None
 
     def get_config(self):
@@ -61,9 +63,9 @@ class MeanOverTime(Layer):
             return backend.mean(x, axis=1)
 
     def get_output_shape_for(self, input_shape):
-        return (input_shape[0], input_shape[2])
+        return input_shape[0], input_shape[2]
 
-    def compute_mask(self, x, mask):
+    def compute_mask(self, x, mask=None):
         return None
 
     def get_config(self):
