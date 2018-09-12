@@ -4,16 +4,6 @@ from django.db import models
 
 
 class Goal(models.Model):
-    # Relational fields
-    id = models.AutoField(primary_key=True)
-    parents = models.ManyToManyField('Goal', related_name='children')
-    # Core fields
-    description = models.TextField(default='')
-    deadline = models.DateTimeField(blank=True, null=True)
-    is_achieved = models.BooleanField(default=False)
-    # Auxiliary fields
-    color = models.TextField(default='#000000')
-
     class DeadlineUtils:
         @staticmethod
         def is_greater(d1, d2):
@@ -35,6 +25,19 @@ class Goal(models.Model):
         def is_lesser(d1, d2):
             return Goal.DeadlineUtils.is_greater(d2, d1)
 
+    # Relational fields
+    id = models.AutoField(primary_key=True)
+    parents = models.ManyToManyField('Goal', related_name='children')
+    # Core fields
+    description = models.TextField(default='')
+    deadline = models.DateTimeField(blank=True, null=True)
+    is_achieved = models.BooleanField(default=False)
+    # Auxiliary fields
+    color = models.TextField(default='#000000')
+
+    def __str__(self):
+        return str(self.id) + ' ' + self.description
+
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         is_valid = self.is_valid()
         if is_valid is True:
@@ -43,12 +46,14 @@ class Goal(models.Model):
         else:
             return is_valid
 
+    # ################ Validators ################
     def is_valid(self):
         """
-        Checks the following conditions
+        Checks the following
         1. is the family of the current goal acyclic
-        2. are the deadlines of goals in current family proper (child_deadline >= parent_deadline)
-        3. is the achievement of the goals proper (child achieved only after all its parents achieved)
+        2. are the deadlines of goals in current family consistent (child_deadline >= parent_deadline)
+        3. is the achievement of the goals consistent (child should be achieved only after all its parents are achieved)
+        4. and any other validation that was not documented (check code to ensure) :)
         :return: if (all above conditions met):
                     True
                  else:
@@ -120,6 +125,9 @@ class Goal(models.Model):
         else:
             return True
 
+    # ################ Getters & Setters ################
+
+    # ######## Parent ########
     def get_parents(self):
         return self.parents.all()
 
@@ -133,6 +141,7 @@ class Goal(models.Model):
     def remove_parent(self, parent):
         self.parents.remove(parent)
 
+    # ######## Child ########
     def get_children(self):
         return self.children.all()
 
@@ -146,6 +155,7 @@ class Goal(models.Model):
     def remove_child(self, child):
         self.children.remove(child)
 
+    # ######## Family ########
     @staticmethod
     def _generate_family_ids_set(node, family_ids_result_set):
         family_ids_result_set.add(node.id)
@@ -161,6 +171,3 @@ class Goal(models.Model):
         family_ids_result_set = set()
         Goal._generate_family_ids_set(self, family_ids_result_set)
         return family_ids_result_set
-
-    def __str__(self):
-        return str(self.id) + ' ' + self.description
