@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from core.timeutils import DeadlineUtils
 
 
 class Goal(models.Model):
@@ -14,6 +13,27 @@ class Goal(models.Model):
     is_achieved = models.BooleanField(default=False)
     # Auxiliary fields
     color = models.TextField(default='#000000')
+
+    class DeadlineUtils:
+        @staticmethod
+        def is_greater(d1, d2):
+            if d1 is None and d2 is not None:
+                return True
+            if d1 is not None and d2 is not None and d1 > d2:
+                return True
+            return False
+
+        @staticmethod
+        def is_equal(d1, d2):
+            if d1 is None and d2 is None:
+                return True
+            if d1 is not None and d2 is not None and d1 == d2:
+                return True
+            return False
+
+        @staticmethod
+        def is_lesser(d1, d2):
+            return Goal.DeadlineUtils.is_greater(d2, d1)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         is_valid = self.is_valid()
@@ -54,11 +74,11 @@ class Goal(models.Model):
         # parent deadline should be < child deadline for a valid relation
         if self.id is not None:
             for parent in self.get_parents():
-                if DeadlineUtils.is_greater(parent.deadline, self.deadline):
+                if Goal.DeadlineUtils.is_greater(parent.deadline, self.deadline):
                     return False, 'Deadline before parent'
 
             for child in self.get_children():
-                if DeadlineUtils.is_greater(self.deadline, child.deadline):
+                if Goal.DeadlineUtils.is_greater(self.deadline, child.deadline):
                     return False, 'Deadline after child'
 
             # No objection -> deadline valid

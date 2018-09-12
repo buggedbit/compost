@@ -6,7 +6,9 @@ from datetime import datetime as dt, timedelta as td
 from core.models.dtt import DTT
 from core.timestub import TimeStub
 
-from core.timeutils import to_microseconds
+
+def to_microseconds(time_delta):
+    return time_delta.days * 86400000000 + time_delta.seconds * 1000000 + time_delta.microseconds
 
 
 class DTB(models.Model):

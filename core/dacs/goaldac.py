@@ -1,6 +1,5 @@
 from core.models.goal import Goal
 import re
-from core.timeutils import DeadlineUtils
 
 
 # Data access class
@@ -102,7 +101,7 @@ class GoalDAC:
     def _set_child_chain_deadlines(goal, deadline):
         for child in goal.get_children():
             # pruning
-            if DeadlineUtils.is_lesser(child.deadline, deadline):
+            if Goal.DeadlineUtils.is_lesser(child.deadline, deadline):
                 GoalDAC._set_child_chain_deadlines(child, deadline)
 
         goal.deadline = deadline
@@ -112,7 +111,7 @@ class GoalDAC:
     def _set_parent_chain_deadlines(goal, deadline):
         for parent in goal.get_parents():
             # pruning
-            if DeadlineUtils.is_greater(parent.deadline, deadline):
+            if Goal.DeadlineUtils.is_greater(parent.deadline, deadline):
                 GoalDAC._set_parent_chain_deadlines(parent, deadline)
 
         goal.deadline = deadline
