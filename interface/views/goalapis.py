@@ -6,10 +6,9 @@ from datetime import datetime as dt
 from django.views.decorators.csrf import csrf_exempt
 
 from interface.views.responsewrapper import ResponseWrapper
-from core.models.goal import Goal
 import re
 import json
-from core.dacs.goaldac import GoalDAC
+from core.query.goal import Goal
 from interface.views.sessionapis import is_session_active
 
 
@@ -52,7 +51,7 @@ def read_regex(request):
                 regex = request.POST['regex']
                 is_global_search = request.POST['is_global_search']
 
-                matched_goal_family_subsets = GoalDAC.read_regex(regex, is_global_search)
+                matched_goal_family_subsets = Goal.read_regex(regex, is_global_search)
 
                 json_goal_family_subsets = []
                 for family_subset in matched_goal_family_subsets:
@@ -78,7 +77,7 @@ def read_family(request, pk):
     if is_session_active(request.session):
         if request.method == 'POST':
             try:
-                goal_family = GoalDAC.read_family(pk)
+                goal_family = Goal.read_family(pk)
                 json_family = []
                 for member in goal_family:
                     json_family.append(jsonize_goal(member))
@@ -109,7 +108,7 @@ def create(request):
                                   minute=deadline['minute'],
                                   second=deadline['second'],
                                   microsecond=deadline['microsecond'])
-                is_created = GoalDAC.create(description, deadline, color)
+                is_created = Goal.create(description, deadline, color)
 
                 if is_created[0] is True:
                     return HttpResponse(
@@ -143,7 +142,7 @@ def update(request):
                                   minute=deadline['minute'],
                                   second=deadline['second'],
                                   microsecond=deadline['microsecond'])
-                is_updated = GoalDAC.update(pk, description, deadline, color)
+                is_updated = Goal.update(pk, description, deadline, color)
 
                 if is_updated[0] is True:
                     return HttpResponse(
@@ -179,7 +178,7 @@ def chain_update(request):
                                   minute=deadline['minute'],
                                   second=deadline['second'],
                                   microsecond=deadline['microsecond'])
-                is_updated = GoalDAC.chain_update(pk, description, deadline, color)
+                is_updated = Goal.chain_update(pk, description, deadline, color)
 
                 if is_updated[0] is True:
                     goal_family = is_updated[1]
@@ -209,7 +208,7 @@ def delete_if_single(request):
             try:
                 pk = request.POST['id']
 
-                is_deleted = GoalDAC.delete_if_single(pk)
+                is_deleted = Goal.delete_if_single(pk)
 
                 if is_deleted is True:
                     return HttpResponse(json.dumps(ResponseWrapper.of(0, ResponseWrapper.NUMBER_RESPONSE)))
@@ -234,7 +233,7 @@ def add_relation(request):
                 parent_id = int(request.POST['parent_id'])
                 child_id = int(request.POST['child_id'])
 
-                was_relation_added = GoalDAC.add_relation(parent_id, child_id)
+                was_relation_added = Goal.add_relation(parent_id, child_id)
 
                 if was_relation_added[0] is True:
                     goal_family = was_relation_added[1]
@@ -264,7 +263,7 @@ def remove_relation(request):
                 parent_id = int(request.POST['parent_id'])
                 child_id = int(request.POST['child_id'])
 
-                goal_families = GoalDAC.remove_relation(parent_id, child_id)
+                goal_families = Goal.remove_relation(parent_id, child_id)
 
                 json_families = []
                 for goal_family in goal_families:
@@ -290,7 +289,7 @@ def toggle_is_achieved(request, pk):
     if is_session_active(request.session):
         if request.method == 'POST':
             try:
-                is_saved = GoalDAC.toggle_is_achieved(pk)
+                is_saved = Goal.toggle_is_achieved(pk)
                 if is_saved[0] is True:
                     return HttpResponse(json.dumps(ResponseWrapper.of(is_saved[1], ResponseWrapper.OBJECT_RESPONSE)))
                 else:
