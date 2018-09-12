@@ -9,3 +9,12 @@ EscapeErrands is a sopisticated yet intuitive task/goal management system
 * The intention however is not to impose user to forget everything, but to provide a means to swap out all the irrelevant information (for the time being) so that the user can focus on the present
 * EscapeErrands can organize arbitrarily complex tasks, store and visualize them in an orderly and relevant fashion
 * It comes handy when user has quite a number of interdependent tasks
+
+Running Instructions
+====================
+1. Make migrations in all apps
+    python manage.py makemigrations <app>
+2. Migrate them to db
+    python manage.py migrate
+3. Run the server
+    python manage.py runserver
