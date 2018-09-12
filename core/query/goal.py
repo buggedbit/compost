@@ -2,7 +2,6 @@ from core.models.goal import Goal as TheModel
 import re
 
 
-# Data access class
 class Goal:
     @staticmethod
     def _group_by_family(goal_iterable):
