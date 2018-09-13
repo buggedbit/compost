@@ -1,29 +1,22 @@
-## What?
-EscapeErrands is a sophisticated yet intuitive task management system
+# What is it?
+A tool to take care of the mundane so that you can really focus on interesting things
+* It will make your more organized, but actually decreases the effort in doing so
+* It will enable you to be free of mind or stateless
+    * The intention however is not to impose to forget everything, but to provide a means to swap out all the irrelevant information
+* It can understand arbitrarily complex tasks, store and visualize them beautifully
+* It really comes handy when you have a number of interdependent tasks dangling on your head
 
-## The philosophy behind
-* __See the things you can, clearly! For if you do so, you can see those beyond__
-* EscapeErrands enables the user to be stateless in his/her daily life. 
-* It pushes the user to organize his/her tasks properly and removes the need to remember them
-* The intention however is not to impose user to forget everything, but to provide a means to swap out all the irrelevant information (for the time being) so that the user can focus on the present
-* EscapeErrands can organize arbitrarily complex tasks, store and visualize them in an orderly and relevant fashion
-* It comes handy when user has quite a number of interdependent tasks
+# Zen of Escape Errands
+* _Live now. The future can wait_
 
-## How?
-1. Make migrations in all apps
-    python manage.py makemigrations <app>
-2. Migrate them to db
-    python manage.py migrate
-3. Run the server
-    python manage.py runserver
-
-### todo
-- [x] improve goal search app
-	- [x] group by families
-	- [x] fix sort order
-	- [x] set bg of overdue goals to red
-- [x] title
-- [x] password
-- [x] goal color Create & Update
-- [ ] keyboard shortcuts
-- [ ] Job model
+# How to use?
+* Escape Errand comes as a server client system
+* The server is based on django framework
+* The client has a web interface
+* Dependencies
+    * Look in `requirements.txt` for the list of all dependencies
+    * `runtime.txt` contains the optimum version of python
+* To run the server run the following commands in the project root dir
+    * `python3 manage.py makemigrations core`
+    * `python3 manage.py migrate`
+    * `python3 manage.py runserver`
