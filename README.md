@@ -1,13 +1,13 @@
 # What is it?
 A tool to take care of the mundane so that you can really focus on interesting things
-* It will make your more organized, but actually decreases the effort in doing so
+* It will make your more organized, but actually decreases your effort in doing so
 * It will enable you to be free of mind or stateless
-    * The intention however is not to impose to forget everything, but to provide a means to swap out all the irrelevant information
+    * The intention however is not for you to forget everything, but to provide a means to swap out all the currently irrelevant information stuff to a safe place
 * It can understand arbitrarily complex tasks, store and visualize them beautifully
-* It really comes handy when you have a number of interdependent tasks dangling on your head
+* It really comes in handy if you have a lot of interdependent tasks dangling over your head
 
 # Zen of Escape Errands
-* _Live now. The future can wait_
+_Live now. The future can wait_
 
 # How to use?
 * Escape Errand comes as a server client system
