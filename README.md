@@ -1,5 +1,5 @@
 # Escape Errands
-My solution to mundane
+My solution to mundanity
 
 # What is it?
 A tool to take care of the mundane so that you can really focus on interesting things
