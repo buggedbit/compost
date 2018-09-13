@@ -1,3 +1,6 @@
+# Escape Errands
+My solution to mundane
+
 # What is it?
 A tool to take care of the mundane so that you can really focus on interesting things
 * It will make your more organized, but actually decreases your effort in doing so
