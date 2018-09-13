@@ -1,5 +1,6 @@
 from core.models.goal import Goal as TheModel
 import re
+from datetime import datetime as dt, timedelta as td
 
 
 class Goal:
@@ -188,3 +189,16 @@ class Goal:
             return True, goal.is_achieved
         else:
             return is_saved
+
+    @staticmethod
+    def month_snapshot():
+        _now = dt.now()
+        goals_of_month = TheModel.objects.filter(deadline__year=_now.year, deadline__month=_now.month).order_by(
+            'deadline')
+        per_day_goals = {}
+        for goal in goals_of_month:
+            if goal.deadline.day in per_day_goals.keys():
+                per_day_goals[goal.deadline.day].append(goal)
+            else:
+                per_day_goals[goal.deadline.day] = [goal]
+        return per_day_goals

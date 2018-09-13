@@ -36,7 +36,7 @@ class Goal(models.Model):
     color = models.TextField(default='#000000')
 
     def __str__(self):
-        return str(self.id) + ' ' + self.description
+        return '{pk=%d, description=%s}' % (self.id, self.description)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         is_valid = self.is_valid()
