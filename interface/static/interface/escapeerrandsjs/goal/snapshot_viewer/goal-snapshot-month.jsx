@@ -12,17 +12,41 @@
 let GoalSnapshotDay = React.createClass({
     getDefaultProps: function () {
         return {
-            day: null,
+            widthPx: 50,
+            heightPx: 50,
+            leftPx: 0,
+            topPx: 0,
+            day: 0,
             goals: []
         }
     },
     render: function () {
         let pr = this.props;
         let goalNames = pr.goals.map((e) => {
-            return <div key={e.id}>{e.description}</div>
+            return <div key={e.id}
+                        className="truncate collection-item"
+                        style={{padding: '4px', backgroundColor: e.is_achieved ? '#a5d6a7' : '#ffffff'}}>
+                {e.is_achieved ? <span className="badge"><i className="material-icons">done</i></span> : ''}
+                <span style={{color: e.color}}>{e.description}</span>
+            </div>
         });
+        let bgColor = pr.goals.length === 0 ? '#ffffff' : '#e91e63';
         return (
-            <blockquote>{goalNames}</blockquote>
+            <div style={{
+                position: 'absolute',
+                padding: '3px',
+                left: pr.leftPx + 'px',
+                top: pr.topPx + 'px',
+                width: pr.widthPx + 'px',
+                height: pr.heightPx + 'px',
+                overflowY: 'auto',
+                backgroundColor: bgColor,
+            }}>
+                <div className='flow-text'>{moment().date(pr.day).format('Do ddd')}</div>
+                <div className="collection">
+                    {goalNames}
+                </div>
+            </div>
         );
     }
 });
@@ -31,17 +55,37 @@ let GoalSnapshotMonth = React.createClass({
     getInitialState: function () {
         return {perDayGoals: {}};
     },
+    getGoalSnapshotDay: function (day, goals) {
+        let refs = this.refs;
+        let W = $(refs.snapshotMonth).width();
+        let H = $(refs.snapshotMonth).height();
+        let w = W / 7;
+        let h = H / 5;
+        let l = ((day - 1) % 7) * w;
+        let t = parseInt((day - 1) / 7) * h;
+        return <GoalSnapshotDay key={[day, '-'] + goals.map((e) => e.id)}
+                                day={day}
+                                widthPx={w}
+                                heightPx={h}
+                                leftPx={l}
+                                topPx={t}
+                                goals={goals}/>
+    },
     render: function () {
+        // aliases
         let st = this.state;
+        // day wise snapshots
         let daySnapshots = [];
-        for (let day in st.perDayGoals) {
-            if (st.perDayGoals.hasOwnProperty(day)) {
-                let dict = st.perDayGoals;
-                daySnapshots.push(<GoalSnapshotDay key={dict[day].map((e) => e.id).join('-')} day={day} goals={dict[day]}/>);
-            }
+        let numDaysInMonth = moment().daysInMonth();
+        for (let day = 1; day <= numDaysInMonth; ++day) {
+            daySnapshots.push(this.getGoalSnapshotDay(day, st.perDayGoals[day] === undefined ? [] : st.perDayGoals[day]));
         }
         return (
-            <div>Snapshot of month
+            <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+            }} ref="snapshotMonth">
                 {daySnapshots}
             </div>
         );
