@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^$', webpages.index, name='index'),
     # host/goal/glance/
     url(r'^goal/glance/$', webpages.goal_glance, name='goal_glance'),
+    # host/goal/snapshot_viewer/
+    url(r'^goal/snapshot_viewer/$', webpages.goal_snapshot_viewer, name='goal_snapshot_viewer'),
 
     # sessionapis
     # host/login/<POST password>
@@ -39,7 +41,9 @@ urlpatterns = [
     url(r'^goal/add_relation/$', goalapis.add_relation, name='goal_add_relation'),
     # host/goal/remove_relation/<POST parent_id, child_id>
     url(r'^goal/remove_relation/$', goalapis.remove_relation, name='goal_remove_relation'),
-    # host/goal/toggle/is_achieved/pk
+    # host/goal/toggle/is_achieved/pk/
     url(r'^goal/toggle/is_achieved/(?P<pk>[1-9][0-9]*)/$', goalapis.toggle_is_achieved,
         name='goal_toggle_is_achieved'),
+    # host/goal/snapshot/month/
+    url(r'^goal/snapshot/month/$', goalapis.snapshot_month, name='goal_snapshot_month'),
 ]

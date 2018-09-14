@@ -15,15 +15,19 @@
     {# Escape Errands JS #}
     <script src="{% static 'interface/escapeerrandsjs/utils.jsx' %}"></script>
     <script src="{% static 'interface/escapeerrandsjs/time-formatter.jsx' %}"></script>
-    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-create-view.css' %}"/>
-    <script src="{% static 'interface/escapeerrandsjs/goal-create-view.jsx' %}" type="text/babel"></script>
-    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-search-view.css' %}"/>
-    <script src="{% static 'interface/escapeerrandsjs/goal-search-view.jsx' %}" type="text/babel"></script>
-    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-detail-view.css' %}"/>
-    <script src="{% static 'interface/escapeerrandsjs/goal-detail-view.jsx' %}" type="text/babel"></script>
-    <link type="text/css" rel="stylesheet" href="{% static 'interface/escapeerrandsjs/goal-canvas-view.css' %}"/>
-    <script src="{% static 'interface/escapeerrandsjs/goal-canvas-view.jsx' %}" type="text/babel"></script>
-    <script src="{% static 'interface/escapeerrandsjs/goal-glance-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'interface/escapeerrandsjs/goal/glance/goal-create-view.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal/glance/goal-create-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'interface/escapeerrandsjs/goal/glance/goal-search-view.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal/glance/goal-search-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'interface/escapeerrandsjs/goal/glance/goal-detail-view.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal/glance/goal-detail-view.jsx' %}" type="text/babel"></script>
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'interface/escapeerrandsjs/goal/glance/goal-canvas-view.css' %}"/>
+    <script src="{% static 'interface/escapeerrandsjs/goal/glance/goal-canvas-view.jsx' %}" type="text/babel"></script>
+    <script src="{% static 'interface/escapeerrandsjs/goal/glance/goal-glance-view.jsx' %}" type="text/babel"></script>
 {% endblock %}
 {% block body %}
     <script type="text/babel">

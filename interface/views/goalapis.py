@@ -300,3 +300,15 @@ def toggle_is_achieved(request, pk):
             return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
     else:
         return HttpResponse(json.dumps(ResponseWrapper.error('Invalid session')))
+
+
+@csrf_exempt
+def snapshot_month(request):
+    if is_session_active(request.session):
+        if request.method == 'POST':
+            per_day_goals = Goal.snapshot_month()
+            return HttpResponse(json.dumps(ResponseWrapper.of(per_day_goals, ResponseWrapper.OBJECT_RESPONSE)))
+        else:
+            return HttpResponse(json.dumps(ResponseWrapper.error('Invalid request')))
+    else:
+        return HttpResponse(json.dumps(ResponseWrapper.error('Invalid session')))

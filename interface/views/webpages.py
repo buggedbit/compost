@@ -14,5 +14,9 @@ def goal_glance(request):
     return render(request, 'interface/goal/glance.html')
 
 
+def goal_snapshot_viewer(request):
+    return render(request, 'interface/goal/snapshot_viewer.html')
+
+
 def scratch(request):
     return render(request, 'interface/scratch.html')
