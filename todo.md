@@ -6,5 +6,6 @@
 - [x] title
 - [x] password
 - [x] goal color Create & Update
+- [ ] use map() in goalapis.py
 - [ ] keyboard shortcuts
 - [ ] Job model
