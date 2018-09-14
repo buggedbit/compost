@@ -20,7 +20,9 @@
 {% block body %}
     <script type="text/babel">
         {# Currently only supports monthly snapshots #}
-        ReactDOM.render(<GoalSnapshotMonth/>, document.getElementById('app'));
+        ReactDOM.render(<GoalSnapshotMonth
+            snapShotMonthUrl="{% url 'interface:goal_snapshot_month' %}"
+        />, document.getElementById('app'));
     </script>
     <div class="container-fluid">
         <div id="app"></div>
