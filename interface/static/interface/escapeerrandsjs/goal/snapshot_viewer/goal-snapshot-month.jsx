@@ -164,11 +164,13 @@ let GoalSnapshotMonth = React.createClass({
                     right: '20px',
                     bottom: '100px',
                 }}>
-                    <button onClick={() => this.shiftCurrentSnapshot(-1)}>prev</button>
                     <button className="waves-effect waves-light btn-large">
+                        <i className="material-icons left"
+                           onClick={() => this.shiftCurrentSnapshot(-1)}>arrow_back_ios</i>
                         {moment().year(this.currYear).month(this.currMonth - 1).date(1).format('MMM YYYY')}
+                        <i className="material-icons right"
+                           onClick={() => this.shiftCurrentSnapshot(1)}>arrow_forward_ios</i>
                     </button>
-                    <button onClick={() => this.shiftCurrentSnapshot(1)}>next</button>
                 </div>
                 <div style={{
                     position: 'absolute',
