@@ -44,6 +44,6 @@ urlpatterns = [
     # host/goal/toggle/is_achieved/pk/
     url(r'^goal/toggle/is_achieved/(?P<pk>[1-9][0-9]*)/$', goalapis.toggle_is_achieved,
         name='goal_toggle_is_achieved'),
-    # host/goal/snapshot/month/
+    # host/goal/snapshot/month/<POST year, month>
     url(r'^goal/snapshot/month/$', goalapis.snapshot_month, name='goal_snapshot_month'),
 ]

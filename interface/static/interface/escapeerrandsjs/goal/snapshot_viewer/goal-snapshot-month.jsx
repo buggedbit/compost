@@ -65,7 +65,9 @@ let GoalSnapshotDay = React.createClass({
 
 let GoalSnapshotMonth = React.createClass({
     getInitialState: function () {
-        return {perDayGoals: {}, rowMajorRendering: true};
+        let year = moment().year();
+        let month = moment().month() + 1;
+        return {perDayGoals: {}, rowMajorRendering: true, month: month, year: year};
     },
     switchLayoutRendering: function () {
         this.setState((prevState, props) => {
@@ -144,7 +146,10 @@ let GoalSnapshotMonth = React.createClass({
     },
     componentDidMount: function () {
         let self = this;
-        $.post(this.props.snapShotMonthUrl, {}).done((r) => {
+        $.post(this.props.snapShotMonthUrl, {
+            year: self.state.year,
+            month: self.state.month,
+        }).done((r) => {
             let json = JSON.parse(r);
             if (json.status === -1) {
                 toastr.error(json.error);

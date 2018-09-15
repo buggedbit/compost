@@ -191,10 +191,8 @@ class Goal:
             return is_saved
 
     @staticmethod
-    def snapshot_month():
-        _now = dt.now()
-        goals_of_month = TheModel.objects.filter(deadline__year=_now.year, deadline__month=_now.month).order_by(
-            'deadline')
+    def snapshot_month(year, month):
+        goals_of_month = TheModel.objects.filter(deadline__year=year, deadline__month=month).order_by('deadline')
         per_day_goals = {}
         for goal in goals_of_month:
             if goal.deadline.day in per_day_goals.keys():
