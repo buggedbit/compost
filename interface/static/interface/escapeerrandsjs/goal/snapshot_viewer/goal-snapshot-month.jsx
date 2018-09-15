@@ -43,7 +43,7 @@ let GoalSnapshotDay = React.createClass({
             </div>
         });
         let _now = moment();
-        let bgColor = this.getColorOfDay(pr.day === _now.date() && pr.month - 1 === _now.month() && pr.year === _now.year());
+        let bgColor = this.getColorOfDay((pr.day === _now.date() || 0 === _now.date()) && pr.month - 1 === _now.month() && pr.year === _now.year());
         return (
             <div style={{
                 position: 'absolute',
