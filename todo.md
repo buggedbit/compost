@@ -10,11 +10,11 @@
 - [ ] snapshot viewer
     - [x] render snapshot month
     - [x] row major/ column major layout switch
-    - [ ] change months
-    - [ ] styling
-    - [ ] day detail
-    - [ ] increasing color density of a day
+    - [x] increasing color density of a day
     - [x] handle error/failed fetch
     - [x] highlight today
+    - [x] styling
+    - [ ] change months
+    - [ ] day detail
 - [ ] keyboard shortcuts
 - [ ] Job model

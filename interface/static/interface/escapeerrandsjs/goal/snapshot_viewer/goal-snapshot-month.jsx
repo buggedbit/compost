@@ -34,7 +34,10 @@ let GoalSnapshotDay = React.createClass({
         let goalNames = pr.goals.map((e) => {
             return <div key={e.id}
                         className="truncate collection-item"
-                        style={{padding: '5px', backgroundColor: e.is_achieved ? '#a5d6a7' : '#ffffff'}}>
+                        style={{
+                            padding: '5px',
+                            backgroundColor: e.is_achieved ? '#a5d6a7' : '#ffffff',
+                        }}>
                 {e.is_achieved ? <span className="badge"><i className="material-icons">done</i></span> : ''}
                 <span style={{color: e.color}}>{e.description}</span>
             </div>
@@ -51,7 +54,7 @@ let GoalSnapshotDay = React.createClass({
                 overflowY: 'auto',
                 backgroundColor: bgColor,
             }}>
-                <div className="blue">{moment().date(pr.day).format('Do ddd')}</div>
+                <div><b>{moment().date(pr.day).format('Do ddd')}</b></div>
                 <div className="collection">
                     {goalNames}
                 </div>
