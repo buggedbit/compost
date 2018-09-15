@@ -123,8 +123,15 @@ let GoalSnapshotMonth = React.createClass({
                 {daySnapshots}
                 <div style={{
                     position: 'absolute',
-                    right: '40px',
-                    bottom: '40px',
+                    right: '20px',
+                    bottom: '100px',
+                }}>
+                    <button className="waves-effect waves-light btn-large">{moment().format('MMMM')}</button>
+                </div>
+                <div style={{
+                    position: 'absolute',
+                    right: '20px',
+                    bottom: '20px',
                 }}>
                     <button className="btn btn-floating btn-large"><i
                         className="material-icons"
