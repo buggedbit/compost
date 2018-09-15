@@ -8,7 +8,7 @@
 - [x] goal color Create & Update
 - [ ] use map() in goalapis.py
 - [ ] snapshot month
-    - [ ] render
+    - [x] render
     - [ ] row major/ column major repr
     - [ ] change months
     - [ ] styling

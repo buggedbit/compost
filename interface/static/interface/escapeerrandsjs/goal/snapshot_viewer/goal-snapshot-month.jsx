@@ -42,7 +42,7 @@ let GoalSnapshotDay = React.createClass({
                 overflowY: 'auto',
                 backgroundColor: bgColor,
             }}>
-                <div className='flow-text'>{moment().date(pr.day).format('Do ddd')}</div>
+                <div>{moment().date(pr.day).format('Do ddd')}</div>
                 <div className="collection">
                     {goalNames}
                 </div>
