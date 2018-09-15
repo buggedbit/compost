@@ -55,7 +55,9 @@ let GoalSnapshotDay = React.createClass({
                 overflowY: 'auto',
                 backgroundColor: bgColor,
             }}>
-                <div><b>{moment().date(pr.day).month(pr.month - 1).year(pr.year).format('Do ddd')}</b></div>
+                <div>
+                    <b>{moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd')}</b>
+                </div>
                 <div className="collection">
                     {goalNames}
                 </div>
@@ -164,11 +166,13 @@ let GoalSnapshotMonth = React.createClass({
                     right: '20px',
                     bottom: '100px',
                 }}>
-                    <button className="waves-effect waves-light btn-large">
+                    <button className="waves-effect waves-light btn-large" style={{padding: 0}}>
                         <i className="material-icons left"
+                           style={{margin: 0, paddingRight: '15px', paddingLeft: '15px'}}
                            onClick={() => this.shiftCurrentSnapshot(-1)}>arrow_back_ios</i>
                         {moment().year(this.currYear).month(this.currMonth - 1).date(1).format('MMM YYYY')}
                         <i className="material-icons right"
+                           style={{margin: 0, paddingRight: '15px', paddingLeft: '15px'}}
                            onClick={() => this.shiftCurrentSnapshot(1)}>arrow_forward_ios</i>
                     </button>
                 </div>
