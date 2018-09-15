@@ -13,5 +13,6 @@
     - [ ] change months
     - [ ] styling
     - [ ] day detail
+    - [ ] increasing color density of a day
 - [ ] keyboard shortcuts
 - [ ] Job model

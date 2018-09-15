@@ -53,23 +53,38 @@ let GoalSnapshotDay = React.createClass({
 
 let GoalSnapshotMonth = React.createClass({
     getInitialState: function () {
-        return {perDayGoals: {}};
+        return {perDayGoals: {}, rowMajorRendering: false};
     },
     getGoalSnapshotDay: function (day, goals) {
         let refs = this.refs;
+        let st = this.state;
         let W = $(refs.snapshotMonth).width();
         let H = $(refs.snapshotMonth).height();
-        let w = W / 7;
-        let h = H / 5;
-        let l = ((day - 1) % 7) * w;
-        let t = parseInt((day - 1) / 7) * h;
-        return <GoalSnapshotDay key={[day, '-'] + goals.map((e) => e.id)}
-                                day={day}
-                                widthPx={w}
-                                heightPx={h}
-                                leftPx={l}
-                                topPx={t}
-                                goals={goals}/>
+        if (st.rowMajorRendering) {
+            let w = W / 7;
+            let h = H / 5;
+            let l = ((day - 1) % 7) * w;
+            let t = parseInt((day - 1) / 7) * h;
+            return <GoalSnapshotDay key={[day, '-'] + goals.map((e) => e.id)}
+                                    day={day}
+                                    widthPx={w}
+                                    heightPx={h}
+                                    leftPx={l}
+                                    topPx={t}
+                                    goals={goals}/>
+        } else {
+            let w = W / 5;
+            let h = H / 7;
+            let t = ((day - 1) % 7) * h;
+            let l = parseInt((day - 1) / 7) * w;
+            return <GoalSnapshotDay key={[day, '-'] + goals.map((e) => e.id)}
+                                    day={day}
+                                    widthPx={w}
+                                    heightPx={h}
+                                    leftPx={l}
+                                    topPx={t}
+                                    goals={goals}/>
+        }
     },
     render: function () {
         // aliases
