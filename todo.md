@@ -14,7 +14,7 @@
     - [x] handle error/failed fetch
     - [x] highlight today
     - [x] styling
-    - [ ] change months
+    - [x] change months
     - [ ] day detail
 - [ ] keyboard shortcuts
 - [ ] Job model

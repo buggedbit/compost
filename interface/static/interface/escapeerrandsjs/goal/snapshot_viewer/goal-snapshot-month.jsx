@@ -9,6 +9,58 @@
 /**
  * @propFunctions:
  * */
+let GoalDayDetail = React.createClass({
+    getDefaultProps: function () {
+        return {
+            goals: []
+        }
+    },
+    getColorOfDay: function (dayisToday) {
+        if (dayisToday) {
+            return "#42a5f5";
+        }
+        let colors = ['#ffffff', '#ffcdd2', '#ef9a9a', '#e57373', '#ef5350', '#f44336', '#e53935'];
+        let numGoals = this.props.goals.length;
+        let numColors = colors.length;
+        return colors[numGoals >= numColors ? numColors - 1 : numGoals];
+    },
+    render: function () {
+        let pr = this.props;
+        if (pr.day === undefined) {
+            return <div hidden={true}>
+            </div>
+        }
+        let goalNames = pr.goals.map((e) => {
+            return <div key={e.id}
+                        className="collection-item"
+                        style={{
+                            backgroundColor: e.is_achieved ? '#a5d6a7' : '#ffffff',
+                        }}>
+                {e.is_achieved ? <span className="badge"><i className="material-icons">done</i></span> : ''}
+                <span style={{color: e.color}}>{e.description}</span>
+            </div>
+        });
+        let _now = moment();
+        let bgColor = this.getColorOfDay((pr.day === _now.date() || 0 === _now.date()) && pr.month - 1 === _now.month() && pr.year === _now.year());
+        return (
+            <div style={{
+                overflowY: 'auto',
+                backgroundColor: bgColor,
+            }}>
+                <div>
+                    <b>{moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd')}</b>
+                </div>
+                <div className="collection">
+                    {goalNames.length === 0 ? "====" : goalNames}
+                </div>
+            </div>
+        );
+    }
+});
+
+/**
+ * @propFunctions: onDayClick
+ * */
 let GoalSnapshotDay = React.createClass({
     getDefaultProps: function () {
         return {
@@ -17,6 +69,8 @@ let GoalSnapshotDay = React.createClass({
             leftPx: 0,
             topPx: 0,
             day: 0,
+            month: 0,
+            year: 0,
             goals: []
         }
     },
@@ -54,6 +108,8 @@ let GoalSnapshotDay = React.createClass({
                 height: pr.heightPx + 'px',
                 overflowY: 'auto',
                 backgroundColor: bgColor,
+            }} onClick={(e) => {
+                this.props.onDayClick(pr.day)
             }}>
                 <div>
                     <b>{moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd')}</b>
@@ -70,7 +126,7 @@ let GoalSnapshotMonth = React.createClass({
     currMonth: moment().month() + 1,
     currYear: moment().year(),
     getInitialState: function () {
-        return {perDayGoals: {}, rowMajorRendering: true,};
+        return {perDayGoals: {}, rowMajorRendering: true, dayInDetail: undefined};
     },
     switchLayoutRendering: function () {
         this.setState((prevState, props) => {
@@ -108,6 +164,11 @@ let GoalSnapshotMonth = React.createClass({
         this.currYear = now.year();
         this.fetchSnapshotOfMonth(this.currYear, this.currMonth);
     },
+    showDayInDetail: function (day) {
+        this.setState((prevState, props) => {
+            return {dayInDetail: day};
+        });
+    },
     getGoalSnapshotDay: function (day, goals) {
         let refs = this.refs;
         let st = this.state;
@@ -127,7 +188,8 @@ let GoalSnapshotMonth = React.createClass({
                                     heightPx={h}
                                     leftPx={l}
                                     topPx={t}
-                                    goals={goals}/>
+                                    goals={goals}
+                                    onDayClick={this.showDayInDetail}/>
         } else {
             // column major layout
             let w = W / 5;
@@ -142,7 +204,8 @@ let GoalSnapshotMonth = React.createClass({
                                     heightPx={h}
                                     leftPx={l}
                                     topPx={t}
-                                    goals={goals}/>
+                                    goals={goals}
+                                    onDayClick={this.showDayInDetail}/>
         }
     },
     render: function () {
@@ -161,6 +224,7 @@ let GoalSnapshotMonth = React.createClass({
                 height: '100%',
             }} ref="snapshotMonth">
                 {daySnapshots}
+                {/*Change Month Btns*/}
                 <div style={{
                     position: 'absolute',
                     right: '20px',
@@ -168,14 +232,17 @@ let GoalSnapshotMonth = React.createClass({
                 }}>
                     <button className="waves-effect waves-light btn-large" style={{padding: 0}}>
                         <i className="material-icons left"
+                           title="Go to prev month"
                            style={{margin: 0, paddingRight: '15px', paddingLeft: '15px'}}
                            onClick={() => this.shiftCurrentSnapshot(-1)}>arrow_back_ios</i>
                         {moment().year(this.currYear).month(this.currMonth - 1).date(1).format('MMM YYYY')}
                         <i className="material-icons right"
                            style={{margin: 0, paddingRight: '15px', paddingLeft: '15px'}}
+                           title="Go to next month"
                            onClick={() => this.shiftCurrentSnapshot(1)}>arrow_forward_ios</i>
                     </button>
                 </div>
+                {/*Switch Layout Btn*/}
                 <div style={{
                     position: 'absolute',
                     right: '20px',
@@ -187,6 +254,13 @@ let GoalSnapshotMonth = React.createClass({
                         onClick={this.switchLayoutRendering}>{st.rowMajorRendering ? "view_week" : "view_stream"}</i>
                     </button>
                 </div>
+                {/*Day In Detail*/}
+                <GoalDayDetail
+                    day={st.dayInDetail}
+                    month={this.currMonth}
+                    year={this.currYear}
+                    goals={st.perDayGoals[st.dayInDetail] === undefined ? [] : st.perDayGoals[st.dayInDetail]}
+                />
             </div>
         );
     },
