@@ -7,7 +7,7 @@
 - [x] password
 - [x] goal color Create & Update
 - [ ] use map() in goalapis.py
-- [ ] snapshot viewer
+- [x] snapshot viewer
     - [x] render snapshot month
     - [x] row major/ column major layout switch
     - [x] increasing color density of a day
@@ -15,6 +15,6 @@
     - [x] highlight today
     - [x] styling
     - [x] change months
-    - [ ] day detail
+    - [x] day detail
 - [ ] keyboard shortcuts
 - [ ] Job model
