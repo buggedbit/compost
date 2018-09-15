@@ -53,7 +53,7 @@ let GoalSnapshotDay = React.createClass({
 
 let GoalSnapshotMonth = React.createClass({
     getInitialState: function () {
-        return {perDayGoals: {}, rowMajorRendering: false};
+        return {perDayGoals: {}, rowMajorRendering: true};
     },
     switchLayoutRendering: function () {
         this.setState((prevState, props) => {
@@ -129,6 +129,9 @@ let GoalSnapshotMonth = React.createClass({
             let json = JSON.parse(r);
             if (json.status === -1) {
                 toastr.error(json.error);
+                self.setState((prevState, props) => {
+                    return {perDayGoals: {}};
+                });
             } else {
                 self.setState((prevState, props) => {
                     return {perDayGoals: json.data};
@@ -136,6 +139,9 @@ let GoalSnapshotMonth = React.createClass({
             }
         }).fail(() => {
             toastr.error('Server Error');
+            self.setState((prevState, props) => {
+                return {perDayGoals: {}};
+            });
         });
     }
 });

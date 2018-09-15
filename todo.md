@@ -7,12 +7,13 @@
 - [x] password
 - [x] goal color Create & Update
 - [ ] use map() in goalapis.py
-- [ ] snapshot month
-    - [x] render
+- [ ] snapshot viewer
+    - [x] render snapshot month
     - [x] row major/ column major layout switch
     - [ ] change months
     - [ ] styling
     - [ ] day detail
     - [ ] increasing color density of a day
+    - [x] handle error/failed fetch
 - [ ] keyboard shortcuts
 - [ ] Job model
