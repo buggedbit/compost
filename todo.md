@@ -9,7 +9,7 @@
 - [ ] use map() in goalapis.py
 - [ ] snapshot month
     - [x] render
-    - [ ] row major/ column major repr
+    - [x] row major/ column major layout switch
     - [ ] change months
     - [ ] styling
     - [ ] day detail

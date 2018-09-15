@@ -55,7 +55,7 @@ let GoalSnapshotMonth = React.createClass({
     getInitialState: function () {
         return {perDayGoals: {}, rowMajorRendering: false};
     },
-    switchRenderingOrder: function () {
+    switchLayoutRendering: function () {
         this.setState((prevState, props) => {
             return {rowMajorRendering: !prevState.rowMajorRendering};
         });
@@ -66,7 +66,7 @@ let GoalSnapshotMonth = React.createClass({
         let W = $(refs.snapshotMonth).width();
         let H = $(refs.snapshotMonth).height();
         if (st.rowMajorRendering) {
-            // row major order
+            // row major layout
             let w = W / 7;
             let h = H / 5;
             let l = ((day - 1) % 7) * w;
@@ -79,7 +79,7 @@ let GoalSnapshotMonth = React.createClass({
                                     topPx={t}
                                     goals={goals}/>
         } else {
-            // column major order
+            // column major layout
             let w = W / 5;
             let h = H / 7;
             let t = ((day - 1) % 7) * h;
@@ -117,7 +117,7 @@ let GoalSnapshotMonth = React.createClass({
                     <button className="btn btn-floating btn-large"><i
                         className="material-icons"
                         title="Switch layout"
-                        onClick={this.switchRenderingOrder}>{st.rowMajorRendering ? "view_week" : "view_stream"}</i>
+                        onClick={this.switchLayoutRendering}>{st.rowMajorRendering ? "view_week" : "view_stream"}</i>
                     </button>
                 </div>
             </div>
