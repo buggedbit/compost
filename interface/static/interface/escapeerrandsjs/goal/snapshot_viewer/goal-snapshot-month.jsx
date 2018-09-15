@@ -20,21 +20,28 @@ let GoalSnapshotDay = React.createClass({
             goals: []
         }
     },
+    getColorOfDay: function () {
+        let colors = ['#ffffff', '#ffcdd2', '#ef9a9a', '#e57373', '#ef5350', '#f44336', '#e53935'];
+        let numGoals = this.props.goals.length;
+        let numColors = colors.length;
+        return colors[numGoals >= numColors ? numColors - 1 : numGoals];
+    },
     render: function () {
         let pr = this.props;
         let goalNames = pr.goals.map((e) => {
             return <div key={e.id}
                         className="truncate collection-item"
-                        style={{padding: '4px', backgroundColor: e.is_achieved ? '#a5d6a7' : '#ffffff'}}>
+                        style={{padding: '5px', backgroundColor: e.is_achieved ? '#a5d6a7' : '#ffffff'}}>
                 {e.is_achieved ? <span className="badge"><i className="material-icons">done</i></span> : ''}
                 <span style={{color: e.color}}>{e.description}</span>
             </div>
         });
-        let bgColor = pr.goals.length === 0 ? '#ffffff' : '#e91e63';
+        let bgColor = this.getColorOfDay();
+        console.log(bgColor);
         return (
             <div style={{
                 position: 'absolute',
-                padding: '3px',
+                padding: '15px',
                 left: pr.leftPx + 'px',
                 top: pr.topPx + 'px',
                 width: pr.widthPx + 'px',
