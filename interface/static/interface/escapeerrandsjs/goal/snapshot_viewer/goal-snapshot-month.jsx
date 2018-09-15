@@ -32,9 +32,10 @@ let GoalDayDetail = React.createClass({
         let pr = this.props;
         let goalNames = pr.goals.map((e) => {
             return <div key={e.id}
-                        className="collection-item"
+                        className="collection-item truncate"
                         style={{
                             backgroundColor: e.is_achieved ? '#a5d6a7' : '#ffffff',
+                            border: 'none',
                         }}>
                 {e.is_achieved ? <span className="badge"><i className="material-icons">done</i></span> : ''}
                 <span style={{color: e.color}}>{e.description}</span>
@@ -48,21 +49,22 @@ let GoalDayDetail = React.createClass({
             dayTitle = moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd');
         }
         return (
-            <div style={{backgroundColor: bgColor,}} ref="dayDetailView" className="modal bottom-sheet">
+            <div style={{
+                backgroundColor: bgColor,
+            }} ref="dayDetailView" className="modal bottom-sheet">
                 <div className="modal-content">
-                    <h4>Day</h4>
-                    <div>
-                        <b>{dayTitle}</b>
+                    <div className="flow-text">
+                        {dayTitle} | {goalNames.length} Goal{goalNames.length > 1 || goalNames.length === 0 ? "s" : ""}
                     </div>
                     <div className="collection">
-                        {goalNames.length === 0 ? "No goals!" : goalNames}
+                        {goalNames}
                     </div>
                 </div>
             </div>
         );
     },
     componentDidMount: function () {
-        $(this.refs.dayDetailView).modal();
+        $(this.refs.dayDetailView).modal({});
     },
     componentDidUpdate: function () {
         let instance = M.Modal.getInstance(this.refs.dayDetailView);
