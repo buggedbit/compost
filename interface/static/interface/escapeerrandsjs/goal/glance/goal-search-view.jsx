@@ -192,13 +192,11 @@ let GoalSearchView = React.createClass({
                       onClick={(e) => {
                           $(this.refs.input).focus();
                       }}>
-                                <input type="checkbox" ref="achievedAlso" className="filled-in"
-                                       id="this-is-a-really-long-id-just-in-case-that-it-does-not-collide-with-some-other-id-that-would-come-in-future"/>
-                                <label
-                                    htmlFor="this-is-a-really-long-id-just-in-case-that-it-does-not-collide-with-some-other-id-that-would-come-in-future">
-                                    <i className="material-icons">all_inclusive</i>
-                                </label>
-                            </span>
+                    <label>
+                        <input type="checkbox" ref="achievedAlso"/>
+                        <span><i className="material-icons">all_inclusive</i></span>
+                    </label>
+                </span>
                 <div ref="resultSetContainer"
                      className="goal-search-result-set-container"
                      style={resultSetContainerStyle}>

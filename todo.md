@@ -15,5 +15,6 @@
     - [ ] day detail
     - [ ] increasing color density of a day
     - [x] handle error/failed fetch
+    - [x] highlight today
 - [ ] keyboard shortcuts
 - [ ] Job model

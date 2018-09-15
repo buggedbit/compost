@@ -20,7 +20,10 @@ let GoalSnapshotDay = React.createClass({
             goals: []
         }
     },
-    getColorOfDay: function () {
+    getColorOfDay: function (dayisToday) {
+        if (dayisToday) {
+            return "#42a5f5";
+        }
         let colors = ['#ffffff', '#ffcdd2', '#ef9a9a', '#e57373', '#ef5350', '#f44336', '#e53935'];
         let numGoals = this.props.goals.length;
         let numColors = colors.length;
@@ -36,8 +39,7 @@ let GoalSnapshotDay = React.createClass({
                 <span style={{color: e.color}}>{e.description}</span>
             </div>
         });
-        let bgColor = this.getColorOfDay();
-        console.log(bgColor);
+        let bgColor = this.getColorOfDay(pr.day === moment().date());
         return (
             <div style={{
                 position: 'absolute',
@@ -49,7 +51,7 @@ let GoalSnapshotDay = React.createClass({
                 overflowY: 'auto',
                 backgroundColor: bgColor,
             }}>
-                <div>{moment().date(pr.day).format('Do ddd')}</div>
+                <div className="blue">{moment().date(pr.day).format('Do ddd')}</div>
                 <div className="collection">
                     {goalNames}
                 </div>
