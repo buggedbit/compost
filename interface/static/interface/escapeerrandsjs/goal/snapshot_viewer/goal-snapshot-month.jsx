@@ -12,7 +12,11 @@
 let GoalDayDetail = React.createClass({
     getDefaultProps: function () {
         return {
-            goals: []
+            day: 0,
+            month: 0,
+            year: 0,
+            show: false,
+            goals: [],
         }
     },
     getColorOfDay: function (dayisToday) {
@@ -26,10 +30,6 @@ let GoalDayDetail = React.createClass({
     },
     render: function () {
         let pr = this.props;
-        if (pr.day === undefined) {
-            return <div hidden={true}>
-            </div>
-        }
         let goalNames = pr.goals.map((e) => {
             return <div key={e.id}
                         className="collection-item"
@@ -40,21 +40,33 @@ let GoalDayDetail = React.createClass({
                 <span style={{color: e.color}}>{e.description}</span>
             </div>
         });
-        let _now = moment();
-        let bgColor = this.getColorOfDay((pr.day === _now.date() || 0 === _now.date()) && pr.month - 1 === _now.month() && pr.year === _now.year());
+        let bgColor = '';
+        let dayTitle = '';
+        if (pr.day !== undefined) {
+            let _now = moment();
+            bgColor = this.getColorOfDay((pr.day === _now.date() || 0 === _now.date()) && pr.month - 1 === _now.month() && pr.year === _now.year());
+            dayTitle = moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd');
+        }
         return (
-            <div style={{
-                overflowY: 'auto',
-                backgroundColor: bgColor,
-            }}>
-                <div>
-                    <b>{moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd')}</b>
-                </div>
-                <div className="collection">
-                    {goalNames.length === 0 ? "====" : goalNames}
+            <div style={{backgroundColor: bgColor,}} ref="dayDetailView" className="modal bottom-sheet">
+                <div className="modal-content">
+                    <h4>Day</h4>
+                    <div>
+                        <b>{dayTitle}</b>
+                    </div>
+                    <div className="collection">
+                        {goalNames.length === 0 ? "No goals!" : goalNames}
+                    </div>
                 </div>
             </div>
         );
+    },
+    componentDidMount: function () {
+        $(this.refs.dayDetailView).modal();
+    },
+    componentDidUpdate: function () {
+        let instance = M.Modal.getInstance(this.refs.dayDetailView);
+        this.props.show ? instance.open() : instance.close();
     }
 });
 
@@ -126,11 +138,16 @@ let GoalSnapshotMonth = React.createClass({
     currMonth: moment().month() + 1,
     currYear: moment().year(),
     getInitialState: function () {
-        return {perDayGoals: {}, rowMajorRendering: true, dayInDetail: undefined};
+        return {
+            perDayGoals: {},
+            rowMajorRendering: true,
+            dayInDetail: 0,
+            showDayDetail: false,
+        };
     },
     switchLayoutRendering: function () {
         this.setState((prevState, props) => {
-            return {rowMajorRendering: !prevState.rowMajorRendering};
+            return {rowMajorRendering: !prevState.rowMajorRendering, showDayDetail: false};
         });
     },
     fetchSnapshotOfMonth: function (year, month) {
@@ -143,17 +160,17 @@ let GoalSnapshotMonth = React.createClass({
             if (json.status === -1) {
                 toastr.error(json.error);
                 self.setState((prevState, props) => {
-                    return {perDayGoals: {}};
+                    return {perDayGoals: {}, showDayDetail: false};
                 });
             } else {
                 self.setState((prevState, props) => {
-                    return {perDayGoals: json.data};
+                    return {perDayGoals: json.data, showDayDetail: false};
                 });
             }
         }).fail(() => {
             toastr.error('Server Error');
             self.setState((prevState, props) => {
-                return {perDayGoals: {}};
+                return {perDayGoals: {}, showDayDetail: false};
             });
         });
     },
@@ -166,7 +183,7 @@ let GoalSnapshotMonth = React.createClass({
     },
     showDayInDetail: function (day) {
         this.setState((prevState, props) => {
-            return {dayInDetail: day};
+            return {dayInDetail: day, showDayDetail: true};
         });
     },
     getGoalSnapshotDay: function (day, goals) {
@@ -259,6 +276,7 @@ let GoalSnapshotMonth = React.createClass({
                     day={st.dayInDetail}
                     month={this.currMonth}
                     year={this.currYear}
+                    show={st.showDayDetail}
                     goals={st.perDayGoals[st.dayInDetail] === undefined ? [] : st.perDayGoals[st.dayInDetail]}
                 />
             </div>
