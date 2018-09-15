@@ -112,6 +112,7 @@ let GoalSnapshotDay = React.createClass({
         });
         let _now = moment();
         let bgColor = this.getColorOfDay((pr.day === _now.date() || 0 === _now.date()) && pr.month - 1 === _now.month() && pr.year === _now.year());
+        let dayTitle = moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd');
         return (
             <div style={{
                 position: 'absolute',
@@ -126,7 +127,7 @@ let GoalSnapshotDay = React.createClass({
                 this.props.onDayClick(pr.day)
             }}>
                 <div>
-                    <b>{moment().date(pr.day === 31 ? 0 : pr.day).month(pr.month - 1).year(pr.year).format('Do ddd')}</b>
+                    <b>{dayTitle} | {goalNames.length} Goal{goalNames.length > 1 || goalNames.length === 0 ? "s" : ""}</b>
                 </div>
                 <div className="collection">
                     {goalNames}
