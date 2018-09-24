@@ -45,19 +45,19 @@ def generate_model(vocab_size=None, max_essay_length=None, embeddings_matrix=Non
     return model
 
 
-def fit_model(model, essays, normalized_scores, epochs=10, save_model=False):
+def fit_model(model, essays, normalized_scores, epochs=10, save_file=None):
     print('-------- -------- Fitting Model -------- --------')
     # fit the model
     model.fit(essays, normalized_scores, epochs=epochs, verbose=1)
 
-    if save_model:
+    if save_file is not None:
         print('-------- -------- Saving Model -------- --------')
         # save the model
         model_json = model.to_json()
-        with open("model.json", "w") as json_file:
+        with open(save_file + '.json', 'w') as json_file:
             json_file.write(model_json)
         # serialize weights to HDF5
-        model.save_weights("model.h5")
-        print("Saved model to disk")
+        model.save_weights(save_file + '.h5')
+        print('Saved model to disk')
 
     return model
