@@ -1,23 +1,44 @@
 from evaluator import evaluate
-from model_generator import generate_model, fit_model
-from preprocessor import preprocess_essay_data, load_word_embeddings, get_word_embeddings_matrix
+from model_generator import generate_model
+from preprocessor import generate_tokenizer_on_all_essays, preprocess_essay_data, load_word_embeddings_dict, \
+    get_word_embeddings_matrix
 
-# parameters
+# meta data
 MAX_ESSAY_LENGTH = 2000
 
 # pre processing
 print('-------- -------- Pre Processing -------- --------')
-essays, normalized_scores, true_scores, vocab_size, word_index = \
-    preprocess_essay_data('data/prompt3/Prompt-3-Train-0.csv', max_length=MAX_ESSAY_LENGTH)
+# todo : change file path test -> validation
+tokenizer = generate_tokenizer_on_all_essays(('data/prompt3/Prompt-3-Train-0.csv', 'data/prompt3/Prompt-3-Test-0.csv'))
+vocab_size = len(tokenizer.word_index) + 1
 
-word_embeddings = load_word_embeddings('word_embeddings/glove.1M.300d.txt')
+tr_essays, tr_n_scores, tr_t_scores = preprocess_essay_data('data/prompt3/Prompt-3-Train-0.csv', MAX_ESSAY_LENGTH,
+                                                            tokenizer)
 
-embeddings_matrix = get_word_embeddings_matrix(word_embeddings, vocab_size, 300, word_index)
+# todo : change file path test -> validation
+va_essays, va_n_scores, va_t_scores = preprocess_essay_data('data/prompt3/Prompt-3-Test-0.csv', MAX_ESSAY_LENGTH,
+                                                            tokenizer)
 
-# print('-------- -------- Model training -------- --------')
-# model = generate_model(vocab_size, MAX_ESSAY_LENGTH, embeddings_matrix)
-#
+word_embeddings_dict = load_word_embeddings_dict('word_embeddings/glove.1M.300d.txt')
+
+embeddings_matrix = get_word_embeddings_matrix(word_embeddings_dict, 300, vocab_size, tokenizer.word_index)
+
+# print('-------- -------- Model generation -------- --------')
+# model = generate_model(tr_vocab_size, MAX_ESSAY_LENGTH, embeddings_matrix)
+
 # for epoch in range(0, 10):
-#     print('epoch =', epoch)
-#     model = fit_model(model, essays, normalized_scores, epochs=1)
-#     qwk = evaluate(model, essays, true_scores, 0, 3)
+#     print('-------- -------- Epoch = %d -------- --------' % epoch)
+#     print('-------- -------- Fitting Model -------- --------')
+#     # fit the model
+#     model.fit(tr_essays, tr_n_scores, epochs=1, verbose=1)
+#     qwk = evaluate(model, tr_essays, tr_t_scores, 0, 3)
+#
+#     if save_file is not None:
+#         print('-------- -------- Saving Model -------- --------')
+#         # save the model
+#         model_json = model.to_json()
+#         with open(save_file + '.json', 'w') as json_file:
+#             json_file.write(model_json)
+#         # serialize weights to HDF5
+#         model.save_weights(save_file + '.h5')
+#         print('Saved model to disk')
