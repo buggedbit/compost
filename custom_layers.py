@@ -15,6 +15,7 @@ class Attention(Layer):
         self.init_stdev = init_stdev
         self.att_v = None
         self.att_W = None
+        self.trainable_weights = None
         super(Attention, self).__init__(**kwargs)
 
     def build(self, input_shape):
@@ -62,7 +63,7 @@ class MeanOverTime(Layer):
         else:
             return backend.mean(x, axis=1)
 
-    def get_output_shape_for(self, input_shape):
+    def compute_output_shape(self, input_shape):
         return input_shape[0], input_shape[2]
 
     def compute_mask(self, x, mask=None):

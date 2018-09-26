@@ -9,12 +9,15 @@ def generate_tokenizer_on_all_essays(all_files=()):
     all_essays = []
     for filepath in all_files:
         with open(filepath) as f:
-            tsv = csv.reader(f, delimiter="\t", quotechar='"')
-            # skip header
-            # next(tsv, None)
-            for values in tsv:
-                essay = values[2]
+            for essay in f:
                 all_essays.append(re.sub('(@\w+)', '', essay))
+
+            # tsv = csv.reader(f, delimiter="\t", quotechar='"')
+            # # skip header
+            # # next(tsv, None)
+            # for values in tsv:
+            #     essay = values[2]
+            #     all_essays.append(re.sub('(@\w+)', '', essay))
 
     # prepare tokenizer
     tokenizer = Tokenizer()
@@ -43,7 +46,6 @@ def preprocess_essay_data(filepath, max_length, tokenizer):
             normalized_scores.append(float(true_score) / 3)
 
     essays = np.array(essays)
-    normalized_scores = np.array(normalized_scores)
 
     # integer encode essays
     encoded_essays = tokenizer.texts_to_sequences(essays)
@@ -52,7 +54,7 @@ def preprocess_essay_data(filepath, max_length, tokenizer):
     padded_essays = pad_sequences(encoded_essays, maxlen=max_length, padding='post')
 
     print('---- ---- encoded essays and normalized_scores')
-    print('essays shape = ', padded_essays.shape, ' normalized_scores shape = ', normalized_scores.shape)
+    print('essays shape = ', padded_essays.shape, ' normalized_scores len = ', len(normalized_scores))
 
     return padded_essays, normalized_scores, true_scores
 
