@@ -46,6 +46,8 @@ def preprocess_essay_data(filepath, max_length, tokenizer):
             normalized_scores.append(float(true_score) / 3)
 
     essays = np.array(essays)
+    true_scores = np.asarray(true_scores)
+    normalized_scores = np.asarray(normalized_scores)
 
     # integer encode essays
     encoded_essays = tokenizer.texts_to_sequences(essays)

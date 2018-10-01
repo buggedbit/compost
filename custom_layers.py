@@ -2,7 +2,7 @@ import keras.backend as backend
 from keras.engine.topology import Layer
 import numpy as np
 import sys
-from keras.layers import Conv1D
+from keras.layers import Conv1D, Flatten
 
 
 class Attention(Layer):
@@ -79,6 +79,15 @@ class Conv1DWithMasking(Conv1D):
     def __init__(self, **kwargs):
         self.supports_masking = True
         super(Conv1DWithMasking, self).__init__(**kwargs)
+
+    def compute_mask(self, inputs, mask=None):
+        return mask
+
+
+class FlattenWithMasking(Flatten):
+    def __init__(self, **kwargs):
+        self.supports_masking = True
+        super(FlattenWithMasking, self).__init__(**kwargs)
 
     def compute_mask(self, inputs, mask=None):
         return mask

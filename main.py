@@ -1,7 +1,8 @@
-from evaluator import evaluate
 from model_generator import generate_model
 from preprocessor import generate_tokenizer_on_all_essays, preprocess_essay_data, load_word_embeddings_dict, \
     get_word_embeddings_matrix
+from quadratic_weighted_kappa import quadratic_weighted_kappa
+import numpy as np
 
 # meta data
 MAX_ESSAY_LENGTH = 2000
@@ -31,15 +32,21 @@ with open('model.json', 'w') as json_file:
     json_file.write(model_json)
 
 qwks = []
-for epoch in range(0, 10):
+for epoch in range(0, 50):
     print('-------- -------- Epoch = %d -------- --------' % epoch)
 
     print('-------- -------- Fitting Model -------- --------')
+    print(tr_essays.shape, tr_n_scores.shape)
     model.fit(tr_essays, tr_n_scores, epochs=1, verbose=1)
 
     print('-------- -------- Evaluating Model -------- --------')
-    qwk = evaluate(model, va_essays, va_t_scores, min_score=0, max_score=3)
-
+    predicted_normalized_scores = model.predict(va_essays, verbose=1)
+    # print('predicted_normalized_scores =', predicted_normalized_scores)
+    predicted_normalized_scores = np.reshape(predicted_normalized_scores, predicted_normalized_scores.shape[0])
+    predicted_scores = np.round(0 + predicted_normalized_scores * 3)
+    print('predicted_scores =', predicted_scores)
+    print('true_scores =', va_t_scores)
+    qwk = quadratic_weighted_kappa(predicted_scores, va_t_scores, min_rating=0, max_rating=3)
     print('QWK =', qwk)
 
     # save accuracy and weights
