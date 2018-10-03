@@ -171,7 +171,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 					return ERROR_WHILE_COPY;
 				}
 				noBytesCopied += sourceSizeInBytes;
-				printf("Copied...");
+				printf("Copied...\n");
 				// close source and destination files
 				fclose(destination);
 
@@ -207,7 +207,7 @@ int dupef(const char* sourcePath, const char* destinationPath)
 			return ERROR_WHILE_COPY;
 		}
 		noBytesCopied += sourceSizeInBytes;
-		printf("Copied...");
+		printf("Copied...\n");
 		// close source and destination files
 		fclose(destination);
 
