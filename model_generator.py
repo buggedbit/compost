@@ -14,10 +14,10 @@ def generate_model(vocab_size, max_essay_length, embeddings_matrix):
                         weights=[embeddings_matrix],
                         trainable=False,
                         mask_zero=True, ))
-    # model.add(Conv1DWithMasking(filters=300,
-    #                             kernel_size=3,
-    #                             use_bias=True,
-    #                             padding="same", ))
+    model.add(Conv1DWithMasking(filters=50,
+                                kernel_size=3,
+                                use_bias=True,
+                                padding="same", ))
     model.add(LSTM(50, return_sequences=True, ))
     # model.add(FlattenWithMasking())
     model.add(Dropout(0.1))

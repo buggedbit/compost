@@ -32,26 +32,27 @@ with open('model.json', 'w') as json_file:
     json_file.write(model_json)
 
 qwks = []
-for epoch in range(0, 50):
+for epoch in range(0, 100):
     print('-------- -------- Epoch = %d -------- --------' % epoch)
 
     print('-------- -------- Fitting Model -------- --------')
-    print(tr_essays.shape, tr_n_scores.shape)
-    model.fit(tr_essays, tr_n_scores, epochs=1, verbose=1)
+    model.fit(tr_essays, tr_n_scores, epochs=1, verbose=0)
 
     print('-------- -------- Evaluating Model -------- --------')
-    predicted_normalized_scores = model.predict(va_essays, verbose=1)
+    predicted_normalized_scores = model.predict(va_essays, verbose=0)
     # print('predicted_normalized_scores =', predicted_normalized_scores)
     predicted_normalized_scores = np.reshape(predicted_normalized_scores, predicted_normalized_scores.shape[0])
     predicted_scores = np.round(0 + predicted_normalized_scores * 3)
-    print('predicted_scores =', predicted_scores)
-    print('true_scores =', va_t_scores)
+    # print('predicted_scores =', predicted_scores)
+    # print('true_scores =', va_t_scores)
     qwk = quadratic_weighted_kappa(predicted_scores, va_t_scores, min_rating=0, max_rating=3)
     print('QWK =', qwk)
 
     # save accuracy and weights
     print('-------- -------- Saving Model -------- --------')
     qwks.append(qwk)
-    model.save_weights('model%d.h5' % epoch)
+    model.save_weights('model%d.h5' % (epoch + 1))
 
 print(qwks)
+print(np.argmax(qwks))
+print(qwks[np.argmax(qwks)])
