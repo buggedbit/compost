@@ -6,7 +6,7 @@ from custom_layers import Conv1DWithMasking, Attention, MeanOverTime, FlattenWit
 
 def generate_model(vocab_size, max_essay_length, embeddings_matrix):
     # define model
-    print('-------- -------- Defining Model -------- --------')
+    print('-------- -------- Defining Model')
     model = Sequential()
     model.add(Embedding(input_dim=vocab_size,
                         output_dim=300,
@@ -24,7 +24,7 @@ def generate_model(vocab_size, max_essay_length, embeddings_matrix):
     model.add(MeanOverTime(mask_zero=True))
     model.add(Dense(units=1, activation='sigmoid'))
 
-    print('-------- -------- Compiling Model -------- --------')
+    print('-------- -------- Compiling Model')
     # compile the model
     model.compile(optimizer='rmsprop', loss='mse', metrics=['mse'])
     # summarize the model
