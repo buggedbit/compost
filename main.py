@@ -48,6 +48,7 @@ for epoch in range(0, num_epochs):
     qwk = get_qwk(model, va_essays, va_t_scores, 0, 3)
     va_qwks.append(qwk)
     print('va_qwk =', qwk)
+
     qwk = get_qwk(model, tr_essays, tr_t_scores, 0, 3)
     tr_qwks.append(qwk)
     print('tr_qwk =', qwk)
@@ -57,7 +58,7 @@ for epoch in range(0, num_epochs):
     print('         -------- Saving Model')
     # save model if it has best validation accuracy until now
     if epoch == np.argmax(va_qwks):
-        model.save_weights('model%d.h5' % (epoch + 1))
+        model.save_weights('model%d.h5' % epoch)
 
 print('train qwks = ', tr_qwks)
 print('validation qwks = ', va_qwks)
