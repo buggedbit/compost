@@ -30,7 +30,7 @@ def generate_tokenizer_on_all_essays(all_files=()):
     return tokenizer
 
 
-def preprocess_essay_data(filepath, max_length, tokenizer):
+def encode_essay_data(filepath, max_length, tokenizer):
     essays = []
     normalized_scores = []
     true_scores = []
@@ -83,7 +83,8 @@ def load_word_embeddings_dict(filepath):
     return word_embeddings
 
 
-def get_word_embeddings_matrix(word_embeddings_dict, embedding_size, vocab_size, word_index):
+def get_word_embeddings_matrix(word_embeddings_dict, word_index, embedding_size):
+    vocab_size = len(word_index) + 1
     embeddings_matrix = np.zeros((vocab_size, embedding_size))
     spelling_mistakes = []
     for word, index in word_index.items():
