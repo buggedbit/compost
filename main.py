@@ -1,4 +1,5 @@
 import sys
+import os
 from model_generator import generate_model
 from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data, load_word_embeddings_dict, \
     get_word_embeddings_matrix
@@ -13,19 +14,26 @@ def get_qwk(model, essays, true_scores, min_score, max_score):
     return qwk
 
 # hyper parameters
-assert(len(sys.argv) == 2)
+assert(len(sys.argv) == 6)
 num_epochs = int(sys.argv[1])
+training_data_file = sys.argv[2]
+validation_data_file = sys.argv[3]
+word_embeddings_file = sys.argv[4]
+output_dir = sys.argv[5]
+assert(os.path.isdir(output_dir))
 MAX_ESSAY_LENGTH = 2000
 EMBEDDING_SIZE = 300
+
+# log file
+sys.stdout = open('%s/log.txt' % output_dir, 'w')
 
 # pre processing
 print('-------- -------- Pre Processing')
 tokenizer = generate_tokenizer_on_all_essays(('data/vocab_db.txt',))
 vocab_size = len(tokenizer.word_index) + 1
-tr_essays, tr_n_scores, tr_t_scores = encode_essay_data('data/prompt3/Prompt-3-Train-0.csv', MAX_ESSAY_LENGTH, tokenizer)
-# todo : change file path test -> validation
-va_essays, va_n_scores, va_t_scores = encode_essay_data('data/prompt3/Prompt-3-Test-0.csv', MAX_ESSAY_LENGTH, tokenizer)
-word_embeddings_dict = load_word_embeddings_dict('word_embeddings/glove.1M.300d.txt')
+tr_essays, tr_n_scores, tr_t_scores = encode_essay_data(training_data_file, MAX_ESSAY_LENGTH, tokenizer)
+va_essays, va_n_scores, va_t_scores = encode_essay_data(validation_data_file, MAX_ESSAY_LENGTH, tokenizer)
+word_embeddings_dict = load_word_embeddings_dict(word_embeddings_file)
 embeddings_matrix = get_word_embeddings_matrix(word_embeddings_dict, tokenizer.word_index, EMBEDDING_SIZE)
 
 print('-------- -------- Model generation')
@@ -33,16 +41,20 @@ model = generate_model(vocab_size, MAX_ESSAY_LENGTH, embeddings_matrix)
 
 # save the model
 model_json = model.to_json()
-with open('model.json', 'w') as json_file:
+with open('%s/model.json' % output_dir, 'w') as json_file:
     json_file.write(model_json)
 
+tr_losses = []
+va_losses = []
 tr_qwks = []
 va_qwks = []
 for epoch in range(0, num_epochs):
     print('-------- -------- Epoch = %d' % epoch)
 
     print('         -------- Fitting Model')
-    model.fit(tr_essays, tr_n_scores, epochs=1, verbose=0)
+    hist = model.fit(tr_essays, tr_n_scores, epochs=1, verbose=2, validation_data=(va_essays, va_n_scores))
+    tr_losses.append(hist.history['loss'][0])
+    va_losses.append(hist.history['val_loss'][0])
 
     print('         -------- Validating Model')
     qwk = get_qwk(model, va_essays, va_t_scores, 0, 3)
@@ -56,11 +68,16 @@ for epoch in range(0, num_epochs):
 
     # save accuracy and weights
     print('         -------- Saving Model')
-    # save model if it has best validation accuracy until now
-    if epoch == np.argmax(va_qwks):
-        model.save_weights('model%d.h5' % epoch)
+    # save model if it has best validation accuracy or training accuracy until now
+    if epoch == np.argmax(va_qwks) or epoch == np.argmax(tr_qwks):
+        model.save_weights('%s/model%d.h5' % (output_dir, epoch))
 
-print('train qwks = ', tr_qwks)
+    # write to stdout
+    sys.stdout.flush()
+
+print('training qwks = ', tr_qwks)
+print('training losses = ', tr_losses)
 print('validation qwks = ', va_qwks)
+print('validation losses = ', va_losses)
 print('max tr qwk = %f @ %d epoch' % (tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
 print('max va qwk = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks)))

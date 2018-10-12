@@ -26,7 +26,7 @@ def generate_model(vocab_size, max_essay_length, embeddings_matrix):
 
     print('-------- -------- Compiling Model')
     # compile the model
-    model.compile(optimizer='rmsprop', loss='mse', metrics=['mse'])
+    model.compile(optimizer='rmsprop', loss='mse')
     # summarize the model
     print(model.summary())
 
