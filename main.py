@@ -52,9 +52,14 @@ for epoch in range(0, num_epochs):
     print('-------- -------- Epoch = %d' % epoch)
 
     print('         -------- Fitting Model')
-    hist = model.fit(tr_essays, tr_n_scores, epochs=1, verbose=2, validation_data=(va_essays, va_n_scores))
-    tr_losses.append(hist.history['loss'][0])
-    va_losses.append(hist.history['val_loss'][0])
+    hist = model.fit(tr_essays, tr_n_scores, epochs=1, verbose=0, validation_data=(va_essays, va_n_scores))
+    loss = hist.history['loss'][0]
+    tr_losses.append(loss)
+    print('tr_loss =', loss)
+
+    loss = hist.history['val_loss'][0]
+    va_losses.append(loss)
+    print('va_loss =', loss)
 
     print('         -------- Validating Model')
     qwk = get_qwk(model, va_essays, va_t_scores, 0, 3)
@@ -66,6 +71,12 @@ for epoch in range(0, num_epochs):
     print('tr_qwk =', qwk)
     print('max va_qwk until now = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks)))
 
+    print('         -------- Cumulative log')
+    print('training_qwks = ', tr_qwks)
+    print('training_losses = ', tr_losses)
+    print('validation_qwks = ', va_qwks)
+    print('validation_losses = ', va_losses)
+
     # save accuracy and weights
     print('         -------- Saving Model')
     # save model if it has best validation accuracy or training accuracy until now
@@ -75,9 +86,9 @@ for epoch in range(0, num_epochs):
     # write to stdout
     sys.stdout.flush()
 
-print('training qwks = ', tr_qwks)
-print('training losses = ', tr_losses)
-print('validation qwks = ', va_qwks)
-print('validation losses = ', va_losses)
+print('training_qwks = ', tr_qwks)
+print('training_losses = ', tr_losses)
+print('validation_qwks = ', va_qwks)
+print('validation_losses = ', va_losses)
 print('max tr qwk = %f @ %d epoch' % (tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
 print('max va qwk = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks)))
