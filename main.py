@@ -5,6 +5,9 @@ from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data, lo
     get_word_embeddings_matrix
 from quadratic_weighted_kappa import quadratic_weighted_kappa
 import numpy as np
+import matplotlib
+matplotlib.use("pdf")
+from matplotlib import pyplot as plt
 
 def get_qwk(model, essays, true_scores, min_score, max_score):
     predicted_n_scores = model.predict(essays, verbose=0)
@@ -48,7 +51,7 @@ tr_losses = []
 va_losses = []
 tr_qwks = []
 va_qwks = []
-for epoch in range(0, num_epochs):
+for epoch in range(num_epochs):
     print('-------- -------- Epoch = %d' % epoch)
 
     print('         -------- Fitting Model')
@@ -92,3 +95,16 @@ print('validation_qwks = ', va_qwks)
 print('validation_losses = ', va_losses)
 print('max tr qwk = %f @ %d epoch' % (tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
 print('max va qwk = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks)))
+
+epochs = [i for i in range(num_epochs)]
+baseline = [0 for i in range(num_epochs)]
+plt.title('max va qwk = %f @ %d epoch\n max tr qwk = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks), tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
+plt.xlabel("epochs")
+plt.ylabel("value")
+plt.plot(epochs, baseline, '-', color='black')
+plt.plot(epochs, tr_qwks)
+plt.plot(epochs, va_qwks)
+plt.plot(epochs, tr_losses)
+plt.plot(epochs, va_losses)
+plt.gca().legend(('y=0','training QWK', 'validation QWK', 'training loss', 'validation loss'))
+plt.savefig('%s/trainingStats.png' % output_dir)
