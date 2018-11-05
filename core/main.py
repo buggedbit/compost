@@ -2,28 +2,33 @@ import argparse
 import sys
 import os
 from model_generator import generate_model
-from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data, load_word_embeddings_dict, get_word_embeddings_matrix
+from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data, load_word_embeddings_dict, \
+    get_word_embeddings_matrix
 from quadratic_weighted_kappa import quadratic_weighted_kappa
 import numpy as np
 import matplotlib
+
 matplotlib.use('pdf')
 from matplotlib import pyplot as plt
 
+
 def plot(num_epochs, tr_qwks, tr_losses, va_qwks, va_losses, output_dir, image_name):
-  plt.clf()
-  # plot all metrics in a graph
-  epochs = [i for i in range(num_epochs + 1)]
-  baseline = [0 for i in range(num_epochs + 1)]
-  plt.title('max va qwk = %f @ %d epoch\n max tr qwk = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks), tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
-  plt.xlabel('epochs')
-  plt.ylabel('value')
-  plt.plot(epochs, baseline, '-', color='black')
-  plt.plot(epochs, tr_qwks)
-  plt.plot(epochs, va_qwks)
-  plt.plot(epochs, tr_losses)
-  plt.plot(epochs, va_losses)
-  plt.gca().legend(('y=0','training QWK', 'validation QWK', 'training loss', 'validation loss'))
-  plt.savefig('%s/%s' % (output_dir, image_name))
+    plt.clf()
+    # plot all metrics in a graph
+    epochs = [i for i in range(num_epochs + 1)]
+    baseline = [0 for i in range(num_epochs + 1)]
+    plt.title('max va qwk = %f @ %d epoch\n max tr qwk = %f @ %d epoch' % (
+        va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks), tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
+    plt.xlabel('epochs')
+    plt.ylabel('value')
+    plt.plot(epochs, baseline, '-', color='black')
+    plt.plot(epochs, tr_qwks)
+    plt.plot(epochs, va_qwks)
+    plt.plot(epochs, tr_losses)
+    plt.plot(epochs, va_losses)
+    plt.gca().legend(('y=0', 'training QWK', 'validation QWK', 'training loss', 'validation loss'))
+    plt.savefig('%s/%s' % (output_dir, image_name))
+
 
 def get_qwk(model, essays, true_scores, min_score, max_score):
     predicted_n_scores = model.predict(essays, verbose=0)
@@ -31,6 +36,7 @@ def get_qwk(model, essays, true_scores, min_score, max_score):
     predicted_t_scores = np.round(min_score + predicted_n_scores * max_score)
     qwk = quadratic_weighted_kappa(predicted_t_scores, true_scores, min_rating=min_score, max_rating=max_score)
     return qwk
+
 
 # arguments
 parser = argparse.ArgumentParser()
@@ -52,7 +58,7 @@ parser.add_argument('--STATS_GRAPH_FILE', default='training_stats.png')
 args = parser.parse_args()
 
 # assert output dir exists
-assert(os.path.isdir(args.OUTPUT_DIR))
+assert (os.path.isdir(args.OUTPUT_DIR))
 
 # open log file
 sys.stdout = open('%s/%s' % (args.OUTPUT_DIR, args.LOG_FILE), 'w')
@@ -87,46 +93,46 @@ va_losses = []
 tr_qwks = []
 va_qwks = []
 for epoch in range(args.NUM_EPOCHS):
-  print('-------- -------- Epoch = %d' % epoch)
+    print('-------- -------- Epoch = %d' % epoch)
 
-  print('         -------- Fitting Model')
-  hist = model.fit(tr_essays, tr_n_scores, epochs=1, verbose=0, validation_data=(va_essays, va_n_scores))
+    print('         -------- Fitting Model')
+    hist = model.fit(tr_essays, tr_n_scores, epochs=1, verbose=0, validation_data=(va_essays, va_n_scores))
 
-  # Calculate TR LOSS
-  loss = hist.history['loss'][0]
-  tr_losses.append(loss)
-  print('tr_loss =', loss)
-  # Calculate VA LOSS
-  loss = hist.history['val_loss'][0]
-  va_losses.append(loss)
-  print('va_loss =', loss)
+    # Calculate TR LOSS
+    loss = hist.history['loss'][0]
+    tr_losses.append(loss)
+    print('tr_loss =', loss)
+    # Calculate VA LOSS
+    loss = hist.history['val_loss'][0]
+    va_losses.append(loss)
+    print('va_loss =', loss)
 
-  print('         -------- Validating Model')
-  # Calculate TR QWK
-  qwk = get_qwk(model, tr_essays, tr_t_scores, args.MIN_SCORE, args.MAX_SCORE)
-  tr_qwks.append(qwk)
-  print('tr_qwk =', qwk)
-  
-  # Calculate VA QWK
-  qwk = get_qwk(model, va_essays, va_t_scores, args.MIN_SCORE, args.MAX_SCORE)
-  va_qwks.append(qwk)
-  print('va_qwk =', qwk)
-  
-  print('         -------- Cumulative log')
-  print('training_qwks = ', tr_qwks)
-  print('training_losses = ', tr_losses)
-  print('validation_qwks = ', va_qwks)
-  print('validation_losses = ', va_losses)
-  print('max_tr_qwk = %f @ %d epoch' % (tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
-  print('max_va_qwk = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks)))
+    print('         -------- Validating Model')
+    # Calculate TR QWK
+    qwk = get_qwk(model, tr_essays, tr_t_scores, args.MIN_SCORE, args.MAX_SCORE)
+    tr_qwks.append(qwk)
+    print('tr_qwk =', qwk)
 
-  plot(epoch, tr_qwks, tr_losses, va_qwks, va_losses, args.OUTPUT_DIR, args.STATS_GRAPH_FILE)
+    # Calculate VA QWK
+    qwk = get_qwk(model, va_essays, va_t_scores, args.MIN_SCORE, args.MAX_SCORE)
+    va_qwks.append(qwk)
+    print('va_qwk =', qwk)
 
-  # save accuracy and weights
-  print('         -------- Saving Model')
-  # save model if it has best validation accuracy or training accuracy until now
-  if epoch == np.argmax(va_qwks) or epoch == np.argmax(tr_qwks):
-      model.save_weights('%s/model%d.h5' % (args.OUTPUT_DIR, epoch))
+    print('         -------- Cumulative log')
+    print('training_qwks = ', tr_qwks)
+    print('training_losses = ', tr_losses)
+    print('validation_qwks = ', va_qwks)
+    print('validation_losses = ', va_losses)
+    print('max_tr_qwk = %f @ %d epoch' % (tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
+    print('max_va_qwk = %f @ %d epoch' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks)))
 
-  # write to stdout
-  sys.stdout.flush()
+    plot(epoch, tr_qwks, tr_losses, va_qwks, va_losses, args.OUTPUT_DIR, args.STATS_GRAPH_FILE)
+
+    # save accuracy and weights
+    print('         -------- Saving Model')
+    # save model if it has best validation accuracy or training accuracy until now
+    if epoch == np.argmax(va_qwks) or epoch == np.argmax(tr_qwks):
+        model.save_weights('%s/model%d.h5' % (args.OUTPUT_DIR, epoch))
+
+    # write to stdout
+    sys.stdout.flush()

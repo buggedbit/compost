@@ -18,8 +18,8 @@ def generate_model(vocab_size, max_essay_length, embeddings_matrix):
                                 kernel_size=3,
                                 activation='sigmoid',
                                 use_bias=True,
-                                padding='same',))
-    model.add(LSTM(40, return_sequences=True,))
+                                padding='same', ))
+    model.add(LSTM(40, return_sequences=True, ))
     model.add(Dropout(0.1))
     model.add(MeanOverTime(mask_zero=True))
     model.add(Dense(units=1, activation='sigmoid'))

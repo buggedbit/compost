@@ -5,10 +5,11 @@ import numpy as np
 from keras.models import model_from_json
 from custom_layers import Conv1DWithMasking, Attention, MeanOverTime, FlattenWithMasking
 
-assert(len(sys.argv) == 4)
+assert (len(sys.argv) == 4)
 model_def_file = sys.argv[1]
 model_weights_file = sys.argv[2]
 test_data_file = sys.argv[3]
+
 
 def get_qwk(model, essays, true_scores, min_score, max_score):
     predicted_n_scores = model.predict(essays, verbose=1)
@@ -16,6 +17,7 @@ def get_qwk(model, essays, true_scores, min_score, max_score):
     predicted_t_scores = np.round(min_score + predicted_n_scores * max_score)
     qwk = quadratic_weighted_kappa(predicted_t_scores, true_scores, min_rating=min_score, max_rating=max_score)
     return qwk
+
 
 # hyper parameters
 MAX_ESSAY_LENGTH = 2000
@@ -29,7 +31,8 @@ print('-------- -------- Model loading')
 model = None
 # load the model
 with open(model_def_file, 'r') as json_file:
-    model = model_from_json(json_file.read(), custom_objects={'Conv1DWithMasking': Conv1DWithMasking, 'MeanOverTime': MeanOverTime})
+    model = model_from_json(json_file.read(),
+                            custom_objects={'Conv1DWithMasking': Conv1DWithMasking, 'MeanOverTime': MeanOverTime})
 model.load_weights(model_weights_file)
 
 print('         -------- Evaluating Model')
