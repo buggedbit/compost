@@ -3,7 +3,7 @@ from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data
 from quadratic_weighted_kappa import quadratic_weighted_kappa
 import numpy as np
 from keras.models import model_from_json
-from custom_layers import Conv1DWithMasking, Attention, MeanOverTime, FlattenWithMasking
+from custom_layers import Conv1DWithMasking, MeanOverTime
 
 assert (len(sys.argv) == 4)
 model_def_file = sys.argv[1]

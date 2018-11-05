@@ -1,7 +1,7 @@
-from keras.layers import Embedding, Dense, LSTM, Dropout, Flatten
-from keras.models import Sequential, model_from_json
+from keras.layers import Embedding, Dense, LSTM, Dropout
+from keras.models import Sequential
 
-from custom_layers import Conv1DWithMasking, Attention, MeanOverTime, FlattenWithMasking
+from custom_layers import Conv1DWithMasking, MeanOverTime
 
 
 def generate_model(vocab_size, max_essay_length, embeddings_matrix):
