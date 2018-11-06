@@ -30,7 +30,7 @@ def generate_tokenizer_on_all_essays(all_files=()):
     return tokenizer
 
 
-def encode_essay_data(filepath, max_length, tokenizer):
+def encode_essay_data(filepath, max_length, tokenizer, min_score, max_score):
     essays = []
     normalized_scores = []
     true_scores = []
@@ -43,7 +43,7 @@ def encode_essay_data(filepath, max_length, tokenizer):
             essays.append(re.sub('(@\w+)', '', essay))
             true_score = values[6]
             true_scores.append(float(true_score))
-            normalized_scores.append(float(true_score) / 3)
+            normalized_scores.append((float(true_score) - min_score) / (max_score - min_score))
 
     essays = np.array(essays)
     true_scores = np.asarray(true_scores)

@@ -12,11 +12,11 @@ matplotlib.use('pdf')
 from matplotlib import pyplot as plt
 
 
-def plot(num_epochs, tr_qwks, tr_losses, va_qwks, va_losses, output_dir, image_name):
+def plot(num_epochs_0_indexed, tr_qwks, tr_losses, va_qwks, va_losses, output_dir, image_name):
     plt.clf()
     # plot all metrics in a graph
-    epochs = [i for i in range(num_epochs + 1)]
-    baseline = [0 for i in range(num_epochs + 1)]
+    epochs = [i for i in range(num_epochs_0_indexed + 1)]
+    baseline = [0 for i in range(num_epochs_0_indexed + 1)]
     plt.title('max va qwk = %f @ %d epoch\n max tr qwk = %f @ %d epoch' % (
         va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks), tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
     plt.xlabel('epochs')
@@ -33,7 +33,7 @@ def plot(num_epochs, tr_qwks, tr_losses, va_qwks, va_losses, output_dir, image_n
 def get_qwk(model, essays, true_scores, min_score, max_score):
     predicted_n_scores = model.predict(essays, verbose=0)
     predicted_n_scores = np.reshape(predicted_n_scores, predicted_n_scores.shape[0])
-    predicted_t_scores = np.round(min_score + predicted_n_scores * max_score)
+    predicted_t_scores = np.round(min_score + predicted_n_scores * (max_score - min_score))
     qwk = quadratic_weighted_kappa(predicted_t_scores, true_scores, min_rating=min_score, max_rating=max_score)
     return qwk
 
@@ -72,13 +72,13 @@ sys.stdout.flush()
 print('-------- -------- Pre Processing')
 tokenizer = generate_tokenizer_on_all_essays((args.VOCAB_FILE,))
 vocab_size = len(tokenizer.word_index) + 1
-tr_essays, tr_n_scores, tr_t_scores = encode_essay_data(args.TRAINING_DATA_FILE, args.MAX_ESSAY_LENGTH, tokenizer)
-va_essays, va_n_scores, va_t_scores = encode_essay_data(args.VALIDATION_DATA_FILE, args.MAX_ESSAY_LENGTH, tokenizer)
+tr_essays, tr_n_scores, tr_t_scores = encode_essay_data(args.TRAINING_DATA_FILE, args.MAX_ESSAY_LENGTH, tokenizer, args.MIN_SCORE, args.MAX_SCORE)
+va_essays, va_n_scores, va_t_scores = encode_essay_data(args.VALIDATION_DATA_FILE, args.MAX_ESSAY_LENGTH, tokenizer, args.MIN_SCORE, args.MAX_SCORE)
 word_embeddings_dict = load_word_embeddings_dict(args.WORD_EMB_FILE)
 embeddings_matrix = get_word_embeddings_matrix(word_embeddings_dict, tokenizer.word_index, args.EMBEDDING_SIZE)
 
 print('-------- -------- Model generation')
-model = generate_model(vocab_size, args.MAX_ESSAY_LENGTH, embeddings_matrix)
+model = generate_model(vocab_size, args.EMBEDDING_SIZE, args.MAX_ESSAY_LENGTH, embeddings_matrix)
 
 # save the model
 model_json = model.to_json()

@@ -4,12 +4,12 @@ from keras.models import Sequential
 from custom_layers import Conv1DWithMasking, MeanOverTime
 
 
-def generate_model(vocab_size, max_essay_length, embeddings_matrix):
+def generate_model(vocab_size, embeddings_size, max_essay_length, embeddings_matrix):
     # define model
     print('-------- -------- Defining Model')
     model = Sequential()
     model.add(Embedding(input_dim=vocab_size,
-                        output_dim=300,
+                        output_dim=embeddings_size,
                         input_length=max_essay_length,
                         weights=[embeddings_matrix],
                         trainable=False,
