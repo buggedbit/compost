@@ -1,14 +1,14 @@
 ## todo
+- [ ] Optimizer clipping
+- [ ] Make Trainable True in embeddings layer
+- [ ] Tag named entities @ to a new encoding
 - [x] Tag spelling mistakes words as 0
 - [x] Conv1DWithMasking
 - [x] mask zero in all layers
 - [x] Aggregation layer
 - [x] QWK metric for evaluation
 - [x] Get all glove data to decrease spelling mistakes
-- [ ] Make Trainable True in embeddings layer
-- [ ] Optimizer clipping
-- [ ] Tag named entities @ to a new encoding
-- [ ] Tune params and train with all data
+- [x] Tune params and train with all data
 
 ## questions
 
