@@ -30,35 +30,42 @@ def generate_tokenizer_on_all_essays(all_files=()):
     return tokenizer
 
 
-def encode_essay_data(filepath, max_length, tokenizer, min_score, max_score):
+def encode_essay_data(filepath, score_columns, max_length, tokenizer, min_score, max_score):
+    with open(filepath) as file:
+        tsv = csv.reader(file, delimiter="\t", quotechar='"')
+        tsv = list(tsv)
+    
     essays = []
-    normalized_scores = []
-    true_scores = []
-    with open(filepath) as f:
-        tsv = csv.reader(f, delimiter="\t", quotechar='"')
-        # skip header
-        # next(tsv, None)
-        for values in tsv:
-            essay = values[2]
-            essays.append(re.sub('(@\w+)', '', essay))
-            true_score = values[6]
-            true_scores.append(float(true_score))
-            normalized_scores.append((float(true_score) - min_score) / (max_score - min_score))
+    true_score_tensor = []
+    norm_score_tensor = []
+    for col in score_columns:
+        true_score_tensor.append([])
+        norm_score_tensor.append([])
+    # next(tsv, None) # skip header
+    for i_essay, values in enumerate(tsv):
+        # read essay
+        # replace @... with ''
+        essay = re.sub('(@\w+)', '', values[2])
+        essays.append(essay)
+        # read overall & attribute scores
+        for i, col in enumerate(score_columns):
+            true_score = float(values[col])
+            true_score_tensor[i].append(true_score)
+            norm_score = (true_score - min_score) / (max_score - min_score)
+            norm_score_tensor[i].append(norm_score)
 
-    essays = np.array(essays)
-    true_scores = np.asarray(true_scores)
-    normalized_scores = np.asarray(normalized_scores)
+    for i, col in enumerate(score_columns):
+        true_score_tensor[i] = np.asarray(true_score_tensor[i])
+        norm_score_tensor[i] = np.asarray(norm_score_tensor[i])
 
-    # integer encode essays
+    # integer encode
     encoded_essays = tokenizer.texts_to_sequences(essays)
-
-    # pad essays to a max length
+    # pad/truncate to fixed length
     padded_essays = pad_sequences(encoded_essays, maxlen=max_length, padding='post')
 
-    print('---- ---- encoded essays and normalized_scores')
-    print('essays shape = ', padded_essays.shape, ' normalized_scores len = ', len(normalized_scores))
+    print('Preprocessed File=%s, Got essays_tensor of shape=%s & score_tensor of shape=%s' % (filepath, padded_essays.shape, np.asarray(norm_score_tensor).shape))
 
-    return padded_essays, normalized_scores, true_scores
+    return padded_essays, true_score_tensor, norm_score_tensor
 
 
 def load_word_embeddings_dict(filepath):
@@ -77,8 +84,7 @@ def load_word_embeddings_dict(filepath):
                 # print(values, len(values))
                 pass
 
-    print('---- ---- loaded word embeddings into memory')
-    print('no. of word embeddings = ', len(word_embeddings))
+    print('Loaded word embeddings into Memory. #WordEmbeddings=%d' % len(word_embeddings))
 
     return word_embeddings
 
@@ -96,9 +102,8 @@ def get_word_embeddings_matrix(word_embeddings_dict, word_index, embedding_size)
         else:
             embeddings_matrix[index] = embedding
 
-    print('---- ---- created embeddings matrix')
-    print('embeddings matrix shape =', embeddings_matrix.shape)
-    print('found #spelling mistakes =', len(spelling_mistakes))
-    print('%of words not found in word word embeddings =', len(spelling_mistakes) / vocab_size * 100)
+    print('Created embeddings matrix. Embeddings Matrix shape =', embeddings_matrix.shape)
+    print('#spelling mistakes found =', len(spelling_mistakes))
+    print('%% Words Not found in Word Embeddings =', len(spelling_mistakes) / vocab_size * 100)
 
     return embeddings_matrix

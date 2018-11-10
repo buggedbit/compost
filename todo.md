@@ -1,4 +1,5 @@
 ## todo
+- [ ] refactor attribute min max scores as arguments
 - [ ] Optimizer clipping
 - [ ] Make Trainable True in embeddings layer
 - [ ] Tag named entities @ to a new encoding
