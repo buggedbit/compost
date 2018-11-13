@@ -19,11 +19,15 @@ def generate_model(vocab_size, embeddings_size, max_essay_length, embeddings_mat
     x = LSTM(40, return_sequences=True, )(x)
     x = Dropout(0.1) (x)
     x = MeanOverTime(mask_zero=True) (x)
-    out = []
-    for i in range(len(loss_weights)):
-        attribute_score = Dense(units=1, activation='sigmoid') (x)
-        out.append(attribute_score)
-    model = Model(inp, out)
+    attribute_scores = []
+    for i in range(1, len(loss_weights)):
+        score = Dense(units=1, activation='sigmoid') (x)
+        attribute_scores.append(score)
+    
+    x = Concatenate()(attribute_scores)
+    overall_score = Dense(units=1) (x)
+    
+    model = Model(inp, [overall_score] + attribute_scores)
 
     # compile the model
     model.compile(optimizer='rmsprop', loss=['mse' for _ in loss_weights], loss_weights=loss_weights)

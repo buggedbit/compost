@@ -9,6 +9,14 @@ from utils import Stats
 
 def get_qwk(model, essays, true_scores, min_score, max_score):
     pred_norm_score_tensor = model.predict(essays, verbose=0)
+    # clipping in case of linear final activation
+    for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
+        for j, score in enumerate(pred_norm_scores):
+            if score > 1:
+                pred_norm_score_tensor[i][j] = 1
+            elif score < 0:
+                pred_norm_score_tensor[i][j] = 0
+
     qwks = []
     for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
         pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
