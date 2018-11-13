@@ -30,7 +30,7 @@ def generate_tokenizer_on_all_essays(all_files=()):
     return tokenizer
 
 
-def encode_essay_data(filepath, score_columns, max_length, tokenizer, min_score, max_score):
+def encode_essay_data(filepath, overall_score_column, attr_score_columns, max_length, tokenizer, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
     with open(filepath) as file:
         tsv = csv.reader(file, delimiter="\t", quotechar='"')
         tsv = list(tsv)
@@ -38,7 +38,8 @@ def encode_essay_data(filepath, score_columns, max_length, tokenizer, min_score,
     essays = []
     true_score_tensor = []
     norm_score_tensor = []
-    for col in score_columns:
+    # overall score + attr scores list
+    for _ in range(len(attr_score_columns) + 1):
         true_score_tensor.append([])
         norm_score_tensor.append([])
     # next(tsv, None) # skip header
@@ -47,14 +48,19 @@ def encode_essay_data(filepath, score_columns, max_length, tokenizer, min_score,
         # replace @... with ''
         essay = re.sub('(@\w+)', '', values[2])
         essays.append(essay)
-        # read overall & attribute scores
-        for i, col in enumerate(score_columns):
+        # read overall score
+        true_score = float(values[overall_score_column])
+        true_score_tensor[0].append(true_score)
+        norm_score = (true_score - overall_min_score) / (overall_max_score - overall_min_score)
+        norm_score_tensor[0].append(norm_score)
+        # read attribute scores
+        for i, col in enumerate(attr_score_columns):
             true_score = float(values[col])
-            true_score_tensor[i].append(true_score)
-            norm_score = (true_score - min_score) / (max_score - min_score)
-            norm_score_tensor[i].append(norm_score)
+            true_score_tensor[i + 1].append(true_score)
+            norm_score = (true_score - attr_min_score) / (attr_max_score - attr_min_score)
+            norm_score_tensor[i + 1].append(norm_score)
 
-    for i, col in enumerate(score_columns):
+    for i in range(len(attr_score_columns) + 1):
         true_score_tensor[i] = np.asarray(true_score_tensor[i])
         norm_score_tensor[i] = np.asarray(norm_score_tensor[i])
 

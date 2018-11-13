@@ -25,11 +25,11 @@ class Stats:
             self.va_qwk_tensor[i].append(va_qwk)
 
     def do_save_model(self, epoch):
-        save_model = False
+        # save if any of the va qwk is better in this epoch
         for va_qwks in self.va_qwk_tensor:
             if epoch == np.argmax(va_qwks):
-                save_model = True
-        return save_model
+                return True
+        return False
 
     def print_log(self):
         for i in range(self.num_tasks):
@@ -57,10 +57,11 @@ class Stats:
 
         title_string = ''
         legend = ['y=0']
+        va_qwks = self.va_qwk_tensor[0]
+        title_string += 'overall score task, max va qwk = %f @ %d epoch\n' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks))
         for i in range(self.num_tasks):
             tr_qwks = self.tr_qwk_tensor[i]
             va_qwks = self.va_qwk_tensor[i]
-            title_string += 'for task %d, max va qwk = %f @ %d epoch\n' % (i, va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks))
             # plot validation qwks
             plt.plot(epochs, va_qwks)
             legend += ['task %d va qwk' % i] 

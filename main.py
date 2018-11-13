@@ -7,7 +7,7 @@ from quadratic_weighted_kappa import quadratic_weighted_kappa
 import numpy as np
 from utils import Stats
 
-def get_qwk(model, essays, true_scores, min_score, max_score):
+def get_qwk(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
     pred_norm_score_tensor = model.predict(essays, verbose=0)
     # clipping in case of linear final activation
     for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
@@ -18,25 +18,37 @@ def get_qwk(model, essays, true_scores, min_score, max_score):
                 pred_norm_score_tensor[i][j] = 0
 
     qwks = []
-    for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
+    # overall score
+    pred_norm_scores = pred_norm_score_tensor[0]
+    pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
+    pred_true_scores = np.round(overall_min_score + pred_norm_scores * (overall_max_score - overall_min_score))
+    qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[0], min_rating=overall_min_score, max_rating=overall_max_score)
+    qwks.append(qwk)
+    # attribute scores
+    for i in range(1, len(pred_norm_score_tensor)):
+        pred_norm_scores = pred_norm_score_tensor[i]
         pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
-        pred_true_score = np.round(min_score + pred_norm_scores * (max_score - min_score))
-        qwk = quadratic_weighted_kappa(pred_true_score, true_scores[i], min_rating=min_score, max_rating=max_score)
+        pred_true_scores = np.round(attr_min_score + pred_norm_scores * (attr_max_score - attr_min_score))
+        qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[i], min_rating=attr_min_score, max_rating=attr_max_score)
         qwks.append(qwk)
     return qwks
 
 # arguments
 parser = argparse.ArgumentParser()
 # required args
-parser.add_argument('--NUM_EPOCHS', required=True, type=int)
-parser.add_argument('--MIN_SCORE', required=True, type=int)
-parser.add_argument('--MAX_SCORE', required=True, type=int)
 parser.add_argument('--TRAINING_DATA_FILE', required=True)
 parser.add_argument('--VALIDATION_DATA_FILE', required=True)
 parser.add_argument('--WORD_EMB_FILE', required=True)
 parser.add_argument('--OUTPUT_DIR', required=True)
-parser.add_argument('--SCORE_COLUMNS', required=True, type=int, nargs='+')
-parser.add_argument('--LOSS_WEIGHTS', required=True, type=float, nargs='+')
+parser.add_argument('--NUM_EPOCHS', required=True, type=int)
+parser.add_argument('--OVERALL_SCORE_COLUMN', required=True, type=int)
+parser.add_argument('--ATTR_SCORE_COLUMNS', required=True, type=int, nargs='+')
+parser.add_argument('--OVERALL_LOSS_WEIGHT', required=True, type=float)
+parser.add_argument('--ATTR_LOSS_WEIGHTS', required=True, type=float, nargs='+')
+parser.add_argument('--OVERALL_MIN_SCORE', required=True, type=int)
+parser.add_argument('--OVERALL_MAX_SCORE', required=True, type=int)
+parser.add_argument('--ATTR_MIN_SCORE', required=True, type=int)
+parser.add_argument('--ATTR_MAX_SCORE', required=True, type=int)
 # optional args
 parser.add_argument('--MAX_ESSAY_LENGTH', type=int, default=2000)
 parser.add_argument('--EMBEDDING_SIZE', type=int, default=300)
@@ -48,7 +60,7 @@ args = parser.parse_args()
 
 # assert output dir exists
 assert (os.path.isdir(args.OUTPUT_DIR))
-assert (len(args.SCORE_COLUMNS) == len(args.LOSS_WEIGHTS))
+assert (len(args.ATTR_SCORE_COLUMNS) == len(args.ATTR_LOSS_WEIGHTS))
 
 # open log file
 sys.stdout = open('%s/%s' % (args.OUTPUT_DIR, args.LOG_FILE), 'w')
@@ -63,13 +75,13 @@ print('-------- -------- Pre Processing')
 tokenizer = generate_tokenizer_on_all_essays((args.VOCAB_FILE,))
 vocab_size = len(tokenizer.word_index) + 1
 
-tr_essays, tr_true_scores, tr_norm_scores = encode_essay_data(args.TRAINING_DATA_FILE, args.SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer, args.MIN_SCORE, args.MAX_SCORE)
-va_essays, va_true_scores, va_norm_scores = encode_essay_data(args.VALIDATION_DATA_FILE, args.SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer, args.MIN_SCORE, args.MAX_SCORE)
+tr_essays, tr_true_scores, tr_norm_scores = encode_essay_data(args.TRAINING_DATA_FILE, args.OVERALL_SCORE_COLUMN, args.ATTR_SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE)
+va_essays, va_true_scores, va_norm_scores = encode_essay_data(args.VALIDATION_DATA_FILE, args.OVERALL_SCORE_COLUMN, args.ATTR_SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE)
 
 embeddings_matrix = get_word_embeddings_matrix(load_word_embeddings_dict(args.WORD_EMB_FILE), tokenizer.word_index, args.EMBEDDING_SIZE)
 
 print('-------- -------- Model generation')
-model = generate_model(vocab_size, args.EMBEDDING_SIZE, args.MAX_ESSAY_LENGTH, embeddings_matrix, args.LOSS_WEIGHTS)
+model = generate_model(vocab_size, args.EMBEDDING_SIZE, args.MAX_ESSAY_LENGTH, embeddings_matrix, args.OVERALL_LOSS_WEIGHT, args.ATTR_LOSS_WEIGHTS)
 
 # save the model
 model_json = model.to_json()
@@ -80,7 +92,7 @@ with open('%s/%s' % (args.OUTPUT_DIR, args.MODEL_DEF_FILE), 'w') as json_file:
 sys.stdout.flush()
 
 print('-------- -------- Training')
-stats = Stats(len(args.SCORE_COLUMNS))
+stats = Stats(len(args.ATTR_SCORE_COLUMNS) + 1)
 for epoch in range(args.NUM_EPOCHS):
     print('-------- -------- Epoch = %d' % epoch)
 
@@ -91,7 +103,7 @@ for epoch in range(args.NUM_EPOCHS):
     stats.add_losses(hist.history['loss'][0], hist.history['val_loss'][0])
 
     print('-------- Validating Model')
-    stats.add_qwks(get_qwk(model, tr_essays, tr_true_scores, args.MIN_SCORE, args.MAX_SCORE), get_qwk(model, va_essays, va_true_scores, args.MIN_SCORE, args.MAX_SCORE))
+    stats.add_qwks(get_qwk(model, tr_essays, tr_true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE), get_qwk(model, va_essays, va_true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE))
     
     print('-------- Log')
     stats.print_log()
