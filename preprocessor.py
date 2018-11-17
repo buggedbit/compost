@@ -74,6 +74,46 @@ def encode_essay_data(filepath, overall_score_column, attr_score_columns, max_le
     return padded_essays, true_score_tensor, norm_score_tensor
 
 
+def encode_essay_data_for_testing(filepath, overall_score_column, attr_score_columns, max_length, tokenizer):
+    with open(filepath) as file:
+        tsv = csv.reader(file, delimiter="\t", quotechar='"')
+        tsv = list(tsv)
+    
+    essays = []
+    essay_ids = []
+    true_score_tensor = []
+    # overall score + attr scores list
+    for _ in range(len(attr_score_columns) + 1):
+        true_score_tensor.append([])
+    # next(tsv, None) # skip header
+    for i_essay, values in enumerate(tsv):
+        # read essay id
+        essay_ids.append(int(values[0]))
+        # read essay
+        # replace @... with ''
+        essay = re.sub('(@\w+)', '', values[2])
+        essays.append(essay)
+        # read overall score
+        true_score = float(values[overall_score_column])
+        true_score_tensor[0].append(true_score)
+        # read attribute scores
+        for i, col in enumerate(attr_score_columns):
+            true_score = float(values[col])
+            true_score_tensor[i + 1].append(true_score)
+
+    for i in range(len(attr_score_columns) + 1):
+        true_score_tensor[i] = np.asarray(true_score_tensor[i])
+
+    # integer encode
+    encoded_essays = tokenizer.texts_to_sequences(essays)
+    # pad/truncate to fixed length
+    padded_essays = pad_sequences(encoded_essays, maxlen=max_length, padding='post')
+
+    print('Preprocessed File=%s, Got essays_tensor of shape=%s & score_tensor of shape=%s' % (filepath, padded_essays.shape, np.asarray(true_score_tensor).shape))
+
+    return essay_ids, padded_essays, true_score_tensor
+
+
 def load_word_embeddings_dict(filepath):
     """
     loads the whole embedding into memory
