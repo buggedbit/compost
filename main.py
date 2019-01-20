@@ -4,35 +4,8 @@ import os
 import glob
 from model_generator import generate_model
 from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data, load_word_embeddings_dict, get_word_embeddings_matrix
-from quadratic_weighted_kappa import quadratic_weighted_kappa
 import numpy as np
-from utils import Stats
-
-def get_qwk(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
-    pred_norm_score_tensor = model.predict(essays, verbose=0)
-    # clipping in case of linear final activation
-    for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
-        for j, score in enumerate(pred_norm_scores):
-            if score > 1:
-                pred_norm_score_tensor[i][j] = 1
-            elif score < 0:
-                pred_norm_score_tensor[i][j] = 0
-
-    qwks = []
-    # overall score
-    pred_norm_scores = pred_norm_score_tensor[0]
-    pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
-    pred_true_scores = np.round(overall_min_score + pred_norm_scores * (overall_max_score - overall_min_score))
-    qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[0], min_rating=overall_min_score, max_rating=overall_max_score)
-    qwks.append(qwk)
-    # attribute scores
-    for i in range(1, len(pred_norm_score_tensor)):
-        pred_norm_scores = pred_norm_score_tensor[i]
-        pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
-        pred_true_scores = np.round(attr_min_score + pred_norm_scores * (attr_max_score - attr_min_score))
-        qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[i], min_rating=attr_min_score, max_rating=attr_max_score)
-        qwks.append(qwk)
-    return qwks
+from utils import Stats, get_qwk
 
 # arguments
 parser = argparse.ArgumentParser()
@@ -105,8 +78,9 @@ for epoch in range(args.NUM_EPOCHS):
     stats.add_losses(hist.history['loss'][0], hist.history['val_loss'][0])
 
     print('-------- Validating Model')
-    stats.add_qwks(get_qwk(model, tr_essays, tr_true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE), get_qwk(model, va_essays, va_true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE))
-    
+    stats.add_qwks(get_qwk(model, tr_essays, tr_true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE),
+                   get_qwk(model, va_essays, va_true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE))
+
     print('-------- Log')
     stats.print_log()
 
