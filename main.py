@@ -1,6 +1,7 @@
 import argparse
 import sys
 import os
+import glob
 from model_generator import generate_model
 from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data, load_word_embeddings_dict, get_word_embeddings_matrix
 from quadratic_weighted_kappa import quadratic_weighted_kappa
@@ -61,6 +62,7 @@ args = parser.parse_args()
 # assert output dir exists
 assert (os.path.isdir(args.OUTPUT_DIR))
 assert (len(args.ATTR_SCORE_COLUMNS) == len(args.ATTR_LOSS_WEIGHTS))
+assert ((np.sum(args.ATTR_LOSS_WEIGHTS) + args.OVERALL_LOSS_WEIGHT) == 1)
 
 # open log file
 sys.stdout = open('%s/%s' % (args.OUTPUT_DIR, args.LOG_FILE), 'w')
@@ -111,9 +113,12 @@ for epoch in range(args.NUM_EPOCHS):
     stats.saveplots(args.OUTPUT_DIR, args.STATS_GRAPH_FILE)
 
     print('-------- Saving Model')
-    # save model if it has best validation accuracy or training accuracy until now
-    if stats.do_save_model(epoch):
-        model.save_weights('%s/model%d.h5' % (args.OUTPUT_DIR, epoch))
+    # save model if it has best validation accuracy in any attribute until now
+    attr_indices = stats.attr_indices_with_best_va_qwk(epoch)
+    for attr_index in attr_indices:
+        for prev_best_model in glob.glob('%s/best-model-for-attr-%d-*.h5' % (args.OUTPUT_DIR, attr_index)):
+          os.remove(prev_best_model)
+        model.save_weights('%s/best-model-for-attr-%d-@-epoch-%d.h5' % (args.OUTPUT_DIR, attr_index, epoch))
 
     # write to stdout
     sys.stdout.flush()

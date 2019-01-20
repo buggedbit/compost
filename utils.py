@@ -24,12 +24,12 @@ class Stats:
         for i, va_qwk in enumerate(va_qwks):
             self.va_qwk_tensor[i].append(va_qwk)
 
-    def do_save_model(self, epoch):
-        # save if any of the va qwk is better in this epoch
-        for va_qwks in self.va_qwk_tensor:
+    def attr_indices_with_best_va_qwk(self, epoch):
+        ret = []
+        for attr_index, va_qwks in enumerate(self.va_qwk_tensor):
             if epoch == np.argmax(va_qwks):
-                return True
-        return False
+                ret.append(attr_index)
+        return ret
 
     def print_log(self):
         for i in range(self.num_tasks):
