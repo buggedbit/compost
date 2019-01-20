@@ -20,14 +20,14 @@ def generate_model(vocab_size, embeddings_size, max_essay_length, embeddings_mat
                                 padding='same',) (x)
     x = LSTM(40, return_sequences=True, )(x)
     x = Dropout(0.1) (x)
-    x = MeanOverTime(mask_zero=True) (x)
+    mot = MeanOverTime(mask_zero=True) (x)
     attribute_scores = []
     for i in range(len(attr_loss_weights)):
-        score = Dense(units=1, activation='sigmoid') (x)
+        score = Dense(units=1, activation='sigmoid') (mot)
         attribute_scores.append(score)
 
-    x = Concatenate()(attribute_scores)
-    overall_score = Dense(units=1) (x)
+    x = Concatenate()(attribute_scores + [mot])
+    overall_score = Dense(units=1, activation='sigmoid') (x)
 
     model = Model(inp, [overall_score] + attribute_scores)
 

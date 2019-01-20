@@ -4,53 +4,6 @@ import numpy as np
 import sys
 from keras.layers import Conv1D, Flatten
 
-
-class Attention(Layer):
-    def __init__(self, op='attsum', activation='tanh', init_stdev=0.01, **kwargs):
-        self.supports_masking = True
-        assert op in {'attsum', 'attmean'}
-        assert activation in {None, 'tanh'}
-        self.op = op
-        self.activation = activation
-        self.init_stdev = init_stdev
-        self.att_v = None
-        self.att_W = None
-        self.trainable_weights = None
-        super(Attention, self).__init__(**kwargs)
-
-    def build(self, input_shape):
-        init_val_v = (np.random.randn(input_shape[2]) * self.init_stdev).astype(backend.floatx())
-        self.att_v = backend.variable(init_val_v, name='att_v')
-        init_val_w = (np.random.randn(input_shape[2], input_shape[2]) * self.init_stdev).astype(backend.floatx())
-        self.att_W = backend.variable(init_val_w, name='att_W')
-        self.trainable_weights = [self.att_v, self.att_W]
-
-    def call(self, x, mask=None):
-        y = backend.dot(x, self.att_W)
-        if not self.activation:
-            weights = backend.theano.tensor.tensordot(self.att_v, y, axes=[0, 2])
-        elif self.activation == 'tanh':
-            weights = backend.theano.tensor.tensordot(self.att_v, backend.tanh(y), axes=[0, 2])
-        weights = backend.softmax(weights)
-        out = x * backend.permute_dimensions(backend.repeat(weights, x.shape[2]), [0, 2, 1])
-        if self.op == 'attsum':
-            out = out.sum(axis=1)
-        elif self.op == 'attmean':
-            out = out.sum(axis=1) / mask.sum(axis=1, keepdims=True)
-        return backend.cast(out, backend.floatx())
-
-    def compute_output_shape(self, input_shape):
-        return input_shape[0], input_shape[2]
-
-    def compute_mask(self, x, mask=None):
-        return None
-
-    def get_config(self):
-        config = {'op': self.op, 'activation': self.activation, 'init_stdev': self.init_stdev}
-        base_config = super(Attention, self).get_config()
-        return dict(list(base_config.items()) + list(config.items()))
-
-
 class MeanOverTime(Layer):
     def __init__(self, mask_zero=True, **kwargs):
         self.mask_zero = mask_zero
