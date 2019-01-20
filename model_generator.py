@@ -1,5 +1,7 @@
 from keras.models import Model
 from keras.layers import *
+from keras.optimizers import RMSprop
+
 from custom_layers import Conv1DWithMasking, MeanOverTime
 
 
@@ -23,14 +25,15 @@ def generate_model(vocab_size, embeddings_size, max_essay_length, embeddings_mat
     for i in range(len(attr_loss_weights)):
         score = Dense(units=1, activation='sigmoid') (x)
         attribute_scores.append(score)
-    
+
     x = Concatenate()(attribute_scores)
     overall_score = Dense(units=1) (x)
-    
+
     model = Model(inp, [overall_score] + attribute_scores)
 
     # compile the model
-    model.compile(optimizer='rmsprop', loss=['mse' for _ in range(len(attr_loss_weights) + 1)], loss_weights=[overall_loss_weight] + attr_loss_weights)
+    optimizer = RMSprop(lr=0.001, rho=0.9, clipnorm=10)
+    model.compile(optimizer=optimizer, loss=['mse' for _ in range(len(attr_loss_weights) + 1)], loss_weights=[overall_loss_weight] + attr_loss_weights)
     # summarize the model
     print(model.summary())
 
