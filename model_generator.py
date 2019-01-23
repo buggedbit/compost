@@ -18,15 +18,24 @@ def generate_model(vocab_size, embeddings_size, max_essay_length, embeddings_mat
                                 activation='sigmoid',
                                 use_bias=True,
                                 padding='same',) (x)
-    x = LSTM(40, return_sequences=True, )(x)
-    x = Dropout(0.1) (x)
-    mot = MeanOverTime(mask_zero=True) (x)
+
+    forward = LSTM(40, return_sequences=True, )(x)
+    backward = LSTM(40, return_sequences=True, go_backwards=True)(x)
+
+    forward = Dropout(0.1) (forward)
+    backward = Dropout(0.1) (backward)
+
+    forward_mot = MeanOverTime(mask_zero=True) (forward)
+    backward_mot = MeanOverTime(mask_zero=True) (backward)
+
+    essay_repr = Concatenate()([forward_mot, backward_mot])
+
     attribute_scores = []
     for i in range(len(attr_loss_weights)):
-        score = Dense(units=1, activation='sigmoid') (mot)
+        score = Dense(units=1, activation='sigmoid') (essay_repr)
         attribute_scores.append(score)
 
-    x = Concatenate()(attribute_scores + [mot])
+    x = Concatenate()(attribute_scores + [essay_repr])
     overall_score = Dense(units=1, activation='sigmoid') (x)
 
     model = Model(inp, [overall_score] + attribute_scores)

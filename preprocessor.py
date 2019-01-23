@@ -114,7 +114,7 @@ def encode_essay_data_for_testing(filepath, overall_score_column, attr_score_col
     return essay_ids, padded_essays, true_score_tensor
 
 
-def load_word_embeddings_dict(filepath):
+def load_word_embeddings_dict(filepath, word_embedding_size):
     """
     loads the whole embedding into memory
     """
@@ -123,11 +123,11 @@ def load_word_embeddings_dict(filepath):
         for line in f:
             values = line.split()
             try:
-                word = values[0]
-                word_embedding = np.array(values[1:], dtype='float32')
+                word = ''.join(values[:len(values) - word_embedding_size])
+                word_embedding = np.array(values[(len(values) - word_embedding_size):], dtype='float32')
                 word_embeddings[word] = word_embedding
             except ValueError:
-                # print(values, len(values))
+                print('causes error word_embedding: {}'.format(values))
                 pass
 
     print('Loaded word embeddings into Memory. #WordEmbeddings=%d' % len(word_embeddings))
@@ -139,14 +139,35 @@ def get_word_embeddings_matrix(word_embeddings_dict, word_index, embedding_size)
     vocab_size = len(word_index) + 1
     embeddings_matrix = np.zeros((vocab_size, embedding_size))
     spelling_mistakes = []
+    
     for word, index in word_index.items():
-        embedding = word_embeddings_dict.get(word)
-        if embedding is None:
-            # 0 by default
-            # print(word)
+        # stripping
+        strip_keys = ['', '\'', '\"', '\”\“']
+        found = False
+        for strip_key in strip_keys:
+            stripped_word = word.strip(strip_key)
+            embedding = word_embeddings_dict.get(stripped_word)
+            if embedding is not None:
+                embeddings_matrix[index] = embedding
+                if strip_key != '': print('stripped word {} to {}'.format(word, stripped_word))
+                found = True
+                break
+        # apostropes
+        if not found:
+            aposes = ['\'s', '\"s']
+            for apos in aposes:
+                if word[-2:] == apos:
+                    stripped_word = word[:-2]
+                    embedding = word_embeddings_dict.get(stripped_word)
+                    if embedding is not None:
+                        embeddings_matrix[index] = embedding
+                        if strip_key != '': print('stripped word {} to {}'.format(word, stripped_word))
+                        found = True
+                        break
+        # spelling mistake 0 by default
+        if not found:
             spelling_mistakes.append(word)
-        else:
-            embeddings_matrix[index] = embedding
+            print('spelling mistake: {}'.format(word))
 
     print('Created embeddings matrix. Embeddings Matrix shape =', embeddings_matrix.shape)
     print('#spelling mistakes found =', len(spelling_mistakes))

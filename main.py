@@ -47,13 +47,13 @@ sys.stdout.flush()
 
 # pre processing
 print('-------- -------- Pre Processing')
-tokenizer = generate_tokenizer_on_all_essays((args.VOCAB_FILE,))
+tokenizer = generate_tokenizer_on_all_essays((args.VOCAB_FILE, args.TRAINING_DATA_FILE, args.VALIDATION_DATA_FILE,))
 vocab_size = len(tokenizer.word_index) + 1
 
 tr_essays, tr_true_scores, tr_norm_scores = encode_essay_data(args.TRAINING_DATA_FILE, args.OVERALL_SCORE_COLUMN, args.ATTR_SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE)
 va_essays, va_true_scores, va_norm_scores = encode_essay_data(args.VALIDATION_DATA_FILE, args.OVERALL_SCORE_COLUMN, args.ATTR_SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE)
 
-embeddings_matrix = get_word_embeddings_matrix(load_word_embeddings_dict(args.WORD_EMB_FILE), tokenizer.word_index, args.EMBEDDING_SIZE)
+embeddings_matrix = get_word_embeddings_matrix(load_word_embeddings_dict(args.WORD_EMB_FILE, args.EMBEDDING_SIZE), tokenizer.word_index, args.EMBEDDING_SIZE)
 
 print('-------- -------- Model generation')
 model = generate_model(vocab_size, args.EMBEDDING_SIZE, args.MAX_ESSAY_LENGTH, embeddings_matrix, args.OVERALL_LOSS_WEIGHT, args.ATTR_LOSS_WEIGHTS)
