@@ -47,7 +47,13 @@ sys.stdout.flush()
 
 # pre processing
 print('-------- -------- Pre Processing')
-tokenizer = generate_tokenizer_on_all_essays((args.VOCAB_FILE, args.TRAINING_DATA_FILE, args.VALIDATION_DATA_FILE,))
+tokenizer_files = [args.VOCAB_FILE, ]
+for propmt in range(1, 9):
+    for fold in range(5):
+        tokenizer_files.append('data/prompts-and-folds/Prompt-{}-Train-{}.csv'.format(propmt, fold))
+        tokenizer_files.append('data/prompts-and-folds/Prompt-{}-Test-{}.csv'.format(propmt, fold))
+print(tokenizer_files)
+tokenizer = generate_tokenizer_on_all_essays(tuple(tokenizer_files))
 vocab_size = len(tokenizer.word_index) + 1
 
 tr_essays, tr_true_scores, tr_norm_scores = encode_essay_data(args.TRAINING_DATA_FILE, args.OVERALL_SCORE_COLUMN, args.ATTR_SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE)

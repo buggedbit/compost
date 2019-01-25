@@ -141,36 +141,16 @@ def get_word_embeddings_matrix(word_embeddings_dict, word_index, embedding_size)
     spelling_mistakes = []
     
     for word, index in word_index.items():
-        # stripping
-        strip_keys = ['', '\'', '\"', '\”\“']
-        found = False
-        for strip_key in strip_keys:
-            stripped_word = word.strip(strip_key)
-            embedding = word_embeddings_dict.get(stripped_word)
-            if embedding is not None:
-                embeddings_matrix[index] = embedding
-                if strip_key != '': print('stripped word {} to {}'.format(word, stripped_word))
-                found = True
-                break
-        # apostropes
-        if not found:
-            aposes = ['\'s', '\"s']
-            for apos in aposes:
-                if word[-2:] == apos:
-                    stripped_word = word[:-2]
-                    embedding = word_embeddings_dict.get(stripped_word)
-                    if embedding is not None:
-                        embeddings_matrix[index] = embedding
-                        if strip_key != '': print('stripped word {} to {}'.format(word, stripped_word))
-                        found = True
-                        break
+      embedding = word_embeddings_dict.get(word)
+      if embedding is not None:
+        embeddings_matrix[index] = embedding
+      else:
         # spelling mistake 0 by default
-        if not found:
-            spelling_mistakes.append(word)
-            print('spelling mistake: {}'.format(word))
+        spelling_mistakes.append(word)
+        print('spelling mistake: {}'.format(word))
 
-    print('Created embeddings matrix. Embeddings Matrix shape =', embeddings_matrix.shape)
-    print('#spelling mistakes found =', len(spelling_mistakes))
-    print('%% Words Not found in Word Embeddings =', len(spelling_mistakes) / vocab_size * 100)
+    print('Created Embeddings matrix with shape: {}'.format(embeddings_matrix.shape))
+    print('No. unknown found: {}'.format(len(spelling_mistakes)))
+    print('%% words not found in word embeddings: {}'.format(len(spelling_mistakes) / vocab_size * 100))
 
     return embeddings_matrix
