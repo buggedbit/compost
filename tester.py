@@ -1,10 +1,10 @@
 import argparse
 import sys
 from preprocessor import generate_tokenizer_on_all_essays, encode_essay_data_for_testing
-from quadratic_weighted_kappa import quadratic_weighted_kappa
+from qwk import quadratic_weighted_kappa
 import numpy as np
 from keras.models import model_from_json
-from custom_layers import Conv1DWithMasking, MeanOverTime
+from layers import Conv1DWithMasking, MeanOverTime
 
 def get_qwk(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
     pred_norm_score_tensor = model.predict(essays, verbose=1)

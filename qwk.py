@@ -82,3 +82,32 @@ def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None)
             denominator += d * expected_count / num_scored_items
 
     return 1.0 - numerator / denominator
+
+
+def calc_qwk(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
+    pred_norm_score_tensor = model.predict(essays, verbose=0)
+    # clipping in case of linear final activation
+    for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
+        for j, score in enumerate(pred_norm_scores):
+            if score > 1:
+                pred_norm_score_tensor[i][j] = 1
+            elif score < 0:
+                pred_norm_score_tensor[i][j] = 0
+
+    qwks = []
+    # overall score
+    pred_norm_scores = pred_norm_score_tensor[0]
+    pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
+    pred_true_scores = np.round(overall_min_score + pred_norm_scores * (overall_max_score - overall_min_score))
+    qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[0], min_rating=overall_min_score,
+                                   max_rating=overall_max_score)
+    qwks.append(qwk)
+    # attribute scores
+    for i in range(1, len(pred_norm_score_tensor)):
+        pred_norm_scores = pred_norm_score_tensor[i]
+        pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
+        pred_true_scores = np.round(attr_min_score + pred_norm_scores * (attr_max_score - attr_min_score))
+        qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[i], min_rating=attr_min_score,
+                                       max_rating=attr_max_score)
+        qwks.append(qwk)
+    return qwks

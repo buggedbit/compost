@@ -1,35 +1,8 @@
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use('pdf')
 from matplotlib import pyplot as plt
-from quadratic_weighted_kappa import quadratic_weighted_kappa
-
-
-def get_qwk(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
-    pred_norm_score_tensor = model.predict(essays, verbose=0)
-    # clipping in case of linear final activation
-    for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
-        for j, score in enumerate(pred_norm_scores):
-            if score > 1:
-                pred_norm_score_tensor[i][j] = 1
-            elif score < 0:
-                pred_norm_score_tensor[i][j] = 0
-
-    qwks = []
-    # overall score
-    pred_norm_scores = pred_norm_score_tensor[0]
-    pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
-    pred_true_scores = np.round(overall_min_score + pred_norm_scores * (overall_max_score - overall_min_score))
-    qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[0], min_rating=overall_min_score, max_rating=overall_max_score)
-    qwks.append(qwk)
-    # attribute scores
-    for i in range(1, len(pred_norm_score_tensor)):
-        pred_norm_scores = pred_norm_score_tensor[i]
-        pred_norm_scores = np.reshape(pred_norm_scores, pred_norm_scores.shape[0])
-        pred_true_scores = np.round(attr_min_score + pred_norm_scores * (attr_max_score - attr_min_score))
-        qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[i], min_rating=attr_min_score, max_rating=attr_max_score)
-        qwks.append(qwk)
-    return qwks
 
 
 class Stats:
@@ -61,48 +34,37 @@ class Stats:
         return ret
 
     def print_log(self):
+        print('training_qwks = {}'.format(self.tr_qwk_tensor))
+        print('validation_qwks = {}'.format(self.va_qwk_tensor))
+        print('training_losses = {}'.format(self.tr_losses))
+        print('validation_losses = {}'.format(self.va_losses))
         for i in range(self.num_tasks):
             va_qwks = self.va_qwk_tensor[i]
             tr_qwks = self.tr_qwk_tensor[i]
-            print('for task %d, max va qwk = %f @ %d epoch' % (i, va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks)))
-            print('for task %d, max tr qwk = %f @ %d epoch' % (i, tr_qwks[np.argmax(tr_qwks)], np.argmax(tr_qwks)))
+            print('for task {}, max va qwk = {} @ {} epoch'.format(i, np.max(va_qwks), np.argmax(va_qwks)))
+            print('for task {}, max tr qwk = {} @ {} epoch'.format(i, np.max(tr_qwks), np.argmax(tr_qwks)))
 
-        print('training_qwks = ', self.tr_qwk_tensor)
-        print('validation_qwks = ', self.va_qwk_tensor)
-        print('training_losses = ', self.tr_losses)
-        print('validation_losses = ', self.va_losses)
-
-    def saveplots(self, output_dir, image_name):
-        plt.clf()
-        axes = plt.gca()
-        axes.set_ylim([-0.5, 1])
-        # plot all metrics in a graph
-        epochs = [i for i in range(len(self.tr_losses))]
-        yequals0 = [0 for i in range(len(self.tr_losses))]
-        plt.xlabel('epochs')
-        plt.ylabel('value')
-        # X axis
-        plt.plot(epochs, yequals0, '-', color='black')
-
-        title_string = ''
-        legend = ['y=0']
-        va_qwks = self.va_qwk_tensor[0]
-        title_string += 'overall score task, max va qwk = %f @ %d epoch\n' % (va_qwks[np.argmax(va_qwks)], np.argmax(va_qwks))
+    def save_plots(self, output_dir):
         for i in range(self.num_tasks):
+            plt.clf()
+            plt.xlabel('epochs')
+            plt.ylabel('value')
+
+            axes = plt.gca()
+            axes.set_ylim([-0.75, 1])
+
+            epochs = [i for i in range(len(self.tr_losses))]
+            yequals0 = [0 for i in range(len(self.tr_losses))]
+
             tr_qwks = self.tr_qwk_tensor[i]
             va_qwks = self.va_qwk_tensor[i]
-            # plot validation qwks
-            plt.plot(epochs, va_qwks)
-            legend += ['task %d va qwk' % i]
-            # plot training qwks
-            plt.plot(epochs, tr_qwks)
-            legend += ['task %d tr qwk' % i]
 
-        plt.title(title_string)
+            plt.plot(epochs, yequals0, '-', color='black')
+            plt.plot(epochs, va_qwks, '-', color='blue')
+            plt.plot(epochs, tr_qwks, '-', color='pink')
+            plt.plot(epochs, self.tr_losses, '-', color='red')
+            plt.plot(epochs, self.va_losses, '-', color='green')
 
-        plt.plot(epochs, self.tr_losses)
-        legend += ['training loss']
-        plt.plot(epochs, self.va_losses)
-        legend += ['validation loss']
-        plt.gca().legend(tuple(legend))
-        plt.savefig('%s/%s' % (output_dir, image_name))
+            plt.title('max va qwk = {} @ {} epoch\n'.format(np.max(va_qwks), np.argmax(va_qwks)))
+            plt.savefig('{}/task_{}.svg'.format(output_dir, i))
+            plt.savefig('{}/task_{}.png'.format(output_dir, i))
