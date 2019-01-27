@@ -147,10 +147,10 @@ def get_word_embeddings_matrix(word_embeddings_dict, word_index, embedding_size)
       else:
         # spelling mistake 0 by default
         spelling_mistakes.append(word)
-        print('spelling mistake: {}'.format(word))
 
     print('Created Embeddings matrix with shape: {}'.format(embeddings_matrix.shape))
-    print('No. unknown found: {}'.format(len(spelling_mistakes)))
+    print('Unknown words: {}'.format(spelling_mistakes))
+    print('No. unknown words found: {}'.format(len(spelling_mistakes)))
     print('%% words not found in word embeddings: {}'.format(len(spelling_mistakes) / vocab_size * 100))
 
     return embeddings_matrix

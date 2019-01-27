@@ -87,12 +87,7 @@ def quadratic_weighted_kappa(rater_a, rater_b, min_rating=None, max_rating=None)
 def calc_qwk(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
     pred_norm_score_tensor = model.predict(essays, verbose=0)
     # clipping in case of linear final activation
-    for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
-        for j, score in enumerate(pred_norm_scores):
-            if score > 1:
-                pred_norm_score_tensor[i][j] = 1
-            elif score < 0:
-                pred_norm_score_tensor[i][j] = 0
+    pred_norm_score_tensor = np.clip(np.array(pred_norm_score_tensor), 0, 1)
 
     qwks = []
     # overall score

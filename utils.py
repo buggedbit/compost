@@ -65,6 +65,6 @@ class Stats:
             plt.plot(epochs, self.tr_losses, '-', color='red')
             plt.plot(epochs, self.va_losses, '-', color='green')
 
-            plt.title('max va qwk = {} @ {} epoch\n'.format(np.max(va_qwks), np.argmax(va_qwks)))
+            plt.title('Task {}, max va qwk = {} @ {} epoch\n'.format(i, np.max(va_qwks), np.argmax(va_qwks)))
             plt.savefig('{}/task_{}.svg'.format(output_dir, i))
             plt.savefig('{}/task_{}.png'.format(output_dir, i))

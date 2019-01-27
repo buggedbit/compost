@@ -92,8 +92,7 @@ for epoch in range(args.NUM_EPOCHS):
     # print log and save plots
     stats.save_plots(args.OUTPUT_DIR)
     sys.stdout = open('{}/{}'.format(args.OUTPUT_DIR, args.TRAINING_STATS_FILE), 'w')
-    print('Epoch: {}'.format(epoch))
-    print('Model fitted, validated and saved')
+    print('# Epoch {} completed. Model fitted, validated and saved'.format(epoch))
     stats.print_log()
     # write to stdout
     sys.stdout.flush()
