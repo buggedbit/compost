@@ -31,6 +31,10 @@ parser.add_argument('--LOG_FILE', default='log.txt')
 parser.add_argument('--TRAINING_STATS_FILE', default='training_stats.txt')
 parser.add_argument('--VOCAB_FILE', default='data/vocab_db.txt')
 parser.add_argument('--MODEL_DEF_FILE', default='model.json')
+parser.add_argument('--NUM_CONV_FILTERS', type=int, default=40)
+parser.add_argument('--CONV_WINDOW_LENGTH', type=int, default=3)
+parser.add_argument('--NUM_LSTM_NODES', type=int, default=60)
+parser.add_argument('--DROPOUT_PROB', type=float, default=0.1)
 args = parser.parse_args()
 
 # assert output dir exists
@@ -67,7 +71,8 @@ va_essays, va_true_scores, va_norm_scores = encode_essay_data(args.VALIDATION_DA
 embeddings_matrix = get_word_embeddings_matrix(load_word_embeddings_dict(args.WORD_EMB_FILE, args.EMBEDDING_SIZE), tokenizer.word_index, args.EMBEDDING_SIZE)
 
 # model generation
-model = generate_model(vocab_size, args.EMBEDDING_SIZE, args.MAX_ESSAY_LENGTH, embeddings_matrix, args.OVERALL_LOSS_WEIGHT, args.ATTR_LOSS_WEIGHTS)
+model = generate_model(vocab_size, args.EMBEDDING_SIZE, args.MAX_ESSAY_LENGTH, embeddings_matrix, args.OVERALL_LOSS_WEIGHT, args.ATTR_LOSS_WEIGHTS,
+                        args.NUM_CONV_FILTERS, args.CONV_WINDOW_LENGTH, args.NUM_LSTM_NODES, args.DROPOUT_PROB)
 print(model.summary())
 model_json = model.to_json()
 with open('{}/{}'.format(args.OUTPUT_DIR, args.MODEL_DEF_FILE), 'w') as json_file:

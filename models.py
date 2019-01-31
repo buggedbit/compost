@@ -6,7 +6,7 @@ from layers import Conv1DWithMasking, MeanOverTime
 
 
 def generate_model(vocab_size, emb_size, max_essay_length, emb_matrix, overall_loss_weight, attr_loss_weights,
-                   conv_filters=40, conv_window=3, lstm_size=60, do_prob=0.1, ):
+                   num_conv_filters, conv_window, num_lstm_nodes, do_prob):
     inp = Input((max_essay_length,), )
     # Embedding layer
     x = Embedding(input_dim=vocab_size,
@@ -16,14 +16,14 @@ def generate_model(vocab_size, emb_size, max_essay_length, emb_matrix, overall_l
                   trainable=False,
                   mask_zero=True, )(inp)
     # Conv layer
-    x = Conv1DWithMasking(filters=conv_filters,
+    x = Conv1DWithMasking(filters=num_conv_filters,
                           kernel_size=conv_window,
                           activation='sigmoid',
                           use_bias=True,
                           padding='same', )(x)
     # Bi-LTSM layers
-    forward = LSTM(lstm_size, return_sequences=True, )(x)
-    backward = LSTM(lstm_size, return_sequences=True, go_backwards=True)(x)
+    forward = LSTM(num_lstm_nodes, return_sequences=True, )(x)
+    backward = LSTM(num_lstm_nodes, return_sequences=True, go_backwards=True)(x)
     # Dropout layers
     forward = Dropout(do_prob)(forward)
     backward = Dropout(do_prob)(backward)

@@ -60,8 +60,8 @@ class Stats:
             va_qwks = self.va_qwk_tensor[i]
 
             plt.plot(epochs, yequals0, '-', color='black')
-            plt.plot(epochs, va_qwks, '-', color='blue')
             plt.plot(epochs, tr_qwks, '-', color='pink')
+            plt.plot(epochs, va_qwks, '-', color='blue')
             plt.plot(epochs, self.tr_losses, '-', color='red')
             plt.plot(epochs, self.va_losses, '-', color='green')
 
