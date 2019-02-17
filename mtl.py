@@ -31,10 +31,10 @@ parser.add_argument('--LOG_FILE', default='log.txt')
 parser.add_argument('--TRAINING_STATS_FILE', default='training_stats.txt')
 parser.add_argument('--VOCAB_FILE', default='data/vocab_db.txt')
 parser.add_argument('--MODEL_DEF_FILE', default='model.json')
-parser.add_argument('--NUM_CONV_FILTERS', type=int, default=40)
+parser.add_argument('--NUM_CONV_FILTERS', type=int, default=100)
 parser.add_argument('--CONV_WINDOW_LENGTH', type=int, default=3)
-parser.add_argument('--NUM_LSTM_NODES', type=int, default=60)
-parser.add_argument('--DROPOUT_PROB', type=float, default=0.1)
+parser.add_argument('--NUM_LSTM_NODES', type=int, default=100)
+parser.add_argument('--DROPOUT_PROB', type=float, default=0)
 args = parser.parse_args()
 
 # assert output dir exists
