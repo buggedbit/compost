@@ -6,15 +6,42 @@ import numpy as np
 from keras.models import model_from_json
 from layers import Conv1DWithMasking, MeanOverTime
 
-def get_qwk(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score):
-    pred_norm_score_tensor = model.predict(essays, verbose=1)
-    # clipping in case of linear final activation
-    for i, pred_norm_scores in enumerate(pred_norm_score_tensor):
-        for j, score in enumerate(pred_norm_scores):
-            if score > 1:
-                pred_norm_score_tensor[i][j] = 1
-            elif score < 0:
-                pred_norm_score_tensor[i][j] = 0
+# arguments
+parser = argparse.ArgumentParser()
+
+# required args
+parser.add_argument('--MODEL_FILE', required=True)
+parser.add_argument('--MODEL_WEIGHT_FILES', required=True, nargs='+')
+parser.add_argument('--TEST_DATA_FILE', required=True)
+parser.add_argument('--OUTPUT_FILE_PREFIX', required=True)
+parser.add_argument('--OVERALL_SCORE_COLUMN', required=True, type=int)
+parser.add_argument('--ATTR_SCORE_COLUMNS', required=True, type=int, nargs='+')
+parser.add_argument('--OVERALL_MIN_SCORE', required=True, type=int)
+parser.add_argument('--OVERALL_MAX_SCORE', required=True, type=int)
+parser.add_argument('--ATTR_MIN_SCORE', required=True, type=int)
+parser.add_argument('--ATTR_MAX_SCORE', required=True, type=int)
+# optional args
+parser.add_argument('--MAX_ESSAY_LENGTH', type=int, default=2000)
+parser.add_argument('--VOCAB_FILE', default='data/vocab_db.txt')
+args = parser.parse_args()
+
+# log arguments
+print(args)
+
+# pre processing
+# tokenizer prep
+tokenizer_files = [args.VOCAB_FILE, ]
+for propmt in range(1, 9):
+    for fold in range(5):
+        tokenizer_files.append('data/prompts-and-folds/Prompt-{}-Train-{}.csv'.format(propmt, fold))
+        tokenizer_files.append('data/prompts-and-folds/Prompt-{}-Test-{}.csv'.format(propmt, fold))
+
+tokenizer = generate_tokenizer_on_all_essays(tuple(tokenizer_files))
+vocab_size = len(tokenizer.word_index) + 1
+essay_ids, essays, true_scores = encode_essay_data_for_testing(args.TEST_DATA_FILE, args.OVERALL_SCORE_COLUMN, args.ATTR_SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer)
+
+def predict_and_store(model, essays, true_scores, overall_min_score, overall_max_score, attr_min_score, attr_max_score, output_file, attr_number):
+    pred_norm_score_tensor = model.predict(essays, verbose=0)
 
     qwks = []
     pred_true_scores_tensor = []
@@ -33,62 +60,21 @@ def get_qwk(model, essays, true_scores, overall_min_score, overall_max_score, at
         pred_true_scores_tensor.append(pred_true_scores)
         qwk = quadratic_weighted_kappa(pred_true_scores, true_scores[i], min_rating=attr_min_score, max_rating=attr_max_score)
         qwks.append(qwk)
-    return qwks, pred_true_scores_tensor
 
+    print('model-for-attr-{}: qwks:{}'.format(attr_number, qwks))
+    sys.stdout.flush()
 
-# arguments
-parser = argparse.ArgumentParser()
+    with open('{}A{}'.format(output_file, attr_number), 'a+') as file:
+        for i, essay_id in enumerate(essay_ids):
+            file.write('{}\t{}\t{}\n'.format(essay_id, int(true_scores[attr_number][i]), int(pred_true_scores_tensor[attr_number][i])))
+    file.close()
 
-# required args
-parser.add_argument('--MODEL_FILE', required=True)
-parser.add_argument('--MODEL_WEIGHTS_FILE', required=True)
-parser.add_argument('--TEST_DATA_FILE', required=True)
-parser.add_argument('--OUTPUT_FILE', required=True)
-parser.add_argument('--OVERALL_SCORE_COLUMN', required=True, type=int)
-parser.add_argument('--ATTR_SCORE_COLUMNS', required=True, type=int, nargs='+')
-parser.add_argument('--OVERALL_MIN_SCORE', required=True, type=int)
-parser.add_argument('--OVERALL_MAX_SCORE', required=True, type=int)
-parser.add_argument('--ATTR_MIN_SCORE', required=True, type=int)
-parser.add_argument('--ATTR_MAX_SCORE', required=True, type=int)
-# optional args
-parser.add_argument('--MAX_ESSAY_LENGTH', type=int, default=2000)
-parser.add_argument('--VOCAB_FILE', default='data/vocab_db.txt')
-args = parser.parse_args()
-
-# log arguments
-print(args)
-
-# pre processing
-print('-------- -------- Pre Processing')
-tokenizer = generate_tokenizer_on_all_essays((args.VOCAB_FILE,))
-essay_ids, essays, true_scores = encode_essay_data_for_testing(args.TEST_DATA_FILE, args.OVERALL_SCORE_COLUMN, args.ATTR_SCORE_COLUMNS, args.MAX_ESSAY_LENGTH, tokenizer)
-
-print('-------- -------- Model loading')
 model = None
-# load the model
 with open(args.MODEL_FILE, 'r') as json_file:
     model = model_from_json(json_file.read(), custom_objects={'Conv1DWithMasking': Conv1DWithMasking, 'MeanOverTime': MeanOverTime})
-model.load_weights(args.MODEL_WEIGHTS_FILE)
-print(model.summary())
 
-print('-------- -------- Evaluating Model')
-qwks, predicted_scores = get_qwk(model, essays, true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE)
+for i, weight_file in enumerate(args.MODEL_WEIGHT_FILES):
+    # load the model
+    model.load_weights(weight_file)
+    predict_and_store(model, essays, true_scores, args.OVERALL_MIN_SCORE, args.OVERALL_MAX_SCORE, args.ATTR_MIN_SCORE, args.ATTR_MAX_SCORE, args.OUTPUT_FILE_PREFIX, i)
 
-print(qwks)
-# open log file
-sys.stdout = open('%s' % (args.OUTPUT_FILE), 'w')
-
-print('essay_id,P_overall_score,T_overall_score,', end='')
-col_names = []
-for i in range(len(true_scores) - 1):
-  col_names.append('P_attr%d_score' % i)
-  col_names.append('T_attr%d_score' % i)
-print(','.join(col_names))
-
-for i, essay_id in enumerate(essay_ids):
-  print('%d,' % essay_id, end='')
-  scores = []
-  for j in range(len(true_scores)):
-    scores.append(int(predicted_scores[j][i]))
-    scores.append(int(true_scores[j][i]))
-  print(','.join(map(str, scores)))
