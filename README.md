@@ -3,7 +3,7 @@
 - Break down arbitrarily complex tasks into graphs of simple atomic tasks to store and visualize them beautifully
 
 # The Zen
-- Use your brain for what it is designed to do!
+- Use your brain to think, not to remember!
 
 # How to use?
 * This is a server-client system
@@ -31,3 +31,4 @@
             * Consistency of goal achievements means: child must be tagged as achieved only after all its parents are achieved
         * You can see the entire dependency graph of goal family rendered graphically as nodes and edges
         * You can do chain updates in a dependency graph
+    * `{root-url}/goal/snapshot_viewer` takes you to a glance your goals month-wise
