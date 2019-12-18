@@ -1,1 +1,1 @@
-web: gunicorn escapeerrands.wsgi --log-file -
+web: gunicorn braindump.wsgi --log-file -

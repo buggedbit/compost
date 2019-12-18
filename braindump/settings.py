@@ -10,9 +10,9 @@ SECRET_KEY = 'rt$g!n6fo^gs91m%osd#4ia-rc^qyhaaisj%+0=^dd05p7@=&h'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ROOT_URLCONF = 'escapeerrands.urls'
+ROOT_URLCONF = 'braindump.urls'
 
-WSGI_APPLICATION = 'escapeerrands.wsgi.application'
+WSGI_APPLICATION = 'braindump.wsgi.application'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
