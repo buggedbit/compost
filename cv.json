@@ -1,0 +1,22 @@
+{
+  "name": "multi-task learning for english essay grading",
+  "time": "Fall 2018",
+  "advisor": "Prof. Pushpak Bhattacharyya",
+  "place": "IIT Bombay",
+  "work": [
+    "Reproduced the state of the art model for english essay grading task as a baseline",
+    "Improved the architecture by learning both overall score and attribute scores of the essays",
+    "Achieved performance improvement in 2 prompts of the dataset",
+    "Developed libvnf, a library to build fast, scalable virtual network functions",
+    "Implemented the 5G network protocol using libvnf as a case study",
+    "Achieved 8.3\\% performance gain and 26.5\\% LoC decrease compared to a scratch implementation",
+    "The paper on this library was accepted for Symposium on Cloud Computing'18",
+    "Designed and implemented multiple requests per connection feature and SCTP protocol support",
+    "Implemented various new features and productionized code",
+    "Implemented support for a runtime config file, CMake compilation and installation and compile-time stack selection",
+    "Added new callback registration APIs for identifier extraction from packets and packet boundary disambiguation in TCP buffer respectively",
+    "Found and fixed bugs, improved API signatures, productionized code and created documentation",
+    "Designed and implemented a vision based real-time mobile 2D pose tracker",
+    "Applied it to use a smart phone as an external mouse and achieved near ideal performance"
+  ]
+}
