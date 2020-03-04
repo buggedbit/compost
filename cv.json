@@ -6,6 +6,6 @@
   "work": [
     "Reproduced the state of the art model for english essay grading task as a baseline",
     "Improved the architecture by learning both overall score and attribute scores of the essays",
-    "Achieved performance improvement in 2 prompts of the dataset",
+    "Achieved performance improvement in 2 prompts of the dataset"
   ]
 }
