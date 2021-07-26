@@ -1,10 +1,10 @@
 # SchoolBag
 
 ## description
-- A web app for creating, editing and sharing notes
-- Features implemented
-1. Book and page model
-1. CLI
+- A web app for creating, editing and sharing notes.
+- Features implemented.
+    1. Book and page model.
+    1. CLI.
 
 Tired of keeping track of books ?
 Well, I am !
