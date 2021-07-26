@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/online_event_view_bg"
+    android:fillViewport="false"
+    tools:context="com.harsha.eevee.ViewOnlineEvent">
+
+    <LinearLayout
+        android:id="@+id/onlineEventViewPanelLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/eventDetailsTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Event"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFF"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:id="@+id/layoutEventOne"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/eventNameTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Event Name"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/eventNameET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Event Name"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/eventPlaceTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Event Place"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/eventPlaceET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Event Venue " />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventTwo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/repetitionEventTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repetition Type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/repetitionEventRG"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="20dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingTop="20dp">
+
+                        <RadioButton
+                            android:id="@+id/noneEventRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:onClick="noneEventRBClicked"
+                            android:text="None"
+                            android:textColor="#FFF" />
+
+                        <RadioButton
+                            android:id="@+id/dailyEventRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:onClick="dailyEventRBClicked"
+                            android:text="Daily"
+                            android:textColor="#FFF" />
+
+                        <RadioButton
+                            android:id="@+id/weeklyEventRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:onClick="weeklyEventRBClicked"
+                            android:text="Weekly"
+                            android:textColor="#FFF" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dayEventCheckboxGrp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:visibility="visible">
+
+                    <CheckBox
+                        android:id="@+id/sundayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Sunday"
+                        android:textColor="#FFF" />
+
+                    <CheckBox
+                        android:id="@+id/mondayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Monday"
+                        android:textColor="#FFF" />
+
+                    <CheckBox
+                        android:id="@+id/tuesdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Tuesday"
+                        android:textColor="#FFF" />
+
+                    <CheckBox
+                        android:id="@+id/wednesdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Wednesday"
+                        android:textColor="#FFF" />
+
+                    <CheckBox
+                        android:id="@+id/thursdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Thursday"
+                        android:textColor="#FFF" />
+
+                    <CheckBox
+                        android:id="@+id/fridayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Friday"
+                        android:textColor="#FFF" />
+
+                    <CheckBox
+                        android:id="@+id/saturdayEventCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Saturday"
+                        android:textColor="#FFF" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventThree"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/eventTimingsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Timings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startDateTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/startDateEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Start Date"
+                        android:inputType="date" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startTimeTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/startTimeEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Start Time"
+                        android:inputType="time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/endDateTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="End Date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/endDateEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="End Date"
+                        android:inputType="date" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/endTimeTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="End Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/endTimeEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="End Time"
+                        android:inputType="time" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventThreeA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/eventTimingsATV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Timings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startTimeEventThreeATV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/startTimeEventAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Start Time"
+                        android:inputType="time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/durationEventTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Duration"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/durationEventAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Duration"
+                        android:inputType="time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/endTimeEventThreeATV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="End Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/endTimeEventAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="End Time"
+                        android:inputType="time" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventThreeB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/eventLimitsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Limits"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startDateBTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/startDateEventBET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Starts from"
+                        android:inputType="date" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/endDateBTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="End Date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/endDateEventBET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Ends on"
+                        android:inputType="date" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventFour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/eventTypeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/typeEventRG"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="20dp"></RadioGroup>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventFourA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/clubNameTV"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Club Name"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#FFF"
+                android:textSize="18sp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/clubNameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Club Name" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventFive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/regnDetailsEventTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registration Details"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/regnPlaceTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Place"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/regnPlaceEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Registration Place" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/regnDateTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/regnDateEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Registration Date"
+                        android:inputType="date" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/regnTimeTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/regnTimeEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Registration Time"
+                        android:inputType="time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/regnWebsiteTV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Website"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/regnWebsiteEventET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Website"
+                        android:hyphenationFrequency="full" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutEventSix"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/commentsEventTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFF"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/commentsEventET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="Comments ( if any )" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonPanelEventViewDrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/viewEventsTableBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="viewEventsTableClicked"
+                android:text="View Table" />
+
+            <Button
+                android:id="@+id/dropEventsTableBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="dropEventsTableClicked"
+                android:text="DROP TABLE" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

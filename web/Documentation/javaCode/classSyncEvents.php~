@@ -1,0 +1,26 @@
+<?php
+    session_start();
+    session_unset();     // unset $_SESSION variable for the run-time
+    
+    $_SESSION["gettingSession"] = true;
+    ###########################################
+	#IF YOU DONT HAVE DESCRIPTION FOR ANY ENTITY THEN MAKE IT AN EMPTY STRING
+	
+    // Declare class parent class and class Description
+    $_SESSION["class"] = " Home ";
+    $_SESSION["extendsClass"] = "AppcompactActivity";    
+    $_SESSION["classDes"] = "This is an awsome class";
+
+    $_SESSION["implementsClasses"] = array("class1" , "class2");
+    
+    // Declare and intialize variables and datatype strings , and their description
+    $_SESSION["var"] = array("var1");
+    $_SESSION["varDes"] = array("awesome");
+
+    // Declare and intialize funtion signiture strings , and their description
+    $_SESSION["fun"] = array("fun1");
+    $_SESSION["funDes"] = array("superb");
+        
+    ##########################################
+    header ('Location: documentationBook.php');
+?>

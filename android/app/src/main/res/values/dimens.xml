@@ -1,0 +1,38 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="custom_horizontal_margin">8dp</dimen>
+    <dimen name="custom_vertical_margin">8dp</dimen>
+
+
+    <dimen name="diameter_of_balls">40dp</dimen>
+    <dimen name="width_of_ball_scroll_area">80dp</dimen>
+    <!--'balls_margins_left' and 'balls_margins_right' should be the difference of  (width_of_ball_scroll_area - diameter_of_balls)/2-->
+    <dimen name="balls_margins_left">20dp</dimen>
+    <dimen name="balls_margins_right">0dp</dimen>
+
+    <dimen name="balls_thread_width">4dp</dimen>
+    <!--(width_of_ball_scroll_area - balls_thread_width)/2 -->
+    <dimen name="balls_thread_left_margin">38dp</dimen>
+
+
+    <dimen name="balls_margins_top">25dp</dimen>
+    <dimen name="balls_margins_bottom">25dp</dimen>
+
+    <dimen name="balls_text_size">10dp</dimen>
+
+    <dimen name="make_your_move">20dp</dimen>
+
+    <!--GESTURE AREA TOOLS-->
+    <dimen name="ga_circle_diameter">40dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
+</resources>

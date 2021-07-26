@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/task_input"
+    tools:context="com.harsha.eevee.TaskInput">
+
+    <LinearLayout
+        android:id="@+id/taskPanelLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/taskDetailsTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Task"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold|italic" />
+
+        <LinearLayout
+            android:id="@+id/layoutTaskOne"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/taskTagET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tag" />
+
+                <EditText
+                    android:id="@+id/taskDescriptionET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Description" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelTaskOne"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/skipTaskOneBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="240dp"
+                    android:text="skip" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutTaskTwo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/repetitionTaskTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repetition Type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/repetitionTaskRG"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RadioButton
+                            android:id="@+id/noneTaskRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:onClick="dailyOrNoneTaskRBClicked"
+                            android:text="None"
+                            android:textColor="@color/colorPrimary" />
+
+                        <RadioButton
+                            android:id="@+id/dailyTaskRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:onClick="dailyOrNoneTaskRBClicked"
+                            android:text="Daily"
+                            android:textColor="@color/colorPrimary" />
+
+                        <RadioButton
+                            android:id="@+id/weeklyTaskRB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:onClick="weeklyTaskRBClicked"
+                            android:text="Weekly"
+                            android:textColor="@color/colorPrimary" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dayTaskCheckboxGrp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/sundayTaskCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Sunday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/mondayTaskCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Monday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/tuesdayTaskCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Tuesday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/wednesdayTaskCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Wednesday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/thursdayTaskCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Thursday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/fridayTaskCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Friday"
+                        android:textColor="@color/colorPrimary" />
+
+                    <CheckBox
+                        android:id="@+id/saturdayTaskCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Saturday"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelTaskTwo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousTaskTwoBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/nextTaskTwoBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="next" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutTaskThree"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/timingsTaskTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Task Timings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/startDateTaskET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Start Date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/startTimeTaskET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Start Time"
+                    android:inputType="time" />
+
+                <EditText
+                    android:id="@+id/endDateTaskET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="End Date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/endTimeTaskET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="End Time"
+                    android:inputType="time" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelTaskThree"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousTaskThreeBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/skipTaskThreeBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="skip" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutTaskThreeA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/taskTimingsBTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Task Timings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startTimeTaskATV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Start Time"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/startTimeTaskAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="Start Time"
+                        android:inputType="time" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/durationTaskATV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Duration"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/durationTaskAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="false"
+                        android:hint="Duration" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/endTimeTaskATV"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="End Tme"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:id="@+id/endTimeTaskAET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:focusableInTouchMode="false"
+                        android:hint="End Time"
+                        android:inputType="time" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelTaskThreeA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousTaskThreeABTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/nextTaskThreeABTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="next" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutTaskThreeB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/taskLimitsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Task Limits"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <EditText
+                    android:id="@+id/startDateTaskBET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="Start Date"
+                    android:inputType="date" />
+
+                <EditText
+                    android:id="@+id/endDateTaskBET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="End Date"
+                    android:inputType="date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelTaskThreeB"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousTaskThreeBBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/skipTaskThreeBBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="skip" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutTaskFour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/typeTaskTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Task Type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:id="@+id/typeTaskRG"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"></RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonPanelTaskFour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/previousTaskFourBTN"
+                    style="@style/OfflineInputButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="previous" />
+
+                <Button
+                    android:id="@+id/addTaskBTN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0162b1"
+                    android:text="Add Task"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonPanelTaskViewDrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/viewTasksTableBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="view table" />
+
+            <Button
+                android:id="@+id/dropTasksTableBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="drop table" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

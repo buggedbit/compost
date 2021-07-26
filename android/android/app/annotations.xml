@@ -1,0 +1,5 @@
+<root>
+  <item name='android.app.Service START_REDELIVER_INTENT'>
+    <annotation name='java.lang.annotation.Deprecated' />
+  </item>
+</root>
