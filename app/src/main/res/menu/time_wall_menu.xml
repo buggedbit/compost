@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Peek a day"
+        android:id="@+id/time_wall_control_center_day_select_menu_button"
+        android:icon="@mipmap/ic_launcher" />
+
+    <item android:title="New"
+        android:id="@+id/time_wall_control_center_new"
+        android:icon="@mipmap/ic_launcher" />
+
+    <item android:title="Interface Control"
+        android:id="@+id/time_wall_control_center_UI_Tweak_menu_button"
+        android:icon="@mipmap/ic_launcher" />
+
+</menu>
