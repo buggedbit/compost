@@ -1,0 +1,206 @@
+{% extends 'webinterface/base.html' %}
+{% block title %}{{ page.name }} {% if page.book %} | {{ page.book.name }}{% endif %}{% endblock %}
+{% block css %}
+    <style>
+        #editor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            z-index: 101;
+            padding: 50px 20px 50px 20px;
+            font-family: 'Ubuntu Mono', monospace;
+            background-color: #222222;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #editor #text {
+            font-size: 20px;
+            font-weight: bold;
+            border: 2px dashed cyan;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            box-shadow: none;
+        }
+
+        #editor #text:focus {
+            outline: none;
+        }
+
+        #editor #book-name {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: cyan;
+        }
+
+        #editor #page-name {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+        }
+
+        #editor #password-input {
+            position: absolute;
+            width: 50vw;
+            top: 0;
+            left: 25vw;
+            margin: 0;
+            background-color: transparent;
+            color: cyan;
+            font-size: 20px;
+            font-weight: bold;
+            border-left: 2px dashed red;
+            border-right: 2px dashed red;
+            border-top: 2px dashed red;
+            border-bottom: none;
+            box-shadow: none;
+            display: none;
+        }
+
+        ::-moz-selection { /* Code for Firefox */
+            color: black;
+            background: yellow;
+        }
+
+        ::selection {
+            color: black;
+            background: yellow;
+        }
+    </style>
+{% endblock %}
+{% load static %}
+{% block body %}
+    <script src="{% static 'webinterface/multikeycallbackmanager.js' %}"></script>
+    <div id="editor">
+        <div id="book-name">{{ page.book.name }}</div>
+        <div id="page-name">{{ page.name }}</div>
+        <textarea id="text" {% if readonly %}readonly{% endif %} autofocus>{{ page.text }}</textarea>
+        {% if not readonly %}
+            <input id="password-input"
+                   type="password"
+                   onkeydown="
+                           function ajaxSave(bookName, pageName, text, password) {
+                           $.ajax({
+                           url: '{% url 'restapi:page_update_text' %}',
+                           method: 'POST',
+                           data: {
+                           book_name: bookName,
+                           page_name: pageName,
+                           text: text,
+                           password: password
+                           },
+                           success: function (response) {
+                           var jsonedResponse = JSON.parse(response);
+                           if (jsonedResponse.status === 0) {
+                           Materialize.toast('Saved', 2000);
+                           var passwordInput = $('#password-input');
+                           $(passwordInput).hide();
+                           $(passwordInput).val('');
+                           $('#text').focus();
+                           } else if (jsonedResponse.status === -1) {
+                           Materialize.toast(jsonedResponse.message, 2000);
+                           }
+                           FILE_BACKED_TEXT = text;
+                           },
+                           error: function (response) {
+                           Materialize.toast('Server Error', 2000);
+                           },
+                           beforeSend: function (xhr, settings) {
+                           if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                           xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
+                           }
+                           }
+                           });
+                           }
+                           function submitOnEnter(e) {
+                           var passwordInput = $('#password-input');
+                           var bookName = $('#book-name');
+                           var pageName = $('#page-name');
+                           var text = $('#text');
+                           switch(e.keyCode || e.which) {
+                           case 13:
+                           var password = $(passwordInput).val();
+                           ajaxSave($(bookName).html(), $(pageName).html(), $(text).val(), password);
+                           break;
+                           case 27:
+                           $(passwordInput).val('').hide();
+                           $(text).focus();
+                           break;
+                           default:
+                           break;
+                           }
+                           }
+                           submitOnEnter(event);">
+        {% endif %}
+        <div>Exit: Ctrl + q{% if not readonly %} | Save: Ctrl + s{% endif %}</div>
+    </div>
+    <script>
+        var FILE_BACKED_TEXT = '{{ page.text|escapejs }}';
+        $(document).ready(function () {
+            var tree = [
+                {
+                    code: 17,
+                    action: [
+                        {
+                            code: 81,
+                            // Ctrl + Q => close editor
+                            action: function (e) {
+                                e.preventDefault();
+                                if ($('#text').val() !== FILE_BACKED_TEXT) {
+                                    if (window.confirm("Page modified! Want to save?")) {
+                                        return;
+                                    }
+                                }
+                                window.location.replace('{% url 'webinterface:cli' %}?current_book=' + $('#book-name').html());
+                            }
+                        },
+                        {% if not readonly %}
+                            {
+                                code: 83,
+                                // Ctrl + S => save editor content
+                                action: function (e) {
+                                    e.preventDefault();
+                                    $('#password-input').show().focus();
+                                }
+                            }
+                        {% endif %}
+                    ]
+                }
+            ];
+            MultiKeyCallBackManager.bind(tree);
+            MultiKeyCallBackManager.init();
+        });
+
+        $('#text').keydown(function (e) {
+            // code borrowed from : https://jsfiddle.net/2wAzx/13/
+            if (e.keyCode === 9) { // tab was pressed
+                // get caret position/selection
+                var val = this.value,
+                    start = this.selectionStart,
+                    end = this.selectionEnd;
+
+                // set textarea value to: text before caret + tab + text after caret
+                this.value = val.substring(0, start) + '\t' + val.substring(end);
+
+                // put caret at right position again
+                this.selectionStart = this.selectionEnd = start + 1;
+
+                // prevent the focus lose
+                return false;
+            }
+        })
+    </script>
+{% endblock %}

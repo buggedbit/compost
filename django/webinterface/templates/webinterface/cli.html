@@ -1,0 +1,602 @@
+{% extends 'webinterface/base.html' %}
+{% block title %}CLI{% endblock %}
+{% block css %}
+    <style>
+        #terminal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            z-index: 100;
+            padding: 20px;
+            font-family: 'Ubuntu Mono', monospace;
+            background-color: black;
+            color: #64dd17;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #terminal #prefix {
+            height: 100%;
+        }
+
+        #terminal #cmd {
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            margin: 0;
+            width: 70%;
+            box-shadow: none;
+        }
+
+        ::-moz-selection { /* Code for Firefox */
+            color: black;
+            background: #64dd17;
+        }
+
+        ::selection {
+            color: black;
+            background: #64dd17;
+        }
+    </style>
+{% endblock %}
+{% load static %}
+{% block body %}
+    <script src="{% static 'webinterface/yash.js' %}"></script>
+    <script src="{% static 'webinterface/multikeycallbackmanager.js' %}"></script>
+    <div id="terminal">
+        <div id="log"></div>
+        <span id="prefix">$: </span><input id="cmd" autofocus>
+    </div>
+    <script>
+        /**
+         * when book is selected book is set to that book's name
+         * no book selected => book is ''
+         * */
+        var Context = {
+            _inSudoMode: {%  if in_sudo_mode %}true{% else %}false{% endif %},
+            _book: '{{ book_name }}',
+            getPrefix: function () {
+                var inSudoModeMarker = this._inSudoMode === true ? '* ' : '';
+                return inSudoModeMarker + '[/schoolbag/' + this._book + ']:$ '
+            },
+            setBook: function (book) {
+                this._book = book === undefined ? '' : book;
+                yaSH.setPrefix(this.getPrefix());
+            },
+            setInSudoMode: function (inSudoMode) {
+                this._inSudoMode = inSudoMode;
+                yaSH.setPrefix(this.getPrefix());
+            }
+        };
+
+        // init colors
+        yaSH.Config.color.book = 'blue';
+        yaSH.Config.color.page = 'green';
+        // init prefix
+        yaSH.setPrefix(Context.getPrefix());
+
+        // about
+        yaSH.addCmd({
+            keywords: ["about", "whatisthis"],
+            desc: "brief description about school bag",
+            exec: function (tokens) {
+                yaSH.printPre('School Bag is a place where you keep all your knowledge', 'gold');
+            }
+        });
+        // cd
+        yaSH.addCmd({
+            keywords: ["cd"],
+            desc: "select or deselect a book. Usage cd {book name} or cd ..",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: cd {book name} or cd ..');
+                    return;
+                }
+                var book = tokens.splice(1).join(' ');
+                if (book === '..') {
+                    Context.setBook();
+                } else {
+                    $.ajax({
+                        url: "{% url 'restapi:book_exists' %}",
+                        async: false,
+                        method: 'GET',
+                        data: {
+                            book_name: book
+                        },
+                        success: function (response) {
+                            var jsonedResponse = JSON.parse(response);
+                            if (jsonedResponse.status === 0) {
+                                Context.setBook(book);
+                            } else if (jsonedResponse.status === -1) {
+                                yaSH.printErr(jsonedResponse.message, 2000);
+                            }
+                        },
+                        error: function (response) {
+                            yaSH.printErr('Server Error', 2000);
+                        }
+                    });
+                }
+            }
+        });
+        // ls
+        yaSH.addCmd({
+            keywords: ["ls"],
+            desc: "list all in current working place",
+            exec: function (tokens) {
+                $.ajax({
+                    url: "{% url 'restapi:ls' %}",
+                    async: false,
+                    method: 'GET',
+                    data: {
+                        book_name: Context._book
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            yaSH.print('------');
+                            yaSH.print('@book', yaSH.Config.color.book);
+                            yaSH.print('------');
+                            yaSH.print('@page', yaSH.Config.color.page);
+                            yaSH.print('------');
+                            yaSH.println('');
+                            var books = jsonedResponse.body.books;
+                            var pages = jsonedResponse.body.pages;
+                            yaSH.secondaryAutoCompleteBucket = books.concat(pages);
+                            for (var i = 0; i < books.length; ++i)
+                                yaSH.println(books[i], yaSH.Config.color.book);
+                            for (i = 0; i < pages.length; ++i)
+                                yaSH.println(pages[i], yaSH.Config.color.page);
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message, 2000);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    }
+                });
+            }
+        });
+        // pwd
+        yaSH.addCmd({
+            keywords: ["pwd"],
+            desc: "prints current working place",
+            exec: function (tokens) {
+                if (Context._book === '') {
+                    yaSH.println('/schoolbag/', 'lightblue');
+                } else {
+                    yaSH.println('/schoolbag/' + Context._book, 'lightblue');
+                }
+            }
+        });
+        // mkb <book name>
+        yaSH.addCmd({
+            keywords: ["mkb"],
+            desc: "creates new a book. usage mkb {book name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: mkb {book name}');
+                    return;
+                }
+                if (Context._book !== '') {
+                    yaSH.printErr('cannot create book in another book');
+                    yaSH.println('you may want to create a book in schoolbag');
+                    return;
+                }
+                var book = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:book_create' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        book_name: book
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // mkp <page name>
+        yaSH.addCmd({
+            keywords: ["mkp"],
+            desc: "creates new a page. usage mkp {page name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: mkp {page name}');
+                    return;
+                }
+                var page = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:page_create' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        book_name: Context._book,
+                        page_name: page
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // rmb <book name>
+        yaSH.addCmd({
+            keywords: ["rmb"],
+            desc: "deletes specified book. usage rmb {book name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: rmb {book name}');
+                    return;
+                }
+                var book = tokens.splice(1).join(' ');
+                if (window.confirm('DELETE BOOK ' + book + '?')) {
+                    $.ajax({
+                        url: "{% url 'restapi:book_delete' %}",
+                        async: false,
+                        method: 'POST',
+                        data: {
+                            book_name: book
+                        },
+                        success: function (response) {
+                            var jsonedResponse = JSON.parse(response);
+                            if (jsonedResponse.status === 0) {
+                            } else if (jsonedResponse.status === -1) {
+                                yaSH.printErr(jsonedResponse.message);
+                            }
+                        },
+                        error: function (response) {
+                            yaSH.printErr('Server Error');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        // rmp <page name>
+        yaSH.addCmd({
+            keywords: ["rmp"],
+            desc: "deletes specified page in current book or schoolbag. usage rmp {page name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: rmp {page name}');
+                    return;
+                }
+                var page = tokens.splice(1).join(' ');
+                if (window.confirm('DELETE PAGE ' + page + '?')) {
+                    $.ajax({
+                        url: "{% url 'restapi:page_delete' %}",
+                        async: false,
+                        method: 'POST',
+                        data: {
+                            book_name: Context._book,
+                            page_name: page
+                        },
+                        success: function (response) {
+                            var jsonedResponse = JSON.parse(response);
+                            if (jsonedResponse.status === 0) {
+                            } else if (jsonedResponse.status === -1) {
+                                yaSH.printErr(jsonedResponse.message);
+                            }
+                        },
+                        error: function (response) {
+                            yaSH.printErr('Server Error');
+                        },
+                        beforeSend: function (xhr, settings) {
+                            if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                                xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        // cat <page name>
+        yaSH.addCmd({
+            keywords: ["cat"],
+            desc: "opens page in current book or schoolbag in read mode. usage cat {page name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: cat {page name}');
+                    return;
+                }
+                var page = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:page_exists' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        book_name: Context._book,
+                        page_name: page
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            window.location.replace('{% url 'webinterface:editor' %}?book_name='
+                                + Context._book
+                                + '&page_name='
+                                + page);
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // nano <page name>
+        yaSH.addCmd({
+            keywords: ["nano"],
+            desc: "opens page in current book or schoolbag in edit mode. usage nano {page name}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: cat {page name}');
+                    return;
+                }
+                var page = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:page_exists' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        book_name: Context._book,
+                        page_name: page
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            window.location.replace('{% url 'webinterface:editor' %}?book_name='
+                                + Context._book
+                                + '&page_name='
+                                + page
+                                + '&readonly=0');
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // mvb
+        yaSH.addCmd({
+            keywords: ["mvb"],
+            desc: "renames specified book. usage mvb {book name} {new book name}",
+            exec: function (tokens) {
+                if (tokens.length < 3) {
+                    yaSH.printErr('usage: mvb {book name} {new book name}');
+                    return;
+                }
+                var old_book_name = tokens[1];
+                var new_book_name = tokens.splice(2).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:book_update_name' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        old_book_name: old_book_name,
+                        new_book_name: new_book_name
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // mvp
+        yaSH.addCmd({
+            keywords: ["mvp"],
+            desc: "moves specified page. usage mvp {book name}/{page name} {book name}/{page name}",
+            exec: function (tokens) {
+                if (tokens.length !== 3) {
+                    yaSH.printErr('usage: mvp {book name}/{page name} {book name}/{page name}');
+                    return;
+                }
+                var prev_book_name;
+                var prev_page_name;
+                var pres_book_name;
+                var pres_page_name;
+                var book_page;
+
+                var prev = tokens[1];
+                var prev_fow_slash_index = prev.indexOf('/');
+                if (prev_fow_slash_index === -1) {
+                    prev_page_name = prev;
+                    prev_book_name = Context._book;
+                } else {
+                    book_page = prev.split('/');
+                    prev_book_name = book_page[0] === '..' ? '' : book_page[0];
+                    prev_page_name = book_page[1];
+                }
+
+                var pres = tokens[2];
+                var pres_fow_slash_index = pres.indexOf('/');
+                if (pres_fow_slash_index === -1) {
+                    pres_page_name = pres;
+                    pres_book_name = Context._book;
+                } else {
+                    book_page = pres.split('/');
+                    pres_book_name = book_page[0] === '..' ? '' : book_page[0];
+                    pres_page_name = book_page[1];
+                }
+
+                $.ajax({
+                    url: "{% url 'restapi:page_move' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        prev_book_name: prev_book_name,
+                        prev_page_name: prev_page_name,
+                        pres_book_name: pres_book_name,
+                        pres_page_name: pres_page_name
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // sudo
+        yaSH.addCmd({
+            keywords: ["sudo"],
+            desc: "go in sudo mode. Usage sudo {password}",
+            exec: function (tokens) {
+                if (tokens.length < 2) {
+                    yaSH.printErr('usage: sudo {password}');
+                    return;
+                }
+                var password = tokens.splice(1).join(' ');
+                $.ajax({
+                    url: "{% url 'restapi:sudo' %}",
+                    async: false,
+                    method: 'POST',
+                    data: {
+                        password: password
+                    },
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            Context.setInSudoMode(true);
+                            yaSH.println('In sudo mode', 'red');
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    },
+                    beforeSend: function (xhr, settings) {
+                        if (!(/^(GET|HEAD|OPTIONS|TRACE)$/.test(settings.type)) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
+                        }
+                    }
+                });
+            }
+        });
+        // unsudo
+        yaSH.addCmd({
+            keywords: ["unsudo"],
+            desc: "go to normal mode. Usage unsudo",
+            exec: function (tokens) {
+                $.ajax({
+                    url: "{% url 'restapi:unsudo' %}",
+                    async: false,
+                    method: 'GET',
+                    success: function (response) {
+                        var jsonedResponse = JSON.parse(response);
+                        if (jsonedResponse.status === 0) {
+                            Context.setInSudoMode(false);
+                            yaSH.println('In normal mode');
+                        } else if (jsonedResponse.status === -1) {
+                            yaSH.printErr(jsonedResponse.message, 2000);
+                        }
+                    },
+                    error: function (response) {
+                        yaSH.printErr('Server Error');
+                    }
+                });
+            }
+        });
+
+
+        $(document).ready(function () {
+            var tree = [
+                {
+                    code: 17,
+                    action: [
+                        {
+                            code: 72,
+                            // Ctrl + H => help
+                            action: function (e) {
+                                e.preventDefault();
+                                yaSH.evaluate('help');
+                            }
+                        },
+                        {
+                            code: 76,
+                            // Ctrl + L => clear
+                            action: function (e) {
+                                e.preventDefault();
+                                $(yaSH._outputDivHId).empty();
+                            }
+                        }
+                    ]
+                }
+            ];
+            MultiKeyCallBackManager.bind(tree);
+            MultiKeyCallBackManager.init();
+
+            yaSH.bind('cmd', 'log', 'terminal', 'prefix');
+            yaSH.initShell();
+        });
+    </script>
+{% endblock %}
