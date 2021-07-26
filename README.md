@@ -1,7 +1,10 @@
 # dupe
 
 ## description
-- A simple tool to easily and safely pool your files from different sources to a single destination avoiding unnecessary duplicates.
+- A simple tool to easily pool your files from different sources to a single destination avoiding unnecessary duplicates.
+    - It uses paths and timestamps to detect duplicates.
+    - Therefore it does not gurante the existence of all files from all sources in the destination.
+    - But this works in most cases.
 - The intented use case is to pool media from different devices to a backup device.
 
 ## roadmap
