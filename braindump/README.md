@@ -33,3 +33,24 @@
         * You can see the entire dependency graph of goal family rendered graphically as nodes and edges.
         * You can do chain updates in a dependency graph.
     * `{root-url}/goal/snapshot_viewer` takes you to a glance your goals month-wise.
+
+# todo
+- [x] improve goal search app
+	- [x] group by families
+	- [x] fix sort order
+	- [x] set bg of overdue goals to red
+- [x] title
+- [x] password
+- [x] goal color Create & Update
+- [ ] use map() in goalapis.py
+- [x] snapshot viewer
+    - [x] render snapshot month
+    - [x] row major/ column major layout switch
+    - [x] increasing color density of a day
+    - [x] handle error/failed fetch
+    - [x] highlight today
+    - [x] styling
+    - [x] change months
+    - [x] day detail
+- [ ] keyboard shortcuts
+- [ ] Job model
