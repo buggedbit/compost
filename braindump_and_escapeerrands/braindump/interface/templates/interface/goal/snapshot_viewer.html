@@ -1,0 +1,30 @@
+{% extends 'interface/base.html' %}
+{% block title %}Goals at a Glance{% endblock %}
+{% load static %}
+{% block extra_headers %}
+    {# Materialize JS #}
+    <script src="{% static 'interface/materialize/materialize.min.js' %}"></script>
+    {# React & babel JS #}
+    <script src="{% static 'interface/reactjs/react.js' %}"></script>
+    <script src="{% static 'interface/reactjs/react-dom.js' %}"></script>
+    <script src="{% static 'interface/reactjs/babel.js' %}"></script>
+    {# Moment JS #}
+    <script src="{% static 'interface/momentjs/moment.js' %}"></script>
+    {# App JS #}
+    <script src="{% static 'interface/appjs/utils.jsx' %}"></script>
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'interface/appjs/goal/snapshot_viewer/goal-snapshot.css' %}"/>
+    <script src="{% static 'interface/appjs/goal/snapshot_viewer/goal-snapshot-month.jsx' %}"
+            type="text/babel"></script>
+{% endblock %}
+{% block body %}
+    <script type="text/babel">
+        {# Currently only supports monthly snapshots #}
+        ReactDOM.render(<GoalSnapshotMonth
+            snapShotMonthUrl="{% url 'interface:goal_snapshot_month' %}"
+        />, document.getElementById('app'));
+    </script>
+    <div class="container-fluid">
+        <div id="app" style="width: 100vw; height: 100vh"></div>
+    </div>
+{% endblock %}

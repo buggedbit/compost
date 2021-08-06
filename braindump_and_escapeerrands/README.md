@@ -1,0 +1,37 @@
+# braindump_and_escapeerrands
+- The long effort put into making a system to organize tasks in line with eeVee, eeVee2.
+- More than any feature, the best lesson learnt here is that you really don't need a special system for it other than a whiteboard and marker for day to day activities.
+
+## features
+- Brain dump
+    - Set of repeating (possibly infinitely) time intervals creation.
+        - Intersection checking.
+        - Snapshot.
+    - DAG of goals.
+        - Deadline validation.
+        - Is complete validation.
+        - Grouping by connectedness and sorts.
+        - Regex matching.
+        - Create, update, chain update, delete.
+        - Connect, disconnect.
+        - Achivement toggle.
+        - Snapshot month.
+    - Lots of React.
+        - Lot of color and design choices.
+        - Goal glance page.
+        - Goal snapshot page.
+        - Visjs.
+        - Logo.
+    - RestApis.
+    - Response wrapper like rust Result<>.
+    - Session maintainance.
+- Escape errands
+    - Creating and listing errands.
+    - Errands to model repeating and non repeating tasks and what not :P.
+    - Get intersections b/w time intervals.
+    - Getting stubs in range.
+    - Scrolling time table. Hues. Nice webapp with nice design choices.
+    - Lots of html, css, js, ui tinkering.
+    - Skeleton cli :P.
+    - JS to build html :P.
+    - Trying to serde into db, and this as validation :P.

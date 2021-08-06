@@ -1,0 +1,112 @@
+{% extends 'interface/base.html' %}
+{% load static %}
+{% block extra_headers %}
+    {# Materialize JS #}
+    <script src="{% static 'interface/materialize/materialize.min.js' %}"></script>
+    {# React & babel JS #}
+    <script src="{% static 'interface/reactjs/react.js' %}"></script>
+    <script src="{% static 'interface/reactjs/react-dom.js' %}"></script>
+    <script src="{% static 'interface/reactjs/babel.js' %}"></script>
+
+{% endblock %}
+{% block title %}Brain Dump{% endblock %}
+{% block body %}
+    <script type="text/babel">
+        let LoginLogoutView = React.createClass({
+            getInitialState: function () {
+                return {
+                    isLoggedIn: '{{ isSessionActive }}' === 'True',
+                }
+            },
+            login: function (password) {
+                $.post(this.props.loginUrl, {password: password})
+                    .done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            this.setState((prevState) => {
+                                toastr.info('Logged In');
+                                return {isLoggedIn: true}
+                            });
+                        }
+                    })
+                    .fail(() => {
+                        toastr.error('Server Error');
+                    });
+            },
+            logout: function () {
+                $.post(this.props.logoutUrl)
+                    .done((r) => {
+                        let json = JSON.parse(r);
+                        if (json.status === -1) {
+                            toastr.error(json.error);
+                        } else {
+                            this.setState((prevState) => {
+                                toastr.info('Logged Out');
+                                return {isLoggedIn: false}
+                            });
+                        }
+                    })
+                    .fail(() => {
+                        toastr.error('Server Error');
+                    });
+            },
+            render: function () {
+                let ret = '';
+                if (!this.state.isLoggedIn) {
+                    ret = <div className="row">
+                        <input className="col l9 m9 s9" ref="passwordField" autoFocus type="password"
+                               placeholder="enter passphrase to login"
+                               onKeyPress={(e) => {
+                                   if ((e.which || e.keyCode) === 13) {
+                                       this.login(this.refs.passwordField.value)
+                                   }
+                               }}/>
+                        <button className="btn-floating btn-large green darken-3 right" onClick={() => {
+                            this.login(this.refs.passwordField.value)
+                        }}>
+                            <i className="material-icons">lock_open</i>
+                        </button>
+
+                    </div>;
+                } else {
+                    ret = <div>
+                        <button title="logout" className="btn-floating btn-large right red darken-3" onClick={() => {
+                            this.logout()
+                        }}>
+                            <i className="material-icons">lock</i>
+                        </button>
+                        <ul>
+                            <li>What would you like to do?</li>
+                            <li><a href="{% url 'interface:goal_glance' %}">Glance at your goals</a></li>
+                            <li><a href="{% url 'interface:goal_snapshot_viewer' %}">
+                                Snapshot of this month
+                            </a></li>
+                        </ul>
+                    </div>;
+                }
+                return ret;
+            }
+        });
+
+        ReactDOM.render(<LoginLogoutView
+                loginUrl='{% url 'interface:login' %}'
+                logoutUrl='{% url 'interface:logout' %}'
+            />,
+            document.getElementById('app'));
+    </script>
+    <div class="row" style="position: relative;top: 25vh;">
+        <div class="col l4 m4 s4"></div>
+        <div class="col l4 m4 s4">
+            <div class="card-content center">
+                <h1>Dump</h1>
+                <div class="flow-text grey-text">(Your)</div>
+                <h1>Thoughts</h1>
+            </div>
+        </div>
+        <div class="col l4 m4 s4">
+            <div id="app"></div>
+        </div>
+    </div>
+{% endblock %}
