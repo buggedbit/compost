@@ -21,6 +21,22 @@
 
 ## roadmap
 - A crude but working version of the idea (pre-processing, training from scratch weights, validation and testing) is implemented. See the code directly for more details.
+- MTL
+    - [x] run MTL model on all folds of prompt 4
+    - [x] run MTL model on all prompts
+    - [x] statistical significance tests
+- Roadmap for MTL
+    - [x] 0.5 + 0.5 model
+    - [x] 0.6 + 0.1 + ... 0.1 model
+    - [x] attr - dense - sigmoid model
+    - [x] attr - dense - overall model
+    - [x] fix the linear activation overflow bug
+- Final Presentation & Report
+    - [x] report
+    - [x] presentation
+    - [x] web interface
+- [ ] fold distrubution used - same score distrubution as total smaller class classify correctly more QWK.
+- [ ] NACL paper, Cross domain tests
 
 ## code
 - Code is written in `python`.
